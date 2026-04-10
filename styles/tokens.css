@@ -1,0 +1,245 @@
+/* ============================================================
+   @ai-created/ui — Design Tokens
+   Import this file in your app's globals.css or root layout.
+   ============================================================ */
+
+/* --- Color & layout tokens (dark default) --- */
+
+:root {
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --layout-container-max: 1400px;
+  --layout-gutter: 2vw;
+  --layout-gutter-mobile: 6vw;
+  --motion-fast: 0.2s;
+  --motion-base: 0.3s;
+  --motion-slow: 0.5s;
+  --color-bg: #0A0A0B;
+  --color-surface: #101113;
+  --color-surface2: #14161A;
+  --color-border: rgba(255,255,255,0.10);
+  --color-border-strong: rgba(255,255,255,0.16);
+  --color-text: #F5F7FA;
+  --color-text2: rgba(245,247,250,0.72);
+  --color-text3: rgba(245,247,250,0.62);
+  --color-red: #FF4B2B;
+  --color-red2: rgba(255,75,43,0.72);
+  --color-red-hover: #F13A1D;
+  --color-red-solid: #D41010;
+  --color-red-solid-hover: #B80E0E;
+  --color-red-border: rgba(255,75,43,0.42);
+  --color-overlay: rgba(0,0,0,0.60);
+  --color-highlight: rgba(255,255,255,0.05);
+  --color-focus: rgba(255,75,43,0.72);
+  --color-success: #55D39A;
+  --color-success-surface: rgba(85,211,154,0.12);
+  --color-success-border: rgba(85,211,154,0.32);
+  --color-warning: #F2B84B;
+  --color-warning-surface: rgba(242,184,75,0.12);
+  --color-warning-border: rgba(242,184,75,0.3);
+  --color-info: #6BB9FF;
+  --color-info-surface: rgba(107,185,255,0.12);
+  --color-info-border: rgba(107,185,255,0.32);
+  --color-error: #FF6B6B;
+  --color-error-surface: rgba(255,107,107,0.12);
+  --color-error-border: rgba(255,107,107,0.32);
+  --hero-overlay-default: rgba(0,0,0,0.60);
+  --hero-overlay-strong: rgba(0,0,0,0.80);
+  --hero-text-primary: #FFFFFF;
+  --hero-text-muted: rgba(255,255,255,0.80);
+  --hero-text-dim: rgba(255,255,255,0.60);
+  --hero-image-light-opacity: 0;
+  --hero-image-dark-opacity: 1;
+}
+
+/* --- Light mode overrides --- */
+
+html.light {
+  --color-bg: #F2EDE6;
+  --color-surface: #F7F3EC;
+  --color-surface2: #EAE4DB;
+  --color-border: rgba(0,0,0,0.10);
+  --color-border-strong: rgba(0,0,0,0.18);
+  --color-text: #1D1D1F;
+  --color-text2: rgba(29,29,31,0.72);
+  --color-text3: rgba(29,29,31,0.68);
+  --color-red: #DE3A1F;
+  --color-red2: rgba(222,58,31,0.76);
+  --color-red-hover: #C92C18;
+  --color-red-solid: #D41010;
+  --color-red-solid-hover: #B80E0E;
+  --color-red-border: rgba(222,58,31,0.35);
+  --color-overlay: rgba(0,0,0,0.45);
+  --color-highlight: rgba(0,0,0,0.04);
+  --color-focus: rgba(222,58,31,0.64);
+  --color-success: #0F9F6E;
+  --color-success-surface: rgba(15,159,110,0.08);
+  --color-success-border: rgba(15,159,110,0.22);
+  --color-warning: #A86800;
+  --color-warning-surface: rgba(168,104,0,0.08);
+  --color-warning-border: rgba(168,104,0,0.22);
+  --color-info: #1F6FEB;
+  --color-info-surface: rgba(31,111,235,0.08);
+  --color-info-border: rgba(31,111,235,0.22);
+  --color-error: #C81E1E;
+  --color-error-surface: rgba(200,30,30,0.08);
+  --color-error-border: rgba(200,30,30,0.2);
+  --hero-overlay-default: rgba(242,237,230,0.80);
+  --hero-overlay-strong: rgba(242,237,230,0.70);
+  --hero-text-primary: #1D1D1F;
+  --hero-text-muted: rgba(29,29,31,0.72);
+  --hero-text-dim: rgba(29,29,31,0.56);
+  --hero-image-light-opacity: 1;
+  --hero-image-dark-opacity: 0;
+}
+
+/* --- Selection --- */
+
+::selection {
+  background: rgba(255, 75, 43, 0.22);
+  color: var(--color-text);
+}
+
+/* --- Global focus ring --- */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:not([tabindex="-1"]):focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* --- Slider component CSS --- */
+
+.slider-input {
+  touch-action: none;
+}
+
+.slider-input::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to right,
+    var(--color-red-solid) 0%,
+    var(--color-red-solid) var(--slider-progress, 0%),
+    var(--color-surface2) var(--slider-progress, 0%),
+    var(--color-surface2) 100%
+  );
+  border: 1px solid var(--color-border);
+}
+
+.slider-input::-moz-range-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-surface2);
+  border: 1px solid var(--color-border);
+}
+
+.slider-input::-moz-range-progress {
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-red-solid);
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 22px;
+  width: 22px;
+  border-radius: 9999px;
+  background: var(--color-red-solid);
+  border: 2px solid var(--color-bg);
+  margin-top: -9px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.slider-input::-moz-range-thumb {
+  height: 22px;
+  width: 22px;
+  border-radius: 9999px;
+  background: var(--color-red-solid);
+  border: 2px solid var(--color-bg);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.slider-input:hover::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+.slider-input:hover::-moz-range-thumb {
+  transform: scale(1.15);
+}
+
+.slider-input:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+  transform: none;
+}
+
+.slider-input:disabled::-moz-range-thumb {
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- Theme transitions --- */
+
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: background-color var(--motion-base) ease, color var(--motion-base) ease, border-color var(--motion-base) ease, box-shadow var(--motion-base) ease !important;
+}
+
+/* --- Light mode: swap white-based transparent utilities to black-based --- */
+
+html.light .border-white\/10 { border-color: rgba(0,0,0,0.10); }
+html.light .border-white\/16 { border-color: rgba(0,0,0,0.16); }
+html.light .border-white\/20 { border-color: rgba(0,0,0,0.12); }
+html.light .bg-white\/5 { background-color: rgba(0,0,0,0.04); }
+html.light .bg-white\/10 { background-color: rgba(0,0,0,0.06); }
+
+/* --- Hero system --- */
+
+.hero-overlay { background: var(--hero-overlay-default); }
+.hero-overlay-heavy { background: var(--hero-overlay-strong); }
+
+.hero-text { color: var(--hero-text-primary); }
+.hero-text-muted { color: var(--hero-text-muted); }
+.hero-text-dim { color: var(--hero-text-dim); }
+
+.hero-img-light { opacity: var(--hero-image-light-opacity); }
+.hero-img-dark { opacity: var(--hero-image-dark-opacity); }
+html.theme-transitioning .hero-img-light,
+html.theme-transitioning .hero-img-dark {
+  transition: opacity var(--motion-slow) ease !important;
+}
+
+.hero-overlay-soft { background: rgba(10,10,11,0.60); }
+html.light .hero-overlay-soft { background: rgba(242,237,230,0.50); }
+
+.hero-fade-top { background: linear-gradient(to bottom, var(--color-bg), transparent); }
+.hero-fade-bottom { background: linear-gradient(to top, var(--color-bg), transparent); }
+
+html.light .hero-blend img { mix-blend-mode: multiply; }
+
+/* --- Reduced motion --- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

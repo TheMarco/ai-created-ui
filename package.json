@@ -1,0 +1,30 @@
+{
+  "name": "@ai-created/ui",
+  "version": "1.0.0",
+  "description": "Shared design system for AI-Created apps",
+  "license": "MIT",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles/tokens.css": "./styles/tokens.css",
+    "./tailwind-preset": "./tailwind-preset.js"
+  },
+  "files": [
+    "src",
+    "styles",
+    "tailwind-preset.js"
+  ],
+  "peerDependencies": {
+    "@headlessui/react": "^2.2.4",
+    "@tailwindcss/typography": "^0.5.16",
+    "framer-motion": "^12.0.0",
+    "lucide-react": ">=0.400.0",
+    "next": ">=15.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "dependencies": {
+    "tailwind-merge": "^3.3.1"
+  }
+}
