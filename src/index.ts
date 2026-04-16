@@ -31,6 +31,8 @@ export type { ToggleProps } from './components/Toggle';
 export { default as Tooltip } from './components/Tooltip';
 export type { TooltipProps, TooltipPosition } from './components/Tooltip';
 export { default as ThemedHeroImage } from './components/ThemedHeroImage';
+export { ThemeProvider, useTheme } from './components/ThemeProvider';
+export { default as ThemeToggle } from './components/ThemeToggle';
 export {
   FieldGroup,
   FieldHint,
