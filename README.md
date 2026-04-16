@@ -114,12 +114,25 @@ Everything comes from one import path. Components, types, utilities, motion help
 
 ## Development workflow
 
+### Live playground
+
+Every component has a demo at **[ui.ai-created.com](https://ui.ai-created.com)**, rendered by the Next.js app in `playground/`. The playground depends on this library via `file:..`, so edits hot-reload when running `npm run dev` inside `playground/`. Most iteration should happen there rather than in a consumer app.
+
+Any component change should be reflected in the playground in the same pass. That is the canonical reference both for future contributors and for anyone hitting the live site.
+
 ### Editing an existing shared component
 
 1. Open the file in this repo (`src/components/Badge.tsx`, etc.)
 2. Make your change
-3. Commit and push
-4. In each consumer app: `npm update @ai-created/ui`
+3. Update its playground demo if visible behavior changed
+4. Commit and push
+5. In each consumer app, bump the lockfile:
+
+   ```bash
+   npm install @ai-created/ui@github:TheMarco/ai-created-ui
+   ```
+
+   Plain `npm install` (or `npm update`) will not reliably refetch a `github:` dep when the lockfile is already satisfied. Explicit reinstall with the full spec is the dependable form. Commit the updated `package-lock.json`, otherwise Vercel's cached install runs against the old commit and fails with "export not found" errors.
 
 ### Live development with npm link
 
@@ -150,7 +163,8 @@ When you build something in an app (like applyanator) and realize it should be s
 2. **Fix imports** -- change any `@/lib/utils` to `../lib/utils`. The component should only import from `../lib/utils`, `../lib/motion`, or peer dependencies (react, next, headlessui, lucide, framer-motion). No `@/` path aliases.
 3. **Export it** -- add the export to `src/index.ts`
 4. **Commit and push** this repo
-5. **Update consumers** -- run `npm update @ai-created/ui` in each app, then replace the local import with `import { NewComponent } from '@ai-created/ui'`
+5. **Add a playground demo** -- extend `playground/src/components/design-system/sections/ComponentsSection.tsx` (or add a new section) so the new component is documented live
+6. **Update consumers** -- in each app, run `npm install @ai-created/ui@github:TheMarco/ai-created-ui` to bump the lockfile, then replace the local import with `import { NewComponent } from '@ai-created/ui'` and delete the local copy
 
 ### Adding a new design token
 
