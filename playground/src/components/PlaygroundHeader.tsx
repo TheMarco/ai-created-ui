@@ -15,14 +15,6 @@ export default function PlaygroundHeader() {
         </Link>
         <div className="flex items-center gap-3">
           <a
-            href="https://github.com/TheMarco/ai-created-ui"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-text2 hover:text-text transition-colors"
-          >
-            GitHub
-          </a>
-          <a
             href="https://www.ai-created.com"
             target="_blank"
             rel="noopener noreferrer"
