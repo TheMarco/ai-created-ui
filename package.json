@@ -1,8 +1,34 @@
 {
   "name": "@ai-created/ui",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "private": true,
   "description": "Shared design system for AI-Created apps",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheMarco/ai-created-ui.git"
+  },
+  "packageManager": "npm@10.9.8",
+  "scripts": {
+    "typecheck": "npm run typecheck:package && npm run typecheck:playground",
+    "typecheck:package": "tsc --noEmit -p tsconfig.json",
+    "typecheck:playground": "npm --prefix playground run typecheck",
+    "lint": "eslint src tests e2e scripts playground/src playwright.config.ts vitest.config.mts",
+    "lint:package": "eslint src tests e2e scripts playwright.config.ts vitest.config.mts",
+    "lint:playground": "eslint playground/src",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:a11y": "vitest run tests/accessibility",
+    "test:e2e": "playwright test e2e/playground.smoke.spec.ts",
+    "test:visual": "playwright test e2e/playground.visual.spec.ts",
+    "test:visual:update": "playwright test e2e/playground.visual.spec.ts --update-snapshots",
+    "test:browser": "playwright test",
+    "build:playground": "npm --prefix playground run build:validate",
+    "package:check": "node scripts/verify-package.mjs",
+    "release:check": "node scripts/verify-release.mjs",
+    "release:notes": "node scripts/extract-release-notes.mjs",
+    "validate": "npm run typecheck && npm run lint && npm run test && npm run build:playground && npm run package:check"
+  },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
@@ -26,5 +52,31 @@
   },
   "dependencies": {
     "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@headlessui/react": "^2.2.10",
+    "@playwright/test": "^1.62.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.6",
+    "@types/node": "^26.4.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "axe-core": "^4.13.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "framer-motion": "^12.43.0",
+    "globals": "^17.11.0",
+    "jsdom": "^30.0.1",
+    "lucide-react": "^1.34.0",
+    "next": "^16.3.3",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.68.0",
+    "vitest": "^4.1.11",
+    "vitest-axe": "^0.1.0"
   }
 }

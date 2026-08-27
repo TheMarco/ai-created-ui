@@ -12,6 +12,7 @@ const sections = [
   { id: 'accessibility', label: 'Accessibility' },
   { id: 'archetypes', label: 'Page Archetypes' },
   { id: 'components', label: 'Components' },
+  { id: 'reference', label: 'API Reference' },
   { id: 'motion', label: 'Motion' },
   { id: 'theme', label: 'Theme Rules' },
 ];
@@ -24,7 +25,7 @@ interface DSSidebarProps {
 
 export default function DSSidebar({ activeSection, activeIndex, progress }: DSSidebarProps) {
   return (
-    <nav className="space-y-1">
+    <nav aria-label="Design system sections" className="space-y-1">
       <div className="mb-4 pl-4">
         <span className="block text-[10px] font-mono uppercase tracking-[0.2em] text-text3 mb-2">
           Contents

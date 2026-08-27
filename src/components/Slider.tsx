@@ -31,7 +31,10 @@ const Slider = forwardRef<HTMLInputElement, SliderProps>(function Slider(
 ) {
   const id = useId();
   const displayValue = formatValue ? formatValue(value) : String(value);
-  const percentage = ((value - min) / (max - min)) * 100;
+  const rawPercentage = max === min ? 0 : ((value - min) / (max - min)) * 100;
+  const percentage = Number.isFinite(rawPercentage)
+    ? Math.min(100, Math.max(0, rawPercentage))
+    : 0;
 
   return (
     <div className={cn('w-full', className)}>

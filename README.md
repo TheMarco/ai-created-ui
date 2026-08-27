@@ -21,7 +21,7 @@ This package ships **raw TypeScript source**. There is no build step, no compile
 - No version mismatch between the package's React and the consumer's React
 - Full tree-shaking -- unused components don't ship
 - TypeScript types come for free -- no separate `@types` package
-- Changes are just code changes, not a publish/build/release cycle
+- Source is distributed directly, without a compile step or registry publication
 
 ## Components
 
@@ -30,13 +30,13 @@ This package ships **raw TypeScript source**. There is no build step, no compile
 | `Badge` | Pill-shaped semantic label. 6 variants: default, muted, success, warning, error, info |
 | `Button` | Primary, secondary, destructive, ghost, filter, filter-active, icon. Exports `buttonStyles()` for anchors |
 | `Checkbox` | Styled binary toggle with native input semantics |
-| `ConfirmDialog` | Destructive action confirmation built on Modal |
+| `ConfirmDialog` | Confirmation alert dialog with loading-safe dismissal behavior |
 | `Dialog` | Headless UI modal with focus trap, Escape/backdrop close, size variants |
 | `Dropdown` | Single-select listbox with keyboard nav and type-ahead |
 | `EmptyState` | Empty content placeholder with optional icon and action |
 | `ErrorReport` | Error display with expandable debug info and copy-to-clipboard |
 | `Field` | FieldGroup, FieldLabel, FieldLegend, FieldHint, TextInput, TextArea |
-| `Modal` | Composable portal system: Overlay, Panel, Header, Body, Footer |
+| `Modal` | Composable Headless UI modal: Overlay, Panel, Header, Body, Footer |
 | `Notice` | Semantic feedback messages. Variants: info, success, warning, error |
 | `RadioGroup` | Single-select group with native radio inputs, horizontal/vertical |
 | `Skeleton` | Loading placeholder that preserves layout |
@@ -56,10 +56,10 @@ This package ships **raw TypeScript source**. There is no build step, no compile
 ### 1. Install
 
 ```bash
-npm install --install-links github:TheMarco/ai-created-ui
+npm install --install-links "github:TheMarco/ai-created-ui#vX.Y.Z"
 ```
 
-The `--install-links` flag copies the package instead of symlinking, which avoids TypeScript resolution issues with duplicate `@types/react`.
+Replace `vX.Y.Z` with the latest reviewed GitHub Release tag. The `--install-links` flag copies the package instead of symlinking, which avoids TypeScript resolution issues with duplicate `@types/react`.
 
 ### 2. Tell Next.js to compile it
 
@@ -114,25 +114,68 @@ Everything comes from one import path. Components, types, utilities, motion help
 
 ## Development workflow
 
+### Quality gates
+
+Install both the library and playground dependencies, then run the single required validation command from the repository root:
+
+```bash
+npm ci
+npm ci --prefix playground --install-links
+npm run validate
+```
+
+`npm run validate` typechecks the package and playground, runs React, TypeScript, hooks, and accessibility lint rules, runs the Vitest component and axe accessibility suites, builds the playground, and verifies the packed package boundary.
+
+Browser tests are a separate required CI gate. They start the playground and exercise the desktop and mobile Chromium smoke and visual suites, so a passing `validate` does not replace a passing browser run.
+
+Faster focused commands are available during development:
+
+| Command | Purpose |
+|---|---|
+| `npm run typecheck` | Typecheck the package and playground |
+| `npm run lint` | Lint package source, tests, and playground source |
+| `npm test` | Run component behavior and accessibility tests once |
+| `npm run test:watch` | Run Vitest in watch mode |
+| `npm run test:a11y` | Run the axe accessibility tests only |
+| `npm run build:playground` | Build the playground in portable Next.js Webpack mode |
+| `npm run validate` | Run the complete non-browser quality gate |
+| `npm run test:e2e` | Run the playground smoke tests |
+| `npm run test:visual` | Run visual regression tests against committed snapshots |
+| `npm run test:visual:update` | Regenerate visual snapshots after an intentional UI change |
+| `npm run test:browser` | Run all Playwright browser projects |
+| `npm run package:check` | Verify the GitHub package contains only the public source boundary |
+| `npm run release:check -- vX.Y.Z` | Verify tag, version, lockfile, privacy guard, and changelog agreement |
+
+For browser tests locally, install Chromium once with `npx playwright install chromium`, then run `npm run test:browser` from the repository root. CI installs Chromium with system dependencies and runs this gate after `validate`.
+
+### Reviewing visual baselines
+
+Visual snapshots live with the Playwright suites under `e2e/__screenshots__/`. When a change intentionally alters rendered output, run `npm run test:visual:update`, inspect every updated image and the corresponding diff, and commit only the reviewed baseline changes with the source change. Never update snapshots to hide an unexplained failure. The default Playwright pixel threshold is small, but reviewers still own the final visual decision.
+
+The axe suite catches invalid ARIA, missing accessible names, broken relationships, and related semantic defects. It does not replace browser and manual checks for color contrast, visible focus treatment, screen reader output, touch behavior, or motion quality.
+
 ### Live playground
 
-Every component has a demo at **[ui.ai-created.com](https://ui.ai-created.com)**, rendered by the Next.js app in `playground/`. The playground depends on this library via `file:..`, so edits hot-reload when running `npm run dev` inside `playground/`. Most iteration should happen there rather than in a consumer app.
+Every component has a demo at **[ui.ai-created.com](https://ui.ai-created.com)**, rendered by the Next.js app in `playground/`. The `file:..` dependency verifies the installed package shape, while the TypeScript, Turbopack, webpack, and Tailwind configuration resolve the repository source directly so edits hot-reload. Most iteration should happen there rather than in a consumer app.
 
 Any component change should be reflected in the playground in the same pass. That is the canonical reference both for future contributors and for anyone hitting the live site.
+
+The playground's design-system reference pages use a manually authored registry at `playground/src/components/design-system/componentDocs.ts`. Keep its API rows, states, accessibility notes, composition guidance, and examples aligned with the current source. The registry is intentionally reviewed documentation, not generated output, so update it alongside public API changes and verify examples in the live playground.
 
 ### Editing an existing shared component
 
 1. Open the file in this repo (`src/components/Badge.tsx`, etc.)
 2. Make your change
 3. Update its playground demo if visible behavior changed
-4. Commit and push
-5. In each consumer app, bump the lockfile:
+4. Add a concise release-worthy note under `Unreleased` in `CHANGELOG.md`
+5. Run `npm run validate` and the applicable browser checks, then commit and push
+6. When the change is released, follow `RELEASING.md`. Consumers update through a reviewable release-tag PR, not by following `main`.
 
-   ```bash
-   npm install @ai-created/ui@github:TheMarco/ai-created-ui
-   ```
+### Release governance
 
-   Plain `npm install` (or `npm update`) will not reliably refetch a `github:` dep when the lockfile is already satisfied. Explicit reinstall with the full spec is the dependable form. Commit the updated `package-lock.json`, otherwise Vercel's cached install runs against the old commit and fails with "export not found" errors.
+The package remains private and GitHub-distributed. `private: true` prevents accidental npm publication. Stable releases use matching SemVer in `package.json`, an annotated `vX.Y.Z` Git tag, a dated `CHANGELOG.md` section, and a GitHub Release created only after the complete quality and browser gates pass.
+
+See `RELEASING.md` for the maintainer checklist, `docs/decisions/002-release-governance.md` for the release decision, `docs/consumer-update-automation.md` for the Renovate handoff, and `docs/consumer-compatibility.md` for the validation and future-consumer contract. Changesets are intentionally deferred while this remains one privately distributed package with two known consumers.
 
 ### Live development with npm link
 
@@ -152,7 +195,7 @@ Now edits to files in this repo are immediately reflected in the consumer. When 
 ```bash
 cd /path/to/your-app
 npm unlink @ai-created/ui
-npm install --install-links github:TheMarco/ai-created-ui
+npm install --install-links "github:TheMarco/ai-created-ui#vX.Y.Z"
 ```
 
 ### Promoting a new component from a consumer app
@@ -162,15 +205,17 @@ When you build something in an app (like applyanator) and realize it should be s
 1. **Copy the component** from your app into this repo's `src/components/`
 2. **Fix imports** -- change any `@/lib/utils` to `../lib/utils`. The component should only import from `../lib/utils`, `../lib/motion`, or peer dependencies (react, next, headlessui, lucide, framer-motion). No `@/` path aliases.
 3. **Export it** -- add the export to `src/index.ts`
-4. **Commit and push** this repo
+4. **Add release notes and commit** this repo
 5. **Add a playground demo** -- extend `playground/src/components/design-system/sections/ComponentsSection.tsx` (or add a new section) so the new component is documented live
-6. **Update consumers** -- in each app, run `npm install @ai-created/ui@github:TheMarco/ai-created-ui` to bump the lockfile, then replace the local import with `import { NewComponent } from '@ai-created/ui'` and delete the local copy
+6. **Release and update consumers** -- publish the next MINOR GitHub Release, review each Renovate dependency PR, replace the local import with `import { NewComponent } from '@ai-created/ui'`, and delete the local copy
 
 ### Adding a new design token
 
-1. Add the CSS custom property to `styles/tokens.css` (in both `:root` and `html.light` if it's a color)
-2. If it needs a Tailwind utility class, add the mapping to `tailwind-preset.js`
-3. Commit and push
+1. Reuse an existing semantic token when its role matches.
+2. Add a semantic property to `styles/tokens.css` only for a real shared role. Override it in `html.light` only when the theme value differs.
+3. Add a `--ref-*` property only for an opaque value the semantic layer actually needs. Do not create unused scale steps.
+4. Map the semantic property, never the reference palette, in `tailwind-preset.js` if a utility is needed.
+5. Preserve existing public names with aliases, update `DESIGN-SYSTEM.md`, and verify the playground in both themes.
 
 ### Site-specific overrides
 
@@ -200,4 +245,3 @@ Rule of thumb: if you'd copy-paste it into the next app, it belongs here.
 
 - **[ai-created.com](https://ai-created.com)** -- product lab portfolio and content platform
 - **[Human, Actually](https://human-actually.com)** -- applicant analysis platform (applyanator)
-

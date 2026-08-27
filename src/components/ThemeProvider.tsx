@@ -3,11 +3,15 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { MotionConfig } from 'framer-motion';
 
-type Theme = 'dark' | 'light';
+export type Theme = 'dark' | 'light';
 
-interface ThemeContextValue {
+export interface ThemeContextValue {
   theme: Theme;
   toggleTheme: () => void;
+}
+
+export interface ThemeProviderProps {
+  children: React.ReactNode;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
@@ -19,12 +23,19 @@ export function useTheme() {
   return useContext(ThemeContext);
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
+export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>('dark');
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme') as Theme | null;
-    if (saved) setTheme(saved);
+    const saved = localStorage.getItem('theme');
+    const resolvedTheme = saved === 'dark' || saved === 'light'
+      ? saved
+      : document.documentElement.classList.contains('light')
+        ? 'light'
+        : 'dark';
+
+    document.documentElement.classList.toggle('light', resolvedTheme === 'light');
+    setTheme(resolvedTheme);
   }, []);
 
   const toggleTheme = useCallback(() => {

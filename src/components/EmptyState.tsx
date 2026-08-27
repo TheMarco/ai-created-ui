@@ -1,30 +1,28 @@
+import { forwardRef } from 'react';
 import { cn } from '../lib/utils';
 import { LucideIcon } from 'lucide-react';
 import Surface from './Surface';
 
-interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface EmptyStateProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: LucideIcon;
   title: string;
   description?: string;
   children?: React.ReactNode;
 }
 
-export default function EmptyState({
-  icon: Icon,
-  title,
-  description,
-  children,
-  className,
-  ...props
-}: EmptyStateProps) {
+const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
+  { icon: Icon, title, description, children, className, ...props },
+  ref
+) {
   return (
     <Surface
+      ref={ref}
       variant="muted"
       padding="responsive"
       className={cn('text-center', className)}
       {...props}
     >
-      {Icon && <Icon className="mx-auto mb-4 h-12 w-12 text-text3" />}
+      {Icon && <Icon className="mx-auto mb-4 h-12 w-12 text-text3" aria-hidden="true" />}
 
       <div className={cn('mx-auto space-y-2', Icon ? 'max-w-md' : '')}>
         <p className="text-text2 font-medium">{title}</p>
@@ -38,4 +36,6 @@ export default function EmptyState({
       {children && <div className="mt-6">{children}</div>}
     </Surface>
   );
-}
+});
+
+export default EmptyState;

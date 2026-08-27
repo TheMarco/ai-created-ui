@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import Surface from './Surface';
 import { cn } from '../lib/utils';
 
@@ -52,22 +53,26 @@ export interface NoticeProps extends React.HTMLAttributes<HTMLDivElement> {
   hideIcon?: boolean;
 }
 
-export default function Notice({
-  variant = 'default',
-  title,
-  centered = false,
-  hideIcon = false,
-  className,
-  role,
-  children,
-  ...props
-}: NoticeProps) {
+const Notice = forwardRef<HTMLDivElement, NoticeProps>(function Notice(
+  {
+    variant = 'default',
+    title,
+    centered = false,
+    hideIcon = false,
+    className,
+    role,
+    children,
+    ...props
+  },
+  ref
+) {
   const surfaceVariant = variant === 'default' ? 'default' : variant;
   const resolvedRole = role ?? (variant === 'error' ? 'alert' : 'status');
   const ariaLive = props['aria-live'] ?? (resolvedRole === 'alert' ? 'assertive' : 'polite');
 
   return (
     <Surface
+      ref={ref}
       variant={surfaceVariant}
       padding="md"
       role={resolvedRole}
@@ -92,4 +97,6 @@ export default function Notice({
       </div>
     </Surface>
   );
-}
+});
+
+export default Notice;

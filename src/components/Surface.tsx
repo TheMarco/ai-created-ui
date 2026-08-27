@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { cn } from '../lib/utils';
 
 export type SurfaceVariant =
@@ -13,7 +14,7 @@ export type SurfaceVariant =
 export type SurfacePadding = 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'responsive';
 export type SurfaceInteraction = 'none' | 'group' | 'within';
 
-interface SurfaceStyleOptions {
+export interface SurfaceStyleOptions {
   variant?: SurfaceVariant;
   padding?: SurfacePadding;
   interaction?: SurfaceInteraction;
@@ -72,19 +73,19 @@ export function surfaceStyles({
   );
 }
 
-interface SurfaceProps extends React.HTMLAttributes<HTMLDivElement>, SurfaceStyleOptions {}
+export interface SurfaceProps extends React.HTMLAttributes<HTMLDivElement>, SurfaceStyleOptions {}
 
-export default function Surface({
-  variant = 'default',
-  padding = 'none',
-  interaction = 'none',
-  className,
-  ...props
-}: SurfaceProps) {
+const Surface = forwardRef<HTMLDivElement, SurfaceProps>(function Surface(
+  { variant = 'default', padding = 'none', interaction = 'none', className, ...props },
+  ref
+) {
   return (
     <div
+      ref={ref}
       className={surfaceStyles({ variant, padding, interaction, className })}
       {...props}
     />
   );
-}
+});
+
+export default Surface;

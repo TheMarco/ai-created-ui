@@ -10,6 +10,8 @@ export interface Tab<T extends string = string> {
 }
 
 export interface TabsProps<T extends string> {
+  /** Stable group id used to connect tabs to panels. */
+  id?: string;
   tabs: Tab<T>[];
   active: T;
   onChange: (key: T) => void;
@@ -18,13 +20,15 @@ export interface TabsProps<T extends string> {
 }
 
 export default function Tabs<T extends string>({
+  id: providedId,
   tabs,
   active,
   onChange,
   label,
   className,
 }: TabsProps<T>) {
-  const id = useId();
+  const generatedId = useId();
+  const id = providedId ?? generatedId;
   const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
   const setTabRef = useCallback(
@@ -43,6 +47,8 @@ export default function Tabs<T extends string>({
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (tabs.length === 0) return;
+
     const currentIndex = tabs.findIndex((t) => t.key === active);
     let nextIndex: number | null = null;
 
@@ -70,6 +76,8 @@ export default function Tabs<T extends string>({
   }
 
   return (
+    // The tab buttons, rather than the tablist container, own the roving focus target.
+    // eslint-disable-next-line jsx-a11y/interactive-supports-focus
     <div
       role="tablist"
       aria-label={label}
@@ -86,7 +94,7 @@ export default function Tabs<T extends string>({
             role="tab"
             type="button"
             aria-selected={isActive}
-            aria-controls={`${id}-panel-${tab.key}`}
+            aria-controls={providedId ? `${id}-panel-${tab.key}` : undefined}
             tabIndex={isActive ? 0 : -1}
             onClick={() => onChange(tab.key)}
             className={cn(
@@ -108,13 +116,21 @@ export default function Tabs<T extends string>({
   );
 }
 
-/** Stable id helper for connecting tab panels to their tab. */
-export function useTabPanelProps<T extends string>(tabKey: T, activeKey: T) {
-  const id = useId();
+/**
+ * Stable helper for connecting a panel to its tab. Pass the same `tabsId` to
+ * both this hook and the parent `Tabs` component to emit valid relationships.
+ */
+export function useTabPanelProps<T extends string>(
+  tabKey: T,
+  activeKey: T,
+  tabsId?: string
+) {
+  const generatedId = useId();
+  const id = tabsId ?? generatedId;
   return {
     id: `${id}-panel-${tabKey}`,
     role: 'tabpanel' as const,
-    'aria-labelledby': `${id}-tab-${tabKey}`,
+    'aria-labelledby': tabsId ? `${id}-tab-${tabKey}` : undefined,
     tabIndex: 0,
     hidden: activeKey !== tabKey,
   };

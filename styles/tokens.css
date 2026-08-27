@@ -3,7 +3,35 @@
    Import this file in your app's globals.css or root layout.
    ============================================================ */
 
-/* --- Color & layout tokens (dark default) --- */
+/* --- Reference palette (theme invariant; existing values only) --- */
+
+:root {
+  --ref-neutral-50: #F5F7FA;
+  --ref-neutral-800: #1D1D1F;
+  --ref-neutral-850: #14161A;
+  --ref-neutral-900: #101113;
+  --ref-neutral-950: #0A0A0B;
+  --ref-warm-neutral-50: #F7F3EC;
+  --ref-warm-neutral-100: #F2EDE6;
+  --ref-warm-neutral-200: #EAE4DB;
+  --ref-red-400: #FF6B6B;
+  --ref-red-500: #FF4B2B;
+  --ref-red-600: #F13A1D;
+  --ref-red-700: #DE3A1F;
+  --ref-red-750: #D41010;
+  --ref-red-800: #C92C18;
+  --ref-red-850: #C81E1E;
+  --ref-red-900: #B80E0E;
+  --ref-green-500: #55D39A;
+  --ref-green-700: #0F9F6E;
+  --ref-yellow-500: #F2B84B;
+  --ref-yellow-700: #A86800;
+  --ref-blue-500: #6BB9FF;
+  --ref-blue-700: #1F6FEB;
+  --ref-white: #FFFFFF;
+}
+
+/* --- Semantic, layout, and motion tokens (dark default) --- */
 
 :root {
   --radius-sm: 4px;
@@ -15,38 +43,46 @@
   --motion-fast: 0.2s;
   --motion-base: 0.3s;
   --motion-slow: 0.5s;
-  --color-bg: #0A0A0B;
-  --color-surface: #101113;
-  --color-surface2: #14161A;
+  --color-bg: var(--ref-neutral-950);
+  --color-surface: var(--ref-neutral-900);
+  --color-surface2: var(--ref-neutral-850);
   --color-border: rgba(255,255,255,0.10);
   --color-border-strong: rgba(255,255,255,0.16);
-  --color-text: #F5F7FA;
+  --color-text: var(--ref-neutral-50);
   --color-text2: rgba(245,247,250,0.72);
   --color-text3: rgba(245,247,250,0.62);
-  --color-red: #FF4B2B;
-  --color-red2: rgba(255,75,43,0.72);
-  --color-red-hover: #F13A1D;
-  --color-red-solid: #D41010;
-  --color-red-solid-hover: #B80E0E;
-  --color-red-border: rgba(255,75,43,0.42);
+  --color-accent: var(--ref-red-500);
+  --color-accent-muted: rgba(255,75,43,0.72);
+  --color-accent-hover: var(--ref-red-600);
+  --color-accent-border: rgba(255,75,43,0.42);
+  --color-action-primary: var(--ref-red-750);
+  --color-action-primary-hover: var(--ref-red-900);
+  --color-red: var(--color-accent);
+  --color-red2: var(--color-accent-muted);
+  --color-red-hover: var(--color-accent-hover);
+  --color-red-solid: var(--color-action-primary);
+  --color-red-solid-hover: var(--color-action-primary-hover);
+  --color-red-border: var(--color-accent-border);
   --color-overlay: rgba(0,0,0,0.60);
   --color-highlight: rgba(255,255,255,0.05);
   --color-focus: rgba(255,75,43,0.72);
-  --color-success: #55D39A;
+  --color-selection: rgba(255,75,43,0.22);
+  --color-success: var(--ref-green-500);
   --color-success-surface: rgba(85,211,154,0.12);
   --color-success-border: rgba(85,211,154,0.32);
-  --color-warning: #F2B84B;
+  --color-warning: var(--ref-yellow-500);
   --color-warning-surface: rgba(242,184,75,0.12);
   --color-warning-border: rgba(242,184,75,0.3);
-  --color-info: #6BB9FF;
+  --color-info: var(--ref-blue-500);
   --color-info-surface: rgba(107,185,255,0.12);
   --color-info-border: rgba(107,185,255,0.32);
-  --color-error: #FF6B6B;
+  --color-error: var(--ref-red-400);
   --color-error-surface: rgba(255,107,107,0.12);
   --color-error-border: rgba(255,107,107,0.32);
   --hero-overlay-default: rgba(0,0,0,0.60);
   --hero-overlay-strong: rgba(0,0,0,0.80);
-  --hero-text-primary: #FFFFFF;
+  --hero-overlay-soft: rgba(10,10,11,0.60);
+  --hero-text-primary: var(--ref-white);
   --hero-text-muted: rgba(255,255,255,0.80);
   --hero-text-dim: rgba(255,255,255,0.60);
   --hero-image-light-opacity: 0;
@@ -56,38 +92,37 @@
 /* --- Light mode overrides --- */
 
 html.light {
-  --color-bg: #F2EDE6;
-  --color-surface: #F7F3EC;
-  --color-surface2: #EAE4DB;
+  --color-bg: var(--ref-warm-neutral-100);
+  --color-surface: var(--ref-warm-neutral-50);
+  --color-surface2: var(--ref-warm-neutral-200);
   --color-border: rgba(0,0,0,0.10);
   --color-border-strong: rgba(0,0,0,0.18);
-  --color-text: #1D1D1F;
+  --color-text: var(--ref-neutral-800);
   --color-text2: rgba(29,29,31,0.72);
   --color-text3: rgba(29,29,31,0.68);
-  --color-red: #DE3A1F;
-  --color-red2: rgba(222,58,31,0.76);
-  --color-red-hover: #C92C18;
-  --color-red-solid: #D41010;
-  --color-red-solid-hover: #B80E0E;
-  --color-red-border: rgba(222,58,31,0.35);
+  --color-accent: var(--ref-red-700);
+  --color-accent-muted: rgba(222,58,31,0.76);
+  --color-accent-hover: var(--ref-red-800);
+  --color-accent-border: rgba(222,58,31,0.35);
   --color-overlay: rgba(0,0,0,0.45);
   --color-highlight: rgba(0,0,0,0.04);
   --color-focus: rgba(222,58,31,0.64);
-  --color-success: #0F9F6E;
+  --color-success: var(--ref-green-700);
   --color-success-surface: rgba(15,159,110,0.08);
   --color-success-border: rgba(15,159,110,0.22);
-  --color-warning: #A86800;
+  --color-warning: var(--ref-yellow-700);
   --color-warning-surface: rgba(168,104,0,0.08);
   --color-warning-border: rgba(168,104,0,0.22);
-  --color-info: #1F6FEB;
+  --color-info: var(--ref-blue-700);
   --color-info-surface: rgba(31,111,235,0.08);
   --color-info-border: rgba(31,111,235,0.22);
-  --color-error: #C81E1E;
+  --color-error: var(--ref-red-850);
   --color-error-surface: rgba(200,30,30,0.08);
   --color-error-border: rgba(200,30,30,0.2);
   --hero-overlay-default: rgba(242,237,230,0.80);
   --hero-overlay-strong: rgba(242,237,230,0.70);
-  --hero-text-primary: #1D1D1F;
+  --hero-overlay-soft: rgba(242,237,230,0.50);
+  --hero-text-primary: var(--ref-neutral-800);
   --hero-text-muted: rgba(29,29,31,0.72);
   --hero-text-dim: rgba(29,29,31,0.56);
   --hero-image-light-opacity: 1;
@@ -97,7 +132,7 @@ html.light {
 /* --- Selection --- */
 
 ::selection {
-  background: rgba(255, 75, 43, 0.22);
+  background: var(--color-selection);
   color: var(--color-text);
 }
 
@@ -219,8 +254,7 @@ html.theme-transitioning .hero-img-dark {
   transition: opacity var(--motion-slow) ease !important;
 }
 
-.hero-overlay-soft { background: rgba(10,10,11,0.60); }
-html.light .hero-overlay-soft { background: rgba(242,237,230,0.50); }
+.hero-overlay-soft { background: var(--hero-overlay-soft); }
 
 .hero-fade-top { background: linear-gradient(to bottom, var(--color-bg), transparent); }
 .hero-fade-bottom { background: linear-gradient(to top, var(--color-bg), transparent); }

@@ -396,7 +396,7 @@ export default function ColorSection({ onInView }: ColorSectionProps) {
       <h3 className="text-xl font-heading font-medium text-text mb-6">
         Dark &#8596; Light
       </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
+      <div data-visual="color-theme-comparison" className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
         {/* Dark Panel */}
         <div className="rounded-lg overflow-hidden border border-border" style={{ backgroundColor: '#0A0A0B' }}>
           <div className="px-5 py-3 border-b border-border">

@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { cn } from '../lib/utils';
 
 export type BadgeVariant =
@@ -8,7 +9,7 @@ export type BadgeVariant =
   | 'error'
   | 'info';
 
-interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: BadgeVariant;
 }
 
@@ -21,13 +22,13 @@ const variantClasses: Record<BadgeVariant, string> = {
   info: 'border-info-border bg-info-surface text-info',
 };
 
-export default function Badge({
-  variant = 'default',
-  className,
-  ...props
-}: BadgeProps) {
+const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
+  { variant = 'default', className, ...props },
+  ref
+) {
   return (
     <span
+      ref={ref}
       className={cn(
         'inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium whitespace-nowrap',
         variantClasses[variant],
@@ -36,4 +37,6 @@ export default function Badge({
       {...props}
     />
   );
-}
+});
+
+export default Badge;

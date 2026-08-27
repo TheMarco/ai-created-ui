@@ -34,6 +34,16 @@ module.exports = {
         text: 'var(--color-text)',
         text2: 'var(--color-text2)',
         text3: 'var(--color-text3)',
+        accent: {
+          DEFAULT: 'var(--color-accent)',
+          muted: 'var(--color-accent-muted)',
+          hover: 'var(--color-accent-hover)',
+          border: 'var(--color-accent-border)',
+        },
+        'action-primary': {
+          DEFAULT: 'var(--color-action-primary)',
+          hover: 'var(--color-action-primary-hover)',
+        },
         red: {
           DEFAULT: 'var(--color-red)',
           500: 'var(--color-red)',
@@ -47,6 +57,7 @@ module.exports = {
         'red-border': 'var(--color-red-border)',
         overlay: 'var(--color-overlay)',
         highlight: 'var(--color-highlight)',
+        focus: 'var(--color-focus)',
         success: {
           DEFAULT: 'var(--color-success)',
           surface: 'var(--color-success-surface)',
@@ -69,7 +80,7 @@ module.exports = {
         },
       },
       maxWidth: {
-        '8xl': '1400px',
+        '8xl': 'var(--layout-container-max)',
         '9xl': '1600px',
       },
       spacing: {

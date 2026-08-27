@@ -1,1 +1,4 @@
 node_modules/
+blob-report/
+playwright-report/
+test-results/

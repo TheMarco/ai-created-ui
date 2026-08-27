@@ -178,42 +178,33 @@ These patterns came out of shipped product UX work and are now part of the canon
 
 ## Color System
 
-### Core Tokens
+### Token Architecture
 
-- `--radius-sm`
-- `--radius-md`
-- `--radius-lg`
-- `--layout-container-max`
-- `--motion-base`
-- `--color-bg`
-- `--color-surface`
-- `--color-surface2`
-- `--color-border`
-- `--color-border-strong`
-- `--color-text`
-- `--color-text2`
-- `--color-text3`
-- `--color-red`
-- `--color-red-hover`
-- `--color-red-solid`
-- `--color-red-solid-hover`
-- `--color-red2`
-- `--color-red-border`
-- `--color-focus`
-- `--color-overlay`
-- `--color-highlight`
-- `--color-success`
-- `--color-success-surface`
-- `--color-success-border`
-- `--color-warning`
-- `--color-warning-surface`
-- `--color-warning-border`
-- `--color-info`
-- `--color-info-surface`
-- `--color-info-border`
-- `--color-error`
-- `--color-error-surface`
-- `--color-error-border`
+The token flow is `reference value -> semantic contract -> Tailwind utility or component CSS`.
+
+- Reference tokens such as `--ref-neutral-950` and `--ref-red-500` name only opaque values that the system actually uses. They are not exposed as Tailwind palette utilities and are not a license to add speculative scales.
+- Semantic tokens such as `--color-bg`, `--color-text2`, `--color-accent`, and `--color-action-primary` express UI intent. Components should consume this layer.
+- Layout and motion tokens cover the small set of shared values that already repeat. Component geometry and behavior-specific timing remain local.
+- Component-specific tokens are reserved for a real theme-aware contract that cannot be expressed by the shared semantic layer. The hero media system is the current exception.
+
+Alpha colors remain semantic literals where introducing RGB-channel primitives would add complexity without reuse. This keeps the palette small and the browser output stable.
+
+### Public Semantic Tokens
+
+- Foundations: `--color-bg`, `--color-surface`, `--color-surface2`, `--color-border`, `--color-border-strong`
+- Text: `--color-text`, `--color-text2`, `--color-text3`
+- Accent: `--color-accent`, `--color-accent-muted`, `--color-accent-hover`, `--color-accent-border`
+- Actions: `--color-action-primary`, `--color-action-primary-hover`
+- Interaction: `--color-focus`, `--color-overlay`, `--color-highlight`, `--color-selection`
+- Feedback: `--color-success`, `--color-warning`, `--color-info`, `--color-error`, plus each token's `-surface` and `-border` variants
+
+The established `--color-red`, `--color-red2`, `--color-red-hover`, `--color-red-border`, `--color-red-solid`, and `--color-red-solid-hover` names remain supported public aliases. They are not deprecated. New shared code may use the intent names when the role is known, while existing consumers can migrate only when convenient.
+
+### Layout, Radius, and Motion Tokens
+
+- Radius: `--radius-sm`, `--radius-md`, `--radius-lg`
+- Layout: `--layout-container-max`, `--layout-gutter`, `--layout-gutter-mobile`
+- Motion: `--motion-fast`, `--motion-base`, `--motion-slow`
 
 ### Usage Rules
 
@@ -223,12 +214,21 @@ These patterns came out of shipped product UX work and are now part of the canon
 - `text` is primary content.
 - `text2` is supporting copy.
 - `text3` is metadata only.
-- `red` is the brighter, warmer accent red for text, rules, indicators, and selective emphasis.
+- `accent` is the brighter, warmer red for text, rules, indicators, and selective emphasis. `red` is its established compatibility name.
 - `red-hover` and `red-solid-hover` are state tokens. They support interaction feedback and should not be presented as equal palette roles.
-- `red-solid` is the filled action red for buttons, pills, and other surfaces that carry white text.
+- `action-primary` is the filled action red for buttons, pills, and other surfaces that carry white text. `red-solid` is its established compatibility name.
 - `red2` and `red-border` are supporting tokens for overlays, glows, and borders. They are not primary brand colors.
 - `success`, `warning`, `info`, and `error` are semantic feedback tokens for system states. They should not be replaced with brand red unless the UI is actually a primary action.
 - Avoid raw `white` and `black` utilities unless there is a documented exception.
+
+### Token Addition Rules
+
+1. Reuse an existing semantic token when its meaning matches.
+2. Add a semantic token only for a role that is shared or genuinely theme-aware. Define both themes when its value changes.
+3. Add a reference value only when an opaque palette value is used by the semantic layer. Do not build a complete scale in advance.
+4. Add a component-specific token only after a shared semantic token would be misleading.
+5. Preserve existing public token names. Use aliases for compatibility instead of broad renames.
+6. Keep one-off spacing, geometry, shadows, and behavior-specific motion local to the component.
 
 ### Light Mode Rule
 
@@ -501,6 +501,19 @@ Rules:
 - Forms should look quiet and trustworthy, not overdesigned.
 - If a component appears on one route only, question whether it belongs in the system.
 
+### Component API Conventions
+
+- Preserve the existing controlled contracts. `Checkbox` and `Toggle` use `checked` plus `onChange(boolean)`. `RadioGroup`, `Dropdown`, `Slider`, and `Tabs` use `value` or `active` plus `onChange(value)`. These callback names are public API and should not be renamed for stylistic uniformity.
+- Controlled components remain controlled-only until a real consumer needs an uncontrolled mode. Do not add `defaultValue` or `defaultChecked` speculatively, and never mix controlled and uncontrolled state internally.
+- Components rooted in a native element should pass through that element's attributes when the public API already supports them. Add native escape hatches to narrower controls only when a consumer need establishes the shape and collision policy.
+- Forward refs to the component's meaningful native root. Form inputs expose their input or textarea, `RadioGroup` exposes its fieldset, button controls expose their button, and content/layout primitives expose their rendered root.
+- Export public prop and style-option types from `@ai-created/ui`, not only from internal module paths.
+- Keep `className` as the styling escape hatch. Defaults remain authoritative, and overrides must not remove semantics, accessible names, focus visibility, disabled behavior, or required hit targets.
+- Icon-only controls require an explicit accessible name, normally `aria-label`. Decorative icons inside named controls use `aria-hidden="true"`.
+- Field associations are explicit: `FieldLabel.htmlFor` matches the control `id`; `FieldHint.id` is referenced from the control's `aria-describedby`. `FieldLegend` is styled supporting text, not a semantic `<legend>`.
+- Tabs that render panels should pass one stable `id` to `Tabs` and the same value as `tabsId` to `useTabPanelProps`. Omitting the shared id intentionally omits ARIA relationships rather than emitting mismatched ids.
+- Variant names and visual meanings are compatibility contracts. Add aliases and a migration path before renaming or removing one.
+
 ### When to Add a Component
 
 - First use: solve the product problem with existing primitives and route-level composition.
@@ -514,7 +527,7 @@ Rules:
 
 Two modal primitives are available:
 
-**`Modal`** is a composable, portal-based modal system with five sub-components: `ModalOverlay`, `ModalPanel`, `ModalHeader`, `ModalBody`, `ModalFooter`. Use it when you need flexible modal layouts, custom body content, or multi-section modals. `ConfirmDialog` is a pre-composed confirmation dialog built on Modal.
+**`Modal`** is a composable modal system with five sub-components: `ModalOverlay`, `ModalPanel`, `ModalHeader`, `ModalBody`, `ModalFooter`. It preserves that composition API while using Headless UI Dialog internally for portal mounting, focus trapping, Escape handling, scroll locking, nested-dialog stacking, and focus restoration. Use it when you need flexible layouts, custom body content, or multi-section modals. `ConfirmDialog` is a pre-composed alert dialog built on Modal.
 
 **`Dialog`** is the Headless UI-based dialog with automatic focus trap, Escape/backdrop close, and focus restoration. Use it for simpler modals where Headless UI's built-in behavior is sufficient. `VideoModal` extends this pattern with video-specific controls.
 
@@ -533,8 +546,11 @@ Close button uses a 44x44px touch target with a centered icon.
 
 Structural requirements:
 
-- Body overflow hidden when open (Dialog handles automatically; Modal uses portal with backdrop blur)
-- Must use `role="dialog"`, `aria-modal="true"`, `aria-labelledby`
+- Body overflow is locked while either primitive is open.
+- `ModalOverlay` owns `role="dialog"` and `aria-modal="true"`. `ModalHeader` registers its heading and optional description with the dialog. Use `role="alertdialog"` only for urgent confirmation flows.
+- A custom modal header that does not use `ModalHeader` must give `ModalOverlay` an explicit `aria-label`.
+- `closeOnBackdrop={false}` disables backdrop dismissal without disabling Escape. Omitting `onClose` creates a non-dismissible modal and should be reserved for genuinely blocking work.
+- `ConfirmDialog` disables every dismissal path while `loading` and accepts `loadingLabel` for action-specific progress copy.
 
 ### Badge
 
@@ -697,10 +713,11 @@ These may exist in experiments, but they are not core public-system primitives:
 
 - `--hero-overlay-default`: page-aware overlay (60% dark, 80% light beige)
 - `--hero-overlay-strong`: heavier overlay (80% dark, 70% light beige)
-- `--hero-overlay-soft`: 20% more transparent than strong (60% dark bg color, 50% light beige)
-- `--hero-fade-top` / `--hero-fade-bottom`: gradient from `var(--color-bg)` to transparent
-- `--hero-blend`: `mix-blend-multiply` on images in light mode only (for transparent PNGs)
-- `--hero-text` / `--hero-text-muted` / `--hero-text-dim`: theme-aware text colors for content over heroes
+- `--hero-overlay-soft`: quieter overlay (60% dark background color, 50% light beige)
+- `.hero-fade-top` / `.hero-fade-bottom`: gradient from `var(--color-bg)` to transparent
+- `.hero-blend`: `mix-blend-multiply` on images in light mode only (for transparent PNGs)
+- `--hero-text-primary` / `--hero-text-muted` / `--hero-text-dim`: theme-aware text colors for content over heroes
+- `--hero-image-light-opacity` / `--hero-image-dark-opacity`: theme-aware image crossfade values
 
 ### ThemedHeroImage Props
 
@@ -714,6 +731,9 @@ These may exist in experiments, but they are not core public-system primitives:
 Current documented exceptions include:
 
 - a few light-mode utility overrides where semantic token coverage is incomplete
+- invariant white labels and control marks on filled action surfaces
+- fixed-dark code samples in the playground
+- component geometry, standardized Tailwind shadows, and behavior-specific motion values
 
 The goal is always to reduce exceptions, not normalize them.
 

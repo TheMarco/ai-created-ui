@@ -96,6 +96,7 @@ export default function TypographySection({ onInView }: TypographySectionProps) 
         {families.map((family) => (
           <div
             key={family.name}
+            data-visual={`font-family-${family.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
             className="border-b border-border pb-12 last:border-b-0 last:pb-0"
           >
             <div className="flex items-baseline gap-4 mb-1">
