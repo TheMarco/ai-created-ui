@@ -1,6 +1,6 @@
 # Releasing `@ai-created/ui`
 
-This package is distributed from the private GitHub repository. It is not published to npm. A release is an immutable `vX.Y.Z` Git tag whose version matches `package.json`, plus human-reviewed notes in `CHANGELOG.md` and a GitHub Release created by automation.
+This open-source package is distributed from the public GitHub repository and is not published to npm. A release is an immutable `vX.Y.Z` Git tag whose version matches `package.json`, plus human-reviewed notes in `CHANGELOG.md` and a GitHub Release created by automation. `private: true` remains an npm-publication guard only.
 
 ## Choose the version
 
@@ -8,7 +8,7 @@ This package is distributed from the private GitHub repository. It is not publis
 - MINOR: an additive component, variant, prop, export, or documented capability.
 - MAJOR: a removed or renamed export, incompatible prop or callback change, token removal, or behavior change that requires consumer migration.
 
-Use the highest impact in the release. Do not infer the version from commit messages. Changesets are intentionally not used while this remains one privately distributed package with a small maintainer and consumer set.
+Use the highest impact in the release. Do not infer the version from commit messages. Changesets are intentionally not used while this remains one GitHub-tag-distributed package with a small release surface.
 
 ## Prepare the release
 
@@ -51,7 +51,7 @@ After the GitHub Release exists, Renovate should open a tag update PR in each co
 ```json
 {
   "dependencies": {
-    "@ai-created/ui": "github:TheMarco/ai-created-ui#v1.1.0"
+    "@ai-created/ui": "git+https://github.com/TheMarco/ai-created-ui.git#v1.1.0"
   }
 }
 ```
