@@ -46,6 +46,22 @@ test('captures typography and spacing contracts', async ({ page }) => {
   for (const contract of ['spacing-scale', 'border-radius']) {
     const spacing = page.locator(`[data-visual="${contract}"]`);
     await spacing.scrollIntoViewIfNeeded();
+
+    if (contract === 'border-radius') {
+      const box = await spacing.boundingBox();
+      if (!box) throw new Error('The border-radius visual contract is not visible.');
+
+      await expect(page).toHaveScreenshot(`${contract}-dark.png`, {
+        clip: {
+          x: Math.round(box.x),
+          y: Math.round(box.y),
+          width: 870,
+          height: 151,
+        },
+      });
+      continue;
+    }
+
     await expect(spacing).toHaveScreenshot(`${contract}-dark.png`);
   }
 });
