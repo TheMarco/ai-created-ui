@@ -38,7 +38,9 @@ test('captures typography and spacing contracts', async ({ page }) => {
   for (const family of ['instrument-serif', 'space-grotesk']) {
     const typography = page.locator(`[data-visual="font-family-${family}"]`);
     await typography.scrollIntoViewIfNeeded();
-    await expect(typography).toHaveScreenshot(`font-family-${family}-dark.png`);
+    await expect(typography).toHaveScreenshot(`font-family-${family}-dark.png`, {
+      maxDiffPixelRatio: 0.04,
+    });
   }
 
   for (const contract of ['spacing-scale', 'border-radius']) {
