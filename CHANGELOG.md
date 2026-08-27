@@ -4,6 +4,12 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-08-27
+
+### Fixed
+
+- `ThemeToggle` now has a visible surface, border, and 40px target at rest so the dark/light control does not disappear into surrounding navigation.
+
 ### Added
 
 - MIT licensing, contribution guidance, and a private vulnerability-reporting policy for the public source repository.
