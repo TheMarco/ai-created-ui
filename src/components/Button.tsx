@@ -14,7 +14,7 @@ export type ButtonVariant =
 
 export type ButtonSize = 'inline' | 'sm' | 'md' | 'lg' | 'xl' | 'icon';
 
-interface ButtonStyleOptions {
+export interface ButtonStyleOptions {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;

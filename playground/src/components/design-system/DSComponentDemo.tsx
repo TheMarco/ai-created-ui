@@ -1,6 +1,7 @@
 'use client';
 
 interface DSComponentDemoProps {
+  id?: string;
   title: string;
   description?: string;
   children: React.ReactNode;
@@ -8,13 +9,20 @@ interface DSComponentDemoProps {
 }
 
 export default function DSComponentDemo({
+  id,
   title,
   description,
   children,
   className = '',
 }: DSComponentDemoProps) {
+  const demoId = id ?? title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
   return (
-    <div className={`rounded-lg border border-border overflow-hidden ${className}`}>
+    <div
+      id={`demo-${demoId}`}
+      data-demo={demoId}
+      className={`scroll-mt-28 rounded-lg border border-border overflow-hidden ${className}`}
+    >
       <div className="px-6 py-4 border-b border-border">
         <h4 className="text-base font-heading font-medium text-text">{title}</h4>
         {description && (

@@ -28,27 +28,41 @@ export function inputStyles(className?: string) {
 
 export type FieldGroupProps = React.HTMLAttributes<HTMLDivElement>;
 
-export function FieldGroup({ className, ...props }: FieldGroupProps) {
-  return <div className={fieldGroupStyles(className)} {...props} />;
-}
+export const FieldGroup = forwardRef<HTMLDivElement, FieldGroupProps>(function FieldGroup(
+  { className, ...props },
+  ref
+) {
+  return <div ref={ref} className={fieldGroupStyles(className)} {...props} />;
+});
 
 export type FieldLabelProps = React.LabelHTMLAttributes<HTMLLabelElement>;
 
-export function FieldLabel({ className, ...props }: FieldLabelProps) {
-  return <label className={fieldLabelStyles(className)} {...props} />;
-}
+export const FieldLabel = forwardRef<HTMLLabelElement, FieldLabelProps>(function FieldLabel(
+  { className, ...props },
+  ref
+) {
+  // Association is supplied by the consumer through htmlFor or nested control composition.
+  // eslint-disable-next-line jsx-a11y/label-has-associated-control
+  return <label ref={ref} className={fieldLabelStyles(className)} {...props} />;
+});
 
 export type FieldLegendProps = React.HTMLAttributes<HTMLSpanElement>;
 
-export function FieldLegend({ className, ...props }: FieldLegendProps) {
-  return <span className={fieldLegendStyles(className)} {...props} />;
-}
+export const FieldLegend = forwardRef<HTMLSpanElement, FieldLegendProps>(function FieldLegend(
+  { className, ...props },
+  ref
+) {
+  return <span ref={ref} className={fieldLegendStyles(className)} {...props} />;
+});
 
 export type FieldHintProps = React.HTMLAttributes<HTMLParagraphElement>;
 
-export function FieldHint({ className, ...props }: FieldHintProps) {
-  return <p className={fieldHintStyles(className)} {...props} />;
-}
+export const FieldHint = forwardRef<HTMLParagraphElement, FieldHintProps>(function FieldHint(
+  { className, ...props },
+  ref
+) {
+  return <p ref={ref} className={fieldHintStyles(className)} {...props} />;
+});
 
 export type TextInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 

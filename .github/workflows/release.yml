@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate release tag
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+
+    steps:
+      - name: Check out tagged commit
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            playground/package-lock.json
+
+      - name: Install design system dependencies
+        run: npm ci
+
+      - name: Install playground dependencies
+        run: npm ci --prefix playground --install-links
+
+      - name: Verify release metadata
+        run: npm run release:check -- "$GITHUB_REF_NAME"
+
+      - name: Run the quality gate
+        run: npm run validate
+
+      - name: Install Chromium for browser tests
+        run: npx playwright install --with-deps chromium
+
+      - name: Run browser smoke and visual tests
+        run: npm run test:browser
+
+  publish-release:
+    name: Publish GitHub Release
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out tagged commit
+        uses: actions/checkout@v4
+
+      - name: Extract reviewed release notes
+        run: node scripts/extract-release-notes.mjs "$GITHUB_REF_NAME" > "$RUNNER_TEMP/release-notes.md"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --verify-tag --title "@ai-created/ui $GITHUB_REF_NAME" --notes-file "$RUNNER_TEMP/release-notes.md"

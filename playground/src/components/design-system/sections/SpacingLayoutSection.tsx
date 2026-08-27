@@ -98,7 +98,7 @@ export default function SpacingLayoutSection({ onInView }: SpacingLayoutSectionP
 
       {/* Spacing Scale */}
       <h3 className="text-xl font-heading font-medium text-text mb-6">Spacing Scale</h3>
-      <div className="space-y-2 mb-16">
+      <div data-visual="spacing-scale" className="space-y-2 mb-16">
         {spacingScale.map((entry) => {
           const numericValue = parseFloat(entry.rem);
           const maxBarWidth = 100;
@@ -133,7 +133,7 @@ export default function SpacingLayoutSection({ onInView }: SpacingLayoutSectionP
 
       {/* Border Radius */}
       <h3 className="text-xl font-heading font-medium text-text mb-6">Border Radius</h3>
-      <div className="flex flex-wrap gap-6 mb-16">
+      <div data-visual="border-radius" className="flex flex-wrap gap-6 mb-16">
         {radii.map((r) => (
           <div key={r.class} className="flex flex-col items-center gap-3">
             <div

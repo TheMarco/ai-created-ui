@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import DSSection from '../DSSection';
 import DSComponentDemo from '../DSComponentDemo';
+import ComponentCoverageDemos from '../ComponentCoverageDemos';
 import {
   Badge,
   Button,
@@ -22,6 +23,7 @@ import {
   TextInput,
   Toggle,
   Tooltip,
+  useTabPanelProps,
   buttonStyles,
 } from '@ai-created/ui';
 import type { BadgeVariant, DropdownOption, RadioOption, Tab } from '@ai-created/ui';
@@ -79,6 +81,10 @@ const demoTabs: Tab<'overview' | 'details' | 'related'>[] = [
 
 function TabsDemo() {
   const [activeTab, setActiveTab] = useState<'overview' | 'details' | 'related'>('overview');
+  const tabsId = 'demo-tabs';
+  const overviewPanel = useTabPanelProps('overview', activeTab, tabsId);
+  const detailsPanel = useTabPanelProps('details', activeTab, tabsId);
+  const relatedPanel = useTabPanelProps('related', activeTab, tabsId);
 
   return (
     <DSComponentDemo
@@ -88,14 +94,15 @@ function TabsDemo() {
       <div className="space-y-5">
         <Surface variant="default" padding="md">
           <Tabs
+            id={tabsId}
             tabs={demoTabs}
             active={activeTab}
             onChange={setActiveTab}
             label="Demo tabs"
           />
-          <div className="mt-4 text-sm text-text2">
-            Active panel: <span className="text-text font-medium">{activeTab}</span>
-          </div>
+          <div {...overviewPanel} className="mt-4 text-sm text-text2">Overview panel content.</div>
+          <div {...detailsPanel} className="mt-4 text-sm text-text2">Details panel content.</div>
+          <div {...relatedPanel} className="mt-4 text-sm text-text2">Related panel content.</div>
         </Surface>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -844,6 +851,7 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
         <ToggleDemo />
         <BadgeDemo />
         <DialogDemo />
+        <ComponentCoverageDemos />
         <TooltipDemo />
         <TooltipBadgeDemo />
 

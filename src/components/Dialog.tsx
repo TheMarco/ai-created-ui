@@ -3,6 +3,7 @@
 import { Fragment } from 'react';
 import {
   Dialog as HeadlessDialog,
+  Description,
   DialogPanel,
   DialogTitle,
   Transition,
@@ -51,7 +52,7 @@ export default function Dialog({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black/60" aria-hidden="true" />
+          <div className="fixed inset-0 bg-overlay" aria-hidden="true" />
         </TransitionChild>
 
         <div className="fixed inset-0 flex items-center justify-center p-4">
@@ -80,7 +81,9 @@ export default function Dialog({
                       </DialogTitle>
                     )}
                     {description && (
-                      <p className="mt-1 text-sm text-text2">{description}</p>
+                      <Description className="mt-1 text-sm text-text2">
+                        {description}
+                      </Description>
                     )}
                   </div>
                   <button

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback, useId, useEffect } from 'react';
+import { cloneElement, useState, useRef, useCallback, useId, useEffect } from 'react';
 import { cn } from '../lib/utils';
 
 export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
@@ -22,6 +22,7 @@ export interface TooltipProps {
     onMouseLeave?: React.MouseEventHandler;
     onFocus?: React.FocusEventHandler;
     onBlur?: React.FocusEventHandler;
+    onTouchStart?: React.TouchEventHandler;
   }>;
   className?: string;
 }
@@ -70,18 +71,37 @@ export default function Tooltip({
     return () => clearTimeout(timeoutRef.current);
   }, []);
 
+  // cloneElement reads immutable element props, not a mutable ref value.
+  // eslint-disable-next-line react-hooks/refs
+  const trigger = cloneElement(children, {
+    'aria-describedby': visible
+      ? [children.props['aria-describedby'], tooltipId].filter(Boolean).join(' ')
+      : children.props['aria-describedby'],
+    onMouseEnter: (event) => {
+      children.props.onMouseEnter?.(event);
+      show();
+    },
+    onMouseLeave: (event) => {
+      children.props.onMouseLeave?.(event);
+      hide();
+    },
+    onFocus: (event) => {
+      children.props.onFocus?.(event);
+      show();
+    },
+    onBlur: (event) => {
+      children.props.onBlur?.(event);
+      hide();
+    },
+    onTouchStart: (event) => {
+      children.props.onTouchStart?.(event);
+      handleTouchStart();
+    },
+  });
+
   return (
     <span ref={wrapperRef} className="relative inline-flex">
-      <span
-        onMouseEnter={show}
-        onMouseLeave={hide}
-        onFocus={show}
-        onBlur={hide}
-        onTouchStart={handleTouchStart}
-        aria-describedby={visible ? tooltipId : undefined}
-      >
-        {children}
-      </span>
+      {trigger}
 
       {visible && (
         <span

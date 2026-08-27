@@ -1,0 +1,56 @@
+name: UI dependency compatibility
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate consumer
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Require private package token
+        env:
+          UI_REPO_TOKEN: ${{ secrets.AI_CREATED_UI_READ_TOKEN }}
+        run: test -n "$UI_REPO_TOKEN"
+
+      - name: Configure private package access
+        env:
+          UI_REPO_TOKEN: ${{ secrets.AI_CREATED_UI_READ_TOKEN }}
+        run: |
+          git config --global --add url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf "git+ssh://git@github.com/"
+          git config --global --add url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf "ssh://git@github.com/"
+          git config --global --add url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf "git@github.com:"
+
+      - name: Install dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+
+      - name: Remove private package credentials
+        if: always()
+        env:
+          UI_REPO_TOKEN: ${{ secrets.AI_CREATED_UI_READ_TOKEN }}
+        run: git config --global --unset-all url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf || true
+
+      - name: Run dependency lifecycle scripts without repository credentials
+        run: npm rebuild
+
+      - name: Validate design-system compatibility
+        run: npm run validate:ui-update

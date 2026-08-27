@@ -12,6 +12,7 @@ import SpacingLayoutSection from './sections/SpacingLayoutSection';
 import AccessibilitySection from './sections/AccessibilitySection';
 import PageArchetypesSection from './sections/PageArchetypesSection';
 import ComponentsSection from './sections/ComponentsSection';
+import ComponentReferenceSection from './sections/ComponentReferenceSection';
 import AnimationSection from './sections/AnimationSection';
 import ThemeSection from './sections/ThemeSection';
 
@@ -49,7 +50,7 @@ export default function DSPageShell() {
               {...fadeUpMotion(0.15)}
             >
               Canonical visual and accessibility rules for AI-Created and beyond. Now pressure-tested in production at{' '}
-              <a href="https://human-actually.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-white transition-colors">Human, Actually</a>.
+              <a href="https://human-actually.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-text transition-colors">Human, Actually</a>.
               Every pixel shaped with AI, grounded in a rigorous design system.
             </motion.p>
           </div>
@@ -72,7 +73,10 @@ export default function DSPageShell() {
             </aside>
 
             {/* Mobile horizontal nav */}
-            <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-bg/90 backdrop-blur-lg border-t border-border">
+            <nav
+              aria-label="Mobile section navigation"
+              className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-bg/90 backdrop-blur-lg lg:hidden"
+            >
               <div className="h-px bg-border">
                 <div className="h-full bg-red-solid transition-[width] duration-300" style={{ width: `${progress}%` }} />
               </div>
@@ -99,7 +103,7 @@ export default function DSPageShell() {
                   </a>
                 ))}
               </div>
-            </div>
+            </nav>
 
             {/* Content */}
             <div className="flex-1 min-w-0 space-y-32">
@@ -111,6 +115,7 @@ export default function DSPageShell() {
               <AccessibilitySection onInView={handleInView} />
               <PageArchetypesSection onInView={handleInView} />
               <ComponentsSection onInView={handleInView} />
+              <ComponentReferenceSection onInView={handleInView} />
               <AnimationSection onInView={handleInView} />
               <ThemeSection onInView={handleInView} />
             </div>

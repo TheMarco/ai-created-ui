@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-interface ThemedHeroImageProps {
+export interface ThemedHeroImageProps {
   darkSrc: string;
   lightSrc?: string;
   overlay?: 'default' | 'strong' | 'soft' | 'none';
