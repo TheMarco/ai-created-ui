@@ -27,29 +27,10 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Require private package token
-        env:
-          UI_REPO_TOKEN: ${{ secrets.AI_CREATED_UI_READ_TOKEN }}
-        run: test -n "$UI_REPO_TOKEN"
-
-      - name: Configure private package access
-        env:
-          UI_REPO_TOKEN: ${{ secrets.AI_CREATED_UI_READ_TOKEN }}
-        run: |
-          git config --global --add url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf "git+ssh://git@github.com/"
-          git config --global --add url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf "ssh://git@github.com/"
-          git config --global --add url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf "git@github.com:"
-
       - name: Install dependencies without lifecycle scripts
         run: npm ci --ignore-scripts
 
-      - name: Remove private package credentials
-        if: always()
-        env:
-          UI_REPO_TOKEN: ${{ secrets.AI_CREATED_UI_READ_TOKEN }}
-        run: git config --global --unset-all url."https://x-access-token:${UI_REPO_TOKEN}@github.com/".insteadOf || true
-
-      - name: Run dependency lifecycle scripts without repository credentials
+      - name: Run dependency lifecycle scripts
         run: npm rebuild
 
       - name: Validate design-system compatibility

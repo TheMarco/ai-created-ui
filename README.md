@@ -1,6 +1,6 @@
 # @ai-created/ui
 
-The shared design system behind [ai-created.com](https://ai-created.com) and every app that ships from the lab.
+The open-source design system behind [ai-created.com](https://ai-created.com) and every app that ships from the lab. Licensed under MIT.
 
 One repo. One source of truth. Every component, token, and motion pattern lives here. Consumer apps install it as a dependency and get the full system without copying a single file.
 
@@ -56,7 +56,7 @@ This package ships **raw TypeScript source**. There is no build step, no compile
 ### 1. Install
 
 ```bash
-npm install --install-links "github:TheMarco/ai-created-ui#vX.Y.Z"
+npm install --install-links "git+https://github.com/TheMarco/ai-created-ui.git#vX.Y.Z"
 ```
 
 Replace `vX.Y.Z` with the latest reviewed GitHub Release tag. The `--install-links` flag copies the package instead of symlinking, which avoids TypeScript resolution issues with duplicate `@types/react`.
@@ -144,7 +144,7 @@ Faster focused commands are available during development:
 | `npm run test:visual:update` | Regenerate visual snapshots after an intentional UI change |
 | `npm run test:browser` | Run all Playwright browser projects |
 | `npm run package:check` | Verify the GitHub package contains only the public source boundary |
-| `npm run release:check -- vX.Y.Z` | Verify tag, version, lockfile, privacy guard, and changelog agreement |
+| `npm run release:check -- vX.Y.Z` | Verify tag, version, lockfile, npm-publication guard, and changelog agreement |
 
 For browser tests locally, install Chromium once with `npx playwright install chromium`, then run `npm run test:browser` from the repository root. CI installs Chromium with system dependencies and runs this gate after `validate`.
 
@@ -173,9 +173,9 @@ The playground's design-system reference pages use a manually authored registry 
 
 ### Release governance
 
-The package remains private and GitHub-distributed. `private: true` prevents accidental npm publication. Stable releases use matching SemVer in `package.json`, an annotated `vX.Y.Z` Git tag, a dated `CHANGELOG.md` section, and a GitHub Release created only after the complete quality and browser gates pass.
+The source is public under the MIT License and stable releases are distributed through GitHub tags. `private: true` remains an npm-registry publication guard; it does not restrict repository visibility or source use. Stable releases use matching SemVer in `package.json`, an annotated `vX.Y.Z` Git tag, a dated `CHANGELOG.md` section, and a GitHub Release created only after the complete quality and browser gates pass.
 
-See `RELEASING.md` for the maintainer checklist, `docs/decisions/002-release-governance.md` for the release decision, `docs/consumer-update-automation.md` for the Renovate handoff, and `docs/consumer-compatibility.md` for the validation and future-consumer contract. Changesets are intentionally deferred while this remains one privately distributed package with two known consumers.
+See `RELEASING.md` for the maintainer checklist, `docs/decisions/004-public-source-distribution.md` for the current distribution decision, `docs/consumer-update-automation.md` for the Renovate handoff, and `docs/consumer-compatibility.md` for the validation and future-consumer contract. Changesets are intentionally deferred while this remains one source-distributed package with a small release surface.
 
 ### Live development with npm link
 
@@ -195,7 +195,7 @@ Now edits to files in this repo are immediately reflected in the consumer. When 
 ```bash
 cd /path/to/your-app
 npm unlink @ai-created/ui
-npm install --install-links "github:TheMarco/ai-created-ui#vX.Y.Z"
+npm install --install-links "git+https://github.com/TheMarco/ai-created-ui.git#vX.Y.Z"
 ```
 
 ### Promoting a new component from a consumer app
@@ -245,3 +245,9 @@ Rule of thumb: if you'd copy-paste it into the next app, it belongs here.
 
 - **[ai-created.com](https://ai-created.com)** -- product lab portfolio and content platform
 - **[Human, Actually](https://human-actually.com)** -- applicant analysis platform (applyanator)
+
+## Contributing and security
+
+Contributions are welcome through reviewed pull requests. Read `CONTRIBUTING.md` before changing public behavior or visual baselines. Report suspected vulnerabilities privately using the process in `SECURITY.md`.
+
+This project is licensed under the [MIT License](LICENSE).

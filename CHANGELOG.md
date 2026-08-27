@@ -4,6 +4,14 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+### Added
+
+- MIT licensing, contribution guidance, and a private vulnerability-reporting policy for the public source repository.
+
+### Changed
+
+- Consumer installation and CI guidance now use credential-free public HTTPS Git tags while npm registry publication remains disabled.
+
 ## [1.1.0] - 2026-08-27
 
 ### Added
