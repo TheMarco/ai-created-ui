@@ -1,3 +1,5 @@
+[![What happens after AI generates the design system? @ai-created/ui architecture from tokens to products.](docs/assets/banner.png)](https://ui.ai-created.com)
+
 # @ai-created/ui
 
 The open-source design system behind [ai-created.com](https://ai-created.com) and every app that ships from the lab. Licensed under MIT.
