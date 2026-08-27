@@ -246,6 +246,14 @@ Rule of thumb: if you'd copy-paste it into the next app, it belongs here.
 - **[ai-created.com](https://ai-created.com)** -- product lab portfolio and content platform
 - **[Human, Actually](https://human-actually.com)** -- applicant analysis platform (applyanator)
 
+## Attribution appreciated
+
+`@ai-created/ui` is available under the MIT License, so credit is not required beyond the license terms. If the system helps you ship something, a link back helps others discover the project and supports its independent development.
+
+Suggested credit:
+
+> Built with [@ai-created/ui](https://ui.ai-created.com), a design system by Marco van Hylckama Vlieg.
+
 ## Contributing and security
 
 Contributions are welcome through reviewed pull requests. Read `CONTRIBUTING.md` before changing public behavior or visual baselines. Report suspected vulnerabilities privately using the process in `SECURITY.md`.

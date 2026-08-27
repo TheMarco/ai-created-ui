@@ -4,6 +4,10 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+### Added
+
+- Optional attribution guidance and a ready-to-copy credit linking to `ui.ai-created.com`.
+
 ## [1.1.1] - 2026-08-27
 
 ### Fixed
