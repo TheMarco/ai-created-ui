@@ -10,6 +10,18 @@ function ThemeConsumer() {
 }
 
 describe('ThemeProvider', () => {
+  it('renders the theme switch as a visible control at rest', () => {
+    render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
+
+    expect(screen.getByRole('button', { name: 'Switch to light mode' })).toHaveClass(
+      'h-10',
+      'w-10',
+      'border-border',
+      'bg-surface',
+      'text-text',
+    );
+  });
+
   it('synchronizes saved theme state with the document', async () => {
     localStorage.setItem('theme', 'light');
     render(<ThemeProvider><ThemeToggle /></ThemeProvider>);
