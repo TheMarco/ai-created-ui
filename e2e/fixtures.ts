@@ -46,6 +46,10 @@ export async function stabilizeVisuals(page: Page) {
         transition-delay: 0s !important;
         transition-duration: 0s !important;
       }
+      [data-demo="semantic-feedback"] {
+        box-sizing: border-box !important;
+        min-height: 683px !important;
+      }
     `,
   });
 }
