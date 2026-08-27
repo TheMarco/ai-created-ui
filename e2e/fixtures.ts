@@ -29,6 +29,7 @@ export async function gotoPlayground(page: Page, theme: 'dark' | 'light' = 'dark
     localStorage.setItem('theme', initialTheme);
   }, theme);
   await page.goto('/');
+  await page.locator('html[data-playground-hydrated="true"]').waitFor();
   await expect(page.getByRole('heading', { name: 'Design System', level: 1 })).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
 }
