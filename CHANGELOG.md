@@ -19,6 +19,10 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 - A task-oriented specification homepage with direct paths for components, principal guidance, and agent resources, including complete mobile navigation.
 - A blocking documentation-contract check plus contributor, release, and propagation guidance that keeps human and machine workflows aligned.
 
+### Fixed
+
+- Consumer compile fixtures no longer use a deployable `package.json`, preventing hosting integrations from misidentifying test scaffolding as a new application.
+
 ## [1.1.1] - 2026-08-27
 
 ### Fixed

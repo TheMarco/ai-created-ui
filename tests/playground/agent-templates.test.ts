@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -71,6 +71,9 @@ describe('AI agent golden-path templates', () => {
   });
 
   it('compiles every template and the clean consumer fixture against the public contract', () => {
+    const fixtureDirectory = path.join(packageRoot, 'tests/fixtures/agent-consumer');
+    expect(existsSync(path.join(fixtureDirectory, 'package.fixture.json'))).toBe(true);
+    expect(existsSync(path.join(fixtureDirectory, 'package.json'))).toBe(false);
     expect(() => execFileSync(process.execPath, ['scripts/verify-agent-templates.mjs'], {
       cwd: packageRoot,
       encoding: 'utf8',

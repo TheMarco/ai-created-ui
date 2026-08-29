@@ -7,6 +7,7 @@ import ts from 'typescript';
 const packageRoot = fileURLToPath(new URL('../', import.meta.url));
 const templatesDirectory = path.join(packageRoot, 'templates/agent');
 const fixtureDirectory = path.join(packageRoot, 'tests/fixtures/agent-consumer');
+const fixturePackagePath = path.join(fixtureDirectory, 'package.fixture.json');
 const manifestPath = path.join(templatesDirectory, 'manifest.json');
 const requiredChecks = new Set([
   'node scripts/verify-agent-templates.mjs',
@@ -17,6 +18,16 @@ const canonicalArchetypes = new Set(['home', 'browse', 'detail', 'context', 'wor
 
 function invariant(condition, message) {
   if (!condition) throw new Error(message);
+}
+
+async function pathExists(filePath) {
+  try {
+    await stat(filePath);
+    return true;
+  } catch (error) {
+    if (error?.code === 'ENOENT') return false;
+    throw error;
+  }
 }
 
 async function listSourceFiles(directory) {
@@ -180,6 +191,20 @@ invariant(templateFiles.length === sources.size, 'Every TSX template source must
 for (const file of templateFiles) invariant(sources.has(file), `Unregistered template source: ${file}`);
 
 const fixtureSources = await listSourceFiles(fixtureDirectory);
+invariant(
+  !(await pathExists(path.join(fixtureDirectory, 'package.json'))),
+  'Consumer test fixtures must not contain package.json because deployment platforms can misidentify them as applications'
+);
+const fixturePackage = JSON.parse(await readFile(fixturePackagePath, 'utf8'));
+invariant(fixturePackage.private === true, 'Consumer fixture metadata must remain private');
+invariant(
+  fixturePackage.dependencies?.['@ai-created/ui'] === 'file:../../..',
+  'Consumer fixture metadata must target the repository public package'
+);
+invariant(
+  typeof fixturePackage.dependencies?.next === 'string',
+  'Consumer fixture metadata must document Next.js compatibility'
+);
 const fixtureImports = new Set();
 for (const file of fixtureSources) {
   const source = await readFile(file, 'utf8');
