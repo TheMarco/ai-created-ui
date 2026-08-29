@@ -88,11 +88,16 @@ module.exports = {
         '88': '22rem',
         '128': '32rem',
       },
+      transitionDuration: {
+        fast: 'var(--motion-fast)',
+        base: 'var(--motion-base)',
+        slow: 'var(--motion-slow)',
+      },
       animation: {
-        'fade-in': 'fadeIn 0.6s ease-out',
-        'slide-up': 'slideUp 0.5s ease-out',
-        'scale-in': 'scaleIn 0.5s ease-out',
-        'fade-in-up': 'fadeInUp 0.5s ease-out',
+        'fade-in': 'fadeIn var(--motion-slow) ease-out',
+        'slide-up': 'slideUp var(--motion-slow) ease-out',
+        'scale-in': 'scaleIn var(--motion-slow) ease-out',
+        'fade-in-up': 'fadeInUp var(--motion-slow) ease-out',
       },
       keyframes: {
         fadeIn: {

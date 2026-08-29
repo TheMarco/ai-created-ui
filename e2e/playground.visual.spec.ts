@@ -31,6 +31,74 @@ for (const theme of ['dark', 'light'] as const) {
   });
 }
 
+test.describe.serial('living specification visuals', () => {
+  for (const theme of ['dark', 'light'] as const) {
+    test(`captures the ${theme} living specification`, async ({ page }) => {
+      await page.addInitScript((initialTheme) => {
+        localStorage.clear();
+        localStorage.setItem('theme', initialTheme);
+      }, theme);
+
+      await page.goto('/components');
+      await expect(page.getByRole('heading', { level: 1, name: 'Build from documented contracts.' })).toBeVisible();
+      await page.locator('[data-visual="component-directory"][data-hydrated="true"]').waitFor();
+      await page.evaluate(() => document.fonts.ready);
+      await stabilizeVisuals(page);
+      await page.waitForTimeout(150);
+      await page.evaluate(() => window.scrollTo(0, 420));
+      await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(420);
+      await page.waitForTimeout(150);
+      await expect(page).toHaveScreenshot(`component-directory-${theme}.png`, {
+        animations: 'allow',
+      });
+
+      await page.goto('/components/button');
+      await expect(page.getByRole('heading', { level: 1, name: 'Button / buttonStyles' })).toBeVisible();
+      const workbench = page.locator('[data-workbench="button"]');
+      await workbench.waitFor();
+      await page.evaluate(() => document.fonts.ready);
+      await stabilizeVisuals(page);
+      await workbench.scrollIntoViewIfNeeded();
+      await page.addStyleTag({
+        content: 'header { display: none !important; }',
+      });
+      await workbench.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(150);
+      await expect(workbench).toHaveScreenshot(`component-button-workbench-${theme}.png`, {
+        animations: 'allow',
+      });
+    });
+  }
+});
+
+test.describe.serial('principal specification visuals', () => {
+  for (const theme of ['dark', 'light'] as const) {
+    test(`captures the ${theme} principal specification`, async ({ page }) => {
+      await page.addInitScript((initialTheme) => {
+        localStorage.clear();
+        localStorage.setItem('theme', initialTheme);
+      }, theme);
+
+      await page.goto('/guidelines');
+      await expect(page.getByRole('heading', { level: 1, name: 'One system. Every decision.' })).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      await stabilizeVisuals(page);
+      await expect(page).toHaveScreenshot(`guideline-directory-${theme}.png`);
+
+      await page.goto('/guidelines/foundations');
+      await expect(page.getByRole('heading', { level: 1, name: 'Foundations' })).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      await stabilizeVisuals(page);
+      const tokenHierarchy = page
+        .getByRole('heading', { name: 'Decision hierarchy' })
+        .locator('../..');
+      await tokenHierarchy.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(100);
+      await expect(tokenHierarchy).toHaveScreenshot(`guideline-foundations-tokens-${theme}.png`);
+    });
+  }
+});
+
 test('captures typography and spacing contracts', async ({ page }) => {
   await gotoPlayground(page);
   await stabilizeVisuals(page);

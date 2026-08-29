@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ui.ai-created.com/contracts/design-policy.schema.json",
+  "title": "AI-Created UI design policy",
+  "description": "Configuration and explicit exception ledger for the blocking design-drift validator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policyVersion",
+    "canonicalPackage",
+    "canonicalTokenSources",
+    "canonicalPrimitiveSources",
+    "canonicalPrimitives",
+    "ignore",
+    "approvedArchetypes",
+    "exceptions"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "policyVersion": {
+      "const": "1.0.0"
+    },
+    "canonicalPackage": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\.[a-z0-9]+$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "canonicalTokenSources": {
+      "$ref": "#/$defs/globList"
+    },
+    "canonicalPrimitiveSources": {
+      "$ref": "#/$defs/globList"
+    },
+    "canonicalPrimitives": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][A-Za-z0-9]*$"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "ignore": {
+      "$ref": "#/$defs/globList"
+    },
+    "approvedArchetypes": {
+      "type": "array",
+      "description": "Page compositions that agents may select without proposing a new information architecture.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]*$"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10
+          },
+          "routeExamples": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "exceptions": {
+      "type": "array",
+      "description": "Time-bounded, owner-accountable departures from an individual policy rule.",
+      "items": {
+        "$ref": "#/$defs/exception"
+      }
+    }
+  },
+  "$defs": {
+    "globList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "exception": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule", "files", "reason", "owner", "reviewBy"],
+      "properties": {
+        "rule": {
+          "enum": [
+            "no-reference-token",
+            "no-raw-color",
+            "no-internal-package-import",
+            "no-theme-palette",
+            "no-arbitrary-style-value",
+            "no-local-primitive"
+          ]
+        },
+        "files": {
+          "type": "array",
+          "description": "Exact paths or narrowly scoped globs relative to the configuration file.",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {
+              "enum": ["*", "**", "**/*", ".", "./"]
+            }
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 20
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 3
+        },
+        "reviewBy": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    }
+  }
+}

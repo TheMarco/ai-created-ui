@@ -28,23 +28,57 @@
     "test:visual": "playwright test e2e/playground.visual.spec.ts",
     "test:visual:update": "playwright test e2e/playground.visual.spec.ts --update-snapshots",
     "test:browser": "playwright test",
+    "tokens:export": "node scripts/export-design-tokens.mjs",
+    "tokens:check": "node scripts/export-design-tokens.mjs --check",
+    "manifest:export": "node scripts/export-design-system-manifest.mjs",
+    "manifest:check": "node scripts/export-design-system-manifest.mjs --check",
+    "agent-context:export": "node scripts/export-agent-context.mjs",
+    "agent-context:check": "node scripts/export-agent-context.mjs --check",
+    "agent:export": "npm run tokens:export && npm run manifest:export && npm run agent-context:export",
+    "agent:query": "node scripts/design-system-agent.mjs",
+    "policy:check": "node scripts/validate-design-policy.mjs",
+    "tailwind:check": "node scripts/verify-tailwind-token-parity.mjs",
+    "api:check": "node scripts/verify-component-api-parity.mjs",
+    "templates:check": "node scripts/verify-agent-templates.mjs",
+    "docs:check": "node scripts/verify-documentation-contract.mjs",
+    "agent:check": "npm run tokens:check && npm run manifest:check && npm run tailwind:check && npm run api:check && npm run policy:check && npm run templates:check && npm run docs:check && npm run agent-context:check",
     "build:playground": "npm --prefix playground run build:validate",
     "package:check": "node scripts/verify-package.mjs",
     "release:check": "node scripts/verify-release.mjs",
     "release:notes": "node scripts/extract-release-notes.mjs",
-    "validate": "npm run typecheck && npm run lint && npm run test && npm run build:playground && npm run package:check"
+    "validate": "npm run typecheck && npm run lint && npm run test && npm run agent:check && npm run build:playground && npm run package:check"
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "bin": {
+    "ai-created-ui-agent": "./scripts/design-system-agent.mjs"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./styles/tokens.css": "./styles/tokens.css",
-    "./tailwind-preset": "./tailwind-preset.js"
+    "./tailwind-preset": "./tailwind-preset.js",
+    "./design-system.manifest.json": "./design-system.manifest.json",
+    "./llms.txt": "./llms.txt",
+    "./llms-full.txt": "./llms-full.txt",
+    "./ai-created-ui.config.json": "./ai-created-ui.config.json",
+    "./contracts/design-policy.schema.json": "./contracts/design-policy.schema.json",
+    "./contracts/design-system-manifest.schema.json": "./contracts/design-system-manifest.schema.json",
+    "./templates/agent/manifest.json": "./templates/agent/manifest.json",
+    "./templates/agent/*": "./templates/agent/*"
   },
   "files": [
     "src",
     "styles",
-    "tailwind-preset.js"
+    "tailwind-preset.js",
+    "AGENTS.md",
+    "ai-created-ui.config.json",
+    "contracts",
+    "design-system.manifest.json",
+    "llms.txt",
+    "llms-full.txt",
+    "scripts/design-system-agent.mjs",
+    "scripts/validate-design-policy.mjs",
+    "templates/agent"
   ],
   "peerDependencies": {
     "@headlessui/react": "^2.2.4",

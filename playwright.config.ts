@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const externalBaseURL = process.env.PLAYWRIGHT_BASE_URL;
+const baseURL = externalBaseURL ?? 'http://127.0.0.1:3100';
+
 export default defineConfig({
   testDir: './e2e',
   timeout: 30_000,
@@ -18,7 +21,7 @@ export default defineConfig({
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   snapshotPathTemplate: '{testDir}/__screenshots__/{arg}{ext}',
   use: {
-    baseURL: 'http://127.0.0.1:3100',
+    baseURL,
     colorScheme: 'dark',
     locale: 'en-US',
     reducedMotion: 'reduce',
@@ -36,10 +39,12 @@ export default defineConfig({
       use: { ...devices['Pixel 5'] },
     },
   ],
-  webServer: {
-    command: 'npm --prefix playground run dev -- --hostname 127.0.0.1 --port 3100',
-    url: 'http://127.0.0.1:3100',
-    timeout: 120_000,
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: externalBaseURL
+    ? undefined
+    : {
+        command: 'npm --prefix playground run dev -- --hostname 127.0.0.1 --port 3100',
+        url: baseURL,
+        timeout: 120_000,
+        reuseExistingServer: !process.env.CI,
+      },
 });

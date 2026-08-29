@@ -1,0 +1,81 @@
+{
+  "$schema": "./contracts/design-policy.schema.json",
+  "policyVersion": "1.0.0",
+  "canonicalPackage": "@ai-created/ui",
+  "extensions": [".css", ".js", ".jsx", ".mjs", ".cjs", ".ts", ".tsx"],
+  "canonicalTokenSources": ["styles/tokens.css"],
+  "canonicalPrimitiveSources": ["src/components/**"],
+  "canonicalPrimitives": [
+    "Badge",
+    "Button",
+    "Checkbox",
+    "ConfirmDialog",
+    "Dialog",
+    "Dropdown",
+    "EmptyState",
+    "ErrorReport",
+    "FieldGroup",
+    "FieldHint",
+    "FieldLabel",
+    "FieldLegend",
+    "ModalBody",
+    "ModalFooter",
+    "ModalHeader",
+    "ModalOverlay",
+    "ModalPanel",
+    "Notice",
+    "RadioGroup",
+    "Skeleton",
+    "Slider",
+    "Surface",
+    "Tabs",
+    "TextArea",
+    "TextInput",
+    "ThemedHeroImage",
+    "ThemeProvider",
+    "ThemeToggle",
+    "Toggle",
+    "Tooltip"
+  ],
+  "ignore": [
+    "node_modules/**",
+    ".next/**",
+    "coverage/**",
+    "playwright-report/**",
+    "test-results/**",
+    "tests/**",
+    "e2e/**",
+    "playground/**",
+    "docs/**",
+    "contracts/**",
+    "scripts/validate-design-policy.mjs"
+  ],
+  "approvedArchetypes": [
+    {
+      "id": "home",
+      "description": "Thesis-led entry page with proof, featured work, and a direct onward path.",
+      "routeExamples": ["/"]
+    },
+    {
+      "id": "browse",
+      "description": "Scan and compare collections with stable metadata hierarchy and honest empty states.",
+      "routeExamples": ["/products", "/stories", "/media"]
+    },
+    {
+      "id": "detail",
+      "description": "Focused product or editorial record with context, primary proof, and related links.",
+      "routeExamples": ["/products/[slug]", "/stories/[slug]"]
+    },
+    {
+      "id": "context",
+      "description": "Credibility and authored context tied directly back to products and shipped work.",
+      "routeExamples": ["/about", "/resume"]
+    },
+    {
+      "id": "workspace",
+      "description": "Task-oriented product surface with workflow navigation, compact summaries, and one focused work area.",
+      "routeExamples": ["/dashboard", "/settings"]
+    }
+  ],
+  "exceptions": []
+}

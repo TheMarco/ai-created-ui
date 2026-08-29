@@ -1,0 +1,39 @@
+# @ai-created/ui agent entrypoint
+
+This repository and package include a machine-readable design-system contract for AI agents. Never infer component props, variants, tokens, or behavior from model memory.
+
+## Required sequence
+
+1. Read `design-system.manifest.json` or query it with `npm run agent:query -- component <id>`.
+2. For page-level work, select a reviewed archetype with `npm run agent:query -- templates`.
+3. Import only public APIs from `@ai-created/ui`.
+4. Use semantic tokens through the shared CSS and Tailwind preset. Never consume `--ref-*` values in product UI.
+5. Implement every applicable loading, empty, error, permission, disabled, focus, and responsive state.
+6. Run `npm run agent:check`. A justified departure requires a scoped, owned, expiring exception in `ai-created-ui.config.json`.
+
+## Canonical authority
+
+1. runtime behavior and public API: `src/**`, `src/index.ts`
+2. design tokens: `styles/tokens.css`
+3. framework mappings: `tailwind-preset.js`
+4. component and construction guidance: `playground/src/components/design-system/componentDocs.ts`, `playground/src/components/design-system/specs/details.ts`, `playground/src/components/design-system/specs/construction.ts`, `playground/src/components/design-system/specs/registry.ts`
+5. system guidelines: `playground/src/components/design-system/principal-spec/registry.ts`
+6. narrative documentation: `AGENTS.md`, `DESIGN-SYSTEM.md`, `README.md`, `CLAUDE.md`
+
+The generated manifest is a consumption projection only. It never overrides canonical source.
+
+## Machine resources
+
+- Full context: `llms-full.txt` or `/llms-full.txt`
+- Component and guideline contract: `design-system.manifest.json` or `/design-system/manifest.json`
+- DTCG-shaped tokens: `/design-system/tokens.json`
+- Page templates: `templates/agent/manifest.json`
+- Universal operating rules: `AGENTS.md`
+- Query CLI: `npm run agent:query -- <command>`
+
+## Coverage
+
+- 22 documented component, provider, utility, and motion families
+- 94 verified public exports
+- 7 principal guideline chapters
+- 6 production page templates

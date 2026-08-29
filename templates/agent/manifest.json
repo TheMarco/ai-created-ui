@@ -1,0 +1,85 @@
+{
+  "$schema": "./manifest.schema.json",
+  "schemaVersion": "1.0.0",
+  "package": "@ai-created/ui",
+  "templates": [
+    {
+      "id": "directory",
+      "archetype": "browse",
+      "subtype": "directory",
+      "title": "Searchable directory",
+      "source": "templates/agent/directory-page.tsx",
+      "export": "DirectoryPage",
+      "whenToUse": "Use for browsable collections where people search, scan status, create records, and open details.",
+      "slots": ["page title", "page description", "primary action", "search", "result count", "record list"],
+      "states": ["loading", "ready", "empty", "error", "forbidden"],
+      "imports": ["Badge", "Button", "EmptyState", "ErrorReport", "FieldLabel", "Skeleton", "Surface", "TextInput"],
+      "requiredChecks": ["node scripts/verify-agent-templates.mjs", "npm run typecheck", "npm run lint"]
+    },
+    {
+      "id": "detail",
+      "archetype": "detail",
+      "subtype": "record",
+      "title": "Record detail",
+      "source": "templates/agent/detail-page.tsx",
+      "export": "DetailPage",
+      "whenToUse": "Use when one durable record needs identity, metadata, attributes, supporting context, and a clear edit action.",
+      "slots": ["back action", "record identity", "status", "primary action", "attribute list", "context", "notes"],
+      "states": ["loading", "ready", "not-found", "error", "forbidden"],
+      "imports": ["Badge", "Button", "EmptyState", "ErrorReport", "Notice", "Skeleton", "Surface"],
+      "requiredChecks": ["node scripts/verify-agent-templates.mjs", "npm run typecheck", "npm run lint"]
+    },
+    {
+      "id": "form",
+      "archetype": "workspace",
+      "subtype": "form",
+      "title": "Validated form",
+      "source": "templates/agent/form-page.tsx",
+      "export": "FormPage",
+      "whenToUse": "Use for creating or editing a focused resource with explicit validation, save feedback, and cancellation.",
+      "slots": ["form identity", "field groups", "inline validation", "submission status", "cancel action", "submit action"],
+      "states": ["ready", "saving", "success", "error", "forbidden"],
+      "imports": ["Button", "Checkbox", "FieldGroup", "FieldHint", "FieldLabel", "Notice", "Surface", "TextArea", "TextInput"],
+      "requiredChecks": ["node scripts/verify-agent-templates.mjs", "npm run typecheck", "npm run lint"]
+    },
+    {
+      "id": "settings",
+      "archetype": "workspace",
+      "subtype": "settings",
+      "title": "Account settings",
+      "source": "templates/agent/settings-page.tsx",
+      "export": "SettingsPage",
+      "whenToUse": "Use for durable user or workspace preferences grouped by purpose and saved as one explicit operation.",
+      "slots": ["settings navigation", "preference groups", "setting explanation", "setting control", "save feedback", "save action"],
+      "states": ["ready", "saving", "saved", "error", "forbidden"],
+      "imports": ["Button", "Notice", "Surface", "Toggle"],
+      "requiredChecks": ["node scripts/verify-agent-templates.mjs", "npm run typecheck", "npm run lint"]
+    },
+    {
+      "id": "dashboard",
+      "archetype": "workspace",
+      "subtype": "dashboard",
+      "title": "Operational dashboard",
+      "source": "templates/agent/dashboard-page.tsx",
+      "export": "DashboardPage",
+      "whenToUse": "Use when people need a concise operational overview, key metrics, recent changes, and one primary action.",
+      "slots": ["dashboard identity", "primary action", "metric grid", "activity feed"],
+      "states": ["loading", "ready", "empty", "error", "forbidden"],
+      "imports": ["Badge", "Button", "EmptyState", "ErrorReport", "Notice", "Skeleton", "Surface"],
+      "requiredChecks": ["node scripts/verify-agent-templates.mjs", "npm run typecheck", "npm run lint"]
+    },
+    {
+      "id": "onboarding",
+      "archetype": "workspace",
+      "subtype": "onboarding",
+      "title": "Guided onboarding",
+      "source": "templates/agent/onboarding-page.tsx",
+      "export": "OnboardingPage",
+      "whenToUse": "Use for a short, resumable setup sequence where progress, permission, save failure, and completion must be explicit.",
+      "slots": ["flow identity", "progress navigation", "step content", "field guidance", "back action", "continue action"],
+      "states": ["ready", "saving", "error", "forbidden", "complete"],
+      "imports": ["Badge", "Button", "FieldGroup", "FieldHint", "FieldLabel", "Notice", "Surface", "TextInput"],
+      "requiredChecks": ["node scripts/verify-agent-templates.mjs", "npm run typecheck", "npm run lint"]
+    }
+  ]
+}

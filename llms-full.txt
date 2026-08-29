@@ -1,0 +1,2129 @@
+# @ai-created/ui complete agent reference
+
+This file is generated. Do not edit it directly. Canonical sources are listed below, and the machine-readable equivalent is `design-system.manifest.json`.
+
+## Source precedence
+
+1. **runtime behavior and public API** (`src/**`, `src/index.ts`): Production source is canonical for semantics, props, and behavior.
+2. **design tokens** (`styles/tokens.css`): Token CSS is canonical. JSON and framework mappings are derived views.
+3. **framework mappings** (`tailwind-preset.js`): The preset maps canonical semantic CSS variables into utilities.
+4. **component and construction guidance** (`playground/src/components/design-system/componentDocs.ts`, `playground/src/components/design-system/specs/details.ts`, `playground/src/components/design-system/specs/construction.ts`, `playground/src/components/design-system/specs/registry.ts`): The merged registry is canonical for supported design and authoring guidance.
+5. **system guidelines** (`playground/src/components/design-system/principal-spec/registry.ts`): The principal guideline registry is canonical for cross-component practice.
+6. **narrative documentation** (`AGENTS.md`, `DESIGN-SYSTEM.md`, `README.md`, `CLAUDE.md`): Narrative documentation explains canonical sources and must not override them.
+
+## Non-negotiable build rules
+
+- Use public imports from `@ai-created/ui` only.
+- Import `@ai-created/ui/styles/tokens.css` once and load `@ai-created/ui/tailwind-preset`.
+- Use semantic token names and approved component variants. Do not invent raw colors, fonts, radii, shadows, primitive copies, or internal imports.
+- Compose existing primitives before adding a local abstraction.
+- Use native semantics and each component's documented keyboard and accessibility contract.
+- Preserve DOM order across responsive layouts.
+- Implement all applicable exceptional states.
+- Treat `className` as a composition hook, not a second visual language.
+- Run `npm run agent:check` before handoff.
+
+# Components
+
+## Button / buttonStyles (`button`)
+
+The primary action primitive, with explicit hierarchy, size, and semantic-button behavior.
+
+- Category: Actions & feedback
+- Source: `src/components/Button.tsx`
+- Public exports: `Button`, `buttonStyles`, `ButtonProps`, `ButtonSize`, `ButtonVariant`
+- Import: `import { Button, buttonStyles } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Actions/Button
+- Maturity: stable
+- Owner: Design systems action primitive owner
+
+### Use when
+
+- Submitting or confirming an action
+- Providing a compact inline or icon action
+
+### Avoid when
+
+- Navigation that should be a link
+- Non-interactive status text
+
+### Public API
+
+- `variant`: `ButtonVariant`. Default: primary. primary, secondary, destructive, ghost, filter, filter-active, or icon.
+- `size`: `ButtonSize`. Default: md. inline, sm, md, lg, xl, or icon.
+- `fullWidth`: `boolean`. Default: false. Expands the button to the available width.
+- `type`: `button | submit | reset`. Default: button. Native button type.
+- `className`: `string`. Default: undefined. Additional classes.
+
+### States
+
+- default: Idle and enabled. Activates on click, Enter, or Space.
+- hover: Pointer rests over an enabled button. No action until activation.
+- focus-visible: Keyboard focus enters the button. Remains the current tab stop.
+- disabled: disabled is true. Native activation and focus are suppressed.
+
+### Keyboard
+
+- Enter: Activates the button.
+- Space: Activates the button.
+- Tab / Shift+Tab: Moves focus to or from an enabled button.
+
+### Accessibility
+
+- Semantics: Native <button>; buttonStyles is presentation-only when used on another element.
+- Accessible name: Visible text supplies the name. Icon-only buttons require aria-label.
+- Keep type="button" unless the control intentionally submits or resets a form.
+- Do not remove the focus-visible outline.
+- Mark decorative icons aria-hidden.
+- A disabled action must use the disabled attribute, not only visual opacity.
+
+### Tokens
+
+- --color-action-primary: Primary and destructive background.
+- --color-action-primary-hover: Solid button hover background.
+- --color-border / --color-border-strong: Secondary, filter, and icon borders.
+- --color-focus: Global focus-visible outline.
+- --motion-fast: Color transition duration.
+- --radius-md: Container radius.
+
+### Composition
+
+- Children provide the button label or icon.
+- buttonStyles accepts the same visual options for custom elements.
+
+### Implementation notes
+
+- Button forwards its HTMLButtonElement ref and all native button attributes.
+- Consumer className is merged last and can override default Tailwind utilities.
+- Use buttonStyles only when another semantic element genuinely needs the same appearance.
+
+### Recipes
+
+- Submit action: Use a native submit type inside a form.
+
+```tsx
+<Button type="submit">Save changes</Button>
+```
+
+### Content and authoring limits
+
+- Label: One line, recommended 2 to 24 characters, maximum 32. Never truncate; revise the label or allow the parent to allocate more width.
+- Icons: At most one icon on either side. Remove redundant icons.
+- Design-tool limit: Figma interactive variants may demonstrate hover and press but cannot reproduce native button semantics.
+- Design-tool limit: Do not detach instances to make one-off sizes.
+- Code limit: Icon-only use requires an accessible name that is not represented by visual geometry.
+- Code limit: buttonStyles can style another element but does not supply button behavior.
+
+### Required tests
+
+- Unit: Defaults to primary, md, and type button.
+- Unit: Forwards ref, className, disabled, and native attributes.
+- Interaction: Activates by pointer, Enter, and Space; disabled buttons do not activate.
+- Accessibility: Has an accessible name and no axe violations in every variant.
+- Visual: Snapshot every variant, size, disabled state, focus-visible state, and both themes.
+
+## Badge (`badge`)
+
+A compact, non-interactive label for status, category, or short metadata.
+
+- Category: Actions & feedback
+- Source: `src/components/Badge.tsx`
+- Public exports: `Badge`, `BadgeProps`, `BadgeVariant`
+- Import: `import { Badge } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Feedback/Badge
+- Maturity: stable
+- Owner: Design systems feedback owner
+
+### Use when
+
+- Showing compact metadata or status
+
+### Avoid when
+
+- Long messages
+- Interactive controls
+
+### Public API
+
+- `variant`: `BadgeVariant`. Default: default. default, muted, success, warning, error, or info.
+- `className`: `string`. Default: undefined. Additional classes.
+- `...props`: `HTMLAttributes<HTMLSpanElement>`. Default: undefined. Native span attributes.
+
+### States
+
+- default: Default variant. Static metadata.
+- muted: Muted variant. Static metadata.
+- success: Positive status. Static metadata.
+- warning: Cautionary status. Static metadata.
+- error: Failure status. Static metadata.
+- info: Informational status. Static metadata.
+
+### Keyboard
+
+- None documented.
+
+### Accessibility
+
+- Semantics: Plain inline <span> with no implicit role.
+- Accessible name: Text content is read in surrounding context.
+- Write a meaningful label rather than encoding meaning only by color.
+- Do not add interaction to Badge; pair it with a real control when needed.
+
+### Tokens
+
+- --color-surface / --color-surface2: Neutral fills.
+- --color-border: Neutral border.
+- --color-success / warning / info / error: Semantic text.
+- --color-*-surface / --color-*-border: Semantic fill and border pairs.
+
+### Composition
+
+- Place beside a title, table value, or list item.
+
+### Implementation notes
+
+- Forwards a span ref and accepts native span attributes.
+- Use variant for semantic tone and className only for contextual layout.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Label: One to three words, maximum 24 characters. Do not truncate; replace with shorter vocabulary.
+- Design-tool limit: Do not add interactive variants to the design asset.
+- Code limit: Badge remains a span and must not receive click behavior.
+
+### Required tests
+
+- Unit: Renders a span and maps all six variants.
+- Unit: Forwards ref and native attributes.
+- Interaction: No interaction is expected.
+- Accessibility: Text remains meaningful without color.
+- Visual: Capture every tone in dark and light modes.
+
+## Surface / surfaceStyles (`surface`)
+
+A themed structural container that groups related content without imposing semantics.
+
+- Category: Layout & content
+- Source: `src/components/Surface.tsx`
+- Public exports: `Surface`, `surfaceStyles`, `SurfaceProps`, `SurfaceVariant`, `SurfacePadding`, `SurfaceInteraction`
+- Import: `import { Surface, surfaceStyles } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Layout/Surface
+- Maturity: stable
+- Owner: Design systems layout primitive owner
+
+### Use when
+
+- Grouping related content
+- Creating cards or inset sections
+
+### Avoid when
+
+- A plain layout wrapper is sufficient
+
+### Public API
+
+- `variant`: `SurfaceVariant`. Default: default. default, muted, accent, inset, success, warning, info, or error.
+- `padding`: `SurfacePadding`. Default: none. none, sm, md, lg, xl, or responsive.
+- `interaction`: `SurfaceInteraction`. Default: none. none, group, or within interaction styling.
+- `className`: `string`. Default: undefined. Additional classes.
+
+### States
+
+- default: No interaction. Pure layout container.
+- interactive group: A parent group is hovered or focus-visible. Feedback follows the parent control.
+- interactive within: The surface is hovered or contains focus. Does not become keyboard interactive by itself.
+
+### Keyboard
+
+- None documented.
+
+### Accessibility
+
+- Semantics: Default element is a non-semantic <div>. surfaceStyles can style another semantic root.
+- Accessible name: The surface has no name by default.
+- Add a heading, region label, list semantics, or interactive wrapper when content needs structure.
+- Never imply clickability through interaction styling without a keyboard-operable element.
+
+### Tokens
+
+- --color-surface / --color-surface2 / --color-bg: Structural backgrounds.
+- --color-border / --color-border-strong: Default border and interaction emphasis.
+- --color-accent-border: Accent border.
+- --color-*-surface / --color-*-border: Semantic variants.
+- --radius-md: Corner radius.
+
+### Composition
+
+- Use as the visual root of EmptyState and Notice.
+- surfaceStyles supports custom semantic elements.
+
+### Implementation notes
+
+- Surface forwards a div ref and native HTML attributes.
+- Use surfaceStyles to apply the same visual contract to a semantic article, section, or link.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Nested surfaces: Maximum one bordered child layer in ordinary product UI. Flatten excess wrappers or remove an inner border.
+- Design-tool limit: Interaction variants are visual demonstrations and do not make the Figma layer operable.
+- Code limit: Surface has no semantics or interaction by itself; use a semantic wrapper when needed.
+
+### Required tests
+
+- Unit: Maps every variant, padding, and interaction value.
+- Unit: Consumer className overrides default utilities.
+- Interaction: Group and focus-within borders respond to their documented triggers.
+- Accessibility: Semantic wrappers retain their roles and names.
+- Visual: Cover all variants plus interaction borders in both themes.
+
+## Notice (`notice`)
+
+An inline live-region message for informational, positive, cautionary, or error feedback.
+
+- Category: Actions & feedback
+- Source: `src/components/Notice.tsx`
+- Public exports: `Notice`, `NoticeProps`, `NoticeVariant`
+- Import: `import { Notice } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Feedback/Notice
+- Maturity: stable
+- Owner: Design systems feedback owner
+
+### Use when
+
+- Explaining status near the relevant content
+
+### Avoid when
+
+- Transient toast notifications
+- Multi-step forms needing field-level errors
+
+### Public API
+
+- `variant`: `NoticeVariant`. Default: default. default, info, success, warning, or error.
+- `title`: `string`. Default: undefined. Optional notice heading.
+- `children`: `ReactNode`. Default: undefined. Message content.
+- `role`: `string`. Default: status or alert. Override the semantic role.
+- `aria-live`: `polite | assertive | off`. Default: polite or assertive. Override announcement behavior.
+
+### States
+
+- default: Neutral message. Polite status announcement.
+- info: Informational message. Polite status announcement.
+- success: Successful outcome. Polite status announcement.
+- warning: Caution or required review. Polite status announcement.
+- error: Failed outcome. Assertive alert announcement.
+
+### Keyboard
+
+- None documented.
+
+### Accessibility
+
+- Semantics: role=status by default; error uses role=alert. Both are overridable.
+- Accessible name: Title and body text form the announcement.
+- Keep icons decorative.
+- Avoid inserting a status region before its content is ready if it should be announced as a change.
+- Use error only for information that merits an assertive interruption.
+
+### Tokens
+
+- --color-*-surface: Tone background.
+- --color-*-border: Tone border.
+- --color-info / success / warning / error: Title and icon.
+- --color-text2: Body copy.
+
+### Composition
+
+- Use ErrorReport for expandable technical details.
+
+### Implementation notes
+
+- The role and aria-live defaults are derived from variant.
+- centered and hideIcon change presentation only.
+- Use ErrorReport when technical details need disclosure and copying.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Title: One line, recommended maximum 48 characters. Wrap only when localization requires it.
+- Body: Two short paragraphs or 240 characters. Move complex guidance into adjacent content.
+- Design-tool limit: Prototype presentation does not reproduce live-region announcements.
+- Code limit: Custom role and aria-live values must remain aligned with severity.
+
+### Required tests
+
+- Unit: Derives Surface variant, role, and aria-live correctly.
+- Unit: Honors explicit role and aria-live overrides.
+- Interaction: A newly rendered error is announced; centered and hidden-icon options preserve content.
+- Accessibility: Icons are hidden and live-region semantics match severity.
+- Visual: Capture every tone, title/body combination, centered treatment, and both themes.
+
+## Skeleton (`skeleton`)
+
+A decorative loading placeholder that reserves the final content footprint.
+
+- Category: Actions & feedback
+- Source: `src/components/Skeleton.tsx`
+- Public exports: `Skeleton`, `SkeletonProps`
+- Import: `import { Skeleton } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Feedback/Skeleton
+- Maturity: stable
+- Owner: Design systems feedback owner
+
+### Use when
+
+- Loading predictable content regions
+
+### Avoid when
+
+- Unknown layouts where a spinner is clearer
+
+### Public API
+
+- `className`: `string`. Default: undefined. Controls size and shape with utility classes.
+- `...props`: `HTMLAttributes<HTMLDivElement>`. Default: undefined. Native div attributes.
+
+### States
+
+- loading: Content is pending. Reserves layout only.
+
+### Keyboard
+
+- None documented.
+
+### Accessibility
+
+- Semantics: Decorative <div aria-hidden="true">.
+- Accessible name: No accessible name; the surrounding loading region owns status.
+- Provide a separate loading announcement when users need one.
+- Do not put focusable content inside the skeleton.
+- Respect reduced-motion behavior.
+
+### Tokens
+
+- --color-surface2: Placeholder fill.
+- --radius-md: Default radius.
+
+### Composition
+
+- Match the dimensions of the content it replaces.
+
+### Implementation notes
+
+- Set dimensions and alternate shapes with className.
+- The placeholder is always aria-hidden and forwards div attributes.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Composition: Represent only the primary visible structure, usually three to seven blocks. Remove low-value decorative placeholders.
+- Design-tool limit: Figma animation is illustrative and does not validate reduced-motion behavior.
+- Code limit: The primitive does not announce loading; the surrounding region must do so.
+
+### Required tests
+
+- Unit: Forwards className, ref, and div attributes.
+- Unit: Always emits aria-hidden true.
+- Interaction: Replaced content does not cause large layout shift.
+- Accessibility: Loading status exists outside the hidden placeholder when required.
+- Visual: Compare content and skeleton dimensions; verify reduced-motion rendering.
+
+## EmptyState (`empty-state`)
+
+A calm, explanatory collection state with an optional next-step action.
+
+- Category: Layout & content
+- Source: `src/components/EmptyState.tsx`
+- Public exports: `EmptyState`, `EmptyStateProps`
+- Import: `import { EmptyState, Button } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Content/Empty state
+- Maturity: stable
+- Owner: Design systems content pattern owner
+
+### Use when
+
+- Empty lists, searches, or first-use screens
+
+### Avoid when
+
+- Loading states
+- Error states
+
+### Public API
+
+- `icon`: `LucideIcon`. Default: undefined. Optional decorative icon.
+- `title`: `string`. Default: required. Short empty-state heading.
+- `description`: `string`. Default: undefined. Supporting explanation.
+- `children`: `ReactNode`. Default: undefined. Optional action content.
+- `className`: `string`. Default: undefined. Additional classes.
+
+### States
+
+- empty: A successfully loaded collection has no items. Action follows its own component behavior.
+
+### Keyboard
+
+- Tab: Moves to actions supplied as children.
+
+### Accessibility
+
+- Semantics: Non-semantic Surface container; child action preserves its own semantics.
+- Accessible name: The visible title names the state in reading order.
+- Use a clear title that distinguishes empty from loading or failure.
+- Icons are decorative.
+- Supply a heading element through composition when the surrounding page hierarchy requires one.
+
+### Tokens
+
+- --color-surface2: Muted Surface fill.
+- --color-border: Container border.
+- --color-text2: Title.
+- --color-text3: Icon and description.
+
+### Composition
+
+- Place actions as children, commonly a Button.
+
+### Implementation notes
+
+- Accepts all div attributes and forwards the container ref through Surface.
+- The icon prop accepts a Lucide icon component and marks it decorative.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Title: One line preferred, maximum two lines. Wrap to two lines; then revise.
+- Description: Maximum three lines or about 180 characters. Move longer onboarding guidance outside the component.
+- Actions: One primary action, optional one secondary text link. Remove lower-priority actions.
+- Design-tool limit: Do not detach to fit extra actions or long instructional content.
+- Code limit: Title is rendered as text, so the consumer must provide surrounding heading hierarchy when needed.
+
+### Required tests
+
+- Unit: Renders required title and optional icon, description, and children.
+- Unit: Forwards Surface div attributes.
+- Interaction: Optional action remains keyboard operable.
+- Accessibility: Reading order is icon-hidden, title, description, action.
+- Visual: Capture with/without icon and action at mobile and desktop padding.
+
+## ErrorReport (`error-report`)
+
+An error notice with optional expandable, copyable diagnostics for support workflows.
+
+- Category: Actions & feedback
+- Source: `src/components/ErrorReport.tsx`
+- Public exports: `ErrorReport`, `ErrorReportProps`
+- Import: `import { ErrorReport } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Feedback/Error report
+- Maturity: stable
+- Owner: Design systems reliability pattern owner
+
+### Use when
+
+- A recoverable operation failed
+- Users may need to share debug details
+
+### Avoid when
+
+- Sensitive diagnostics should never be exposed
+
+### Public API
+
+- `message`: `string`. Default: required. User-facing error message.
+- `title`: `string`. Default: Something went wrong. Error heading.
+- `details`: `string | null`. Default: undefined. Optional technical details.
+- `timestamp`: `string`. Default: current ISO time. Optional diagnostic timestamp.
+
+### States
+
+- collapsed: Details exist but disclosure is closed. Technical details are not mounted.
+- expanded: Disclosure is activated. Details include error, timestamp, and current path.
+- copied: Clipboard write resolves. Diagnostic string is on the clipboard.
+
+### Keyboard
+
+- Enter / Space: Toggles diagnostic disclosure when focused.
+- Enter / Space: Copies diagnostics from the copy button.
+- Tab: Moves through disclosure and copy action when present.
+
+### Accessibility
+
+- Semantics: Composes role=alert Notice plus native disclosure and copy buttons.
+- Accessible name: The Notice title and message identify the error; buttons have visible names.
+- Never include credentials, tokens, personal data, or full query strings in details.
+- Preserve aria-expanded and aria-controls on the disclosure.
+- Copy confirmation must remain visible long enough to perceive.
+
+### Tokens
+
+- --color-error / --color-error-surface / --color-error-border: Error Notice treatment.
+- --color-surface2: Diagnostic code block.
+- --color-text2 / --color-text3: Message and low-emphasis controls.
+
+### Composition
+
+- Place in the failed content region.
+
+### Implementation notes
+
+- details controls whether the disclosure and copy action exist.
+- timestamp should be supplied for deterministic reports; otherwise it is created when debugInfo renders.
+- The URL is limited to origin and pathname.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Title: One line preferred. Allow localization wrap.
+- Message: One or two sentences. Move troubleshooting steps below the component.
+- Details: Sanitized diagnostic text only, maximum practical payload 4KB. Provide a support attachment flow for larger logs.
+- Design-tool limit: Clipboard and disclosure behavior must be annotated because Figma cannot validate browser permissions.
+- Code limit: Never pass credentials, tokens, personal data, or full URLs with sensitive query parameters to details.
+
+### Required tests
+
+- Unit: Assembles diagnostic text with optional details and timestamp.
+- Unit: Resets copied state after two seconds.
+- Interaction: Disclosure toggles and clipboard receives the expected sanitized string.
+- Accessibility: Alert, disclosure relationship, button names, and focus order are valid.
+- Visual: Capture collapsed, expanded, copied, long-details, and both themes.
+
+## Field family / style helpers (`field`)
+
+Composable labels, hints, text controls, and style helpers for consistent form fields.
+
+- Category: Fields & selection
+- Source: `src/components/Field.tsx`
+- Public exports: `FieldGroup`, `FieldLabel`, `FieldLegend`, `FieldHint`, `TextInput`, `TextArea`, `fieldGroupStyles`, `fieldLabelStyles`, `fieldLegendStyles`, `fieldHintStyles`, `inputStyles`
+- Import: `import { FieldGroup, FieldLabel, FieldHint, TextInput, TextArea } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Forms/Field
+- Maturity: stable
+- Owner: Design systems form foundations owner
+
+### Use when
+
+- Text inputs, textareas, and grouped controls
+
+### Avoid when
+
+- Unrelated display text
+
+### Public API
+
+- `FieldGroup`: `HTMLAttributes<HTMLDivElement>`. Default: undefined. Groups a label, control, and hint.
+- `FieldLabel`: `LabelHTMLAttributes<HTMLLabelElement>`. Default: undefined. Native label.
+- `FieldLegend`: `HTMLAttributes<HTMLSpanElement>`. Default: undefined. Visual legend text, not a semantic fieldset legend.
+- `FieldHint`: `HTMLAttributes<HTMLParagraphElement>`. Default: undefined. Supporting or validation text.
+- `TextInput`: `InputHTMLAttributes<HTMLInputElement>`. Default: undefined. Native text input.
+- `TextArea`: `TextareaHTMLAttributes<HTMLTextAreaElement>`. Default: undefined. Native textarea.
+
+### States
+
+- default: Idle enabled field. Native text editing.
+- focus-visible: Keyboard focus enters the control. Accepts keyboard input.
+- disabled: Native disabled is set. Editing and focus are suppressed.
+- invalid: Consumer sets aria-invalid and error styling/content. Validation message explains correction.
+
+### Keyboard
+
+- Tab / Shift+Tab: Moves focus into or out of the control.
+- Standard text editing keys: Edit, select, undo, and navigate text according to the native platform.
+
+### Accessibility
+
+- Semantics: Native label, input, textarea, and paragraph primitives; FieldGroup and FieldLegend are presentation-only.
+- Accessible name: Associate FieldLabel with the control using htmlFor/id, or nest the control.
+- Connect FieldHint and validation errors with aria-describedby.
+- Set aria-invalid when validation fails.
+- Use a real fieldset and legend for grouped choices; FieldLegend is only a styled span.
+- Preserve native autocomplete, inputMode, type, and name attributes.
+
+### Tokens
+
+- --color-surface2: Control background.
+- --color-border / --color-border-strong: Default and hover borders.
+- --color-accent-border: Focused border.
+- --color-text / --color-text2 / --color-text3: Value, label/help, and placeholder hierarchy.
+- --radius-md: Control radius.
+
+### Composition
+
+- Use FieldGroup with FieldLabel, TextInput or TextArea, and FieldHint.
+- Style helpers return class names for custom controls.
+
+### Implementation notes
+
+- Every primitive forwards its native ref and attributes.
+- Style helpers support custom controls without duplicating class contracts.
+- The family does not generate ids or accessibility relationships for the consumer.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Label: One concise line preferred. Allow wrap, never truncate.
+- Hint or error: One or two short sentences. Move extended help outside the field.
+- Text area: Default visible size should cover the expected response, then grow or scroll. Use a counter or explicit maximum for constrained data.
+- Design-tool limit: Figma properties cannot guarantee label, hint, and control ID associations.
+- Code limit: Consumers must connect htmlFor, id, aria-describedby, required, and aria-invalid correctly.
+
+### Required tests
+
+- Unit: Each primitive forwards refs and native props.
+- Unit: Style helpers merge consumer overrides last.
+- Interaction: Label click focuses the associated control and typing updates the form model.
+- Accessibility: Label, description, validation, autocomplete, and disabled semantics are correct.
+- Visual: Capture input/textarea default, placeholder, focus, disabled, invalid, and both themes.
+
+## Checkbox (`checkbox`)
+
+A controlled native checkbox for one independent boolean choice.
+
+- Category: Fields & selection
+- Source: `src/components/Checkbox.tsx`
+- Public exports: `Checkbox`, `CheckboxProps`
+- Import: `import { Checkbox } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Forms/Checkbox
+- Maturity: stable
+- Owner: Design systems form foundations owner
+
+### Use when
+
+- One or more independent options
+
+### Avoid when
+
+- Mutually exclusive choices
+
+### Public API
+
+- `checked`: `boolean`. Default: required. Controlled checked state.
+- `onChange`: `(checked: boolean) => void`. Default: required. Called when the value changes.
+- `label`: `string`. Default: required. Visible accessible label.
+- `disabled`: `boolean`. Default: false. Disables the native input.
+- `className`: `string`. Default: undefined. Additional classes.
+
+### States
+
+- checked: checked is true. Activation requests false through onChange.
+- unchecked: checked is false. Activation requests true through onChange.
+- disabled: disabled is true. Native input cannot focus or change.
+- focus-visible: Keyboard focus reaches the hidden input. Space toggles the input.
+
+### Keyboard
+
+- Space: Toggles the focused checkbox.
+- Tab / Shift+Tab: Moves focus to or from an enabled checkbox.
+
+### Accessibility
+
+- Semantics: Native checkbox nested in an associated label.
+- Accessible name: Required visible label string supplies the name.
+- State is controlled; update checked in onChange.
+- Do not hide or replace the visible label with color/icon only.
+- Use disabled for unavailable choices.
+
+### Tokens
+
+- --color-action-primary: Checked fill and border.
+- --color-border-strong: Unchecked border.
+- --color-focus: Peer focus-visible outline.
+- --color-text2: Label.
+- --motion-fast: State transition.
+
+### Composition
+
+- Use inside a FieldGroup when additional help is needed.
+
+### Implementation notes
+
+- A generated id connects the label and input.
+- The component forwards the HTMLInputElement ref.
+- onChange receives the next boolean value rather than a DOM event.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Label: One sentence, recommended maximum two lines. Wrap naturally; do not truncate.
+- Design-tool limit: Prototype checked state does not validate native input behavior.
+- Code limit: Component is controlled; the consumer must update checked in onChange.
+
+### Required tests
+
+- Unit: Reflects controlled checked and disabled props.
+- Unit: Calls onChange once with the next value.
+- Interaction: Label click and Space toggle; disabled state does not.
+- Accessibility: Native checkbox has visible associated label and focus indicator.
+- Visual: Capture checked/unchecked, hover, focus, disabled, long label, and both themes.
+
+## RadioGroup (`radio-group`)
+
+A controlled fieldset for selecting exactly one value from a small, visible option set.
+
+- Category: Fields & selection
+- Source: `src/components/RadioGroup.tsx`
+- Public exports: `RadioGroup`, `RadioGroupProps`, `RadioOption`
+- Import: `import { RadioGroup, type RadioOption } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Forms/Radio group
+- Maturity: stable
+- Owner: Design systems form foundations owner
+
+### Use when
+
+- Mutually exclusive choices
+
+### Avoid when
+
+- Independent toggles
+- Large searchable option sets
+
+### Public API
+
+- `options`: `RadioOption<T>[]`. Default: required. Options with value, label, and optional disabled.
+- `value`: `T`. Default: required. Controlled selected value.
+- `onChange`: `(value: T) => void`. Default: required. Called when selection changes.
+- `legend`: `string`. Default: required. Fieldset legend.
+- `name`: `string`. Default: generated id. Native radio group name.
+- `disabled`: `boolean`. Default: false. Disables the group.
+- `orientation`: `horizontal | vertical`. Default: vertical. Option layout.
+
+### States
+
+- selected: Option value equals group value. This option is the group tab stop.
+- unselected: Option value differs. Activation selects this value.
+- disabled: Group or option is disabled. Option cannot receive focus or selection.
+- focus-visible: Keyboard focus reaches a radio. Native radio navigation remains active.
+
+### Keyboard
+
+- Arrow keys: Moves selection and focus among enabled native radios.
+- Space: Selects the focused option.
+- Tab: Enters or leaves the radio group as one stop.
+
+### Accessibility
+
+- Semantics: Native fieldset, legend, and radio inputs; an additional radiogroup wrapper carries aria-label.
+- Accessible name: The required legend names the group; each visible option label names its radio.
+- Provide at least two meaningful options.
+- Do not duplicate option values.
+- Disabled options must remain understandable in context.
+- Keep name stable when integrating with native form submission.
+
+### Tokens
+
+- --color-action-primary: Selected indicator.
+- --color-border-strong: Unselected border.
+- --color-focus: Peer focus outline.
+- --color-text2: Legend and option labels.
+
+### Composition
+
+- Use RadioOption values as stable domain keys.
+
+### Implementation notes
+
+- Generic string values preserve a narrow domain union.
+- The fieldset ref is forwarded.
+- onChange receives the chosen value directly.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Options: Recommended two to seven choices. Use Dropdown or a searchable picker for larger sets.
+- Option label: One line preferred, maximum two lines. Wrap and align indicator with the first line.
+- Design-tool limit: Figma variants cannot reproduce native arrow-key selection.
+- Code limit: Values are stable domain keys and must not be translated even when labels are.
+
+### Required tests
+
+- Unit: Renders options, generated ids/name, orientation, and disabled merging.
+- Unit: Calls onChange with the activated value.
+- Interaction: Pointer, Space, and arrow behavior select enabled options only.
+- Accessibility: Fieldset/legend/input/label relationships and group name are valid.
+- Visual: Capture orientations, selection, focus, group disabled, option disabled, and both themes.
+
+## Toggle (`toggle`)
+
+A controlled switch for an immediate on/off setting.
+
+- Category: Fields & selection
+- Source: `src/components/Toggle.tsx`
+- Public exports: `Toggle`, `ToggleProps`
+- Import: `import { Toggle } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Forms/Toggle
+- Maturity: stable
+- Owner: Design systems form foundations owner
+
+### Use when
+
+- Immediate boolean settings
+
+### Avoid when
+
+- Actions that need confirmation
+- Multiple-choice selection
+
+### Public API
+
+- `checked`: `boolean`. Default: required. Controlled switch state.
+- `onChange`: `(checked: boolean) => void`. Default: required. Called when toggled.
+- `label`: `string`. Default: required. Visible label.
+- `disabled`: `boolean`. Default: false. Disables the switch.
+- `className`: `string`. Default: undefined. Additional classes.
+
+### States
+
+- on: checked is true. Activation requests false.
+- off: checked is false. Activation requests true.
+- disabled: disabled is true. Native button cannot focus or activate.
+- focus-visible: Keyboard focus reaches the switch. Space or Enter toggles.
+
+### Keyboard
+
+- Enter / Space: Toggles the switch.
+- Tab / Shift+Tab: Moves focus to or from an enabled switch.
+
+### Accessibility
+
+- Semantics: Native button with role=switch and aria-checked.
+- Accessible name: Required visible label is included in the button name.
+- Keep label text stable between states.
+- State must be controlled and updated from onChange.
+- Do not announce on/off again in the label; switch semantics already expose it.
+
+### Tokens
+
+- --color-action-primary: On track fill and border.
+- --color-surface2: Off track fill.
+- --color-border-strong: Off track border.
+- --color-focus: Track focus outline.
+- --motion-fast: Track color and thumb movement.
+
+### Composition
+
+- Use beside settings that apply immediately.
+
+### Implementation notes
+
+- Forwards an HTMLButtonElement ref.
+- onChange receives the next boolean immediately.
+- The visual track and thumb are aria-hidden.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Label: Short setting phrase, maximum two lines. Wrap; never truncate.
+- Design-tool limit: Prototype motion does not validate aria-checked.
+- Code limit: The component is controlled and represents an immediate setting, not a deferred form choice.
+
+### Required tests
+
+- Unit: Reflects checked and disabled state and calls onChange with the inverse.
+- Unit: Always uses type button.
+- Interaction: Pointer, Enter, and Space toggle once; disabled does not.
+- Accessibility: Role, name, aria-checked, focus order, and focus indicator are valid.
+- Visual: Capture on/off, hover, focus, disabled, and both themes.
+
+## Slider (`slider`)
+
+A controlled native range input for choosing a numeric value from a bounded continuum.
+
+- Category: Fields & selection
+- Source: `src/components/Slider.tsx`
+- Public exports: `Slider`, `SliderProps`
+- Import: `import { Slider } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Forms/Slider
+- Maturity: stable
+- Owner: Design systems form foundations owner
+
+### Use when
+
+- Continuous or stepped numeric settings
+
+### Avoid when
+
+- Text values needing precise direct entry
+
+### Public API
+
+- `value`: `number`. Default: required. Controlled numeric value.
+- `onChange`: `(value: number) => void`. Default: required. Called with the new value.
+- `label`: `string`. Default: required. Accessible label.
+- `min`: `number`. Default: 0. Minimum value.
+- `max`: `number`. Default: 100. Maximum value.
+- `step`: `number`. Default: 1. Increment.
+- `showValue`: `boolean`. Default: true. Shows formatted value.
+- `formatValue`: `(value: number) => string`. Default: String(value). Formats the displayed value.
+
+### States
+
+- default: Enabled range input. Pointer drag and native key commands change by step.
+- disabled: disabled is true. Focus and input are suppressed.
+- focus-visible: Keyboard focus reaches the range. Arrow and page keys adjust value.
+
+### Keyboard
+
+- Arrow Left / Down: Decreases by one step.
+- Arrow Right / Up: Increases by one step.
+- Home / End: Moves to minimum / maximum.
+- Page Up / Page Down: Changes by the browser-defined larger increment.
+
+### Accessibility
+
+- Semantics: Native input[type=range] associated with a label and optional output.
+- Accessible name: Required label names the range.
+- Provide useful min, max, and step values.
+- aria-valuetext must match the visible formatted output.
+- Do not use color alone to communicate the value; thumb position and output remain available.
+
+### Tokens
+
+- --color-action-primary: Progress fill and thumb.
+- --color-surface2: Unfilled track.
+- --color-border: Track border.
+- --color-bg: Thumb border separation.
+- --color-focus: Range focus outline.
+
+### Composition
+
+- Use formatValue for units or percentages.
+
+### Implementation notes
+
+- onChange receives a number, not an event.
+- Progress is clamped to 0-100%, including max equal to min.
+- formatValue drives both visible output and aria-valuetext.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Label: One concise line. Wrap only when required by localization.
+- Displayed value: One short formatted number and unit. Use compact localized formatting.
+- Design-tool limit: Figma number properties demonstrate position but not keyboard increments.
+- Code limit: min must be less than max, step must be positive, and value must remain within the range.
+
+### Required tests
+
+- Unit: Computes and clamps progress; handles max equal to min.
+- Unit: Formats output and aria-valuetext consistently.
+- Interaction: Pointer and keyboard changes call onChange with numeric values within range.
+- Accessibility: Label, output htmlFor, range values, disabled state, and focus ring are valid.
+- Visual: Capture min/mid/max, focus, hover, disabled, hidden output, custom units, and themes.
+
+## Dropdown (`dropdown`)
+
+An accessible controlled listbox for choosing one option in compact space.
+
+- Category: Fields & selection
+- Source: `src/components/Dropdown.tsx`
+- Public exports: `Dropdown`, `DropdownProps`, `DropdownOption`
+- Import: `import { Dropdown, type DropdownOption } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Forms/Dropdown
+- Maturity: stable
+- Owner: Design systems form foundations owner
+
+### Use when
+
+- A listbox fits the available space
+
+### Avoid when
+
+- A few always-visible options
+- Searchable large datasets
+
+### Public API
+
+- `options`: `DropdownOption<T>[]`. Default: required. Options with value, label, and optional disabled.
+- `value`: `T`. Default: required. Controlled selected value.
+- `onChange`: `(value: T) => void`. Default: required. Called on selection.
+- `label`: `string`. Default: required. Listbox label.
+- `placeholder`: `string`. Default: Select an option. Fallback text.
+- `disabled`: `boolean`. Default: false. Disables the listbox.
+
+### States
+
+- closed: Listbox is idle. Activation opens the options panel.
+- open: Trigger is activated. Focus and keyboard navigation move through options.
+- selected: Option value matches value. Choosing another option calls onChange and closes.
+- disabled: Group or option is disabled. Disabled trigger cannot open; disabled option cannot select.
+
+### Keyboard
+
+- Enter / Space / Arrow Down: Opens the listbox and enters option navigation.
+- Arrow Up / Arrow Down: Moves the active option.
+- Enter / Space: Selects the active option.
+- Escape: Closes without changing selection.
+- Home / End: Moves to the first / last enabled option.
+- Typeahead: Moves to an option matching typed characters.
+
+### Accessibility
+
+- Semantics: Headless UI Listbox with labelled button, options, and managed focus.
+- Accessible name: Required visible label names the listbox.
+- Use stable unique option values.
+- Provide a selected value that exists in options or intentionally show the placeholder.
+- Disabled options must not be the only way to explain unavailable choices.
+- Do not replace the listbox with a native select when rich behavior is unnecessary without considering platform benefits.
+
+### Tokens
+
+- --color-surface2: Trigger and active option background.
+- --color-surface: Options panel.
+- --color-border / --color-border-strong: Resting and hover borders.
+- --color-focus: Trigger focus outline.
+- --color-accent: Selected check marker.
+
+### Composition
+
+- Use DropdownOption disabled for unavailable values.
+
+### Implementation notes
+
+- Generic string values preserve domain types.
+- The trigger button ref is forwarded.
+- Headless UI owns option roles, focus, and dismissal.
+- An Enter handler normalizes trigger opening behavior.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Options: Recommended two to fifteen options. Use search or autocomplete for larger datasets.
+- Option label: One line, recommended maximum 40 characters. Truncate visually only when the full value is otherwise available.
+- Design-tool limit: Figma open state does not validate focus movement, collision handling, or scrolling.
+- Code limit: Options use stable untranslated values and localized labels.
+
+### Required tests
+
+- Unit: Resolves selected label and placeholder and forwards trigger ref.
+- Unit: Calls onChange with the selected enabled value.
+- Interaction: Open, arrow, select, escape, outside dismissal, typeahead, and disabled flows work.
+- Accessibility: Label, expanded state, active descendant/option semantics, and focus restoration are valid.
+- Visual: Capture closed/open, placeholder, selected, active, disabled option/trigger, overflow, and themes.
+
+## Tabs / useTabPanelProps (`tabs`)
+
+A controlled, keyboard-navigable tablist for switching between peer panels in place.
+
+- Category: Fields & selection
+- Source: `src/components/Tabs.tsx`
+- Public exports: `Tabs`, `TabsProps`, `Tab`, `useTabPanelProps`
+- Import: `import { Tabs, useTabPanelProps, type Tab } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Navigation/Tabs
+- Maturity: stable
+- Owner: Design systems navigation primitive owner
+
+### Use when
+
+- Small sets of peer content panels
+
+### Avoid when
+
+- Navigation between pages
+
+### Public API
+
+- `tabs`: `Tab<T>[]`. Default: required. Keys, labels, and optional icons.
+- `active`: `T`. Default: required. Active tab key.
+- `onChange`: `(key: T) => void`. Default: required. Called when tab changes.
+- `label`: `string`. Default: required. Tablist accessible label.
+- `id`: `string`. Default: generated id. Stable group id for panels.
+
+### States
+
+- active: Tab key equals active. tabIndex is 0; associated panel is visible.
+- inactive: Tab key differs from active. tabIndex is -1; activation selects it.
+- focus-visible: Roving focus reaches a tab. Arrow, Home, and End select and focus another tab.
+
+### Keyboard
+
+- Arrow Right / Arrow Left: Selects and focuses the next / previous tab with wraparound.
+- Home / End: Selects and focuses the first / last tab.
+- Enter / Space: Native button activation selects a focused tab.
+- Tab: Moves from the active tab into the active panel or next focus target.
+
+### Accessibility
+
+- Semantics: Explicit tablist, tab, and tabpanel roles with aria-selected, aria-controls, and aria-labelledby.
+- Accessible name: Required label names the tablist; each tab label names its tab.
+- Pass the same stable id to Tabs and useTabPanelProps so relationships are emitted.
+- Render one panel for every tab key and hide inactive panels.
+- Keep tab keys DOM-id safe and unique.
+- Icons are decorative.
+
+### Tokens
+
+- --color-highlight: Active tab background.
+- --color-accent: Active indicator.
+- --color-text / --color-text2 / --color-text3: Active, hover, and inactive hierarchy.
+- --motion-fast: Color transition.
+
+### Composition
+
+- Pass the same id to useTabPanelProps for each panel.
+
+### Implementation notes
+
+- Tabs is controlled and uses automatic activation during arrow navigation.
+- Without a shared provided id, DOM ids are generated but cross-component aria relationships are intentionally omitted.
+- useTabPanelProps returns role, ids, tabIndex, and hidden.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Tabs: Recommended two to five peer views. Use page navigation or another information architecture for larger sets.
+- Tab label: One or two words, maximum 20 characters. Do not truncate.
+- Design-tool limit: Prototype active variants do not validate roving focus or panel relationships.
+- Code limit: Consumers must pass the same stable id to Tabs and useTabPanelProps.
+
+### Required tests
+
+- Unit: Emits ids and panel relationships only when the stable id is shared.
+- Unit: Handles empty tabs without errors.
+- Interaction: Click, arrow wraparound, Home, End, focus movement, and panel visibility work.
+- Accessibility: Roving tabIndex, selected state, tablist name, and panel relationships are valid.
+- Visual: Capture each active tab, focus, optional icons, overflow pressure, and themes.
+
+## Dialog (`dialog`)
+
+A ready-made animated modal dialog for a short focused task or decision.
+
+- Category: Overlays
+- Source: `src/components/Dialog.tsx`
+- Public exports: `Dialog`, `DialogProps`, `DialogSize`
+- Import: `import { Dialog } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Overlays/Dialog
+- Maturity: stable
+- Owner: Design systems overlay primitive owner
+
+### Use when
+
+- Short focused tasks or decisions
+
+### Avoid when
+
+- Persistent page content
+
+### Public API
+
+- `open`: `boolean`. Default: required. Whether the dialog is shown.
+- `onClose`: `() => void`. Default: required. Called on dismissal.
+- `title`: `string`. Default: undefined. Optional accessible title.
+- `description`: `string`. Default: undefined. Optional description.
+- `size`: `DialogSize`. Default: md. sm, md, lg, or xl.
+- `children`: `ReactNode`. Default: required. Dialog content.
+
+### States
+
+- closed: open is false. Page remains interactive.
+- open: open is true. Focus is trapped and background interaction is inert.
+- entering: Opening transition. Dialog becomes the active focus scope.
+- leaving: Closing transition. Focus returns after dismissal.
+
+### Keyboard
+
+- Escape: Requests close through onClose.
+- Tab / Shift+Tab: Cycles focus within the open dialog.
+- Enter / Space: Activates the focused dialog control.
+
+### Accessibility
+
+- Semantics: Headless UI dialog with optional DialogTitle and Description associations.
+- Accessible name: title supplies the accessible name when provided; otherwise body content must provide an accessible label.
+- Prefer always providing a title.
+- Provide at least one obvious dismissal method.
+- Do not put another modal dialog inside Dialog.
+- Restore focus to a meaningful trigger through the managed open state.
+
+### Tokens
+
+- --color-overlay: Backdrop.
+- --color-surface: Panel.
+- --color-border: Panel and header divider.
+- --color-text / --color-text2 / --color-text3: Title, description, and close icon.
+- --color-focus: Close focus outline.
+
+### Composition
+
+- Keep the primary action and close affordance inside the dialog.
+
+### Implementation notes
+
+- Headless UI manages focus trap, Escape, outside dismissal, inert background, and restoration.
+- Dialog stays in the tree while Transition controls visibility.
+- className applies to the panel.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Title: One line preferred, maximum two lines. Wrap; do not truncate.
+- Description: Maximum three lines. Move long instructions into the body.
+- Task scope: One focused task or decision. Move complex multi-section work to a page.
+- Design-tool limit: Figma overlays cannot validate focus trapping, restoration, Escape, or scroll lock.
+- Code limit: Always provide an accessible title through title or a correctly associated custom heading.
+
+### Required tests
+
+- Unit: Maps sizes and optional header content.
+- Unit: Calls onClose from close button and managed dismissal.
+- Interaction: Opening focus, focus trap, Escape, close button, backdrop, and restoration work.
+- Accessibility: Dialog has a name/description and background is inert while open.
+- Visual: Capture all sizes, header combinations, entering/open states, long content, and themes.
+
+## Modal family (`modal`)
+
+A composable Headless UI modal shell for richer application layouts with header, body, and footer regions.
+
+- Category: Overlays
+- Source: `src/components/Modal.tsx`
+- Public exports: `ModalOverlay`, `ModalPanel`, `ModalHeader`, `ModalBody`, `ModalFooter`, `ModalSize`
+- Import: `import { ModalOverlay, ModalPanel, ModalHeader, ModalBody, ModalFooter } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Overlays/Modal
+- Maturity: stable
+- Owner: Design systems overlay primitive owner
+
+### Use when
+
+- Reusable application modal layouts
+
+### Avoid when
+
+- Simple inline disclosure
+
+### Public API
+
+- `ModalOverlay.onClose`: `() => void`. Default: undefined. Dismiss callback.
+- `ModalOverlay.closeOnBackdrop`: `boolean`. Default: true. Whether backdrop clicks dismiss.
+- `ModalPanel.size`: `ModalSize`. Default: lg. sm, md, lg, or xl.
+- `ModalHeader.heading`: `ReactNode`. Default: required. Heading content.
+- `ModalHeader.onClose`: `() => void`. Default: undefined. Optional close action.
+- `ModalBody.scroll`: `boolean`. Default: true. Allows the body region to scroll.
+- `children`: `ReactNode`. Default: required. Content for each region.
+
+### States
+
+- closed: ModalOverlay is not rendered. Page owns focus and scrolling.
+- open: ModalOverlay is mounted. Headless UI traps focus, locks background interaction, and handles Escape.
+- nested: A modal is opened from another focus scope. Use sparingly and verify focus restoration at each level.
+- focus-visible: Keyboard focus reaches a control. Tab remains within the active dialog.
+
+### Keyboard
+
+- Escape: Requests onClose when supplied.
+- Tab / Shift+Tab: Cycles through focusable modal content.
+- Enter / Space: Activates the focused control.
+
+### Accessibility
+
+- Semantics: Headless UI Dialog; Header uses DialogTitle and Description, and alertdialog is supported.
+- Accessible name: ModalHeader heading supplies the name; description supplies supporting text.
+- Always include ModalHeader with a meaningful heading or provide an equivalent Headless UI title.
+- Supply an onClose control unless the operation intentionally prevents dismissal.
+- Do not mount the overlay before client hydration; the component waits for mount.
+- Keep footer action order and labels explicit.
+
+### Tokens
+
+- --color-overlay: Backdrop.
+- --color-surface / --color-border: Panel and dividers through Surface.
+- --color-text / --color-text2: Heading and description.
+- --radius-md: Panel radius.
+
+### Composition
+
+- Compose ModalOverlay > ModalPanel > ModalHeader, ModalBody, and ModalFooter.
+
+### Implementation notes
+
+- Render ModalOverlay conditionally; it is always open while mounted.
+- onClose is optional because ConfirmDialog can suppress dismissal while loading.
+- closeOnBackdrop affects pointer backdrop dismissal only.
+- ModalBody scroll defaults to true.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Heading: One line preferred, maximum two lines. Wrap; never truncate.
+- Footer actions: One primary and up to two secondary actions. Move tertiary actions into body content.
+- Body: One focused workflow. Use a full page for broad or deeply nested tasks.
+- Design-tool limit: Figma nesting demonstrates structure but not portal, focus, inert background, or scroll-lock behavior.
+- Code limit: Consumers own whether the ModalOverlay is mounted; this family has no open prop itself.
+
+### Required tests
+
+- Unit: Maps every panel size and region option.
+- Unit: Mount guard and optional onClose behavior are deterministic.
+- Interaction: Escape, backdrop setting, close button, focus trap, body scrolling, and restoration work.
+- Accessibility: Dialog naming, description, role, focus order, and inert background are valid.
+- Visual: Capture sizes, mobile top alignment, desktop centering, overflow, header/footer variants, and themes.
+
+## ConfirmDialog (`confirm-dialog`)
+
+A constrained alert dialog for confirming one consequential or irreversible action.
+
+- Category: Overlays
+- Source: `src/components/ConfirmDialog.tsx`
+- Public exports: `ConfirmDialog`, `ConfirmDialogProps`
+- Import: `import { ConfirmDialog } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Overlays/Confirm dialog
+- Maturity: stable
+- Owner: Design systems safety pattern owner
+
+### Use when
+
+- Destructive or irreversible actions
+
+### Avoid when
+
+- Routine actions that do not need interruption
+
+### Public API
+
+- `open`: `boolean`. Default: required. Whether the dialog is shown.
+- `onConfirm`: `() => void`. Default: required. Confirm callback.
+- `onCancel`: `() => void`. Default: required. Cancel callback.
+- `title`: `string`. Default: required. Dialog heading.
+- `description`: `ReactNode`. Default: undefined. Supporting explanation.
+- `confirmLabel`: `string`. Default: Confirm. Confirm button label.
+- `cancelLabel`: `string`. Default: Cancel. Cancel button label.
+- `destructive`: `boolean`. Default: false. Uses destructive styling.
+- `loading`: `boolean`. Default: false. Disables dismissal while working.
+- `loadingLabel`: `string`. Default: Working…. Busy button label.
+
+### States
+
+- closed: open is false. No focus scope exists.
+- open: open is true. Focus is trapped; dismissal calls onCancel.
+- loading: loading is true. Escape, backdrop, header close, cancel, and confirm activation are blocked.
+
+### Keyboard
+
+- Escape: Cancels and closes.
+- Tab / Shift+Tab: Moves between available actions within the dialog.
+- Enter / Space: Activates the focused cancel or confirm button.
+
+### Accessibility
+
+- Semantics: Headless UI alertdialog composed from Modal primitives.
+- Accessible name: Required title names the alert dialog; optional Description is associated by Headless UI.
+- Initial focus should land on the safest useful control for the context; verify Headless UI behavior in integration.
+- Explain irreversible consequences before the action.
+- Do not rely on destructive color; button text must be specific.
+- Expose completion or failure after loading ends.
+
+### Tokens
+
+- --color-overlay: Modal backdrop.
+- --color-surface / --color-border: Panel and dividers.
+- --color-action-primary: Destructive confirmation when enabled.
+- --color-text / --color-text2: Title and description.
+
+### Composition
+
+- Use for a single consequential action with a clear description.
+
+### Implementation notes
+
+- Returns null while closed.
+- destructive changes the confirm visual variant; it does not alter semantics.
+- loading suppresses every dismissal callback and action.
+- The parent owns async state and closes on success.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Title: A direct question, maximum two lines. Wrap and revise if longer.
+- Description: One short paragraph describing consequence. Move detailed policy outside the dialog.
+- Action labels: Specific verbs, recommended maximum 24 characters. Stack actions if localization requires it.
+- Design-tool limit: Figma loading variants cannot validate blocked backdrop and Escape dismissal.
+- Code limit: The consumer owns asynchronous completion and must clear loading or close the dialog.
+
+### Required tests
+
+- Unit: Closed returns null; defaults and destructive variant map correctly.
+- Unit: Loading disables all dismissal paths and changes the label.
+- Interaction: Cancel, confirm, Escape, backdrop, focus trap, loading, and restoration work.
+- Accessibility: Alertdialog is named/described and actions have specific names and correct disabled state.
+- Visual: Capture regular/destructive, description absent/present, loading, long labels, and themes.
+
+## Tooltip (`tooltip`)
+
+A brief, non-interactive description shown from pointer, focus, or touch.
+
+- Category: Overlays
+- Source: `src/components/Tooltip.tsx`
+- Public exports: `Tooltip`, `TooltipProps`, `TooltipPosition`
+- Import: `import { Tooltip } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Components/Overlays/Tooltip
+- Maturity: stable
+- Owner: Design systems overlay primitive owner
+
+### Use when
+
+- Clarifying unfamiliar icons or controls
+
+### Avoid when
+
+- Essential instructions
+- Long or interactive content
+
+### Public API
+
+- `content`: `string`. Default: required. Tooltip text.
+- `position`: `TooltipPosition`. Default: top. top, bottom, left, or right.
+- `delay`: `number`. Default: 300. Show delay in milliseconds.
+- `children`: `ReactElement`. Default: required. Trigger element.
+- `className`: `string`. Default: undefined. Additional tooltip classes.
+
+### States
+
+- hidden: No active pointer, focus, or toggled touch. Trigger retains its original aria-describedby.
+- visible: Pointer hover remains for delay milliseconds. Leaving cancels and hides.
+- focused: Trigger receives focus for delay milliseconds. Blur hides it.
+- touch-visible: Trigger receives touchstart. Another touch or outside touch hides it.
+
+### Keyboard
+
+- Tab / Shift+Tab: Focuses the child trigger; tooltip appears after delay.
+- Escape: No explicit tooltip dismissal is implemented; blur dismisses.
+
+### Accessibility
+
+- Semantics: role=tooltip associated through aria-describedby only while visible.
+- Accessible name: content provides the supplemental description; the trigger still needs its own accessible name.
+- Wrap exactly one focusable trigger.
+- Preserve existing trigger event handlers and aria-describedby; the component composes them.
+- Keep content non-interactive and supplemental.
+- Do not use the tooltip as the accessible name of an icon button.
+
+### Tokens
+
+- --color-surface: Bubble background.
+- --color-border: Bubble border.
+- --color-text2: Tooltip text.
+- --radius-md: Bubble radius.
+
+### Composition
+
+- Wrap one focusable trigger.
+
+### Implementation notes
+
+- The child element is cloned to compose hover, focus, blur, and touch handlers.
+- Show timeout is cleared on hide and unmount.
+- Positioning has no portal or collision detection.
+- Touch outside dismissal listens only while visible.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Content: One short sentence, maximum about 120 characters. Wrap up to 240px; move longer guidance into persistent UI.
+- Children: Exactly one focusable trigger. Wrap compound visuals in one semantic control.
+- Design-tool limit: Figma hover prototypes do not cover delayed focus, touch toggling, outside touch, or aria-describedby.
+- Code limit: The implementation does not perform automatic collision detection; product placement must avoid clipping.
+
+### Required tests
+
+- Unit: Composes existing child handlers and aria-describedby.
+- Unit: Clears timers and outside-touch listener.
+- Interaction: Hover/focus delay, leave/blur, touch toggle, and outside touch behave correctly.
+- Accessibility: Role, id relationship, trigger name, and keyboard discoverability are valid.
+- Visual: Capture all positions, wrapping at max width, focus/hover visibility, and themes.
+
+## ThemedHeroImage (`themed-hero-image`)
+
+A decorative, theme-aware hero background with coordinated overlays, fades, and optional light blending.
+
+- Category: Theme & media
+- Source: `src/components/ThemedHeroImage.tsx`
+- Public exports: `ThemedHeroImage`, `ThemedHeroImageProps`
+- Import: `import { ThemedHeroImage } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Components/Media/Themed hero image
+- Maturity: stable
+- Owner: Design systems media foundations owner
+
+### Use when
+
+- Large decorative hero backgrounds
+
+### Avoid when
+
+- Content images that need an alt description
+
+### Public API
+
+- `darkSrc`: `string`. Default: required. Dark-theme image source.
+- `lightSrc`: `string`. Default: undefined. Optional light-theme source.
+- `overlay`: `default | strong | soft | none`. Default: default. Overlay treatment.
+- `priority`: `boolean`. Default: false. Next Image priority loading.
+- `quality`: `number`. Default: 85. Image quality.
+- `sizes`: `string`. Default: 100vw. Responsive image sizes.
+- `objectPosition`: `string`. Default: undefined. Image object position.
+- `fadeTop`: `boolean`. Default: false. Top fade.
+- `fadeBottom`: `boolean`. Default: false. Bottom fade.
+- `blendLight`: `boolean`. Default: false. Light-theme blend.
+
+### States
+
+- dark theme: Root does not have light class. Image remains decorative.
+- light theme: Root has light class. blendLight can multiply the image into the light surface.
+
+### Keyboard
+
+- None documented.
+
+### Accessibility
+
+- Semantics: Next Image elements use empty alt and aria-hidden; overlays are plain decorative divs.
+- Accessible name: No accessible name by design.
+- Use only when the image conveys no information that is absent from nearby text.
+- Do not put interactive content inside the component.
+- Verify overlaid text contrast independently in both themes and crop sizes.
+
+### Tokens
+
+- --hero-overlay-default / strong / soft: Theme-specific contrast overlays.
+- --hero-image-dark-opacity / --hero-image-light-opacity: Theme image swap.
+- --color-bg: Top and bottom fade destination.
+- --motion-slow: Theme cross-fade.
+
+### Composition
+
+- Place behind hero content in a positioned container.
+
+### Implementation notes
+
+- Requires Next.js Image configuration for external sources.
+- priority applies only to the dark image; use it for an above-the-fold hero.
+- If lightSrc is absent, the dark image remains fully visible in both themes.
+- overlay none deliberately renders no overlay node.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Media role: Decorative hero imagery only. Use a semantic image component for meaningful content.
+- File weight: Use the smallest source that remains sharp at rendered sizes. Create responsive optimized assets.
+- Design-tool limit: Figma fills do not validate Next Image loading, responsive source selection, or blend behavior.
+- Code limit: Always decorative; do not use for content that needs alternative text.
+
+### Required tests
+
+- Unit: Maps overlay, fades, blend, sizes, quality, priority, and object position.
+- Unit: Renders one or two images as configured.
+- Interaction: Theme class changes swap opacity without affecting layout.
+- Accessibility: Images remain hidden from the accessibility tree and overlaid copy passes contrast.
+- Visual: Capture dark/light, every overlay, fades, blend, and representative crop ratios.
+
+## ThemeProvider / useTheme / ThemeToggle (`theme`)
+
+Application-level dark/light state, persistence, reduced-motion configuration, and a ready-made switch action.
+
+- Category: Theme & media
+- Source: `src/components/ThemeProvider.tsx`
+- Public exports: `ThemeProvider`, `useTheme`, `ThemeToggle`, `Theme`, `ThemeContextValue`
+- Import: `import { ThemeProvider, ThemeToggle, useTheme } from '@ai-created/ui';`
+- Client component: yes
+- Design asset: Not applicable
+- Maturity: stable
+- Owner: Design systems theming foundations owner
+
+### Use when
+
+- Applications supporting theme preference
+
+### Avoid when
+
+- Components that should not own global theme state
+
+### Public API
+
+- `ThemeProvider.children`: `ReactNode`. Default: required. Application subtree.
+- `useTheme().theme`: `dark | light`. Default: dark. Current theme.
+- `useTheme().toggleTheme`: `() => void`. Default: undefined. Switches and persists the theme.
+- `ThemeToggle`: `component`. Default: undefined. Ready-made theme switch control.
+
+### States
+
+- dark: Default or saved dark preference. toggleTheme stores light and adds html.light.
+- light: Saved or pre-rendered light preference. toggleTheme stores dark and removes html.light.
+
+### Keyboard
+
+- Enter / Space: Activates ThemeToggle.
+- Tab / Shift+Tab: Moves focus to or from ThemeToggle.
+
+### Accessibility
+
+- Semantics: Context provider plus native motion button; ThemeToggle has a state-dependent aria-label and title.
+- Accessible name: ThemeToggle announces the action it will perform, such as Switch to light mode.
+- Run a pre-hydration theme script or equivalent to keep visual and context state aligned at first paint.
+- Do not encode information solely in the active theme.
+- MotionConfig and CSS reduced-motion rules must remain enabled.
+
+### Tokens
+
+- --color-bg / surface / surface2: Theme foundations.
+- --color-text / text2 / text3: Theme typography hierarchy.
+- --color-* semantic pairs: Theme-adjusted status and action colors.
+- --motion-base / --motion-slow: Theme and image transitions.
+
+### Composition
+
+- Wrap the app once with ThemeProvider.
+- Use useTheme for custom controls.
+
+### Implementation notes
+
+- ThemeProvider reads localStorage after mount and falls back to the existing html class or dark.
+- toggleTheme updates context, localStorage, html.light, and theme-transitioning.
+- The current implementation adds theme-transitioning but does not remove it; consumers should account for the persistent class.
+- useTheme outside a provider receives the safe dark default context.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Provider instances: One provider at the application root. Remove nested ownership unless an isolated preview explicitly requires it.
+- Design-tool limit: There is no Figma component instance for context behavior; use variable modes and a documented visible toggle.
+- Design-tool limit: Prototype variables do not reproduce localStorage persistence or pre-hydration theme resolution.
+- Code limit: Wrap the app once and avoid component-owned global mode changes.
+- Not applicable: Auto layout, padding, gap, resizing, and overflow do not apply to ThemeProvider or useTheme.
+
+### Required tests
+
+- Unit: Resolves saved, existing-class, and default themes.
+- Unit: toggleTheme updates context, storage, and document class.
+- Interaction: ThemeToggle changes mode by pointer and keyboard and updates its label/icon.
+- Accessibility: Control has an action-oriented name; reduced-motion preference is honored.
+- Visual: Capture every foundation and public component in both themes, including transition and no-motion states.
+
+## cn (`cn`)
+
+The class-composition utility that filters conditional fragments and resolves conflicting Tailwind utilities.
+
+- Category: Utilities & motion
+- Source: `src/lib/utils.ts`
+- Public exports: `cn`
+- Import: `import { cn } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Not applicable
+- Maturity: stable
+- Owner: Design systems engineering foundations owner
+
+### Use when
+
+- A component needs conditional classes or consumer className merging
+
+### Avoid when
+
+- A static className needs no composition
+
+### Public API
+
+- `...inputs`: `Array<string | false | null | undefined>`. Default: required. Class fragments in precedence order.
+
+### States
+
+- not applicable: Called during class composition. Returns the Tailwind-merged string.
+
+### Keyboard
+
+- None documented.
+
+### Accessibility
+
+- Semantics: No DOM semantics; output affects the consuming element only.
+- Accessible name: Not applicable.
+- Do not merge away required focus-visible, disabled, hidden, or contrast styles.
+- The consuming component remains responsible for semantics.
+
+### Tokens
+
+- Consumer-defined semantic tokens: cn preserves token-backed Tailwind utilities while resolving conflicts.
+
+### Composition
+
+- Pass the consumer className last when it should override defaults.
+
+### Implementation notes
+
+- Accepts only string, false, null, and undefined fragments.
+- Falsy values are filtered before tailwind-merge runs.
+- Later conflicting utilities take precedence according to tailwind-merge.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Inputs: Class strings plus false, null, or undefined. Split complex style decisions into named variant functions.
+- Design-tool limit: No Figma asset should be created for this utility.
+- Code limit: Passing consumer className last is a policy choice; verify that it cannot remove required state or accessibility styles.
+- Not applicable: Canvas geometry, auto layout, component properties, instance swaps, and prototype interactions are not applicable.
+
+### Required tests
+
+- Unit: Filters falsy values and preserves non-conflicting order.
+- Unit: Resolves representative Tailwind conflicts in favor of later utilities.
+- Interaction: Not applicable.
+- Accessibility: Verify merged output retains focus and disabled utilities.
+- Visual: Not applicable; visual coverage belongs to consumers.
+
+## Motion helpers (`motion-helpers`)
+
+Shared timing, easing, offsets, reveal recipes, and subtle hover behavior for Framer Motion.
+
+- Category: Utilities & motion
+- Source: `src/lib/motion.ts`
+- Public exports: `motionDuration`, `motionOffset`, `motionEase`, `staggerDelay`, `fadeUpMotion`, `inViewFadeUpMotion`, `subtleHoverMotion`, `borderHoverMotion`
+- Import: `import { fadeUpMotion, inViewFadeUpMotion, staggerDelay } from '@ai-created/ui';`
+- Client component: no
+- Design asset: Not applicable
+- Maturity: stable
+- Owner: Design systems motion foundations owner
+
+### Use when
+
+- Shared entrance, in-view reveal, stagger, or subtle hover behavior is needed
+
+### Avoid when
+
+- Motion does not clarify hierarchy or state
+
+### Public API
+
+- `motionDuration`: `readonly timing object`. Default: shared values. Instant, fast, base, reveal, section, and ambient durations.
+- `motionOffset`: `readonly offset object`. Default: shared values. Small, medium, large, and hover distances.
+- `motionEase`: `readonly easing object`. Default: shared values. Standard, in-out, and out easing.
+- `staggerDelay`: `(index, step?, base?) => number`. Default: step 0.1, base 0. Calculates a list-item delay.
+- `fadeUpMotion`: `(delay?, y?, duration?) => MotionProps`. Default: shared reveal values. Returns mount animation props.
+- `inViewFadeUpMotion`: `(delay?, y?, duration?) => MotionProps`. Default: shared reveal values. Returns one-time viewport reveal props.
+- `subtleHoverMotion`: `(distance?) => MotionProps`. Default: 2px. Returns subtle hover lift props.
+- `borderHoverMotion`: `(distance?, borderColor?) => MotionProps`. Default: 4px, border-strong. Returns lift plus border emphasis.
+
+### States
+
+- entry: fadeUpMotion props mount. Runs immediately with optional delay.
+- in view: inViewFadeUpMotion enters viewport. Runs once when observed.
+- hover: Pointer hover on a motion element. Returns over the shared fast duration.
+- reduced motion: User requests reduced motion under ThemeProvider MotionConfig. Meaning and interaction remain available without animation.
+
+### Keyboard
+
+- None documented.
+
+### Accessibility
+
+- Semantics: Helpers return presentation props only and do not alter DOM semantics.
+- Accessible name: Not applicable.
+- Render motion elements with the correct semantic element and focus behavior.
+- Use within ThemeProvider so MotionConfig honors the user preference.
+- Never delay essential content or input availability behind animation.
+- Avoid hover-only information.
+
+### Tokens
+
+- --motion-fast: CSS equivalent of 200ms interactions.
+- --motion-base: CSS equivalent of 300ms transitions.
+- --motion-slow: CSS equivalent of 500ms reveals/cross-fades.
+- --color-border-strong: Default borderHoverMotion emphasis.
+
+### Composition
+
+- Spread helper results onto a Framer Motion element.
+
+### Implementation notes
+
+- Helpers return plain serializable-compatible Framer Motion prop objects.
+- staggerDelay is deterministic and supports custom step/base.
+- borderHoverMotion accepts a CSS color string and defaults to the strong-border token.
+- Consumers provide the motion.* element and semantic tag.
+
+### Recipes
+
+- None documented.
+
+### Content and authoring limits
+
+- Concurrent effects: One primary entrance or hover effect per element. Remove competing transforms and ambient loops.
+- Staggered collections: Keep total sequence short enough that the last item is not delayed from use. Reduce step or animate groups rather than every row.
+- Design-tool limit: Figma prototype easing and timing are reference approximations, not the canonical implementation.
+- Design-tool limit: Do not create a detached component for each animation helper.
+- Code limit: ThemeProvider is required for the shared reduced-motion policy.
+- Code limit: Helper output may be overridden by later Framer Motion props.
+- Not applicable: Auto layout, component resizing, text limits, and instance swapping are not owned by motion helpers.
+
+### Required tests
+
+- Unit: Constants stay immutable and helpers return exact expected prop shapes.
+- Unit: staggerDelay handles zero, custom base, and custom step.
+- Interaction: In-view fires once and hover returns to rest.
+- Interaction: Reduced-motion configuration suppresses nonessential movement.
+- Accessibility: No content or state is conveyed only through movement.
+- Visual: Record representative entry, stagger, hover, and reduced-motion states.
+
+# Principal guidelines
+
+## 01. Foundations (`foundations`)
+
+The visual, spatial, typographic, motion, and media decisions that every AI-Created interface inherits.
+
+- Status: canonical
+- Owner: Design Systems
+- Review cycle: Quarterly and before any token release
+- Source of truth: styles/tokens.css and tailwind-preset.js
+
+- `token-architecture` Token architecture: Use a three-level naming model so raw values can change without altering product intent.
+- `color` Color and contrast: One red accent establishes action hierarchy. Neutral surfaces and semantic feedback colors carry the rest of the system.
+- `type-layout` Typography, spacing, and grid: Instrument Serif creates editorial moments. Space Grotesk carries every functional reading task.
+- `shape-motion-media` Shape, elevation, motion, icons, and media: Secondary visual systems remain restrained so content and interaction state stay primary.
+
+## 02. Component construction (`construction`)
+
+Figma-equivalent component anatomy, sizing, properties, slots, overrides, and design-to-code parity rules.
+
+- Status: operational
+- Owner: Design Systems and Frontend Platform
+- Review cycle: With every component API change
+- Source of truth: playground component specs and src/components
+
+- `asset-model` Asset model and naming: One component set represents one public concept. Names encode hierarchy, not visual styling.
+- `layout-sizing` Auto layout and resizing: Each axis has an explicit contract: hug, fill, fixed, or content-controlled.
+- `properties-slots` Properties, slots, and overrides: Editable surfaces are intentional and finite. They should produce supported code, not arbitrary new component states.
+- `parity` Design-to-code parity: Parity means equivalent decisions, defaults, states, and behavior. Pixel similarity alone is insufficient.
+
+## 03. Product patterns (`patterns`)
+
+Reusable interaction and page-level decisions for common product flows, including their loading, empty, error, and permission states.
+
+- Status: operational
+- Owner: Product Design
+- Review cycle: Quarterly and after major product launches
+- Source of truth: DESIGN-SYSTEM.md and live pattern specimens
+
+- `state-model` Complete state model: Every data-backed surface declares what the user sees before, during, and after work.
+- `forms-actions` Forms and committed actions: Validation stays close to the field while submission status remains clear at the form level.
+- `navigation-discovery` Navigation, search, and data discovery: Location, scope, query, filters, and result count remain observable and shareable.
+- `page-archetypes` Page archetypes: Stable page skeletons reduce navigation and density decisions while leaving room for product content.
+
+## 04. Content design (`content`)
+
+Voice, interface language, formatting, localization, and accessible naming rules for product content.
+
+- Status: operational
+- Owner: Product Design and Content
+- Review cycle: Twice yearly and with locale expansion
+- Source of truth: DESIGN-SYSTEM.md content guidelines
+
+- `voice` Voice and tone: The voice is direct, calm, specific, and human. Tone adjusts to consequence without changing personality.
+- `interface-copy` Interface copy: Labels describe objects. Actions begin with verbs. Supporting text earns its space.
+- `formatting` Numbers, dates, names, and truncation: Locale-aware formatting is part of the content contract, not post-production cleanup.
+- `localization` Localization and bidirectionality: Components expand, mirror, and reflow without asking translators to fit English-shaped boxes.
+
+## 05. Accessibility standards (`accessibility`)
+
+The release contract for inclusive semantics, input, perception, reflow, motion, and assistive technology behavior.
+
+- Status: canonical
+- Owner: Design Systems and Engineering
+- Review cycle: Every release and quarterly manual audit
+- Source of truth: WCAG 2.2 AA target and component accessibility specs
+
+- `standard` Conformance target: WCAG 2.2 Level AA is the minimum. Native semantics and platform conventions are the starting point.
+- `interaction` Keyboard, focus, and announcements: Keyboard behavior follows the native element or established ARIA pattern, never a visual imitation.
+- `perception-reflow` Perception, reflow, and user preferences: Information survives theme, forced colors, text spacing, zoom, and reduced motion.
+- `testing` Accessibility test responsibilities: Automation catches regressions. Manual evaluation confirms that the workflow is actually understandable.
+
+## 06. Governance and contribution (`governance`)
+
+Ownership, maturity, contribution, release, adoption, exception, and deprecation rules for keeping the system trustworthy.
+
+- Status: canonical
+- Owner: Design Systems
+- Review cycle: Monthly operating review
+- Source of truth: Repository, package releases, and this portal
+
+- `maturity` Maturity and ownership: Every shared asset has a status, accountable owner, review date, and canonical implementation.
+- `contribution` Contribution workflow: New system surface area begins with repeated product need, not a polished component proposal.
+- `change-management` Release and change management: Documentation, package behavior, design assets, and migration guidance move together.
+- `health` System health and exceptions: A mature library measures use, quality, and drift rather than equating inventory size with success.
+
+## 07. Assets and distribution (`assets`)
+
+Reusable tokens, package exports, presets, icon policy, media requirements, and the source-of-truth map for every consumer.
+
+- Status: evolving
+- Owner: Design Systems and Frontend Platform
+- Review cycle: Every package and token release
+- Source of truth: Repository package exports and generated token artifact
+
+- `downloads` Reusable downloads: The downloadable token artifact is generated from canonical CSS. Code consumers use package exports directly.
+- `agent-contract` AI agent contract: Agents use the same versioned inputs and blocking gates as human contributors, without inferring undocumented design decisions.
+- `source-map` Source-of-truth map: Each asset has one canonical authoring location and an explicit distribution path.
+- `library-model` Design library model: A future design-tool library should mirror this portal without becoming a competing source of truth.
+- `asset-quality` Asset quality gates: Reusable assets are complete only when their licensing, modes, states, naming, and fallback behavior are documented.
+
+# Approved page templates
+
+## Searchable directory (`directory`)
+
+Use for browsable collections where people search, scan status, create records, and open details.
+
+- Archetype: `browse/directory`
+- Source: `templates/agent/directory-page.tsx`
+- Export: `DirectoryPage`
+- Required states: loading, ready, empty, error, forbidden
+- Slots: page title, page description, primary action, search, result count, record list
+- Public imports: Badge, Button, EmptyState, ErrorReport, FieldLabel, Skeleton, Surface, TextInput
+
+## Record detail (`detail`)
+
+Use when one durable record needs identity, metadata, attributes, supporting context, and a clear edit action.
+
+- Archetype: `detail/record`
+- Source: `templates/agent/detail-page.tsx`
+- Export: `DetailPage`
+- Required states: loading, ready, not-found, error, forbidden
+- Slots: back action, record identity, status, primary action, attribute list, context, notes
+- Public imports: Badge, Button, EmptyState, ErrorReport, Notice, Skeleton, Surface
+
+## Validated form (`form`)
+
+Use for creating or editing a focused resource with explicit validation, save feedback, and cancellation.
+
+- Archetype: `workspace/form`
+- Source: `templates/agent/form-page.tsx`
+- Export: `FormPage`
+- Required states: ready, saving, success, error, forbidden
+- Slots: form identity, field groups, inline validation, submission status, cancel action, submit action
+- Public imports: Button, Checkbox, FieldGroup, FieldHint, FieldLabel, Notice, Surface, TextArea, TextInput
+
+## Account settings (`settings`)
+
+Use for durable user or workspace preferences grouped by purpose and saved as one explicit operation.
+
+- Archetype: `workspace/settings`
+- Source: `templates/agent/settings-page.tsx`
+- Export: `SettingsPage`
+- Required states: ready, saving, saved, error, forbidden
+- Slots: settings navigation, preference groups, setting explanation, setting control, save feedback, save action
+- Public imports: Button, Notice, Surface, Toggle
+
+## Operational dashboard (`dashboard`)
+
+Use when people need a concise operational overview, key metrics, recent changes, and one primary action.
+
+- Archetype: `workspace/dashboard`
+- Source: `templates/agent/dashboard-page.tsx`
+- Export: `DashboardPage`
+- Required states: loading, ready, empty, error, forbidden
+- Slots: dashboard identity, primary action, metric grid, activity feed
+- Public imports: Badge, Button, EmptyState, ErrorReport, Notice, Skeleton, Surface
+
+## Guided onboarding (`onboarding`)
+
+Use for a short, resumable setup sequence where progress, permission, save failure, and completion must be explicit.
+
+- Archetype: `workspace/onboarding`
+- Source: `templates/agent/onboarding-page.tsx`
+- Export: `OnboardingPage`
+- Required states: ready, saving, error, forbidden, complete
+- Slots: flow identity, progress navigation, step content, field guidance, back action, continue action
+- Public imports: Badge, Button, FieldGroup, FieldHint, FieldLabel, Notice, Surface, TextInput
+
+# Drift and exception policy
+
+Run `npm run policy:check -- <paths...>` in a consumer repository. The validator rejects raw color values, direct reference-token use, internal package imports, unsupported theme palettes, arbitrary style values, and detectable local primitive copies. A necessary exception must name one rule, narrowly scoped files, a concrete reason, an owner, and a future review date. Expired exceptions fail validation.
+
+# Validation commands
+
+- `npm run typecheck`: Validate package and portal TypeScript.
+- `npm run lint`: Validate source, scripts, tests, and portal conventions.
+- `npm run test`: Run component and contract tests.
+- `npm run tokens:check`: Reject stale generated design tokens.
+- `node scripts/export-design-system-manifest.mjs --check`: Reject a stale or incomplete agent manifest.
+- `npm run tailwind:check`: Reject framework mappings that drift from canonical tokens.
+- `npm run api:check`: Reject documented props, controls, or imports that drift from the public TypeScript API.
+- `npm run policy:check`: Reject prohibited styling, imports, tokens, and primitive copies.
+- `npm run templates:check`: Compile and verify every approved page template and public export fixture.
+- `npm run docs:check`: Reject stale public counts, routes, workflows, or propagation guidance.
+- `npm run agent-context:check`: Reject stale concise or full agent context artifacts.
+- `npm run agent:check`: Run the complete machine-readable anti-drift contract.
+- `npm run build:playground`: Build the specification portal.
+- `npm run package:check`: Verify the distributable package contract.
+- `npm run validate`: Run the repository validation gate.

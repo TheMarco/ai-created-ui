@@ -13,23 +13,24 @@ Use the highest impact in the release. Do not infer the version from commit mess
 ## Prepare the release
 
 1. Confirm every release-worthy change has a concise entry under `Unreleased` in `CHANGELOG.md`.
-2. Run `npm run validate` and `npm run test:browser` from the repository root.
-3. Update the version without creating a tag yet:
+2. Run `npm run agent:export`, review the generated token, manifest, and agent context diffs, and commit them with their canonical source changes. The release commit must not contain stale or unreviewed generated artifacts.
+3. Run `npm run validate` and `npm run test:browser` from the repository root.
+4. Update the version without creating a tag yet:
 
    ```bash
    npm version minor --no-git-tag-version
    ```
 
    Replace `minor` with `patch`, `major`, or an exact stable version. This updates both `package.json` and `package-lock.json`.
-4. Move the relevant `Unreleased` notes into a dated heading such as `## [1.1.0] - 2026-08-27`. Leave an empty `Unreleased` section at the top.
-5. Verify the package boundary and release metadata:
+5. Move the relevant `Unreleased` notes into a dated heading such as `## [1.1.0] - 2026-08-27`. Leave an empty `Unreleased` section at the top.
+6. Verify the package boundary and release metadata:
 
    ```bash
    npm run release:check -- v1.1.0
    npm run package:check
    npm run release:notes -- v1.1.0
    ```
-6. Commit the version, lockfile, and changelog together. Review and merge that commit to `main` through the normal quality gate.
+7. Commit the version, lockfile, and changelog together. Review and merge that commit to `main` through the required `Validate design system` status check.
 
 ## Tag and publish the GitHub Release
 

@@ -38,6 +38,104 @@ test('loads, switches theme, navigates sections, and shows focus', async ({ page
   await expect(buttonReference.getByRole('cell', { name: 'variant', exact: true })).toBeVisible();
 });
 
+test('browses and inspects a detailed component specification', async ({ page }) => {
+  await page.goto('/components');
+
+  await expect(page.getByRole('heading', { level: 1, name: 'Build from documented contracts.' })).toBeVisible();
+  const search = page.getByRole('searchbox', { name: 'Search components' });
+  await search.fill('button focus');
+  await expect(page.getByRole('status')).toContainText('1 of 22 match');
+
+  const searchResults = page.getByRole('region', { name: 'Search results' });
+  await expect(searchResults.getByRole('link')).toHaveCount(1);
+  const buttonResult = searchResults.getByRole('link', { name: /Button \/ buttonStyles/ });
+  await expect(buttonResult).toBeVisible();
+  await expect(buttonResult).toBeInViewport();
+
+  await Promise.all([
+    page.waitForURL(/\/components\/button$/),
+    buttonResult.click(),
+  ]);
+  await expect(page.getByRole('heading', { level: 1, name: 'Button / buttonStyles' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Component workbench' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Anatomy' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Construction and authoring' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Accessibility contract' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Implementation' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Testing contract' })).toBeVisible();
+
+  const workbench = page.locator('[data-workbench="button"]');
+  const previewTab = workbench.getByRole('tab', { name: 'Preview' });
+  await previewTab.focus();
+  await previewTab.press('ArrowRight');
+  await expect(workbench.getByRole('tab', { name: 'Code' })).toHaveAttribute('aria-selected', 'true');
+  await workbench.getByRole('tab', { name: 'Code' }).press('ArrowLeft');
+  await expect(previewTab).toHaveAttribute('aria-selected', 'true');
+
+  await workbench.getByLabel('Variant').selectOption('secondary');
+  await workbench.getByLabel('Size').selectOption('lg');
+  await workbench.getByLabel('Label').fill('Publish changes');
+  await expect(workbench.getByRole('button', { name: 'Publish changes' })).toBeVisible();
+
+  const compactCanvas = page.getByRole('button', { name: 'Compact' });
+  await compactCanvas.click();
+  await expect(compactCanvas).toHaveAttribute('aria-pressed', 'true');
+
+  await workbench.getByRole('tab', { name: 'Code' }).click();
+  const codePanel = workbench.getByRole('tabpanel', { name: 'Code' });
+  await expect(codePanel).toContainText('secondary');
+  await expect(codePanel).toContainText('lg');
+  await expect(codePanel).toContainText('Publish changes');
+
+  await workbench.getByRole('button', { name: 'Reset' }).click();
+  await expect(workbench.getByLabel('Variant')).toHaveValue('primary');
+  await expect(workbench.getByLabel('Size')).toHaveValue('md');
+  await expect(workbench.getByLabel('Label')).toHaveValue('Save changes');
+
+  await workbench.getByLabel('Variant').selectOption('secondary');
+  await expect(page).toHaveURL(/\/components\/button\?arg\.variant=secondary$/);
+  await page.reload();
+  await expect(page.locator('[data-workbench="button"]').getByLabel('Variant')).toHaveValue('secondary');
+
+  await page.locator('[data-workbench="button"]').getByRole('tab', { name: 'Setup' }).click();
+  await expect(page.getByRole('heading', { name: 'Install from a reviewed release' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Load semantic tokens' })).toBeVisible();
+  await expect(page.locator('section[aria-labelledby="api-heading"]').getByRole('cell', { name: 'variant', exact: true })).toBeVisible();
+
+  const construction = page.locator('[data-component-construction="button"]');
+  await expect(construction.getByText('Components/Actions/Button', { exact: true })).toBeVisible();
+  await expect(construction.getByRole('heading', { name: 'Exposed design properties' })).toBeVisible();
+  await expect(construction.getByText('Design systems action primitive owner', { exact: true })).toBeVisible();
+});
+
+test('browses the principal specification and its reusable assets', async ({ page }) => {
+  await page.goto('/guidelines');
+  await expect(page.getByRole('heading', { level: 1, name: 'One system. Every decision.' })).toBeVisible();
+
+  const directory = page.locator('[data-visual="guideline-directory"]');
+  await expect(directory.getByRole('link')).toHaveCount(7);
+  await Promise.all([
+    page.waitForURL(/\/guidelines\/foundations$/),
+    directory.getByRole('link', { name: /Foundations/ }).click(),
+  ]);
+  await expect(page.getByRole('heading', { level: 1, name: 'Foundations' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Token architecture' })).toBeVisible();
+  await expect(page.getByText('styles/tokens.css and tailwind-preset.js', { exact: true })).toBeVisible();
+
+  await page.goto('/guidelines/governance');
+  await expect(page.getByRole('heading', { level: 1, name: 'Governance and contribution' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 2, name: 'Maturity and ownership' })).toBeVisible();
+
+  await page.goto('/guidelines/assets');
+  await expect(page.getByRole('heading', { level: 1, name: 'Assets and distribution' })).toBeVisible();
+  const tokenDownload = page.getByRole('link', { name: /Design tokens JSON/ });
+  await expect(tokenDownload).toHaveAttribute('href', '/design-system/tokens.json');
+  const tokenResponse = await page.request.get('/design-system/tokens.json');
+  expect(tokenResponse.ok()).toBe(true);
+  const tokenArtifact = await tokenResponse.json();
+  expect(tokenArtifact).toHaveProperty('$extensions');
+});
+
 test('exercises the major form, selection, overlay, and disclosure flows', async ({ page }) => {
   await gotoPlayground(page);
   await stabilizeVisuals(page);

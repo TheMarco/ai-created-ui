@@ -1,4 +1,5 @@
 node_modules/
+.next/
 blob-report/
 playwright-report/
 test-results/

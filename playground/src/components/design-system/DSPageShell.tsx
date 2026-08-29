@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ThemedHeroImage, fadeUpMotion } from '@ai-created/ui';
+import { BookOpen, Braces, FileCode2, ArrowRight } from 'lucide-react';
+import { ThemedHeroImage, buttonStyles, fadeUpMotion } from '@ai-created/ui';
 import DSSidebar, { sections } from './DSSidebar';
 import OverviewSection from './sections/OverviewSection';
 import ProductPatternsSection from './sections/ProductPatternsSection';
@@ -16,6 +18,27 @@ import ComponentReferenceSection from './sections/ComponentReferenceSection';
 import AnimationSection from './sections/AnimationSection';
 import ThemeSection from './sections/ThemeSection';
 
+const portalPaths = [
+  {
+    href: '/components',
+    icon: Braces,
+    title: 'Components',
+    description: 'Live behavior, controls, implementation, and API contracts.',
+  },
+  {
+    href: '/guidelines',
+    icon: BookOpen,
+    title: 'Principal guidelines',
+    description: 'Product principles, content rules, patterns, and governance.',
+  },
+  {
+    href: '/guidelines/assets#agent-contract',
+    icon: FileCode2,
+    title: 'Agent resources',
+    description: 'Machine-readable manifests, prompts, policies, and templates.',
+  },
+] as const;
+
 export default function DSPageShell() {
   const [activeSection, setActiveSection] = useState(sections[0].id);
   const activeIndex = Math.max(sections.findIndex((section) => section.id === activeSection), 0);
@@ -27,8 +50,11 @@ export default function DSPageShell() {
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-16 md:pt-40 md:pb-20">
+      {/* Portal hero */}
+      <section
+        data-visual="portal-hero"
+        className="relative overflow-hidden border-b border-border pt-32 sm:pt-24"
+      >
         <ThemedHeroImage
           darkSrc="/images/hero/designsystem-hero.png"
           lightSrc="/images/hero/designsystem-hero-light.png"
@@ -37,22 +63,74 @@ export default function DSPageShell() {
           fadeBottom
         />
         <div className="container-custom relative z-10">
-          <div className="max-w-4xl mx-auto text-center py-20">
-            <motion.h1
-              className="text-4xl md:text-7xl font-display hero-text tracking-wide mb-6"
-              {...fadeUpMotion(0, 20, 0.6)}
-            >
-              Design System
-            </motion.h1>
+          <div className="grid gap-14 py-12 md:py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:items-end lg:gap-20">
+            <div className="max-w-4xl">
+              <motion.p
+                className="mb-5 font-mono text-xs uppercase tracking-[0.18em] text-red-accent"
+                {...fadeUpMotion(0, 16, 0.5)}
+              >
+                The shared operating system
+              </motion.p>
+              <motion.h1
+                className="max-w-4xl font-display text-5xl tracking-wide hero-text md:text-7xl"
+                {...fadeUpMotion(0.05, 20, 0.6)}
+              >
+                Design once. Build without drift.
+              </motion.h1>
 
-            <motion.p
-              className="text-lg hero-text-muted leading-relaxed max-w-2xl mx-auto"
-              {...fadeUpMotion(0.15)}
+              <motion.p
+                className="mt-6 max-w-2xl text-base leading-relaxed hero-text-muted sm:text-lg"
+                {...fadeUpMotion(0.12)}
+              >
+                Production components, principal guidance, and machine-readable contracts for teams and agents building one visual language.
+              </motion.p>
+
+              <motion.div
+                className="mt-8 flex flex-col gap-3 sm:flex-row"
+                {...fadeUpMotion(0.18)}
+              >
+                <Link href="/components" className={buttonStyles({ size: 'lg' })}>
+                  Explore components
+                  <ArrowRight aria-hidden="true" className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/guidelines"
+                  className={buttonStyles({ variant: 'secondary', size: 'lg' })}
+                >
+                  Read the guidelines
+                </Link>
+              </motion.div>
+            </div>
+
+            <motion.nav
+              aria-label="Design system destinations"
+              className="border-l border-border pl-5 sm:pl-8"
+              {...fadeUpMotion(0.2)}
             >
-              Canonical visual and accessibility rules for AI-Created and beyond. Now pressure-tested in production at{' '}
-              <a href="https://human-actually.com" target="_blank" rel="noopener noreferrer" className="underline hover:text-text transition-colors">Human, Actually</a>.
-              Every pixel shaped with AI, grounded in a rigorous design system.
-            </motion.p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-text3">
+                Enter by responsibility
+              </p>
+              <div className="mt-4 border-b border-border">
+                {portalPaths.map(({ href, icon: Icon, title, description }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className="group grid grid-cols-[auto_1fr_auto] items-start gap-4 border-t border-border py-5 transition-colors hover:text-red-accent"
+                  >
+                    <Icon aria-hidden="true" className="mt-0.5 h-4 w-4 text-text3 transition-colors group-hover:text-red-accent" />
+                    <span>
+                      <span className="block text-sm font-medium text-text transition-colors group-hover:text-red-accent">
+                        {title}
+                      </span>
+                      <span className="mt-1 block text-sm leading-relaxed text-text2">
+                        {description}
+                      </span>
+                    </span>
+                    <ArrowRight aria-hidden="true" className="mt-0.5 h-4 w-4 text-text3 transition-transform group-hover:translate-x-1 group-hover:text-red-accent" />
+                  </Link>
+                ))}
+              </div>
+            </motion.nav>
           </div>
         </div>
       </section>

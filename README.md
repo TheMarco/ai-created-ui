@@ -8,7 +8,7 @@ One repo. One source of truth. Every component, token, and motion pattern lives 
 
 ## What's in the box
 
-**19 production components** -- buttons, surfaces, badges, tooltips, modals, form controls, and more. All built with React 19, TypeScript, Tailwind CSS 3, Headless UI, and Framer Motion.
+**22 documented families** -- 19 production component families plus theme, class-merging, and motion utilities. The package exposes 48 runtime values and 94 public TypeScript exports, all tied to reviewed specifications.
 
 **Design tokens** -- a complete dark-first color system with intentional light mode, semantic status colors, spacing rhythm, radius scale, and motion timing. All delivered as CSS custom properties.
 
@@ -114,6 +114,23 @@ Everything comes from one import path. Components, types, utilities, motion help
 
 ---
 
+## AI agent usage
+
+Agents do not need to infer this system from screenshots or scrape the documentation site. The package includes a versioned machine contract, concise and exhaustive context files, approved page templates, and a blocking drift validator.
+
+```bash
+npm run agent:query -- context
+npm run agent:query -- component button
+npm run agent:query -- template dashboard
+npm run agent:check
+```
+
+Installed releases expose the same JSON query interface through `npx ai-created-ui-agent`. Start with [llms.txt](https://ui.ai-created.com/llms.txt) for routing, use [llms-full.txt](https://ui.ai-created.com/llms-full.txt) when a task needs complete context, and use the [design-system manifest](https://ui.ai-created.com/design-system/manifest.json) for programmatic access. The manifest is generated from canonical runtime, token, component-spec, and guideline sources; it never overrides them.
+
+`npm run agent:check` rejects stale generated artifacts, Tailwind/token mismatch, documented API mismatch, prohibited styling or imports, invalid templates, and stale agent context. A necessary deviation must be narrow, owned, justified, and time-bounded in `ai-created-ui.config.json`; silent exceptions are not allowed. See [the agent integration guide](docs/agent-integration.md) for consumer setup, CI, and MCP adapter guidance.
+
+---
+
 ## Development workflow
 
 ### Quality gates
@@ -126,7 +143,7 @@ npm ci --prefix playground --install-links
 npm run validate
 ```
 
-`npm run validate` typechecks the package and playground, runs React, TypeScript, hooks, and accessibility lint rules, runs the Vitest component and axe accessibility suites, builds the playground, and verifies the packed package boundary.
+`npm run validate` typechecks the package and portal, runs React, TypeScript, hooks, and accessibility lint rules, runs the Vitest component and axe accessibility suites, rejects stale generated contracts and documentation drift, builds the portal, and verifies the packed package boundary.
 
 Browser tests are a separate required CI gate. They start the playground and exercise the desktop and mobile Chromium smoke and visual suites, so a passing `validate` does not replace a passing browser run.
 
@@ -145,10 +162,17 @@ Faster focused commands are available during development:
 | `npm run test:visual` | Run visual regression tests against committed snapshots |
 | `npm run test:visual:update` | Regenerate visual snapshots after an intentional UI change |
 | `npm run test:browser` | Run all Playwright browser projects |
+| `npm run tokens:export` | Regenerate the DTCG-shaped design-token JSON from canonical CSS |
+| `npm run tokens:check` | Verify the committed token artifact matches canonical CSS without writing |
+| `npm run agent:query -- component button` | Read a complete component contract as JSON |
+| `npm run agent:export` | Regenerate tokens, the machine manifest, and both agent context files |
+| `npm run agent:check` | Run every machine-readable anti-drift gate |
+| `npm run docs:check` | Verify public counts, routes, workflow guidance, and CI propagation promises |
+| `npm run policy:check -- src` | Reject prohibited tokens, styling, imports, and local primitive copies |
 | `npm run package:check` | Verify the GitHub package contains only the public source boundary |
 | `npm run release:check -- vX.Y.Z` | Verify tag, version, lockfile, npm-publication guard, and changelog agreement |
 
-For browser tests locally, install Chromium once with `npx playwright install chromium`, then run `npm run test:browser` from the repository root. CI installs Chromium with system dependencies and runs this gate after `validate`.
+For browser tests locally, install Chromium once with `npx playwright install chromium`, then run `npm run test:browser` from the repository root. If the portal is already running, reuse it with `PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 npm run test:browser`. CI installs Chromium with system dependencies and runs this gate after `validate`.
 
 ### Reviewing visual baselines
 
@@ -162,16 +186,21 @@ Every component has a demo at **[ui.ai-created.com](https://ui.ai-created.com)**
 
 Any component change should be reflected in the playground in the same pass. That is the canonical reference both for future contributors and for anyone hitting the live site.
 
-The playground's design-system reference pages use a manually authored registry at `playground/src/components/design-system/componentDocs.ts`. Keep its API rows, states, accessibility notes, composition guidance, and examples aligned with the current source. The registry is intentionally reviewed documentation, not generated output, so update it alongside public API changes and verify examples in the live playground.
+The playground also provides a searchable living specification at `/components`. Every public component, provider, utility, and motion-helper family has its own page with a production specimen, interactive controls, URL-shareable states, synchronized copy-ready JSX, installation guidance, anatomy, visual measurements, token dependencies, state behavior, keyboard and accessibility contracts, implementation recipes, public API, usage guidance, and required tests. Each entry also defines its Figma-equivalent asset name, auto-layout, resizing, exposed properties, slots, content limits, localization, RTL, responsive behavior, authoring limitations, maturity, ownership, review date, source, and change policy.
+
+The principal specification at `/guidelines` documents the decisions that live above individual components: foundations, component construction, product patterns, content design, accessibility standards, governance, and reusable asset distribution. The Assets chapter includes downloadable tokens, the machine manifest, `llms.txt`, `llms-full.txt`, agent templates, and validation guidance. Generated artifacts are checked for drift as part of `npm run validate`.
+
+The compact overview uses `playground/src/components/design-system/componentDocs.ts`. The exhaustive specification extends it through the typed registry in `playground/src/components/design-system/specs/`. Principal guidelines live in `playground/src/components/design-system/principal-spec/`. Stateful overview examples live in `playground/src/components/design-system/spec-live/`, while the synchronized detail-page preview and code engine lives in `playground/src/components/design-system/spec-workbench/`. These files are intentionally reviewed documentation, apart from generated contract artifacts. Keep every layer aligned with public API changes, run `npm run agent:export`, review and commit the generated changes, and verify the result in both themes.
 
 ### Editing an existing shared component
 
 1. Open the file in this repo (`src/components/Badge.tsx`, etc.)
 2. Make your change
-3. Update its playground demo if visible behavior changed
-4. Add a concise release-worthy note under `Unreleased` in `CHANGELOG.md`
-5. Run `npm run validate` and the applicable browser checks, then commit and push
-6. When the change is released, follow `RELEASING.md`. Consumers update through a reviewable release-tag PR, not by following `main`.
+3. Update its compact docs, detailed spec, construction contract, controls, live specimen, and synchronized code mapping when the public contract changed
+4. Run `npm run agent:export`, then review and commit the generated tokens, manifest, and agent context changes
+5. Update its portal demo if visible behavior changed and add a concise release-worthy note under `Unreleased` in `CHANGELOG.md`
+6. Run `npm run agent:check`, `npm run validate`, and the applicable browser checks, then commit and push
+7. When the change is released, follow `RELEASING.md`. Consumers update through a reviewable release-tag PR, not by following `main`.
 
 ### Release governance
 
@@ -209,7 +238,9 @@ When you build something in an app (like applyanator) and realize it should be s
 3. **Export it** -- add the export to `src/index.ts`
 4. **Add release notes and commit** this repo
 5. **Add a playground demo** -- extend `playground/src/components/design-system/sections/ComponentsSection.tsx` (or add a new section) so the new component is documented live
-6. **Release and update consumers** -- publish the next MINOR GitHub Release, review each Renovate dependency PR, replace the local import with `import { NewComponent } from '@ai-created/ui'`, and delete the local copy
+6. **Add its living specification** -- register its compact API entry, exhaustive details, construction contract, controls, live specimen, synchronized code mapping, and browser coverage
+7. **Regenerate the machine contract** -- run `npm run agent:export`, review every generated change, then run `npm run agent:check`, `npm run validate`, and `npm run test:browser`
+8. **Release and update consumers** -- publish the next MINOR GitHub Release, review each Renovate dependency PR, replace the local import with `import { NewComponent } from '@ai-created/ui'`, and delete the local copy
 
 ### Adding a new design token
 
@@ -218,6 +249,7 @@ When you build something in an app (like applyanator) and realize it should be s
 3. Add a `--ref-*` property only for an opaque value the semantic layer actually needs. Do not create unused scale steps.
 4. Map the semantic property, never the reference palette, in `tailwind-preset.js` if a utility is needed.
 5. Preserve existing public names with aliases, update `DESIGN-SYSTEM.md`, and verify the playground in both themes.
+6. Run `npm run tokens:export`, review the generated artifact, and keep `npm run tokens:check` passing.
 
 ### Site-specific overrides
 

@@ -1,0 +1,23 @@
+{
+  "name": "ai-created-ui-agent-consumer-fixture",
+  "private": true,
+  "version": "0.0.0",
+  "dependencies": {
+    "@ai-created/ui": "file:../../..",
+    "@headlessui/react": "^2.2.4",
+    "@tailwindcss/typography": "^0.5.16",
+    "framer-motion": "^12.0.0",
+    "lucide-react": ">=0.400.0",
+    "next": ">=15.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.5",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^6.0.3"
+  }
+}

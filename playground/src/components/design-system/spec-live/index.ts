@@ -1,0 +1,1 @@
+export { ComponentLiveSpecimen } from './ComponentLiveSpecimen';

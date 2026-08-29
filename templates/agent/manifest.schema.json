@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ui.ai-created.com/schemas/agent-template-manifest.json",
+  "title": "AI-Created UI agent template manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "package", "templates"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "type": "string", "const": "1.0.0" },
+    "package": { "type": "string", "const": "@ai-created/ui" },
+    "templates": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "archetype", "subtype", "title", "source", "export", "whenToUse", "slots", "states", "imports", "requiredChecks"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "archetype": { "type": "string", "enum": ["home", "browse", "detail", "context", "workspace"] },
+          "subtype": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "source": { "type": "string", "pattern": "^templates/agent/.+\\.tsx$" },
+          "export": { "type": "string", "minLength": 1 },
+          "whenToUse": { "type": "string", "minLength": 1 },
+          "slots": { "type": "array", "minItems": 3, "items": { "type": "string", "minLength": 1 } },
+          "states": { "type": "array", "minItems": 4, "items": { "type": "string", "minLength": 1 } },
+          "imports": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+          "requiredChecks": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+        }
+      }
+    }
+  }
+}

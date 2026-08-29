@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import DSCodeBlock from './DSCodeBlock';
 import type { ComponentDocEntry } from './componentDocs';
 
@@ -25,7 +27,16 @@ export default function DSComponentReference({ entry }: { entry: ComponentDocEnt
         <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-text3">
           {entry.category}
         </span>
-        <h3 className="mt-2 font-heading text-xl font-medium text-text">{entry.name}</h3>
+        <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
+          <h3 className="font-heading text-xl font-medium text-text">{entry.name}</h3>
+          <Link
+            href={`/components/${entry.id}`}
+            className="group inline-flex items-center gap-2 rounded-sm border border-border px-3 py-2 text-xs text-text2 transition-colors hover:border-border-strong hover:text-text"
+          >
+            Full specification
+            <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+          </Link>
+        </div>
         <p className="mt-2 max-w-3xl text-sm leading-relaxed text-text2">{entry.purpose}</p>
       </div>
 

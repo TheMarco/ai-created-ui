@@ -2,7 +2,19 @@
 
 This file is the canonical design contract for the public AI-Created site.
 
-If the live UI changes, update this file and `/design-system` in the same pass.
+If the live UI changes, update this file and the living specification in the same pass.
+
+## Living Specification
+
+The public design-system portal has three layers:
+
+- `/` is the design-system entry hub and visual foundations overview.
+- `/components` is the searchable component workbench and implementation reference.
+- `/guidelines` is the principal-level operating specification for foundations, construction, patterns, content, accessibility, governance, and reusable assets.
+
+Component documentation is canonical only when the live production specimen, public API, implementation examples, Figma-equivalent construction contract, accessibility contract, and tests describe the same behavior. System guidance is canonical only when it names an owner, maturity, review cadence, source of truth, and required outcomes.
+
+`styles/tokens.css` remains the token source of truth. The downloadable `playground/public/design-system/tokens.json` artifact is generated from it and must pass `npm run tokens:check`. Do not edit generated token JSON by hand.
 
 ## Purpose
 
@@ -772,9 +784,17 @@ Whenever you make a design or UI change:
 2. Reuse existing components first. Only promote a new shared component when the pattern is repeated or clearly cross-route.
 3. Verify both dark and light themes.
 4. Verify keyboard access, focus visibility, contrast, and reduced-motion behavior.
-5. Update `/design-system` if the change affects shared rules or patterns.
+5. Update the applicable `/guidelines` chapter if the change affects shared rules or patterns.
 6. Update this file if the change affects the design contract.
 7. Remove or redirect obsolete route surfaces instead of leaving them alive.
+
+## AI Agent Contract
+
+Agents use `AGENTS.md` as the universal operating contract and `design-system.manifest.json` as its generated machine-readable projection. Before building a page, an agent must query the complete contracts for its components, select an approved template when one matches, and implement every applicable exceptional state.
+
+The package ships `llms.txt` for discovery, `llms-full.txt` for exhaustive readable context, a JSON query CLI, six complete page templates, and `ai-created-ui.config.json` with a blocking drift policy. Run `npm run agent:check` before handoff. This verifies token artifacts, manifest freshness, Tailwind-to-token parity, public API documentation parity, policy compliance, template compilation, public export coverage, and generated agent context.
+
+The target is zero undetected drift, not automatic approval of every design decision. If the system cannot meet a real requirement through composition, the first implementation stays product-local and any policy exception must be scoped, justified, owned, and assigned a future review date. Repeated exceptions are evidence for a shared-system contribution.
 
 ## Review Checklist
 
@@ -792,4 +812,5 @@ Before shipping, confirm:
 - reduced-motion behavior still works
 - light mode still works
 - new shared components were added because of a real product need, not checklist completeness
-- `/design-system` and `DESIGN-SYSTEM.md` still match the live system
+- the living specification and `DESIGN-SYSTEM.md` still match the live system
+- `npm run agent:check` passes with no undocumented exception

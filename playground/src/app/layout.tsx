@@ -3,16 +3,16 @@ import './globals.css';
 import { ThemeProvider } from '@ai-created/ui';
 
 export const metadata: Metadata = {
-  title: '@ai-created/ui — Design System Playground',
+  title: '@ai-created/ui | Design System Specification',
   description:
-    'Live playground and reference for @ai-created/ui, the shared design system powering AI-Created products.',
+    'The canonical component, design guidance, and agent contract portal for the @ai-created/ui design system.',
   alternates: {
     canonical: 'https://ui.ai-created.com',
   },
   openGraph: {
-    title: '@ai-created/ui — Design System Playground',
+    title: '@ai-created/ui | Design System Specification',
     description:
-      'Live playground and reference for @ai-created/ui, the shared design system powering AI-Created products.',
+      'The canonical component, design guidance, and agent contract portal for the @ai-created/ui design system.',
     url: 'https://ui.ai-created.com',
     siteName: '@ai-created/ui',
     locale: 'en_US',
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <head>
         <script
           dangerouslySetInnerHTML={{

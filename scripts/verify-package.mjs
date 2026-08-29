@@ -25,10 +25,20 @@ try {
   const [pack] = JSON.parse(result.stdout);
   const filePaths = pack.files.map((file) => file.path);
   const requiredFiles = [
+    'AGENTS.md',
+    'ai-created-ui.config.json',
+    'contracts/design-policy.schema.json',
+    'contracts/design-system-manifest.schema.json',
+    'design-system.manifest.json',
+    'llms.txt',
+    'llms-full.txt',
     'package.json',
+    'scripts/design-system-agent.mjs',
+    'scripts/validate-design-policy.mjs',
     'src/index.ts',
     'styles/tokens.css',
     'tailwind-preset.js',
+    'templates/agent/manifest.json',
   ];
 
   const missingFiles = requiredFiles.filter((file) => !filePaths.includes(file));
@@ -41,14 +51,23 @@ try {
     'LICENSE.md',
     'README',
     'README.md',
+    'AGENTS.md',
+    'ai-created-ui.config.json',
+    'design-system.manifest.json',
+    'llms.txt',
+    'llms-full.txt',
     'package.json',
     'tailwind-preset.js',
   ]);
   const unexpectedFiles = filePaths.filter(
     (file) =>
       !allowedRootFiles.has(file) &&
+      !file.startsWith('contracts/') &&
+      !file.startsWith('scripts/design-system-agent.mjs') &&
+      !file.startsWith('scripts/validate-design-policy.mjs') &&
       !file.startsWith('src/') &&
-      !file.startsWith('styles/')
+      !file.startsWith('styles/') &&
+      !file.startsWith('templates/agent/')
   );
 
   if (unexpectedFiles.length > 0) {

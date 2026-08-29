@@ -1,0 +1,10 @@
+@import '@ai-created/ui/styles/tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+}

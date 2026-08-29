@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { Check, Copy } from 'lucide-react';
 
 interface DSCopyButtonProps {
   value: string;
@@ -11,12 +11,20 @@ interface DSCopyButtonProps {
 
 export default function DSCopyButton({ value, className = '', children }: DSCopyButtonProps) {
   const [copied, setCopied] = useState(false);
+  const resetTimeout = useRef<ReturnType<typeof setTimeout>>(undefined);
+
+  useEffect(() => () => clearTimeout(resetTimeout.current), []);
+
+  const showCopiedState = useCallback(() => {
+    clearTimeout(resetTimeout.current);
+    setCopied(true);
+    resetTimeout.current = setTimeout(() => setCopied(false), 1500);
+  }, []);
 
   const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(value);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      showCopiedState();
     } catch {
       // Fallback for older browsers
       const textarea = document.createElement('textarea');
@@ -25,59 +33,25 @@ export default function DSCopyButton({ value, className = '', children }: DSCopy
       textarea.select();
       document.execCommand('copy');
       document.body.removeChild(textarea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      showCopiedState();
     }
-  }, [value]);
+  }, [showCopiedState, value]);
 
   return (
     <button
       type="button"
       onClick={handleCopy}
       className={`group inline-flex items-center gap-1.5 transition-colors duration-200 cursor-pointer ${className}`}
-      title={`Copy: ${value}`}
+      aria-label={copied ? 'Code copied' : 'Copy code'}
+      title={copied ? 'Code copied' : 'Copy code'}
     >
       {children}
-      <AnimatePresence mode="wait">
-        {copied ? (
-          <motion.svg
-            key="check"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-3 h-3 text-success shrink-0"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <polyline points="20 6 9 17 4 12" />
-          </motion.svg>
-        ) : (
-          <motion.svg
-            key="copy"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-3 h-3 text-text3 opacity-60 group-hover:opacity-100 transition-opacity shrink-0"
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-          </motion.svg>
-        )}
-      </AnimatePresence>
+      {copied ? (
+        <Check className="h-3 w-3 shrink-0 text-success" aria-hidden="true" />
+      ) : (
+        <Copy className="h-3 w-3 shrink-0 text-text3 opacity-60 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+      )}
+      <span className="sr-only" aria-live="polite">{copied ? 'Copied' : ''}</span>
     </button>
   );
 }
