@@ -4,19 +4,19 @@ import { forwardRef } from 'react';
 import { cn } from '../lib/utils';
 
 export function fieldGroupStyles(className?: string) {
-  return cn('space-y-2.5', className);
+  return cn('flex flex-col gap-2', className);
 }
 
 export function fieldLabelStyles(className?: string) {
-  return cn('mb-2 block text-sm font-medium text-text2', className);
+  return cn('block text-sm font-medium text-text2', className);
 }
 
 export function fieldLegendStyles(className?: string) {
-  return cn('mb-2 block text-xs font-mono uppercase tracking-wider text-text2', className);
+  return cn('block text-xs font-mono uppercase tracking-wider text-text2', className);
 }
 
 export function fieldHintStyles(className?: string) {
-  return cn('mt-2 text-xs text-text2', className);
+  return cn('text-xs text-text2', className);
 }
 
 export function inputStyles(className?: string) {

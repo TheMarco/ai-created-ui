@@ -8,6 +8,10 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 - The specification homepage now identifies `@ai-created/ui` as the open-source React design system behind AI-Created and Human, Actually before introducing its documentation paths.
 
+### Fixed
+
+- `FieldGroup` now solely owns the Field family’s 8px vertical rhythm, preventing Field labels and hints from accumulating child margins and aligning TextInput and TextArea controls with adjacent Dropdown triggers.
+
 ## [1.2.0] - 2026-08-29
 
 ### Added

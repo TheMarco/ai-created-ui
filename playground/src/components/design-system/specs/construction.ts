@@ -231,7 +231,7 @@ export const componentConstructionSpecs = {
   },
   field: {
     asset: { kind: 'component', figmaName: 'Components/Forms/Field', localName: 'Field family', canvasApplicability: 'Publish a nested field component with input and textarea instance swaps plus state properties.' },
-    autoLayout: layout('vertical', '8px to 10px', '0px', 'Stretch', 'Content wraps'),
+    autoLayout: layout('vertical', '8px', '0px', 'Stretch', 'Content wraps', ['FieldGroup owns the sibling gap; FieldLabel, FieldLegend, controls, and FieldHint do not add exterior spacing.']),
     resizing: resize('fill', 'hug', '160px', 'Parent controlled', '44px plus labels and hints', 'Content controlled', 'visible'),
     exposedProperties: [property('control', 'Control', 'instance-swap', 'TextInput', 'TextInput or TextArea child', ['TextInput', 'TextArea']), property('label', 'Label', 'text', 'Label', 'FieldLabel children', undefined, true), property('hint', 'Hint or error', 'text', null, 'FieldHint children'), property('disabled', 'Disabled', 'boolean', false, 'disabled on the native control'), property('invalid', 'Invalid', 'boolean', false, 'aria-invalid on the native control plus semantic hint content'), property('required', 'Required', 'boolean', false, 'required on the native control and a localized label indicator')],
     nestedAssets: [nested('FieldGroup', 'primitive', true, 'Vertical field composition root.', 'FieldGroup'), nested('FieldLabel', 'subcomponent', true, 'Visible native label.', 'FieldLabel'), nested('Control', 'slot', true, 'TextInput, TextArea, or an equivalent labelled control.', 'TextInput, TextArea, or styled custom control'), nested('FieldHint', 'subcomponent', false, 'Description, requirement, or validation message.', 'FieldHint')],

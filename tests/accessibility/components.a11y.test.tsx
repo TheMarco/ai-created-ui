@@ -8,7 +8,7 @@ import Checkbox from '../../src/components/Checkbox';
 import ConfirmDialog from '../../src/components/ConfirmDialog';
 import Dialog from '../../src/components/Dialog';
 import Dropdown from '../../src/components/Dropdown';
-import { FieldLabel, TextInput } from '../../src/components/Field';
+import { FieldGroup, FieldHint, FieldLabel, TextArea, TextInput } from '../../src/components/Field';
 import RadioGroup from '../../src/components/RadioGroup';
 import Slider from '../../src/components/Slider';
 import Tabs, { useTabPanelProps } from '../../src/components/Tabs';
@@ -44,11 +44,41 @@ describe('interactive component accessibility', () => {
           ]}
         />
         <Slider label="Confidence" value={40} onChange={vi.fn()} />
-        <FieldLabel htmlFor="project-name">Project name</FieldLabel>
-        <TextInput id="project-name" />
+        <FieldGroup>
+          <FieldLabel htmlFor="project-name">Project name</FieldLabel>
+          <TextInput id="project-name" />
+        </FieldGroup>
       </main>
     );
 
+    await expectNoViolations(container);
+  });
+
+  it('validates described invalid, textarea, and disabled FieldGroup states', async () => {
+    const { container } = render(
+      <main>
+        <FieldGroup>
+          <FieldLabel htmlFor="release-notes">Release notes</FieldLabel>
+          <TextArea
+            id="release-notes"
+            aria-invalid="true"
+            aria-describedby="release-notes-error"
+          />
+          <FieldHint id="release-notes-error" role="alert">
+            Add release notes before publishing.
+          </FieldHint>
+        </FieldGroup>
+        <FieldGroup>
+          <FieldLabel htmlFor="release-channel">Release channel</FieldLabel>
+          <TextInput id="release-channel" value="Stable" disabled readOnly />
+        </FieldGroup>
+      </main>
+    );
+
+    expect(screen.getByRole('textbox', { name: 'Release notes' })).toHaveAccessibleDescription(
+      'Add release notes before publishing.'
+    );
+    expect(screen.getByRole('textbox', { name: 'Release channel' })).toBeDisabled();
     await expectNoViolations(container);
   });
 

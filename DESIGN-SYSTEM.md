@@ -523,6 +523,7 @@ Rules:
 - Keep `className` as the styling escape hatch. Defaults remain authoritative, and overrides must not remove semantics, accessible names, focus visibility, disabled behavior, or required hit targets.
 - Icon-only controls require an explicit accessible name, normally `aria-label`. Decorative icons inside named controls use `aria-hidden="true"`.
 - Field associations are explicit: `FieldLabel.htmlFor` matches the control `id`; `FieldHint.id` is referenced from the control's `aria-describedby`. `FieldLegend` is styled supporting text, not a semantic `<legend>`.
+- Field spacing has one owner: `FieldGroup` supplies the 8px vertical gap between its label or legend, control, and optional hint. `FieldLabel`, `FieldLegend`, and `FieldHint` supply typography and semantics without exterior margins. Custom controls using the Field style helpers stay inside the same `FieldGroup` composition.
 - Tabs that render panels should pass one stable `id` to `Tabs` and the same value as `tabsId` to `useTabPanelProps`. Omitting the shared id intentionally omits ARIA relationships rather than emitting mismatched ids.
 - Variant names and visual meanings are compatibility contracts. Add aliases and a migration path before renaming or removing one.
 

@@ -5,6 +5,7 @@ import {
   Button,
   EmptyState,
   ErrorReport,
+  FieldGroup,
   FieldLabel,
   Skeleton,
   Surface,
@@ -87,14 +88,16 @@ export default function DirectoryPage({
           <h2 id="directory-results" className="sr-only">Records</h2>
           <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div className="w-full md:max-w-lg">
-              <FieldLabel htmlFor="directory-search">Search records</FieldLabel>
-              <TextInput
-                id="directory-search"
-                type="search"
-                value={query}
-                onChange={(event) => onQueryChange(event.target.value)}
-                placeholder="Search by name, status, or metadata"
-              />
+              <FieldGroup>
+                <FieldLabel htmlFor="directory-search">Search records</FieldLabel>
+                <TextInput
+                  id="directory-search"
+                  type="search"
+                  value={query}
+                  onChange={(event) => onQueryChange(event.target.value)}
+                  placeholder="Search by name, status, or metadata"
+                />
+              </FieldGroup>
             </div>
             <p className="font-mono text-xs text-text3" aria-live="polite">
               {resolvedStatus === 'ready' ? `${visibleItems.length} records` : 'Results unavailable'}

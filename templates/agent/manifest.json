@@ -13,7 +13,7 @@
       "whenToUse": "Use for browsable collections where people search, scan status, create records, and open details.",
       "slots": ["page title", "page description", "primary action", "search", "result count", "record list"],
       "states": ["loading", "ready", "empty", "error", "forbidden"],
-      "imports": ["Badge", "Button", "EmptyState", "ErrorReport", "FieldLabel", "Skeleton", "Surface", "TextInput"],
+      "imports": ["Badge", "Button", "EmptyState", "ErrorReport", "FieldGroup", "FieldLabel", "Skeleton", "Surface", "TextInput"],
       "requiredChecks": ["node scripts/verify-agent-templates.mjs", "npm run typecheck", "npm run lint"]
     },
     {

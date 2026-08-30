@@ -317,10 +317,17 @@ function ErrorReportSpecimen() {
   );
 }
 
+const fieldStatusOptions: DropdownOption<'proposed' | 'approved' | 'released'>[] = [
+  { value: 'proposed', label: 'Proposed' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'released', label: 'Released' },
+];
+
 function FieldSpecimen() {
   const emailHintId = useId();
   const [email, setEmail] = useState('');
   const [notes, setNotes] = useState('');
+  const [releaseStatus, setReleaseStatus] = useState<'proposed' | 'approved' | 'released'>('proposed');
   const [submitted, setSubmitted] = useState(false);
   const invalid = submitted && !email.includes('@');
 
@@ -347,6 +354,12 @@ function FieldSpecimen() {
           {invalid ? 'Enter a valid email address.' : 'Used only for release notes.'}
         </FieldHint>
       </FieldGroup>
+      <Dropdown
+        options={fieldStatusOptions}
+        value={releaseStatus}
+        onChange={setReleaseStatus}
+        label="Release status"
+      />
       <FieldGroup>
         <FieldLabel htmlFor="spec-notes">Implementation notes</FieldLabel>
         <TextArea

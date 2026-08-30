@@ -3494,25 +3494,25 @@
           "prop": "FieldGroup",
           "type": "HTMLAttributes<HTMLDivElement>",
           "defaultValue": "undefined",
-          "description": "Groups a label, control, and hint."
+          "description": "Groups a label, control, and hint with one 8px sibling gap."
         },
         {
           "prop": "FieldLabel",
           "type": "LabelHTMLAttributes<HTMLLabelElement>",
           "defaultValue": "undefined",
-          "description": "Native label."
+          "description": "Native label without exterior spacing."
         },
         {
           "prop": "FieldLegend",
           "type": "HTMLAttributes<HTMLSpanElement>",
           "defaultValue": "undefined",
-          "description": "Visual legend text, not a semantic fieldset legend."
+          "description": "Visual legend text without exterior spacing; not a semantic fieldset legend."
         },
         {
           "prop": "FieldHint",
           "type": "HTMLAttributes<HTMLParagraphElement>",
           "defaultValue": "undefined",
-          "description": "Supporting or validation text."
+          "description": "Supporting or validation text without exterior spacing."
         },
         {
           "prop": "TextInput",
@@ -3538,8 +3538,8 @@
         "Use aria-describedby for hints and errors."
       ],
       "composition": [
-        "Use FieldGroup with FieldLabel, TextInput or TextArea, and FieldHint.",
-        "Style helpers return class names for custom controls."
+        "Use FieldGroup as the single vertical-spacing owner around FieldLabel, TextInput or TextArea, and optional FieldHint.",
+        "Style helpers support custom controls inside the same FieldGroup spacing contract."
       ],
       "code": "<FieldGroup>\n  <FieldLabel htmlFor=\"email\">Email</FieldLabel>\n  <TextInput id=\"email\" type=\"email\" aria-describedby=\"email-hint\" />\n  <FieldHint id=\"email-hint\">We will never share it.</FieldHint>\n</FieldGroup>",
       "slug": "field",
@@ -3593,12 +3593,12 @@
       "visualSpec": {
         "measurements": [
           {
-            "property": "Group gap",
-            "value": "10px"
+            "property": "FieldGroup sibling gap",
+            "value": "8px"
           },
           {
-            "property": "Label bottom margin",
-            "value": "8px"
+            "property": "Label, legend, and hint exterior margin",
+            "value": "0px"
           },
           {
             "property": "Input padding",
@@ -3611,13 +3611,10 @@
           {
             "property": "Input border",
             "value": "1px"
-          },
-          {
-            "property": "Hint top margin",
-            "value": "8px"
           }
         ],
         "rules": [
+          "FieldGroup is the single owner of vertical spacing between its label, control, and optional hint.",
           "Keep labels persistently visible; placeholders are examples, not labels.",
           "Apply validation meaning and relationships in consuming code.",
           "TextArea disables manual resizing by default."
@@ -3697,7 +3694,8 @@
         "clientComponent": true,
         "notes": [
           "Every primitive forwards its native ref and attributes.",
-          "Style helpers support custom controls without duplicating class contracts.",
+          "FieldGroup owns the 8px sibling gap; FieldLabel, FieldLegend, and FieldHint add no exterior margin.",
+          "Style helpers support custom controls inside the same group spacing contract without duplicating class contracts.",
           "The family does not generate ids or accessibility relationships for the consumer."
         ]
       },
@@ -3714,16 +3712,16 @@
       "testing": {
         "unit": [
           "Each primitive forwards refs and native props.",
-          "Style helpers merge consumer overrides last."
+          "Style helpers merge consumer overrides last and only FieldGroup supplies exterior sibling spacing."
         ],
         "interaction": [
           "Label click focuses the associated control and typing updates the form model."
         ],
         "accessibility": [
-          "Label, description, validation, autocomplete, and disabled semantics are correct."
+          "Label, description, validation, autocomplete, and disabled semantics are correct at responsive widths and 200% text zoom."
         ],
         "visual": [
-          "Capture input/textarea default, placeholder, focus, disabled, invalid, and both themes."
+          "Measure label-to-input, label-to-textarea, and control-to-hint gaps; assert equal-height Field and Dropdown labels produce equal control tops; capture wrapped labels, no-hint, invalid, disabled, responsive, and both-theme states."
         ]
       },
       "relatedComponents": [
@@ -3768,11 +3766,13 @@
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "8px to 10px",
+          "gap": "8px",
           "padding": "0px",
           "alignment": "Stretch",
           "wrap": "Content wraps",
-          "notes": []
+          "notes": [
+            "FieldGroup owns the sibling gap; FieldLabel, FieldLegend, controls, and FieldHint do not add exterior spacing."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -5664,6 +5664,10 @@
       "visualSpec": {
         "measurements": [
           {
+            "property": "Label-to-trigger gap",
+            "value": "8px"
+          },
+          {
             "property": "Trigger padding",
             "value": "16px left / 40px right / 12px vertical"
           },
@@ -5811,7 +5815,7 @@
           "Label, expanded state, active descendant/option semantics, and focus restoration are valid."
         ],
         "visual": [
-          "Capture closed/open, placeholder, selected, active, disabled option/trigger, overflow, and themes."
+          "Capture closed/open, placeholder, selected, active, disabled option/trigger, overflow, themes, and top alignment beside a Field with an equal-height label."
         ]
       },
       "relatedComponents": [

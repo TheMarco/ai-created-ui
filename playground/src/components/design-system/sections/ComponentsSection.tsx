@@ -10,6 +10,7 @@ import {
   Checkbox,
   Dialog,
   Dropdown,
+  FieldGroup,
   FieldHint,
   FieldLabel,
   FieldLegend,
@@ -165,6 +166,90 @@ const dropdownOptions: DropdownOption[] = [
   { value: 'framer', label: 'Framer Motion' },
   { value: 'three', label: 'Three.js', disabled: true },
 ];
+
+const releaseStatusOptions: DropdownOption<'proposed' | 'approved' | 'released'>[] = [
+  { value: 'proposed', label: 'Proposed' },
+  { value: 'approved', label: 'Approved' },
+  { value: 'released', label: 'Released' },
+];
+
+function FieldSpacingDemo() {
+  const [releaseStatus, setReleaseStatus] = useState<'proposed' | 'approved' | 'released'>('proposed');
+  const longLabel = 'Approval owner for proposed changes requiring security and accessibility review';
+
+  return (
+    <DSComponentDemo
+      title="Form Controls"
+      description="FieldGroup owns one vertical spacing rhythm so text controls, hints, and adjacent Dropdown triggers stay aligned across content and states."
+    >
+      <div className="max-w-3xl space-y-6">
+        <div data-field-spacing-primary className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+          <FieldGroup>
+            <FieldLabel htmlFor="ds-demo-search">Search proposed changes</FieldLabel>
+            <TextInput
+              id="ds-demo-search"
+              type="search"
+              placeholder="Search by title or owner"
+              aria-describedby="ds-demo-search-hint"
+              readOnly
+              aria-readonly="true"
+            />
+            <FieldHint id="ds-demo-search-hint">Results update as you type.</FieldHint>
+          </FieldGroup>
+          <Dropdown
+            options={releaseStatusOptions}
+            value={releaseStatus}
+            onChange={setReleaseStatus}
+            label="Release status"
+          />
+        </div>
+
+        <div data-field-spacing-states className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+          <FieldGroup>
+            <FieldLabel htmlFor="ds-demo-message">Implementation notes</FieldLabel>
+            <TextArea
+              id="ds-demo-message"
+              rows={3}
+              placeholder="Add review context"
+              aria-describedby="ds-demo-message-hint"
+              readOnly
+              aria-readonly="true"
+            />
+            <FieldHint id="ds-demo-message-hint">Keep the rationale concise and actionable.</FieldHint>
+          </FieldGroup>
+          <FieldGroup data-field-without-hint>
+            <FieldLabel htmlFor="ds-demo-disabled">Inherited release channel</FieldLabel>
+            <TextInput id="ds-demo-disabled" value="Stable" disabled readOnly />
+          </FieldGroup>
+        </div>
+
+        <div data-field-spacing-wrapped className="grid grid-cols-1 items-start gap-4 md:grid-cols-2">
+          <FieldGroup>
+            <FieldLabel htmlFor="ds-demo-invalid">{longLabel}</FieldLabel>
+            <TextInput
+              id="ds-demo-invalid"
+              aria-invalid="true"
+              aria-describedby="ds-demo-invalid-error"
+              className="border-error-border focus:border-error-border"
+              value=""
+              readOnly
+            />
+            <FieldHint id="ds-demo-invalid-error" role="alert" className="text-error">
+              Choose an owner before release.
+            </FieldHint>
+          </FieldGroup>
+          <Dropdown
+            options={releaseStatusOptions}
+            value={releaseStatus}
+            onChange={setReleaseStatus}
+            label={longLabel}
+            disabled
+          />
+        </div>
+      </div>
+    </DSComponentDemo>
+  );
+}
 
 const radioOptions: RadioOption[] = [
   { value: 'all', label: 'All categories' },
@@ -774,51 +859,7 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
           </Surface>
         </DSComponentDemo>
 
-        <DSComponentDemo
-          title="Form Controls"
-          description="Forms use the shared field primitives so hover, focus, placeholder, and disabled behavior stay aligned."
-        >
-          <div className="max-w-2xl space-y-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <FieldLabel htmlFor="ds-demo-name">Name</FieldLabel>
-                <TextInput
-                  id="ds-demo-name"
-                  type="text"
-                  placeholder="Your name"
-                  readOnly
-                  aria-readonly="true"
-                />
-              </div>
-              <div>
-                <FieldLabel htmlFor="ds-demo-email">Email</FieldLabel>
-                <TextInput
-                  id="ds-demo-email"
-                  type="email"
-                  placeholder="your@email.com"
-                  readOnly
-                  aria-readonly="true"
-                />
-              </div>
-            </div>
-
-            <div>
-              <FieldLabel htmlFor="ds-demo-message">Message</FieldLabel>
-              <TextArea
-                id="ds-demo-message"
-                rows={4}
-                placeholder="A clear, direct message."
-                readOnly
-                aria-readonly="true"
-              />
-              <FieldHint>Helper copy stays quiet but readable, and status feedback uses semantic tokens.</FieldHint>
-            </div>
-
-            <Button type="button" variant="primary" size="lg">
-              Send Message
-            </Button>
-          </div>
-        </DSComponentDemo>
+        <FieldSpacingDemo />
 
         <DSComponentDemo
           title="Browse Controls"
@@ -832,14 +873,14 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
                 readOnly
                 aria-readonly="true"
               />
-              <div>
+              <FieldGroup>
                 <FieldLegend>Type</FieldLegend>
                 <div className="flex flex-wrap gap-3">
                   <Button type="button" variant="filter-active" size="sm">All</Button>
                   <Button type="button" variant="filter" size="sm">Apps</Button>
                   <Button type="button" variant="filter" size="sm">Games</Button>
                 </div>
-              </div>
+              </FieldGroup>
             </div>
           </Surface>
         </DSComponentDemo>

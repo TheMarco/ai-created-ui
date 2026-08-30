@@ -10,6 +10,11 @@ import {
   FieldLegend,
   TextArea,
   TextInput,
+  fieldGroupStyles,
+  fieldHintStyles,
+  fieldLabelStyles,
+  fieldLegendStyles,
+  inputStyles,
 } from '../../src/components/Field';
 import Notice from '../../src/components/Notice';
 import Skeleton from '../../src/components/Skeleton';
@@ -73,5 +78,34 @@ describe('content primitive contracts', () => {
     expect(inputRef.current).toHaveAccessibleDescription('Use a recognizable name.');
     expect(inputRef.current).toHaveAttribute('name', 'projectName');
     expect(areaRef.current).toBe(screen.getByRole('textbox', { name: 'Notes' }));
+  });
+
+  it('assigns exterior field spacing only to FieldGroup and preserves custom-control helpers', () => {
+    render(
+      <FieldGroup data-testid="custom-field">
+        <FieldLabel htmlFor="project-status">Project status</FieldLabel>
+        <select
+          id="project-status"
+          className={inputStyles()}
+          aria-describedby="project-status-hint"
+          defaultValue="draft"
+        >
+          <option value="draft">Draft</option>
+          <option value="ready">Ready</option>
+        </select>
+        <FieldHint id="project-status-hint">Choose the current release state.</FieldHint>
+      </FieldGroup>
+    );
+
+    expect(fieldGroupStyles()).toContain('flex flex-col gap-2');
+    expect(fieldGroupStyles()).not.toContain('space-y');
+    expect(fieldLabelStyles()).not.toMatch(/\bmb-/);
+    expect(fieldLegendStyles()).not.toMatch(/\bmb-/);
+    expect(fieldHintStyles()).not.toMatch(/\bmt-/);
+    expect(screen.getByTestId('custom-field')).toHaveClass('flex', 'flex-col', 'gap-2');
+    expect(screen.getByRole('combobox', { name: 'Project status' })).toHaveAccessibleDescription(
+      'Choose the current release state.'
+    );
+    expect(screen.getByRole('combobox', { name: 'Project status' })).toHaveClass('w-full');
   });
 });

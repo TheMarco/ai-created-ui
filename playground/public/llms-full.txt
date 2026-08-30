@@ -637,10 +637,10 @@ Composable labels, hints, text controls, and style helpers for consistent form f
 
 ### Public API
 
-- `FieldGroup`: `HTMLAttributes<HTMLDivElement>`. Default: undefined. Groups a label, control, and hint.
-- `FieldLabel`: `LabelHTMLAttributes<HTMLLabelElement>`. Default: undefined. Native label.
-- `FieldLegend`: `HTMLAttributes<HTMLSpanElement>`. Default: undefined. Visual legend text, not a semantic fieldset legend.
-- `FieldHint`: `HTMLAttributes<HTMLParagraphElement>`. Default: undefined. Supporting or validation text.
+- `FieldGroup`: `HTMLAttributes<HTMLDivElement>`. Default: undefined. Groups a label, control, and hint with one 8px sibling gap.
+- `FieldLabel`: `LabelHTMLAttributes<HTMLLabelElement>`. Default: undefined. Native label without exterior spacing.
+- `FieldLegend`: `HTMLAttributes<HTMLSpanElement>`. Default: undefined. Visual legend text without exterior spacing; not a semantic fieldset legend.
+- `FieldHint`: `HTMLAttributes<HTMLParagraphElement>`. Default: undefined. Supporting or validation text without exterior spacing.
 - `TextInput`: `InputHTMLAttributes<HTMLInputElement>`. Default: undefined. Native text input.
 - `TextArea`: `TextareaHTMLAttributes<HTMLTextAreaElement>`. Default: undefined. Native textarea.
 
@@ -675,13 +675,14 @@ Composable labels, hints, text controls, and style helpers for consistent form f
 
 ### Composition
 
-- Use FieldGroup with FieldLabel, TextInput or TextArea, and FieldHint.
-- Style helpers return class names for custom controls.
+- Use FieldGroup as the single vertical-spacing owner around FieldLabel, TextInput or TextArea, and optional FieldHint.
+- Style helpers support custom controls inside the same FieldGroup spacing contract.
 
 ### Implementation notes
 
 - Every primitive forwards its native ref and attributes.
-- Style helpers support custom controls without duplicating class contracts.
+- FieldGroup owns the 8px sibling gap; FieldLabel, FieldLegend, and FieldHint add no exterior margin.
+- Style helpers support custom controls inside the same group spacing contract without duplicating class contracts.
 - The family does not generate ids or accessibility relationships for the consumer.
 
 ### Recipes
@@ -699,10 +700,10 @@ Composable labels, hints, text controls, and style helpers for consistent form f
 ### Required tests
 
 - Unit: Each primitive forwards refs and native props.
-- Unit: Style helpers merge consumer overrides last.
+- Unit: Style helpers merge consumer overrides last and only FieldGroup supplies exterior sibling spacing.
 - Interaction: Label click focuses the associated control and typing updates the form model.
-- Accessibility: Label, description, validation, autocomplete, and disabled semantics are correct.
-- Visual: Capture input/textarea default, placeholder, focus, disabled, invalid, and both themes.
+- Accessibility: Label, description, validation, autocomplete, and disabled semantics are correct at responsive widths and 200% text zoom.
+- Visual: Measure label-to-input, label-to-textarea, and control-to-hint gaps; assert equal-height Field and Dropdown labels produce equal control tops; capture wrapped labels, no-hint, invalid, disabled, responsive, and both-theme states.
 
 ## Checkbox (`checkbox`)
 
@@ -1147,7 +1148,7 @@ An accessible controlled listbox for choosing one option in compact space.
 - Unit: Calls onChange with the selected enabled value.
 - Interaction: Open, arrow, select, escape, outside dismissal, typeahead, and disabled flows work.
 - Accessibility: Label, expanded state, active descendant/option semantics, and focus restoration are valid.
-- Visual: Capture closed/open, placeholder, selected, active, disabled option/trigger, overflow, and themes.
+- Visual: Capture closed/open, placeholder, selected, active, disabled option/trigger, overflow, themes, and top alignment beside a Field with an equal-height label.
 
 ## Tabs / useTabPanelProps (`tabs`)
 
@@ -2049,7 +2050,7 @@ Use for browsable collections where people search, scan status, create records, 
 - Export: `DirectoryPage`
 - Required states: loading, ready, empty, error, forbidden
 - Slots: page title, page description, primary action, search, result count, record list
-- Public imports: Badge, Button, EmptyState, ErrorReport, FieldLabel, Skeleton, Surface, TextInput
+- Public imports: Badge, Button, EmptyState, ErrorReport, FieldGroup, FieldLabel, Skeleton, Surface, TextInput
 
 ## Record detail (`detail`)
 

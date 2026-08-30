@@ -7,6 +7,7 @@ import {
   ConfirmDialog,
   EmptyState,
   ErrorReport,
+  FieldGroup,
   FieldLabel,
   ModalBody,
   ModalFooter,
@@ -39,8 +40,10 @@ function ModalDemo() {
               onClose={() => setOpen(false)}
             />
             <ModalBody>
-              <FieldLabel htmlFor="modal-workspace-name">Workspace name</FieldLabel>
-              <TextInput id="modal-workspace-name" defaultValue="Research library" />
+              <FieldGroup>
+                <FieldLabel htmlFor="modal-workspace-name">Workspace name</FieldLabel>
+                <TextInput id="modal-workspace-name" defaultValue="Research library" />
+              </FieldGroup>
             </ModalBody>
             <ModalFooter className="flex justify-end gap-3">
               <Button variant="secondary" size="sm" onClick={() => setOpen(false)}>Cancel</Button>
