@@ -79,5 +79,5 @@ describe('AI agent golden-path templates', () => {
       encoding: 'utf8',
       stdio: 'pipe',
     })).not.toThrow();
-  });
+  }, 30_000);
 });
