@@ -4,6 +4,10 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+### Changed
+
+- The specification homepage now identifies `@ai-created/ui` as the open-source React design system behind AI-Created and Human, Actually before introducing its documentation paths.
+
 ## [1.2.0] - 2026-08-29
 
 ### Added

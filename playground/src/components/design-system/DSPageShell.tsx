@@ -69,7 +69,7 @@ export default function DSPageShell() {
                 className="mb-5 font-mono text-xs uppercase tracking-[0.18em] text-red-accent"
                 {...fadeUpMotion(0, 16, 0.5)}
               >
-                The shared operating system
+                @ai-created/ui · Open-source design system
               </motion.p>
               <motion.h1
                 className="max-w-4xl font-display text-5xl tracking-wide hero-text md:text-7xl"
@@ -82,7 +82,7 @@ export default function DSPageShell() {
                 className="mt-6 max-w-2xl text-base leading-relaxed hero-text-muted sm:text-lg"
                 {...fadeUpMotion(0.12)}
               >
-                Production components, principal guidance, and machine-readable contracts for teams and agents building one visual language.
+                @ai-created/ui is the open-source React design system behind AI-Created and Human, Actually. It gives humans and AI agents one source for production components, tokens, accessibility, and design rules.
               </motion.p>
 
               <motion.div
