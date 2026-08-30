@@ -30,6 +30,27 @@ The generated manifest is a consumption projection only. It never overrides cano
 - Page templates: `templates/agent/manifest.json`
 - Universal operating rules: `AGENTS.md`
 - Query CLI: `npm run agent:query -- <command>`
+- Consumer inventory: `consumers.json` or `npm run agent:query -- consumers`
+- Consumer currency check: `npx ai-created-ui-agent consumer-status`
+- Human and operator runbook: `docs/consumer-update-automation.md`
+
+## Downstream consumer lifecycle
+
+1. Publish an immutable `vX.Y.Z` tag and matching GitHub Release. Consumers never follow `main`.
+2. Discover the governed products in `consumers.json` or with `npm run agent:query -- consumers`.
+3. Renovate normally detects the newer tag on its configured schedule and opens a pull request that updates both the consumer manifest and lockfile.
+4. If the scheduled run has not produced that pull request, recover through the consumer's Renovate Dependency Dashboard: first check `Trigger a request for Renovate to run again`; after the refresh, check `fix(deps): update dependency @ai-created/ui to vX.Y.Z` to request the update immediately. GitHub returns 404 for unauthorized private repository issues, so authenticate with an account that has access and find the Dependency Dashboard from the consumer repository's Issues page before concluding that it is missing.
+5. Require the registered consumer validation command and compatibility check to pass by policy. In the current registry this is `Quality / Validate application`; branch protection does not enforce it today, and deployment-provider checks remain separate. Do not bypass failed install, typecheck, lint, test, policy, or production-build checks.
+6. Review the release notes and visible or behavioral impact, then merge manually. Design-system dependency updates do not auto-merge.
+7. Verify the consumer's normal deployment completed and the deployed product is healthy.
+8. Keep scheduled currency monitoring green with `npx ai-created-ui-agent consumer-status`. This command detects a stale immutable tag and fails visibly; it does not update, merge, or deploy the consumer.
+
+Registered consumers:
+
+- ai-created.com (`TheMarco/ai-created.com`): manifest `package.json`; lockfile `package-lock.json`; Renovate schedule `before 9am on monday` (America/Los_Angeles); dashboard `https://github.com/TheMarco/ai-created.com/issues/14`; required gate `npm run validate:ui-update`; compatibility check `Quality / Validate application` (reviewer-enforced policy); currency command `npm run ui:currency`; deployment targets web (vercel).
+- Human, Actually (`TheMarco/human-actually`): manifest `package.json`; lockfile `package-lock.json`; Renovate schedule `before 9am on monday` (America/Los_Angeles); dashboard `https://github.com/TheMarco/human-actually/issues/3`; required gate `npm run validate:ui-update`; compatibility check `Quality / Validate application` (reviewer-enforced policy); currency command `npm run ui:currency`; deployment targets web (vercel), worker (fly.io).
+
+Machine lifecycle stage order: `release-published` -> `renovate-detection` -> `schedule-bypass` -> `update-pr` -> `validation` -> `manual-merge` -> `deployment` -> `currency-current`. Read the structured lifecycle and each consumer's automation, validation, currency, and deployment fields from `consumers.json`; do not infer live status from this generated narrative. Use `docs/consumer-update-automation.md` for the complete operator runbook and recovery table.
 
 ## Coverage
 

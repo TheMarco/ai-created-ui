@@ -26,9 +26,9 @@ Use the highest impact in the release. Do not infer the version from commit mess
 6. Verify the package boundary and release metadata:
 
    ```bash
-   npm run release:check -- v1.1.0
+   npm run release:check -- vX.Y.Z
    npm run package:check
-   npm run release:notes -- v1.1.0
+   npm run release:notes -- vX.Y.Z
    ```
 7. Commit the version, lockfile, and changelog together. Review and merge that commit to `main` through the required `Validate design system` status check.
 
@@ -37,8 +37,8 @@ Use the highest impact in the release. Do not infer the version from commit mess
 Tag the exact validated commit on `main`:
 
 ```bash
-git tag -a v1.1.0 -m "@ai-created/ui v1.1.0"
-git push origin v1.1.0
+git tag -a vX.Y.Z -m "@ai-created/ui vX.Y.Z"
+git push origin vX.Y.Z
 ```
 
 Pushing a `v*.*.*` tag runs `.github/workflows/release.yml`. The workflow repeats the complete quality and browser gates, verifies that the tag, package version, lockfile, and changelog agree, checks the packed file boundary, and then creates the GitHub Release from that version's changelog section.
@@ -47,17 +47,28 @@ The workflow's write permission exists only in the final release job after valid
 
 ## Update consumers
 
-After the GitHub Release exists, Renovate should open a tag update PR in each consumer. The expected manifest shape is:
+After the GitHub Release exists, Renovate opens a tag update PR in each registered consumer on its configured schedule. The expected manifest shape is:
 
 ```json
 {
   "dependencies": {
-    "@ai-created/ui": "git+https://github.com/TheMarco/ai-created-ui.git#v1.1.0"
+    "@ai-created/ui": "git+https://github.com/TheMarco/ai-created-ui.git#vX.Y.Z"
   }
 }
 ```
 
-Review the release notes and consumer checks before merging. Major updates are always reviewed and are never auto-merged. See `docs/consumer-update-automation.md` for activation and `docs/consumer-compatibility.md` for the required current and future consumer checks.
+For normal adoption, wait for the scheduled PR. For immediate adoption, use the two Dependency Dashboard actions in order: request a Renovate rescan, then check the update-specific schedule-bypass box after the dashboard refreshes. A private repository dashboard may return 404 until the browser is signed into an authorized GitHub account.
+
+For every consumer:
+
+1. Confirm the PR changes `package.json` and `package-lock.json` to the same release.
+2. Wait for the registered consumer compatibility check to pass. In both current consumers, this is **Quality / Validate application**, which runs `npm run validate:ui-update`. Vercel is separate and does not replace it. The current consumer branches do not mechanically enforce this check, so the reviewer must.
+3. Read the release notes and inspect visible or behavioral impact.
+4. Merge manually. Major updates are always reviewed and no design-system update auto-merges.
+5. Confirm the consumer's normal deployment completes from `main`, then smoke-test the affected production workflow.
+6. Confirm the daily currency workflow returns to green.
+
+See `docs/consumer-update-automation.md` for the exact scheduled and immediate runbooks, private-repository access note, and recovery table. See `docs/consumer-compatibility.md` for the required current and future consumer checks.
 
 ## Correct a bad release
 

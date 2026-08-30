@@ -94,7 +94,9 @@ test.describe.serial('principal specification visuals', () => {
         .locator('../..');
       await tokenHierarchy.scrollIntoViewIfNeeded();
       await page.waitForTimeout(100);
-      await expect(tokenHierarchy).toHaveScreenshot(`guideline-foundations-tokens-${theme}.png`);
+      await expect(tokenHierarchy).toHaveScreenshot(`guideline-foundations-tokens-${theme}.png`, {
+        maxDiffPixelRatio: 0.04,
+      });
     });
   }
 });

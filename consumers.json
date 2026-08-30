@@ -1,7 +1,78 @@
 {
   "$schema": "./contracts/consumer-registry.schema.json",
-  "schemaVersion": "1.0.0",
+  "schemaVersion": "2.0.0",
   "package": "@ai-created/ui",
+  "lifecycle": {
+    "version": "1.0.0",
+    "stageOrder": [
+      "release-published",
+      "renovate-detection",
+      "schedule-bypass",
+      "update-pr",
+      "validation",
+      "manual-merge",
+      "deployment",
+      "currency-current"
+    ],
+    "stages": [
+      {
+        "id": "release-published",
+        "actor": "release-manager",
+        "automation": "conditional",
+        "description": "A maintainer pushes an immutable reviewed SemVer tag; the GitHub release workflow then publishes the release automatically.",
+        "nextStage": "renovate-detection"
+      },
+      {
+        "id": "renovate-detection",
+        "actor": "renovate",
+        "automation": "automatic",
+        "description": "Renovate detects the newer GitHub tag on its configured schedule; a maintainer can request a dashboard rescan.",
+        "nextStage": "schedule-bypass"
+      },
+      {
+        "id": "schedule-bypass",
+        "actor": "maintainer",
+        "automation": "conditional",
+        "description": "Optionally select the release-specific Dependency Dashboard item to create the update before the normal schedule.",
+        "nextStage": "update-pr"
+      },
+      {
+        "id": "update-pr",
+        "actor": "renovate",
+        "automation": "automatic",
+        "description": "Renovate opens a pull request updating package.json and package-lock.json to the immutable release tag.",
+        "nextStage": "validation"
+      },
+      {
+        "id": "validation",
+        "actor": "github-actions",
+        "automation": "automatic",
+        "description": "The consumer runs its required design-policy, quality, test, and build checks.",
+        "nextStage": "manual-merge"
+      },
+      {
+        "id": "manual-merge",
+        "actor": "maintainer",
+        "automation": "manual",
+        "description": "A maintainer reviews the release, visual impact, lockfile, and green checks before merging.",
+        "nextStage": "deployment"
+      },
+      {
+        "id": "deployment",
+        "actor": "deployment-provider",
+        "automation": "automatic",
+        "description": "The consumer's normal post-merge deployment runs and every declared target is verified.",
+        "nextStage": "currency-current"
+      },
+      {
+        "id": "currency-current",
+        "actor": "github-actions",
+        "automation": "automatic",
+        "description": "The scheduled currency workflow confirms that the consumer remains on the latest reviewed release.",
+        "nextStage": null
+      }
+    ]
+  },
   "consumers": [
     {
       "id": "ai-created.com",
@@ -9,8 +80,69 @@
       "repository": "TheMarco/ai-created.com",
       "defaultBranch": "main",
       "manifestPath": "package.json",
-      "validationCommand": "npm run validate:ui-update",
-      "owner": "Marco van Hylckama Vlieg"
+      "lockfilePath": "package-lock.json",
+      "owner": "Marco van Hylckama Vlieg",
+      "dependencyAutomation": {
+        "provider": "renovate",
+        "configPath": "renovate.json",
+        "dashboardIssue": {
+          "number": 14,
+          "url": "https://github.com/TheMarco/ai-created.com/issues/14"
+        },
+        "schedule": {
+          "timezone": "America/Los_Angeles",
+          "expression": "before 9am on monday"
+        },
+        "rescan": {
+          "manual": true,
+          "method": "dependency-dashboard-rescan-checkbox"
+        },
+        "scheduleBypass": {
+          "manual": true,
+          "method": "dependency-dashboard-release-checkbox"
+        },
+        "pullRequest": {
+          "creator": "renovate",
+          "automerge": false,
+          "labels": ["dependencies", "design-system"]
+        }
+      },
+      "validation": {
+        "command": "npm run validate:ui-update",
+        "workflowPath": ".github/workflows/quality.yml",
+        "workflowName": "Quality",
+        "trigger": "pull_request",
+        "policyRequiredCheckName": "Validate application",
+        "branchProtectionEnforced": false,
+        "checks": [
+          { "id": "design-policy", "command": "npm run policy:check" },
+          { "id": "lint", "command": "npm run lint" },
+          { "id": "typecheck", "command": "npm run typecheck" },
+          { "id": "build", "command": "npm run build" }
+        ]
+      },
+      "currency": {
+        "command": "npm run ui:currency",
+        "workflowPath": ".github/workflows/design-system-currency.yml",
+        "cron": "17 15 * * *",
+        "timezone": "UTC",
+        "comparison": "latest-github-release",
+        "staleBehavior": "fail-workflow"
+      },
+      "deployment": {
+        "postMergeVerification": "all-targets-required",
+        "targets": [
+          {
+            "id": "web",
+            "provider": "vercel",
+            "trigger": "push-to-main",
+            "verification": {
+              "method": "provider-deployment-and-http",
+              "url": "https://ai-created.com"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "human-actually",
@@ -18,8 +150,81 @@
       "repository": "TheMarco/human-actually",
       "defaultBranch": "main",
       "manifestPath": "package.json",
-      "validationCommand": "npm run validate:ui-update",
-      "owner": "Marco van Hylckama Vlieg"
+      "lockfilePath": "package-lock.json",
+      "owner": "Marco van Hylckama Vlieg",
+      "dependencyAutomation": {
+        "provider": "renovate",
+        "configPath": "renovate.json",
+        "dashboardIssue": {
+          "number": 3,
+          "url": "https://github.com/TheMarco/human-actually/issues/3"
+        },
+        "schedule": {
+          "timezone": "America/Los_Angeles",
+          "expression": "before 9am on monday"
+        },
+        "rescan": {
+          "manual": true,
+          "method": "dependency-dashboard-rescan-checkbox"
+        },
+        "scheduleBypass": {
+          "manual": true,
+          "method": "dependency-dashboard-release-checkbox"
+        },
+        "pullRequest": {
+          "creator": "renovate",
+          "automerge": false,
+          "labels": ["dependencies", "design-system"]
+        }
+      },
+      "validation": {
+        "command": "npm run validate:ui-update",
+        "workflowPath": ".github/workflows/quality.yml",
+        "workflowName": "Quality",
+        "trigger": "pull_request",
+        "policyRequiredCheckName": "Validate application",
+        "branchProtectionEnforced": false,
+        "checks": [
+          { "id": "design-policy", "command": "npm run policy:check" },
+          { "id": "typecheck", "command": "npm run typecheck" },
+          { "id": "lint", "command": "npm run lint" },
+          { "id": "tests", "command": "npm run test:run" },
+          { "id": "build", "command": "npm run build:verify" }
+        ]
+      },
+      "currency": {
+        "command": "npm run ui:currency",
+        "workflowPath": ".github/workflows/design-system-currency.yml",
+        "cron": "29 15 * * *",
+        "timezone": "UTC",
+        "comparison": "latest-github-release",
+        "staleBehavior": "fail-workflow"
+      },
+      "deployment": {
+        "postMergeVerification": "all-targets-required",
+        "targets": [
+          {
+            "id": "web",
+            "provider": "vercel",
+            "trigger": "push-to-main",
+            "verification": {
+              "method": "provider-deployment-and-http",
+              "url": "https://human-actually.com"
+            }
+          },
+          {
+            "id": "worker",
+            "provider": "fly.io",
+            "trigger": "package-lock-or-manifest-push-to-main",
+            "verification": {
+              "method": "github-actions-workflow",
+              "workflowPath": ".github/workflows/fly-worker-deploy.yml",
+              "jobName": "fly deploy -a humanactually-worker",
+              "application": "humanactually-worker"
+            }
+          }
+        ]
+      }
     }
   ]
 }

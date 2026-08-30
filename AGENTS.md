@@ -107,6 +107,10 @@ Do not update visual baselines to hide an unexplained difference.
 - Stable distribution uses immutable GitHub SemVer tags.
 - Consumers install reviewed releases, never a moving `main` branch.
 - `consumers.json` is the canonical inventory of products that must track releases.
+- Treat the adoption workflow in `consumers.json` as a state machine. Do not assume that publishing a release edits, merges, or deploys a consumer.
+- Renovate normally detects releases on its configured schedule. For immediate adoption, the human runbook in `docs/consumer-update-automation.md` defines the two separate Dependency Dashboard actions: request a rescan, then bypass the schedule for the specific update.
+- A consumer update is adoptable only when its manifest and lockfile agree on the immutable tag and commit, the registered compatibility command passes, release impact is reviewed, and the pull request is merged manually.
+- After merge, verify the consumer's configured deployment signals and deployed product before reporting adoption complete.
 - A registered consumer must keep `npx ai-created-ui-agent consumer-status` green on a schedule.
 - Public exports, token names, defaults, semantics, and controlled-state models are compatibility contracts.
 - Breaking changes require a migration path, release notes, design and engineering approval, and a major release.

@@ -36,6 +36,31 @@ describe('AI agent context and query interface', () => {
     );
   });
 
+  it('publishes the complete downstream consumer lifecycle for machines', () => {
+    for (const file of ['llms.txt', 'llms-full.txt']) {
+      const context = readFileSync(path.join(packageRoot, file), 'utf8');
+      for (const requiredText of [
+        '## Downstream consumer lifecycle',
+        'consumers.json',
+        'npm run agent:query -- consumers',
+        'npx ai-created-ui-agent consumer-status',
+        'docs/consumer-update-automation.md',
+        'Trigger a request for Renovate to run again',
+        'fix(deps): update dependency @ai-created/ui to vX.Y.Z',
+        'GitHub returns 404 for unauthorized private repository issues',
+        'find the Dependency Dashboard from the consumer repository\'s Issues page',
+        'Quality / Validate application',
+        'branch protection does not enforce it today',
+        'merge manually',
+        'Verify the consumer\'s normal deployment',
+        'scheduled currency monitoring',
+        'Machine lifecycle stage order',
+      ]) {
+        expect(context).toContain(requiredText);
+      }
+    }
+  });
+
   it('returns complete component and template contracts as JSON', () => {
     const button = runAgent('component', 'button');
     const component = button.component as Record<string, unknown>;

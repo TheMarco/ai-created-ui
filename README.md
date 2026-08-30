@@ -235,7 +235,7 @@ npm install --install-links "git+https://github.com/TheMarco/ai-created-ui.git#v
 
 ### Promoting a new component from a consumer app
 
-When you build something in an app (like applyanator) and realize it should be shared:
+When you build something in a consumer such as Human, Actually and realize it should be shared:
 
 1. **Copy the component** from your app into this repo's `src/components/`
 2. **Fix imports** -- change any `@/lib/utils` to `../lib/utils`. The component should only import from `../lib/utils`, `../lib/motion`, or peer dependencies (react, next, headlessui, lucide, framer-motion). No `@/` path aliases.
@@ -281,8 +281,16 @@ Rule of thumb: if you'd copy-paste it into the next app, it belongs here.
 
 ## Current consumers
 
-- **[ai-created.com](https://ai-created.com)** -- product lab portfolio and content platform
-- **[Human, Actually](https://human-actually.com)** -- applicant analysis platform (applyanator)
+- **[ai-created.com](https://ai-created.com)** in [`TheMarco/ai-created.com`](https://github.com/TheMarco/ai-created.com) -- product lab portfolio and content platform
+- **[Human, Actually](https://human-actually.com)** in [`TheMarco/human-actually`](https://github.com/TheMarco/human-actually) -- applicant analysis platform
+
+### Consumer release adoption
+
+A design-system release does not push directly into these products. Renovate detects each immutable `vX.Y.Z` GitHub Release and, on its configured schedule, opens one reviewable manifest and lockfile PR in each consumer. The registered compatibility check runs the consumer's `npm run validate:ui-update`. In both current consumers, that check is **Quality / Validate application**; Vercel is separate.
+
+Review the release notes and visible impact, wait for the compatibility check, then merge manually. The current consumer branches do not mechanically require that check, so the reviewer enforces it as policy. The consumer's normal provider deploys `main`; verify the affected production workflow after deployment. A daily currency workflow fails when a consumer is behind, making staleness visible without auto-merging a change.
+
+For an immediate update outside the schedule, the Renovate Dependency Dashboard requires two actions: trigger a rescan, then select the update-specific schedule bypass after the dashboard refreshes. Private repository dashboards return 404 when the browser is not signed into an authorized GitHub account. Follow the exact human runbook and recovery steps in [consumer update automation](docs/consumer-update-automation.md); the acceptance contract is in [consumer compatibility](docs/consumer-compatibility.md).
 
 ## Attribution appreciated
 

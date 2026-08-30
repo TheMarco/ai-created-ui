@@ -4,6 +4,12 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-08-30
+
+### Added
+
+- A complete human and machine consumer-adoption contract covering Renovate scheduling and manual recovery, manifest-to-lockfile release verification, required compatibility checks, manual merge, deployment verification, and visible currency monitoring.
+
 ## [1.2.1] - 2026-08-30
 
 ### Changed

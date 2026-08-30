@@ -610,6 +610,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
     outcomes: [
       'Teams know what is safe to adopt and who decides changes.',
       'Design and code publish as one reviewed release.',
+      'Every consumer release moves through a visible, recoverable adoption lifecycle.',
       'Exceptions and deprecations include an owner and an exit path.',
     ],
     sections: [
@@ -694,6 +695,48 @@ export const guidelineSpecs: GuidelineSpec[] = [
               { title: 'Provide a deadline', description: 'Publish the earliest removal version and a review date.' },
               { title: 'Measure remaining use', description: 'Track package references or product inventory before removal.' },
               { title: 'Keep the old path stable', description: 'Do not silently change deprecated behavior during the migration window.' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'consumer-adoption',
+        title: 'Consumer adoption lifecycle',
+        summary: 'A release becomes product reality through scheduled detection, consumer validation, manual approval, deployment, verification, and daily freshness monitoring.',
+        blocks: [
+          {
+            type: 'process',
+            title: 'Release to production',
+            steps: [
+              { title: 'Publish', owner: 'Design Systems', output: 'Immutable vX.Y.Z tag, GitHub Release, and reviewed notes', gate: 'Release workflow passes without moving an existing tag.' },
+              { title: 'Propose', owner: 'Renovate', output: 'One package.json and package-lock.json PR per registered consumer', gate: 'Both files resolve the same release tag.' },
+              { title: 'Validate', owner: 'Consumer CI', output: 'Registered compatibility result from npm run validate:ui-update', gate: 'Quality / Validate application passes; Vercel does not substitute for compatibility.' },
+              { title: 'Approve', owner: 'Product owner', output: 'Release-note and product-impact review', gate: 'A human merges; automerge stays disabled.' },
+              { title: 'Deploy and verify', owner: 'Product owner', output: 'Production deployment from main plus affected-workflow smoke test', gate: 'The deployed consumer behaves as reviewed.' },
+              { title: 'Monitor', owner: 'Consumer currency workflow', output: 'Daily freshness signal', gate: 'Staleness remains visible until the release is adopted.' },
+            ],
+          },
+          {
+            type: 'table',
+            title: 'Scheduled and immediate adoption',
+            columns: ['Path', 'Operator action', 'Expected result'],
+            rows: [
+              ['Scheduled', 'Wait for the configured Renovate run.', 'Renovate opens the release PR automatically.'],
+              ['Immediate, step 1', 'Check “Trigger a request for Renovate to run again” in the consumer Dependency Dashboard.', 'Renovate rescans and exposes the discovered update.'],
+              ['Immediate, step 2', 'After refresh, check “fix(deps): update dependency @ai-created/ui to vX.Y.Z”.', 'Renovate bypasses the schedule for this update and opens its PR.'],
+              ['Private repository 404', 'Sign into GitHub with consumer repository access, then find the dashboard from the repository Issues page.', 'The private Dependency Dashboard becomes accessible.'],
+            ],
+          },
+          {
+            type: 'rules',
+            title: 'Operational boundaries',
+            items: [
+              { title: 'Compatibility is consumer-owned', description: 'In both current consumers, Quality / Validate application runs the safe typecheck, lint, tests, and production-equivalent build through validate:ui-update.' },
+              { title: 'Reviewer enforcement is required', description: 'Current consumer branches do not mechanically require the compatibility job, so the reviewer waits for it before merge as release policy.' },
+              { title: 'Provider checks are separate', description: 'Vercel previews help review the product but do not replace validate:ui-update.' },
+              { title: 'Completion includes production', description: 'A green PR is not the endpoint. Merge manually, confirm the main-branch deployment, and verify the affected product workflow.' },
+              { title: 'Monitoring reports rather than mutates', description: 'The daily currency check exposes a stale tag. It does not open, merge, deploy, or verify an update.' },
+              { title: 'Recover by fixing forward', description: 'When compatibility or production verification fails, repair the consumer or publish a new patch. Never move a published tag or weaken a required check.' },
             ],
           },
         ],
