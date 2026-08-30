@@ -11,6 +11,8 @@ const paths = {
   changelog: 'CHANGELOG.md',
   claude: 'CLAUDE.md',
   contributing: 'CONTRIBUTING.md',
+  consumerCurrencyWorkflow: '.github/workflows/consumer-currency.yml',
+  consumerRegistry: 'consumers.json',
   designSystem: 'DESIGN-SYSTEM.md',
   header: 'playground/src/components/PlaygroundHeader.tsx',
   homepage: 'playground/src/components/design-system/DSPageShell.tsx',
@@ -32,6 +34,7 @@ const entries = await Promise.all(
 );
 const files = Object.fromEntries(entries);
 const manifest = JSON.parse(files.manifest);
+const consumerRegistry = JSON.parse(files.consumerRegistry);
 const packageJson = JSON.parse(files.package);
 const issues = [];
 
@@ -69,8 +72,26 @@ for (const command of [
   'npm run docs:check',
   'npm run validate',
   'npm run test:browser',
+  'npm run agent:query -- consumers',
 ]) {
   requireText('readme', command);
+}
+requireText('readme', 'npx ai-created-ui-agent consumer-status');
+requireText('integration', 'consumers.json');
+requireText('integration', 'npx ai-created-ui-agent consumer-status');
+requireText('consumerCurrencyWorkflow', 'workflow_call:');
+requireText('consumerCurrencyWorkflow', 'ai-created-ui-agent consumer-status');
+if (
+  consumerRegistry.schemaVersion !== '1.0.0' ||
+  consumerRegistry.package !== '@ai-created/ui' ||
+  !Array.isArray(consumerRegistry.consumers) ||
+  consumerRegistry.consumers.length === 0
+) {
+  issues.push(`${paths.consumerRegistry} must publish the versioned supported-consumer inventory.`);
+}
+const consumerRepositories = consumerRegistry.consumers.map(({ repository }) => repository);
+if (new Set(consumerRepositories).size !== consumerRepositories.length) {
+  issues.push(`${paths.consumerRegistry} contains duplicate repositories.`);
 }
 
 for (const text of [

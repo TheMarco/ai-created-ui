@@ -1,0 +1,25 @@
+{
+  "$schema": "./contracts/consumer-registry.schema.json",
+  "schemaVersion": "1.0.0",
+  "package": "@ai-created/ui",
+  "consumers": [
+    {
+      "id": "ai-created.com",
+      "name": "ai-created.com",
+      "repository": "TheMarco/ai-created.com",
+      "defaultBranch": "main",
+      "manifestPath": "package.json",
+      "validationCommand": "npm run validate:ui-update",
+      "owner": "Marco van Hylckama Vlieg"
+    },
+    {
+      "id": "human-actually",
+      "name": "Human, Actually",
+      "repository": "TheMarco/human-actually",
+      "defaultBranch": "main",
+      "manifestPath": "package.json",
+      "validationCommand": "npm run validate:ui-update",
+      "owner": "Marco van Hylckama Vlieg"
+    }
+  ]
+}

@@ -4,6 +4,8 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-08-29
+
 ### Added
 
 - Optional attribution guidance and a ready-to-copy credit linking to `ui.ai-created.com`.
@@ -18,6 +20,7 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 - A structured, owner-accountable, expiring exception ledger for justified product-local departures from the system.
 - A task-oriented specification homepage with direct paths for components, principal guidance, and agent resources, including complete mobile navigation.
 - A blocking documentation-contract check plus contributor, release, and propagation guidance that keeps human and machine workflows aligned.
+- A canonical consumer registry, release-currency CLI, and reusable scheduled workflow that turns downstream staleness into a failing check.
 
 ### Fixed
 

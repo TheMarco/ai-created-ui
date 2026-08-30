@@ -27,6 +27,8 @@ try {
   const requiredFiles = [
     'AGENTS.md',
     'ai-created-ui.config.json',
+    'consumers.json',
+    'contracts/consumer-registry.schema.json',
     'contracts/design-policy.schema.json',
     'contracts/design-system-manifest.schema.json',
     'design-system.manifest.json',
@@ -53,6 +55,7 @@ try {
     'README.md',
     'AGENTS.md',
     'ai-created-ui.config.json',
+    'consumers.json',
     'design-system.manifest.json',
     'llms.txt',
     'llms-full.txt',

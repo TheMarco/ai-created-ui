@@ -1,0 +1,31 @@
+name: Consumer design-system currency
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  currency:
+    name: Check reviewed UI release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out consumer
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install without lifecycle scripts
+        run: npm ci --ignore-scripts
+
+      - name: Compare installed and latest releases
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npx --no-install ai-created-ui-agent consumer-status

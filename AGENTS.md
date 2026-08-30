@@ -106,6 +106,8 @@ Do not update visual baselines to hide an unexplained difference.
 - The repository is public and MIT licensed.
 - Stable distribution uses immutable GitHub SemVer tags.
 - Consumers install reviewed releases, never a moving `main` branch.
+- `consumers.json` is the canonical inventory of products that must track releases.
+- A registered consumer must keep `npx ai-created-ui-agent consumer-status` green on a schedule.
 - Public exports, token names, defaults, semantics, and controlled-state models are compatibility contracts.
 - Breaking changes require a migration path, release notes, design and engineering approval, and a major release.
 

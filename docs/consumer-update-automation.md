@@ -32,6 +32,30 @@ For each consumer:
 4. Confirm the Renovate dependency dashboard recognizes `TheMarco/ai-created-ui` through `github-tags` with SemVer versioning.
 5. Require the consumer's install, TypeScript, production build, and relevant tests on update PRs.
 6. Keep automerge disabled. Review every major release and any visual or behavioral change.
+7. Add the scheduled currency workflow below so a consumer cannot remain silently behind.
+
+```yaml
+name: Design-system currency
+
+on:
+  schedule:
+    - cron: '17 15 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - package.json
+      - package-lock.json
+
+permissions:
+  contents: read
+
+jobs:
+  currency:
+    uses: TheMarco/ai-created-ui/.github/workflows/consumer-currency.yml@v1.2.0
+```
+
+The reusable workflow installs without lifecycle scripts and runs `npx --no-install ai-created-ui-agent consumer-status`. It fails whenever the pinned tag is older than the latest reviewed GitHub Release. Update the workflow ref only when the monitoring contract itself changes; release currency is checked dynamically.
 
 ## Current consumer contracts
 

@@ -122,10 +122,13 @@ Agents do not need to infer this system from screenshots or scrape the documenta
 npm run agent:query -- context
 npm run agent:query -- component button
 npm run agent:query -- template dashboard
+npm run agent:query -- consumers
 npm run agent:check
 ```
 
 Installed releases expose the same JSON query interface through `npx ai-created-ui-agent`. Start with [llms.txt](https://ui.ai-created.com/llms.txt) for routing, use [llms-full.txt](https://ui.ai-created.com/llms-full.txt) when a task needs complete context, and use the [design-system manifest](https://ui.ai-created.com/design-system/manifest.json) for programmatic access. The manifest is generated from canonical runtime, token, component-spec, and guideline sources; it never overrides them.
+
+Every supported product is registered in `consumers.json`. Inside a consumer, `npx ai-created-ui-agent consumer-status` compares its immutable dependency tag with the latest reviewed GitHub Release and fails when the product is behind.
 
 `npm run agent:check` rejects stale generated artifacts, Tailwind/token mismatch, documented API mismatch, prohibited styling or imports, invalid templates, and stale agent context. A necessary deviation must be narrow, owned, justified, and time-bounded in `ai-created-ui.config.json`; silent exceptions are not allowed. See [the agent integration guide](docs/agent-integration.md) for consumer setup, CI, and MCP adapter guidance.
 
@@ -165,6 +168,7 @@ Faster focused commands are available during development:
 | `npm run tokens:export` | Regenerate the DTCG-shaped design-token JSON from canonical CSS |
 | `npm run tokens:check` | Verify the committed token artifact matches canonical CSS without writing |
 | `npm run agent:query -- component button` | Read a complete component contract as JSON |
+| `npm run agent:query -- consumers` | Read the canonical downstream consumer registry |
 | `npm run agent:export` | Regenerate tokens, the machine manifest, and both agent context files |
 | `npm run agent:check` | Run every machine-readable anti-drift gate |
 | `npm run docs:check` | Verify public counts, routes, workflow guidance, and CI propagation promises |
@@ -200,7 +204,7 @@ The compact overview uses `playground/src/components/design-system/componentDocs
 4. Run `npm run agent:export`, then review and commit the generated tokens, manifest, and agent context changes
 5. Update its portal demo if visible behavior changed and add a concise release-worthy note under `Unreleased` in `CHANGELOG.md`
 6. Run `npm run agent:check`, `npm run validate`, and the applicable browser checks, then commit and push
-7. When the change is released, follow `RELEASING.md`. Consumers update through a reviewable release-tag PR, not by following `main`.
+7. When the change is released, follow `RELEASING.md`. Consumers update through a reviewable release-tag PR, not by following `main`; their scheduled currency workflow fails until the new release is adopted.
 
 ### Release governance
 

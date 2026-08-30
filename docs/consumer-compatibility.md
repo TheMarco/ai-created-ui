@@ -18,6 +18,7 @@ Human, Actually's `build:verify` generates Prisma Client and runs `next build`. 
 3. The consumer installs the public HTTPS Git dependency with lifecycle scripts disabled, then runs lifecycle scripts without any repository credential.
 4. The consumer runs its complete `validate:ui-update` command.
 5. A reviewer checks the release notes and visible or behavioral impact before merging.
+6. The scheduled currency workflow returns to green after the release tag is adopted.
 
 PATCH and MINOR releases still require green checks and review. MAJOR releases require migration notes, a separate pull request, and explicit approval. Automerge remains disabled for every design-system update.
 
@@ -43,6 +44,7 @@ A new consumer is supported only after it has all of the following:
 8. A consumer-local quality workflow based on `docs/examples/consumer-quality.yml`.
 9. No database migration, deployment, production secret, or external write in the compatibility workflow.
 10. A named maintainer who reviews breaking changes and visual or behavioral release notes.
+11. A scheduled call to the released `consumer-currency.yml` reusable workflow.
 
 ## Failure policy
 

@@ -4,7 +4,7 @@
   "schemaVersion": "1.0.0",
   "package": {
     "name": "@ai-created/ui",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "description": "Shared design system for AI-Created apps",
     "sourcePath": "package.json",
     "publicApiPath": "src/index.ts",
@@ -36,6 +36,14 @@
       {
         "name": "./ai-created-ui.config.json",
         "target": "./ai-created-ui.config.json"
+      },
+      {
+        "name": "./consumers.json",
+        "target": "./consumers.json"
+      },
+      {
+        "name": "./contracts/consumer-registry.schema.json",
+        "target": "./contracts/consumer-registry.schema.json"
       },
       {
         "name": "./contracts/design-policy.schema.json",

@@ -28,9 +28,12 @@ npm run agent:query -- component button
 npm run agent:query -- guideline accessibility
 npm run agent:query -- templates
 npm run agent:query -- template dashboard
+npm run agent:query -- consumers
 ```
 
 From an installed package, the same interface is available as `npx ai-created-ui-agent`. The query commands read the contract bundled with that exact package version.
+
+In a consumer repository, run `npx ai-created-ui-agent consumer-status` to compare the installed immutable tag with the latest reviewed GitHub Release. The command emits JSON, exits 1 when the consumer is stale, and exits 2 when the dependency or release metadata is invalid.
 
 The template command includes the complete TSX source. This makes the same contract usable from Codex, Claude Code, local scripts, CI, or an MCP server without coupling the integration to portal markup.
 
@@ -72,6 +75,8 @@ The release workflow repeats the same validation against the exact version tag b
 ## Propagation to consumers
 
 Consumers install immutable reviewed tags, never `main`. A released tag should produce a Renovate dependency pull request in each consumer. That pull request must run the consumer's own typecheck, lint, tests, and production build before review and merge. The source repository proves the package contract; consumer CI proves the integration contract. Neither substitutes for the other.
+
+`consumers.json` is the canonical downstream inventory. Every registered repository must also call `.github/workflows/consumer-currency.yml` on a schedule so a missing or delayed Renovate update becomes a visible failing check rather than silent staleness.
 
 When a consumer finds a missing shared capability, keep the first implementation local, contribute the generalized capability here, release a new tag, and adopt it through the dependency pull request. Do not copy or patch package primitives in place.
 
