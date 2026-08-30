@@ -8,7 +8,7 @@ export function fieldGroupStyles(className?: string) {
 }
 
 export function fieldLabelStyles(className?: string) {
-  return cn('block text-sm font-medium text-text2', className);
+  return cn('block break-words text-sm font-medium text-text2', className);
 }
 
 export function fieldLegendStyles(className?: string) {

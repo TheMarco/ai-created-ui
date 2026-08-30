@@ -44,7 +44,7 @@ function DropdownInner<T extends string>(
   return (
     <Listbox value={value} onChange={onChange} disabled={disabled}>
       <div className={cn('relative min-w-0', className)}>
-        <ListboxLabel className="mb-2 block text-sm font-medium text-text2">
+        <ListboxLabel className="mb-2 block break-words text-sm font-medium text-text2">
           {label}
         </ListboxLabel>
 
