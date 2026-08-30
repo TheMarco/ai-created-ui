@@ -63,8 +63,8 @@ export default function DSPageShell() {
           fadeBottom
         />
         <div className="container-custom relative z-10">
-          <div className="grid gap-14 py-12 md:py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(20rem,0.8fr)] lg:items-end lg:gap-20">
-            <div className="max-w-4xl">
+          <div className="grid gap-14 py-12 md:py-20 lg:grid-cols-5 lg:items-end lg:gap-20">
+            <div className="max-w-4xl lg:col-span-3">
               <motion.p
                 className="mb-5 font-mono text-xs uppercase tracking-[0.18em] text-red-accent"
                 {...fadeUpMotion(0, 16, 0.5)}
@@ -104,7 +104,7 @@ export default function DSPageShell() {
 
             <motion.nav
               aria-label="Design system destinations"
-              className="border-l border-border pl-5 sm:pl-8"
+              className="border-l border-border pl-5 sm:pl-8 lg:col-span-2"
               {...fadeUpMotion(0.2)}
             >
               <p className="font-mono text-xs uppercase tracking-[0.18em] text-text3">
