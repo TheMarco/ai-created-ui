@@ -12,7 +12,7 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ### Fixed
 
-- `FieldGroup` now solely owns the Field family’s 8px vertical rhythm, preventing Field labels and hints from accumulating child margins and aligning TextInput and TextArea controls with adjacent Dropdown triggers.
+- `FieldGroup` now solely owns the Field family’s 8px vertical rhythm, preventing labels and hints from accumulating child margins, aligning text controls with adjacent Dropdown triggers, and allowing both families to reflow without intrinsic-width overflow at narrow widths and 200% text zoom.
 
 ## [1.2.0] - 2026-08-29
 

@@ -43,7 +43,7 @@ function DropdownInner<T extends string>(
 
   return (
     <Listbox value={value} onChange={onChange} disabled={disabled}>
-      <div className={cn('relative', className)}>
+      <div className={cn('relative min-w-0', className)}>
         <ListboxLabel className="mb-2 block text-sm font-medium text-text2">
           {label}
         </ListboxLabel>
@@ -56,7 +56,7 @@ function DropdownInner<T extends string>(
             event.currentTarget.click();
           }}
           className={cn(
-            'relative w-full rounded-md border border-border bg-surface2 py-3 pl-4 pr-10 text-left text-sm transition-colors duration-200',
+            'relative min-w-0 w-full rounded-md border border-border bg-surface2 py-3 pl-4 pr-10 text-left text-sm transition-colors duration-200',
             'hover:border-border-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-[3px]',
             disabled && 'cursor-not-allowed opacity-50',
             selected ? 'text-text' : 'text-text3'

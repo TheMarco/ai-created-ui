@@ -4,7 +4,7 @@ import { forwardRef } from 'react';
 import { cn } from '../lib/utils';
 
 export function fieldGroupStyles(className?: string) {
-  return cn('flex flex-col gap-2', className);
+  return cn('flex flex-col gap-2 min-w-0', className);
 }
 
 export function fieldLabelStyles(className?: string) {
@@ -21,7 +21,7 @@ export function fieldHintStyles(className?: string) {
 
 export function inputStyles(className?: string) {
   return cn(
-    'w-full rounded-md border border-border bg-surface2 px-4 py-3 text-sm text-text placeholder-text3 transition-colors duration-200 hover:border-border-strong focus:border-red-border disabled:cursor-not-allowed disabled:opacity-50',
+    'min-w-0 w-full rounded-md border border-border bg-surface2 px-4 py-3 text-sm text-text placeholder-text3 transition-colors duration-200 hover:border-border-strong focus:border-red-border disabled:cursor-not-allowed disabled:opacity-50',
     className
   );
 }
