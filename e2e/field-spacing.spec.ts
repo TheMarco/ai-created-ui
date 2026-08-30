@@ -78,6 +78,51 @@ async function wrappedFieldMetrics(root: Locator) {
   });
 }
 
+async function horizontalOverflowDiagnostics(root: Locator) {
+  return root.evaluate((element) => {
+    const rootRect = element.getBoundingClientRect();
+    const diagnostics = Array.from(element.querySelectorAll<HTMLElement>('*'))
+      .map((node) => {
+        const rect = node.getBoundingClientRect();
+        return {
+          tag: node.tagName.toLowerCase(),
+          id: node.id,
+          className: node.getAttribute('class') ?? '',
+          text: node.textContent?.trim().replace(/\s+/g, ' ').slice(0, 80) ?? '',
+          clientWidth: node.clientWidth,
+          scrollWidth: node.scrollWidth,
+          left: rect.left,
+          right: rect.right,
+          excessLeft: Math.max(0, rootRect.left - rect.left),
+          excessRight: Math.max(0, rect.right - rootRect.right),
+          internalOverflow: Math.max(0, node.scrollWidth - node.clientWidth),
+        };
+      })
+      .filter(
+        ({ excessLeft, excessRight, internalOverflow }) =>
+          excessLeft > 0.5 || excessRight > 0.5 || internalOverflow > 0,
+      )
+      .sort(
+        (left, right) =>
+          Math.max(right.excessLeft, right.excessRight, right.internalOverflow) -
+          Math.max(left.excessLeft, left.excessRight, left.internalOverflow),
+      )
+      .slice(0, 12);
+
+    return {
+      overflow: element.scrollWidth - element.clientWidth,
+      root: {
+        clientWidth: element.clientWidth,
+        scrollWidth: element.scrollWidth,
+        left: rootRect.left,
+        right: rootRect.right,
+        width: rootRect.width,
+      },
+      diagnostics,
+    };
+  });
+}
+
 for (const theme of ['dark', 'light'] as const) {
   test(`keeps Field-family spacing and Dropdown alignment stable in the ${theme} theme`, async ({ page }, testInfo) => {
     await gotoPlayground(page, theme);
@@ -122,8 +167,8 @@ for (const theme of ['dark', 'light'] as const) {
     await expect(wrapped.locator('input')).toHaveAccessibleDescription('Choose an owner before release.');
     await expect(wrapped.locator('button[id^="headlessui-listbox-button"]')).toBeDisabled();
 
-    const overflow = await demo.evaluate((element) => element.scrollWidth - element.clientWidth);
-    expect(overflow).toBeLessThanOrEqual(1);
+    const overflow = await horizontalOverflowDiagnostics(demo);
+    expect(overflow.overflow, JSON.stringify(overflow, null, 2)).toBeLessThanOrEqual(1);
   });
 }
 
@@ -150,6 +195,6 @@ test('preserves wrapped-label alignment and reflow at 200% text zoom', async ({ 
     expect(wrappedMetrics.inputTop).toBe(wrappedMetrics.dropdownTop);
   }
 
-  const overflow = await demo.evaluate((element) => element.scrollWidth - element.clientWidth);
-  expect(overflow).toBeLessThanOrEqual(1);
+  const overflow = await horizontalOverflowDiagnostics(demo);
+  expect(overflow.overflow, JSON.stringify(overflow, null, 2)).toBeLessThanOrEqual(1);
 });
