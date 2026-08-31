@@ -4,6 +4,12 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-08-30
+
+### Fixed
+
+- Space Grotesk visual regression coverage now tolerates the measured Linux/macOS antialiasing variance while retaining fixed capture geometry.
+
 ## [1.3.1] - 2026-08-30
 
 ### Fixed

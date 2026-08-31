@@ -118,7 +118,7 @@ test('captures typography and spacing contracts', async ({ page }) => {
         width: 870,
         height: family === 'instrument-serif' ? 397 : 437,
       },
-      maxDiffPixelRatio: 0.04,
+      maxDiffPixelRatio: family === 'space-grotesk' ? 0.08 : 0.04,
     });
   }
 
