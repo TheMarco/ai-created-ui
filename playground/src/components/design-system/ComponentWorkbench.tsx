@@ -59,7 +59,7 @@ function WorkbenchControl({ name, control, value, onChange }: WorkbenchControlPr
           type="checkbox"
           checked={Boolean(value)}
           onChange={(event) => onChange(event.target.checked)}
-          className="h-4 w-4 accent-red-solid"
+          className="h-4 w-4 accent-action-primary"
         />
       </label>
     );
@@ -76,7 +76,7 @@ function WorkbenchControl({ name, control, value, onChange }: WorkbenchControlPr
           data-control={name}
           value={String(value)}
           onChange={(event) => onChange(event.target.value)}
-          className="min-h-10 w-full rounded-sm border border-border bg-surface2 px-3 text-sm text-text transition-colors hover:border-border-strong focus:border-red-border"
+          className="min-h-10 w-full rounded-sm border border-border bg-surface2 px-3 text-sm text-text transition-colors hover:border-border-strong focus:border-accent-border"
         >
           {control.options.map((option) => (
             <option key={option} value={option}>{option}</option>
@@ -103,7 +103,7 @@ function WorkbenchControl({ name, control, value, onChange }: WorkbenchControlPr
               max={control.max}
               step={control.step}
               onChange={(event) => onChange(Number(event.target.value))}
-              className="h-9 w-20 rounded-sm border border-border bg-surface2 px-2 font-mono text-xs text-text focus:border-red-border"
+              className="h-9 w-20 rounded-sm border border-border bg-surface2 px-2 font-mono text-xs text-text focus:border-accent-border"
             />
             {control.unit ? <span className="font-mono text-[10px] text-text3">{control.unit}</span> : null}
           </div>
@@ -134,7 +134,7 @@ function WorkbenchControl({ name, control, value, onChange }: WorkbenchControlPr
         value={String(value)}
         placeholder={control.placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className="min-h-10 w-full rounded-sm border border-border bg-surface2 px-3 text-sm text-text placeholder:text-text3 focus:border-red-border"
+        className="min-h-10 w-full rounded-sm border border-border bg-surface2 px-3 text-sm text-text placeholder:text-text3 focus:border-accent-border"
       />
     </div>
   );
@@ -333,7 +333,7 @@ export default function ComponentWorkbench({ spec }: { spec: ComponentSpec }) {
         <aside className="border-t border-border bg-bg/30 p-4 xl:border-l xl:border-t-0" aria-label="Component controls">
           <div className="flex items-center justify-between gap-3 px-3 py-2">
             <h3 className="inline-flex items-center gap-2 font-heading text-base font-medium text-text">
-              <SlidersHorizontal className="h-4 w-4 text-red" aria-hidden="true" />
+              <SlidersHorizontal className="h-4 w-4 text-accent" aria-hidden="true" />
               Controls
             </h3>
             <span className="font-mono text-[10px] text-text3">{controls.length}</span>

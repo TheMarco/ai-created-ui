@@ -24,7 +24,7 @@ export default function GuidelineNav({ activeSlug }: { activeSlug?: GuidelineSlu
                     : 'text-text2 hover:bg-surface hover:text-text'
                 }`}
               >
-                <span className={`font-mono text-[10px] ${active ? 'text-red' : 'text-text3'}`}>
+                <span className={`font-mono text-[10px] ${active ? 'text-accent' : 'text-text3'}`}>
                   {spec.index}
                 </span>
                 <span>{spec.shortTitle}</span>

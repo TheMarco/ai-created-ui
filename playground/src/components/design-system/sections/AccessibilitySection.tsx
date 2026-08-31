@@ -31,7 +31,7 @@ const rules = [
   'Use one skip link target: `#main-content`.',
   'Do not remove focus rings without providing an equally visible replacement.',
   'Use `text3` for metadata only. Navigation, labels, and helper copy should usually use `text2` or `text`.',
-  'Filled red controls with white text must use the solid red action token rather than the brighter accent red.',
+  'Filled accent controls must use the accessible action token rather than a brighter decorative accent.',
   'Disable or replace dead-end actions when the destination has no useful content yet.',
   'Workflow tabs and support utilities should stay semantically distinct rather than sharing one tablist by convenience.',
   'Treat decorative icons and hero images as decorative with empty alt text and `aria-hidden` where appropriate.',
@@ -139,7 +139,7 @@ export default function AccessibilitySection({ onInView }: AccessibilitySectionP
         <ul className="space-y-3">
           {rules.map((rule) => (
             <li key={rule} className="flex items-start gap-3 text-sm text-text2 leading-relaxed">
-              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-red shrink-0" aria-hidden="true" />
+              <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent shrink-0" aria-hidden="true" />
               <span>{rule}</span>
             </li>
           ))}

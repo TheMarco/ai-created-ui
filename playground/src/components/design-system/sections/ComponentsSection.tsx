@@ -37,7 +37,7 @@ const componentRules = [
   'For multi-tool product surfaces, prefer overview cards plus one active workspace instead of stacking every tool vertically.',
   'If an action has nowhere useful to go yet, disable it or replace it with explanatory copy. Do not ship dead-end clicks.',
   'Dense toolbars should use same-height controls and shared alignment before introducing custom flourishes.',
-  'Use the bright red accent for emphasis and state. Use the solid red token for filled actions with white text.',
+  'Use the accent token for emphasis and state. Use the action token for filled controls with the on-action foreground.',
   'Route-level composition counts as a component decision. Shared shells are part of the system, not implementation trivia.',
   'Interactive components need visible focus, explicit naming, and correct HTML semantics before they are considered done.',
   'If a component only appears on one route, question whether it should be part of the design system at all.',
@@ -67,7 +67,7 @@ const accessibilityByComponent = [
   'Breadcrumbs use nav with aria-label="Breadcrumb" and plain text for the current page.',
   'Dropdowns use Headless UI Listbox with full keyboard navigation (Arrow Up/Down, Enter, Escape, type-ahead). Selected option shows a check icon.',
   'Radio groups use native radio inputs in a fieldset with legend. Arrow keys move selection. Styled indicators mirror the checkbox pattern with a centered dot.',
-  'Sliders use native range input with a styled track and thumb. The filled portion uses the red accent. aria-valuemin, aria-valuemax, aria-valuenow, and aria-valuetext are set.',
+  'Sliders use native range input with a styled track and thumb. The filled portion uses the accent action color. aria-valuemin, aria-valuemax, aria-valuenow, and aria-valuetext are set.',
   'Toggles use role="switch" with aria-checked. Visually distinct from checkboxes with a sliding track. Focus-visible outline on the track.',
   'Dialogs use Headless UI Dialog with automatic focus trap, Escape to close, backdrop click to close, and transition animations. Close button has an aria-label.',
   'Tooltips appear on hover and focus with a configurable delay. Use role="tooltip" with aria-describedby on the trigger. Positioned top/bottom/left/right.',
@@ -147,7 +147,7 @@ function CheckboxDemo() {
           </Surface>
           <Surface variant="muted" padding="sm">
             <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">States</span>
-            <span className="text-xs text-text2 leading-relaxed">Unchecked, checked (red-solid fill), hover (border brightens), disabled (opacity 50%).</span>
+            <span className="text-xs text-text2 leading-relaxed">Unchecked, checked (action fill), hover (border brightens), disabled (opacity 50%).</span>
           </Surface>
           <Surface variant="muted" padding="sm">
             <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">Semantics</span>
@@ -337,7 +337,7 @@ function RadioGroupDemo() {
           </Surface>
           <Surface variant="muted" padding="sm">
             <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">States</span>
-            <span className="text-xs text-text2 leading-relaxed">Unselected, selected (red-solid fill + white dot), hover (border brightens), disabled (opacity 50%).</span>
+            <span className="text-xs text-text2 leading-relaxed">Unselected, selected (action fill + on-action dot), hover (border brightens), disabled (opacity 50%).</span>
           </Surface>
         </div>
       </div>
@@ -352,7 +352,7 @@ function SliderDemo() {
   return (
     <DSComponentDemo
       title="Slider"
-      description="Range input with a styled track and thumb. The filled portion uses the red accent. Includes an output element for the current value with aria-valuetext for screen readers."
+      description="Range input with a styled track and thumb. The filled portion uses the accent action color. Includes an output element for the current value with aria-valuetext for screen readers."
     >
       <div className="space-y-5">
         <Surface variant="default" padding="md">
@@ -386,7 +386,7 @@ function SliderDemo() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <Surface variant="muted" padding="sm">
             <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">Track</span>
-            <span className="text-xs text-text2 leading-relaxed">Filled portion uses red-solid, unfilled uses surface2. Border matches input fields.</span>
+            <span className="text-xs text-text2 leading-relaxed">Filled portion uses the action color, unfilled uses surface2. Border matches input fields.</span>
           </Surface>
           <Surface variant="muted" padding="sm">
             <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">Thumb</span>
@@ -409,7 +409,7 @@ function ToggleDemo() {
   return (
     <DSComponentDemo
       title="Toggle"
-      description="On/off switch visually distinct from checkboxes. Uses role='switch' with aria-checked. Sliding track animation with the red accent for the on state."
+      description="On/off switch visually distinct from checkboxes. Uses role='switch' with aria-checked. Sliding track animation with the accent action color for the on state."
     >
       <div className="space-y-5">
         <Surface variant="default" padding="md">
@@ -428,7 +428,7 @@ function ToggleDemo() {
           </Surface>
           <Surface variant="muted" padding="sm">
             <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">States</span>
-            <span className="text-xs text-text2 leading-relaxed">Off (surface2 track), on (red-solid track + translated knob), hover (border brightens), disabled (opacity 50%).</span>
+            <span className="text-xs text-text2 leading-relaxed">Off (surface2 track), on (action track + translated knob), hover (border brightens), disabled (opacity 50%).</span>
           </Surface>
           <Surface variant="muted" padding="sm">
             <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">Focus</span>
@@ -686,7 +686,7 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
         <ul className="space-y-2">
           {componentRules.map((rule) => (
             <li key={rule} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+              <span className="text-accent mt-0.5">-</span>
               <span>{rule}</span>
             </li>
           ))}
@@ -696,7 +696,7 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
       <div className="space-y-8">
         <DSComponentDemo
           title="Buttons & Links"
-          description="One shared button primitive with variant and size options. Primary buttons use the solid red action fill. Secondary actions are bordered and quieter. Tertiary actions are text links."
+          description="One shared button primitive with variant and size options. Primary buttons use the semantic action fill. Secondary actions are bordered and quieter. Tertiary actions are text links."
         >
           <div className="space-y-5">
             <div className="flex flex-wrap items-center gap-4">
@@ -787,7 +787,7 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
               <ul className="space-y-2">
                 {componentAdmissionRules.map((rule) => (
                   <li key={rule} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-                    <span className="text-red mt-0.5">-</span>
+                    <span className="text-accent mt-0.5">-</span>
                     <span>{rule}</span>
                   </li>
                 ))}
@@ -911,8 +911,8 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
                 <span className="text-sm text-text">border-border-strong</span>
               </Surface>
               <Surface variant="accent" padding="md" className="text-center">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-red block mb-2">Featured Hover</span>
-                <span className="text-sm text-text">border-red2</span>
+                <span className="text-[10px] font-mono uppercase tracking-wider text-accent block mb-2">Featured Hover</span>
+                <span className="text-sm text-text">border-accent-muted</span>
               </Surface>
             </div>
             <Surface variant="default" padding="sm" className="space-y-1 text-xs font-mono text-text3">
@@ -920,7 +920,7 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
               <div>Text: text-text2 → text-text</div>
               <div>Image: group-hover:scale-[1.02] duration-500</div>
               <div>Lift: whileHover=&#123;&#123; y: -2 &#125;&#125; (Framer Motion)</div>
-              <div>Featured: border-red-border → border-red2</div>
+              <div>Featured: border-accent-border → border-accent-muted</div>
             </Surface>
           </div>
         </DSComponentDemo>
@@ -942,8 +942,8 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
             </div>
             <div>
               <span className="text-[10px] font-mono uppercase tracking-wider text-text3 block mb-3">Accent</span>
-              <div className="h-px w-20 bg-red" />
-              <span className="text-xs font-mono text-text3 mt-2 block">h-px w-20 bg-red</span>
+              <div className="h-px w-20 bg-accent" />
+              <span className="text-xs font-mono text-text3 mt-2 block">h-px w-20 bg-accent</span>
             </div>
           </div>
         </DSComponentDemo>
@@ -1000,7 +1000,7 @@ export default function ComponentsSection({ onInView }: ComponentsSectionProps) 
         <ul className="space-y-2">
           {accessibilityByComponent.map((item) => (
             <li key={item} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+              <span className="text-accent mt-0.5">-</span>
               <span>{item}</span>
             </li>
           ))}

@@ -113,15 +113,15 @@ export default function SpacingLayoutSection({ onInView }: SpacingLayoutSectionP
                   className="h-5 rounded-sm flex items-center"
                   style={{ width: `${barWidth}%`, minWidth: '4px' }}
                 >
-                  <div className="w-[2px] h-full bg-red rounded-l-sm" />
-                  <div className="flex-1 h-full bg-red/10" />
+                  <div className="w-[2px] h-full bg-accent rounded-l-sm" />
+                  <div className="flex-1 h-full bg-accent/10" />
                 </div>
                 <span className="text-[10px] font-mono text-text3 shrink-0">
                   {entry.rem}
                   <span className="opacity-50 ml-1.5">{entry.px}</span>
                 </span>
                 {entry.custom && (
-                  <span className="text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-sm border border-red-border text-red">
+                  <span className="text-[9px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded-sm border border-accent-border text-accent">
                     Custom
                   </span>
                 )}
@@ -154,8 +154,8 @@ export default function SpacingLayoutSection({ onInView }: SpacingLayoutSectionP
           <span className="absolute top-2 left-3 text-[9px] font-mono text-text3 uppercase tracking-wider">
             Viewport
           </span>
-          <div className="mt-4 border border-red/30 rounded-md p-4 mx-auto max-w-lg relative bg-red/[0.03]">
-            <span className="absolute top-2 left-3 text-[9px] font-mono text-red uppercase tracking-wider">
+          <div className="relative mx-auto mt-4 max-w-lg rounded-md border border-accent-border bg-surface p-4">
+            <span className="absolute top-2 left-3 text-[9px] font-mono text-accent uppercase tracking-wider">
               .container-custom
             </span>
             <div className="mt-4 text-center">
@@ -241,7 +241,7 @@ export default function SpacingLayoutSection({ onInView }: SpacingLayoutSectionP
         <ul className="space-y-2">
           {accessibilityNotes.map((note) => (
             <li key={note} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+              <span className="text-accent mt-0.5">-</span>
               <span>{note}</span>
             </li>
           ))}

@@ -8,9 +8,9 @@ One repo. One source of truth. Every component, token, and motion pattern lives 
 
 ## What's in the box
 
-**22 documented families** -- 19 production component families plus theme, class-merging, and motion utilities. The package exposes 48 runtime values and 94 public TypeScript exports, all tied to reviewed specifications.
+**22 documented families** -- 19 production component families plus theme, class-merging, and motion utilities. The package exposes 49 runtime values and 96 public TypeScript exports, all tied to reviewed specifications.
 
-**Design tokens** -- a complete dark-first color system with intentional light mode, semantic status colors, spacing rhythm, radius scale, and motion timing. All delivered as CSS custom properties.
+**Design tokens** -- a complete dark-first color system with intentional light mode, nine accessible accent schemes, semantic status colors, spacing rhythm, radius scale, and motion timing. All delivered as CSS custom properties.
 
 **Tailwind preset** -- the full theme (colors, fonts, letter-spacing, animations, keyframes) as a single preset. Drop it into any Tailwind config and the entire visual language is available.
 
@@ -42,12 +42,12 @@ This package ships **raw TypeScript source**. There is no build step, no compile
 | `Notice` | Semantic feedback messages. Variants: info, success, warning, error |
 | `RadioGroup` | Single-select group with native radio inputs, horizontal/vertical |
 | `Skeleton` | Loading placeholder that preserves layout |
-| `Slider` | Range input with styled track, red-solid fill, formatted output |
+| `Slider` | Range input with styled track, semantic action fill, formatted output |
 | `Surface` | Card/panel shell with semantic variants and interaction states |
 | `Tabs` | Horizontal tab bar with roving tabindex and arrow-key navigation |
 | `ThemedHeroImage` | Dark/light theme-aware hero images with overlay and fade controls |
 | `Toggle` | On/off switch with role="switch" and sliding track |
-| `Tooltip` | Hover/focus/touch hint with position control and ARIA support |
+| `Tooltip` | Portalled hover/focus/touch hint with Escape dismissal and viewport collision handling |
 
 **Utilities:** `cn()` (Tailwind class merging), `fadeUpMotion`, `inViewFadeUpMotion`, `subtleHoverMotion`, `borderHoverMotion`, timing/offset/easing constants.
 
@@ -103,6 +103,64 @@ In your `globals.css`, **before** the `@tailwind` directives:
 ```
 
 The `@import` must come first -- CSS requires `@import` rules before other rules.
+
+The reviewed type recipes assume a 20px root and the named display/UI fonts. Load `Instrument Serif` and `Space Grotesk` through your application’s font pipeline, then keep the root contract explicit:
+
+```css
+html {
+  font-size: 125%;
+}
+```
+
+Wrap the application in `ThemeProvider`. It supports nine accessible accents: `red`, `green`, `blue`, `orange`, `yellow`, `purple`, `teal`, `pink`, and `magenta`. Red is the backward-compatible default. In uncontrolled preference mode, resolution is `localStorage['accent']` (valid values) > existing `html[data-accent]` > `defaultAccent` > `red`.
+
+For a persisted user preference, initialize both preferences before first paint. In a Next.js root layout, keep `suppressHydrationWarning` on `<html>` and place this script in `<head>`:
+
+```tsx
+<html lang="en" suppressHydrationWarning data-accent="blue">
+  <head>
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `(function(){try{var r=document.documentElement,t=localStorage.getItem('theme'),a=localStorage.getItem('accent'),v=['red','green','blue','orange','yellow','purple','teal','pink','magenta'];if(t==='light')r.classList.add('light');if(v.indexOf(a)>-1)r.dataset.accent=a}catch(e){}})()`,
+      }}
+    />
+  </head>
+  <body><ThemeProvider defaultAccent="blue">{children}</ThemeProvider></body>
+</html>
+```
+
+For a user-facing picker, use the public API:
+
+```tsx
+import { accentNames, useTheme, type Accent } from '@ai-created/ui';
+
+export function AccentPicker() {
+  const { accent, setAccent } = useTheme();
+  return <select aria-label="Accent color" value={accent}
+    onChange={(event) => setAccent(event.target.value as Accent)}>
+    {accentNames.map((name) => <option key={name} value={name}>{name}</option>)}
+  </select>;
+}
+```
+
+For a controlled accent, pass `accent`; it wins over storage, the document, and `defaultAccent`, and is fixed until the prop changes. `onAccentChange` receives every `setAccent` request; uncontrolled changes still persist, while controlled changes do not. Without the callback, controlled `setAccent` is a no-op. For a fixed product accent, set `<html data-accent="blue">` and use `<ThemeProvider accent="blue">`; use a theme-only pre-hydration script so saved user accent storage cannot overwrite it. If a strict Content Security Policy blocks inline scripts, use the application’s nonce-based equivalent. The token stylesheet sets the native `color-scheme` for both modes.
+
+Here is the complete fixed-accent root setup:
+
+```tsx
+<html lang="en" suppressHydrationWarning data-accent="blue">
+  <head>
+    <script
+      dangerouslySetInnerHTML={{
+        __html: `(function(){try{var r=document.documentElement,t=localStorage.getItem('theme');if(t==='light')r.classList.add('light')}catch(e){}})()`,
+      }}
+    />
+  </head>
+  <body><ThemeProvider accent="blue">{children}</ThemeProvider></body>
+</html>
+```
+
+If application state owns the accent, pass both controlled props: `<ThemeProvider accent={accent} onAccentChange={setAccent}>`. The callback requests the state change; the application must update `accent` for the appearance to change.
 
 ### 5. Use components
 
@@ -172,7 +230,7 @@ Faster focused commands are available during development:
 | `npm run agent:export` | Regenerate tokens, the machine manifest, and both agent context files |
 | `npm run agent:check` | Run every machine-readable anti-drift gate |
 | `npm run docs:check` | Verify public counts, routes, workflow guidance, and CI propagation promises |
-| `npm run policy:check -- src` | Reject prohibited tokens, styling, imports, and local primitive copies |
+| `npm run policy:check -- src` | Reject prohibited tokens, styling, imports, local primitive copies, and accidental zero-file scans |
 | `npm run package:check` | Verify the GitHub package contains only the public source boundary |
 | `npm run release:check -- vX.Y.Z` | Verify tag, version, lockfile, npm-publication guard, and changelog agreement |
 
@@ -182,7 +240,7 @@ For browser tests locally, install Chromium once with `npx playwright install ch
 
 Visual snapshots live with the Playwright suites under `e2e/__screenshots__/`. When a change intentionally alters rendered output, run `npm run test:visual:update`, inspect every updated image and the corresponding diff, and commit only the reviewed baseline changes with the source change. Never update snapshots to hide an unexplained failure. The default Playwright pixel threshold is small, but reviewers still own the final visual decision.
 
-The axe suite catches invalid ARIA, missing accessible names, broken relationships, and related semantic defects. It does not replace browser and manual checks for color contrast, visible focus treatment, screen reader output, touch behavior, or motion quality.
+The axe suite catches invalid ARIA, missing accessible names, broken relationships, and related semantic defects. Browser tests separately enforce semantic token contrast in both themes for focus rings, status text, control boundaries, accent text, and filled actions. Manual checks still own screen reader output, touch quality, and motion quality.
 
 ### Live playground
 

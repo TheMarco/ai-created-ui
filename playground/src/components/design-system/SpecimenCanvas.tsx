@@ -44,7 +44,7 @@ export default function SpecimenCanvas({ children }: { children: React.ReactNode
               className={cn(
                 'inline-flex min-h-9 items-center gap-2 rounded-sm px-3 text-xs transition-colors',
                 canvasWidth === id
-                  ? 'bg-red-solid text-white'
+                  ? 'bg-action-primary text-on-action'
                   : 'text-text2 hover:bg-surface2 hover:text-text'
               )}
             >

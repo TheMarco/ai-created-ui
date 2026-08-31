@@ -9,6 +9,42 @@ const outputPath = path.join(
   'playground/public/design-system/tokens.json'
 );
 const extensionKey = 'org.ai-created.ui';
+const accentAttribute = 'data-accent';
+const defaultAccent = 'red';
+const accentNames = [
+  'red',
+  'green',
+  'blue',
+  'orange',
+  'yellow',
+  'purple',
+  'teal',
+  'pink',
+  'magenta',
+];
+const accentRoleScales = {
+  dark: {
+    accent: '400',
+    accentHover: '500',
+    actionPrimary: '700',
+    actionPrimaryHover: '800',
+    focus: '400',
+  },
+  light: {
+    accent: '750',
+    accentHover: '900',
+    actionPrimary: '700',
+    actionPrimaryHover: '800',
+    focus: '750',
+  },
+};
+const semanticAccentRoles = {
+  accent: 'color-accent',
+  accentHover: 'color-accent-hover',
+  actionPrimary: 'color-action-primary',
+  actionPrimaryHover: 'color-action-primary-hover',
+  focus: 'color-focus',
+};
 
 function roundChannel(value) {
   return Number(value.toFixed(6));
@@ -31,6 +67,116 @@ function readDeclarations(css, selector) {
   }
 
   return declarations;
+}
+
+function declarationMap(declarations) {
+  return new Map(declarations.map(({ name, value }) => [name, value]));
+}
+
+function expectAlias(declarations, name, target, context) {
+  const expected = `var(--${target})`;
+  const actual = declarations.get(name);
+
+  if (actual !== expected) {
+    throw new Error(
+      `${context} must declare --${name}: ${expected}; received ${actual ?? 'no declaration'}.`
+    );
+  }
+}
+
+function createAccentMetadata(css, defaults, lightOverrides) {
+  const defaultValues = declarationMap(defaults);
+  const effectiveLightValues = new Map([
+    ...defaultValues,
+    ...lightOverrides,
+  ]);
+  const white = defaultValues.get('ref-white');
+
+  if (!white || !parseHexColor(white)) {
+    throw new Error('--ref-white must exist and contain a hex color for accent export.');
+  }
+  expectAlias(
+    defaultValues,
+    'color-on-action',
+    'ref-white',
+    'The default theme'
+  );
+
+  for (const [mode, roles] of Object.entries(accentRoleScales)) {
+    const declarations = mode === 'dark' ? defaultValues : effectiveLightValues;
+
+    for (const [role, scale] of Object.entries(roles)) {
+      expectAlias(
+        declarations,
+        semanticAccentRoles[role],
+        `ref-accent-current-${scale}`,
+        `The ${mode} theme`
+      );
+    }
+  }
+
+  const accents = Object.fromEntries(
+    accentNames.map((accent) => {
+      const selector = accent === defaultAccent
+        ? ':root'
+        : `html[${accentAttribute}='${accent}']`;
+      const selectorDeclarations = accent === defaultAccent
+        ? defaults
+        : readDeclarations(css, selector);
+
+      if (selectorDeclarations.length === 0) {
+        throw new Error(`Missing accent selector: ${selector}.`);
+      }
+
+      const selectorValues = declarationMap(selectorDeclarations);
+      const requiredScales = new Set(
+        Object.values(accentRoleScales).flatMap((roles) => Object.values(roles))
+      );
+      const references = new Map();
+
+      for (const scale of requiredScales) {
+        const referenceName = `ref-accent-${accent}-${scale}`;
+        const referenceValue = defaultValues.get(referenceName);
+
+        if (!referenceValue || !parseHexColor(referenceValue)) {
+          throw new Error(
+            `--${referenceName} must exist and contain a hex color for accent export.`
+          );
+        }
+
+        expectAlias(
+          selectorValues,
+          `ref-accent-current-${scale}`,
+          referenceName,
+          `Accent selector ${selector}`
+        );
+        references.set(scale, referenceValue);
+      }
+
+      const roles = Object.fromEntries(
+        Object.entries(accentRoleScales).map(([mode, scales]) => [
+          mode,
+          {
+            ...Object.fromEntries(
+              Object.entries(scales).map(([role, scale]) => [
+                role,
+                references.get(scale),
+              ])
+            ),
+            onAction: white,
+          },
+        ])
+      );
+
+      return [accent, { selector, roles }];
+    })
+  );
+
+  return {
+    accentAttribute,
+    defaultAccent,
+    accents,
+  };
 }
 
 function tokenPath(name, allNames) {
@@ -189,9 +335,7 @@ function setAtPath(root, segments, token) {
 
 function createDocument(css) {
   const defaults = readDeclarations(css, ':root');
-  const lightOverrides = new Map(
-    readDeclarations(css, 'html.light').map(({ name, value }) => [name, value])
-  );
+  const lightOverrides = declarationMap(readDeclarations(css, 'html.light'));
   const duplicateNames = defaults
     .map(({ name }) => name)
     .filter((name, index, names) => names.indexOf(name) !== index);
@@ -225,6 +369,7 @@ function createDocument(css) {
           dark: { selector: ':root' },
           light: { selector: 'html.light' },
         },
+        ...createAccentMetadata(css, defaults, lightOverrides),
       },
     },
   };

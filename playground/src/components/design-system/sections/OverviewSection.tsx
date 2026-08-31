@@ -74,7 +74,7 @@ export default function OverviewSection({ onInView }: OverviewSectionProps) {
             transition={{ duration: motionDuration.base + 0.1, delay: staggerDelay(i) }}
             {...borderHoverMotion()}
           >
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-red rounded-t-md" />
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-accent rounded-t-md" />
             <h3 className="text-xl font-heading font-semibold text-text mb-3 mt-2">
               {p.word}
             </h3>
@@ -90,7 +90,7 @@ export default function OverviewSection({ onInView }: OverviewSectionProps) {
         <ul className="space-y-2">
           {changeRules.map((rule) => (
             <li key={rule} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+              <span className="text-accent mt-0.5">-</span>
               <span>{rule}</span>
             </li>
           ))}

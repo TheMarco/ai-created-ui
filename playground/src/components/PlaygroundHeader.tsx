@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ThemeToggle } from '@ai-created/ui';
+import AccentPicker from './AccentPicker';
 
 const documentationLinks = [
   { href: '/', label: 'Foundations' },
@@ -40,6 +41,7 @@ export default function PlaygroundHeader() {
           >
             ai-created.com
           </a>
+          <AccentPicker />
           <ThemeToggle />
         </div>
       </div>

@@ -115,13 +115,82 @@ export function Example() {
   it('does not scan paths ignored by the repository policy, including tests', () => {
     const output = spawnSync(
       process.execPath,
-      [validatorPath, '--json', 'tests'],
+      [validatorPath, '--json', '--allow-empty', 'tests'],
       { cwd: packageRoot, encoding: 'utf8' }
     );
     const result = resultOf(output);
 
     expect(output.status).toBe(0);
     expect(result).toMatchObject({ success: true, scannedFiles: 0, errors: 0 });
+  });
+
+  it('fails by default when no files match the requested targets', () => {
+    const directory = fixture(`export const semanticClass = 'bg-surface text-text';\n`);
+    mkdirSync(path.join(directory, 'ignored'));
+
+    const output = run(directory, 'ignored');
+    const result = resultOf(output);
+
+    expect(output.status).toBe(1);
+    expect(result).toMatchObject({ success: false, scannedFiles: 0, errors: 1 });
+    expect(result.diagnostics).toEqual([
+      expect.objectContaining({
+        file: '.',
+        line: 1,
+        column: 1,
+        rule: 'no-files-scanned',
+      }),
+    ]);
+  });
+
+  it('rejects stock palette, radius, shadow, and font classes while allowing deliberate geometry', () => {
+    const directory = fixture(`export const classes = [
+  'bg-slate-900 border-red-500 bg-emerald-400/20 text-white',
+  'dark:bg-zinc-950 light:text-black hover:bg-blue-600',
+  'rounded-3xl shadow-2xl font-[600]',
+  'text-red bg-red rounded-lg rounded-t-md shadow-none shadow-elevation-medium',
+  'p-[13px] w-[377px] text-[11px]',
+].join(' ');\n`);
+
+    const output = run(directory, 'src');
+    const result = resultOf(output);
+
+    expect(output.status).toBe(1);
+    expect(result.success).toBe(false);
+    expect(result.errors).toBe(10);
+    expect(result.diagnostics.filter((diagnostic) => diagnostic.rule === 'no-theme-palette')).toHaveLength(7);
+    expect(result.diagnostics.filter((diagnostic) => diagnostic.rule === 'no-arbitrary-style-value')).toHaveLength(3);
+
+    const reportedClasses = result.diagnostics.flatMap((diagnostic) =>
+      diagnostic.message.match(/"([^"]+)"/)?.slice(1) ?? []
+    );
+    for (const forbidden of [
+      'bg-slate-900',
+      'border-red-500',
+      'bg-emerald-400/20',
+      'text-white',
+      'dark:bg-zinc-950',
+      'light:text-black',
+      'hover:bg-blue-600',
+      'rounded-3xl',
+      'shadow-2xl',
+      'font-[600]',
+    ]) {
+      expect(reportedClasses).toContain(forbidden);
+    }
+    for (const allowed of [
+      'text-red',
+      'bg-red',
+      'rounded-lg',
+      'rounded-t-md',
+      'shadow-none',
+      'shadow-elevation-medium',
+      'p-[13px]',
+      'w-[377px]',
+      'text-[11px]',
+    ]) {
+      expect(reportedClasses).not.toContain(allowed);
+    }
   });
 
   it('fails with precise file, line, and rule diagnostics for every drift class', () => {

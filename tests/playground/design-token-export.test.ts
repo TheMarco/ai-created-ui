@@ -71,13 +71,107 @@ describe('design token export', () => {
     expect(objectAt(backgroundExtension, ['modeValues']).light).toBe(
       '{ref.warm.neutral.100}'
     );
-    expect(accent.$value).toBe('{ref.red.500}');
+    expect(accent.$value).toBe('{ref.accent.current.400}');
     expect(red.$value).toBe('{color.accent.$root}');
     expect(objectAt(artifact, ['$extensions', extensionKey])).toMatchObject({
       defaultMode: 'dark',
       modes: {
         dark: { selector: ':root' },
         light: { selector: 'html.light' },
+      },
+    });
+  });
+
+  it('exports every selectable accent with resolved theme role values', () => {
+    const extension = objectAt(artifact, ['$extensions', extensionKey]);
+    const accents = objectAt(extension, ['accents']);
+
+    expect(extension).toMatchObject({
+      accentAttribute: 'data-accent',
+      defaultAccent: 'red',
+    });
+    expect(Object.keys(accents)).toEqual([
+      'red',
+      'green',
+      'blue',
+      'orange',
+      'yellow',
+      'purple',
+      'teal',
+      'pink',
+      'magenta',
+    ]);
+    expect(
+      Object.fromEntries(
+        Object.entries(accents).map(([name, value]) => [
+          name,
+          (value as JsonObject).selector,
+        ])
+      )
+    ).toEqual({
+      red: ':root',
+      green: "html[data-accent='green']",
+      blue: "html[data-accent='blue']",
+      orange: "html[data-accent='orange']",
+      yellow: "html[data-accent='yellow']",
+      purple: "html[data-accent='purple']",
+      teal: "html[data-accent='teal']",
+      pink: "html[data-accent='pink']",
+      magenta: "html[data-accent='magenta']",
+    });
+
+    expect(objectAt(accents, ['red', 'roles'])).toEqual({
+      dark: {
+        accent: '#FF4B2B',
+        accentHover: '#F13A1D',
+        actionPrimary: '#D41010',
+        actionPrimaryHover: '#C81010',
+        focus: '#FF4B2B',
+        onAction: '#FFFFFF',
+      },
+      light: {
+        accent: '#C81E1E',
+        accentHover: '#B80E0E',
+        actionPrimary: '#D41010',
+        actionPrimaryHover: '#C81010',
+        focus: '#C81E1E',
+        onAction: '#FFFFFF',
+      },
+    });
+    expect(objectAt(accents, ['yellow', 'roles'])).toEqual({
+      dark: {
+        accent: '#AC8802',
+        accentHover: '#9E7D01',
+        actionPrimary: '#826701',
+        actionPrimaryHover: '#7A6001',
+        focus: '#AC8802',
+        onAction: '#FFFFFF',
+      },
+      light: {
+        accent: '#7C6202',
+        accentHover: '#6E5600',
+        actionPrimary: '#826701',
+        actionPrimaryHover: '#7A6001',
+        focus: '#7C6202',
+        onAction: '#FFFFFF',
+      },
+    });
+    expect(objectAt(accents, ['magenta', 'roles'])).toEqual({
+      dark: {
+        accent: '#D25CDA',
+        accentHover: '#C44FCD',
+        actionPrimary: '#AB35B3',
+        actionPrimaryHover: '#A32BAC',
+        focus: '#D25CDA',
+        onAction: '#FFFFFF',
+      },
+      light: {
+        accent: '#A52EAE',
+        accentHover: '#971CA0',
+        actionPrimary: '#AB35B3',
+        actionPrimaryHover: '#A32BAC',
+        focus: '#A52EAE',
+        onAction: '#FFFFFF',
       },
     });
   });

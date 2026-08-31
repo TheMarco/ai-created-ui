@@ -21,7 +21,7 @@ export default function ComponentsPage() {
       </Link>
 
       <header className="mt-10 max-w-4xl">
-        <p className="font-mono text-xs uppercase tracking-wider text-red">Component specifications</p>
+        <p className="font-mono text-xs uppercase tracking-wider text-accent">Component specifications</p>
         <h1 className="mt-4 font-display text-4xl tracking-wide text-text md:text-6xl">
           Build from documented contracts.
         </h1>

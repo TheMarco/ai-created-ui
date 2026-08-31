@@ -56,8 +56,8 @@ function DropdownInner<T extends string>(
             event.currentTarget.click();
           }}
           className={cn(
-            'relative min-w-0 w-full rounded-md border border-border bg-surface2 py-3 pl-4 pr-10 text-left text-sm transition-colors duration-200',
-            'hover:border-border-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-[3px]',
+            'relative min-w-0 w-full rounded-md border border-control-border bg-surface2 py-3 pl-4 pr-10 text-left text-sm transition-colors duration-200',
+            'hover:border-control-border-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-[3px]',
             disabled && 'cursor-not-allowed opacity-50',
             selected ? 'text-text' : 'text-text3'
           )}
@@ -73,7 +73,7 @@ function DropdownInner<T extends string>(
         <ListboxOptions
           anchor="bottom start"
           className={cn(
-            'z-50 mt-1 max-h-60 w-[var(--button-width)] overflow-auto rounded-md border border-border bg-surface py-1 text-sm shadow-lg focus:outline-none',
+            'z-dropdown mt-1 max-h-60 w-[var(--button-width)] overflow-auto rounded-md border border-border bg-surface py-1 text-sm shadow-elevation-medium focus:outline-none',
             'transition duration-100 ease-in data-[leave]:opacity-0'
           )}
         >
@@ -97,7 +97,7 @@ function DropdownInner<T extends string>(
                     {option.label}
                   </span>
                   {isSelected && (
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-red">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-accent">
                       <Check className="h-4 w-4" aria-hidden="true" />
                     </span>
                   )}

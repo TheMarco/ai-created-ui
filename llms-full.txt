@@ -98,9 +98,10 @@ The primary action primitive, with explicit hierarchy, size, and semantic-button
 
 ### Tokens
 
-- --color-action-primary: Primary and destructive background.
-- --color-action-primary-hover: Solid button hover background.
-- --color-border / --color-border-strong: Secondary, filter, and icon borders.
+- --color-action-primary / --color-action-primary-hover: Primary action background and hover.
+- --color-action-destructive / --color-action-destructive-hover: Destructive action background and hover.
+- --color-on-action: Foreground on filled actions.
+- --color-control-border / --color-control-border-strong: Secondary, filter, and icon control boundaries.
 - --color-focus: Global focus-visible outline.
 - --motion-fast: Color transition duration.
 - --radius-md: Container radius.
@@ -581,6 +582,7 @@ An error notice with optional expandable, copyable diagnostics for support workf
 - collapsed: Details exist but disclosure is closed. Technical details are not mounted.
 - expanded: Disclosure is activated. Details include error, timestamp, and current path.
 - copied: Clipboard write resolves. Diagnostic string is on the clipboard.
+- copy failed: Clipboard write rejects or is unavailable. The rejection is handled without an unhandled promise and the user may retry.
 
 ### Keyboard
 
@@ -594,7 +596,7 @@ An error notice with optional expandable, copyable diagnostics for support workf
 - Accessible name: The Notice title and message identify the error; buttons have visible names.
 - Never include credentials, tokens, personal data, or full query strings in details.
 - Preserve aria-expanded and aria-controls on the disclosure.
-- Copy confirmation must remain visible long enough to perceive.
+- Copy success and failure feedback must remain visible long enough to perceive.
 
 ### Tokens
 
@@ -611,6 +613,7 @@ An error notice with optional expandable, copyable diagnostics for support workf
 - details controls whether the disclosure and copy action exist.
 - timestamp should be supplied for deterministic reports; otherwise it is created when debugInfo renders.
 - The URL is limited to origin and pathname.
+- Clipboard rejection is handled and the feedback timer is cleared on replacement and unmount.
 
 ### Recipes
 
@@ -627,10 +630,10 @@ An error notice with optional expandable, copyable diagnostics for support workf
 ### Required tests
 
 - Unit: Assembles diagnostic text with optional details and timestamp.
-- Unit: Resets copied state after two seconds.
-- Interaction: Disclosure toggles and clipboard receives the expected sanitized string.
-- Accessibility: Alert, disclosure relationship, button names, and focus order are valid.
-- Visual: Capture collapsed, expanded, copied, long-details, and both themes.
+- Unit: Resets copy success or failure feedback after two seconds.
+- Interaction: Disclosure toggles; clipboard resolution and rejection both produce the expected status.
+- Accessibility: Alert, disclosure relationship, button names, focus order, and polite clipboard status are valid.
+- Visual: Capture collapsed, expanded, copied, copy-failed, long-details, and both themes.
 
 ## Field family / style helpers (`field`)
 
@@ -686,8 +689,8 @@ Composable labels, hints, text controls, and style helpers for consistent form f
 ### Tokens
 
 - --color-surface2: Control background.
-- --color-border / --color-border-strong: Default and hover borders.
-- --color-accent-border: Focused border.
+- --color-control-border / --color-control-border-strong: Contrast-safe default and hover boundaries.
+- --color-accent: Focused border.
 - --color-text / --color-text2 / --color-text3: Value, label/help, and placeholder hierarchy.
 - --radius-md: Control radius.
 
@@ -775,7 +778,8 @@ A controlled native checkbox for one independent boolean choice.
 ### Tokens
 
 - --color-action-primary: Checked fill and border.
-- --color-border-strong: Unchecked border.
+- --color-on-action: Checked mark.
+- --color-control-border / --color-control-border-strong: Unchecked and hover boundary.
 - --color-focus: Peer focus-visible outline.
 - --color-text2: Label.
 - --motion-fast: State transition.
@@ -865,7 +869,8 @@ A controlled fieldset for selecting exactly one value from a small, visible opti
 ### Tokens
 
 - --color-action-primary: Selected indicator.
-- --color-border-strong: Unselected border.
+- --color-on-action: Selected inner mark.
+- --color-control-border / --color-control-border-strong: Unselected and hover boundary.
 - --color-focus: Peer focus outline.
 - --color-text2: Legend and option labels.
 
@@ -951,8 +956,9 @@ A controlled switch for an immediate on/off setting.
 ### Tokens
 
 - --color-action-primary: On track fill and border.
+- --color-on-action: Thumb fill.
 - --color-surface2: Off track fill.
-- --color-border-strong: Off track border.
+- --color-control-border / --color-control-border-strong: Off track and hover boundary.
 - --color-focus: Track focus outline.
 - --motion-fast: Track color and thumb movement.
 
@@ -1041,7 +1047,7 @@ A controlled native range input for choosing a numeric value from a bounded cont
 
 - --color-action-primary: Progress fill and thumb.
 - --color-surface2: Unfilled track.
-- --color-border: Track border.
+- --color-control-border: Track boundary.
 - --color-bg: Thumb border separation.
 - --color-focus: Range focus outline.
 
@@ -1134,9 +1140,11 @@ An accessible controlled listbox for choosing one option in compact space.
 
 - --color-surface2: Trigger and active option background.
 - --color-surface: Options panel.
-- --color-border / --color-border-strong: Resting and hover borders.
+- --color-control-border / --color-control-border-strong: Trigger resting and hover boundaries.
+- --color-border: Options panel border.
 - --color-focus: Trigger focus outline.
 - --color-accent: Selected check marker.
+- --shadow-elevation-medium / --layer-dropdown: Options elevation and stacking.
 
 ### Composition
 
@@ -1395,7 +1403,6 @@ A composable Headless UI modal shell for richer application layouts with header,
 - Accessible name: ModalHeader heading supplies the name; description supplies supporting text.
 - Always include ModalHeader with a meaningful heading or provide an equivalent Headless UI title.
 - Supply an onClose control unless the operation intentionally prevents dismissal.
-- Do not mount the overlay before client hydration; the component waits for mount.
 - Keep footer action order and labels explicit.
 
 ### Tokens
@@ -1430,9 +1437,9 @@ A composable Headless UI modal shell for richer application layouts with header,
 
 ### Required tests
 
-- Unit: Maps every panel size and region option.
-- Unit: Mount guard and optional onClose behavior are deterministic.
-- Interaction: Escape, backdrop setting, close button, focus trap, body scrolling, and restoration work.
+- Unit: Maps the shared Dialog panel sizes and every region option.
+- Unit: Optional onClose behavior is deterministic.
+- Interaction: Escape, backdrop setting, 44px close button, focus trap, body scrolling, and restoration work.
 - Accessibility: Dialog naming, description, role, focus order, and inert background are valid.
 - Visual: Capture sizes, mobile top alignment, desktop centering, overflow, header/footer variants, and themes.
 
@@ -1495,7 +1502,9 @@ A constrained alert dialog for confirming one consequential or irreversible acti
 
 - --color-overlay: Modal backdrop.
 - --color-surface / --color-border: Panel and dividers.
-- --color-action-primary: Destructive confirmation when enabled.
+- --color-action-primary: Standard confirmation.
+- --color-action-destructive: Destructive confirmation.
+- --color-on-action: Filled action foreground.
 - --color-text / --color-text2: Title and description.
 
 ### Composition
@@ -1562,14 +1571,14 @@ A brief, non-interactive description shown from pointer, focus, or touch.
 ### States
 
 - hidden: No active pointer, focus, or toggled touch. Trigger retains its original aria-describedby.
-- visible: Pointer hover remains for delay milliseconds. Leaving cancels and hides.
+- visible: Pointer hover remains for delay milliseconds. Pointer may cross onto the bubble without dismissing it; leaving both hides after a short bridge delay.
 - focused: Trigger receives focus for delay milliseconds. Blur hides it.
 - touch-visible: Trigger receives touchstart. Another touch or outside touch hides it.
 
 ### Keyboard
 
 - Tab / Shift+Tab: Focuses the child trigger; tooltip appears after delay.
-- Escape: No explicit tooltip dismissal is implemented; blur dismisses.
+- Escape: Dismisses the tooltip without moving focus.
 
 ### Accessibility
 
@@ -1586,6 +1595,8 @@ A brief, non-interactive description shown from pointer, focus, or touch.
 - --color-border: Bubble border.
 - --color-text2: Tooltip text.
 - --radius-md: Bubble radius.
+- --shadow-elevation-medium / --layer-tooltip: Portalled elevation and stacking.
+- --motion-fast: Entrance fade.
 
 ### Composition
 
@@ -1594,9 +1605,9 @@ A brief, non-interactive description shown from pointer, focus, or touch.
 ### Implementation notes
 
 - The child element is cloned to compose hover, focus, blur, and touch handlers.
-- Show timeout is cleared on hide and unmount.
-- Positioning has no portal or collision detection.
-- Touch outside dismissal listens only while visible.
+- Show and hover-bridge timeouts are cleared on hide and unmount.
+- The bubble portals to document.body, flips to the opposite side when needed, clamps to the viewport, and tracks scroll/resize.
+- Escape and outside touch listeners exist only while visible.
 
 ### Recipes
 
@@ -1606,16 +1617,16 @@ A brief, non-interactive description shown from pointer, focus, or touch.
 
 - Content: One short sentence, maximum about 120 characters. Wrap up to 240px; move longer guidance into persistent UI.
 - Children: Exactly one focusable trigger. Wrap compound visuals in one semantic control.
-- Design-tool limit: Figma hover prototypes do not cover delayed focus, touch toggling, outside touch, or aria-describedby.
-- Code limit: The implementation does not perform automatic collision detection; product placement must avoid clipping.
+- Design-tool limit: Figma hover prototypes do not cover delayed focus, pointer travel, Escape, touch toggling, outside touch, viewport collision, or aria-describedby.
+- Code limit: Keep content supplemental, plain text, and non-interactive.
 
 ### Required tests
 
 - Unit: Composes existing child handlers and aria-describedby.
-- Unit: Clears timers and outside-touch listener.
-- Interaction: Hover/focus delay, leave/blur, touch toggle, and outside touch behave correctly.
-- Accessibility: Role, id relationship, trigger name, and keyboard discoverability are valid.
-- Visual: Capture all positions, wrapping at max width, focus/hover visibility, and themes.
+- Unit: Clears timers and temporary listeners.
+- Interaction: Hover/focus delay, pointer travel onto the bubble, Escape, leave/blur, touch toggle, outside touch, flip, clamp, scroll, and resize behave correctly.
+- Accessibility: Role, id relationship, trigger name, Escape dismissal, and keyboard discoverability are valid.
+- Visual: Capture all positions, viewport edges, wrapping at max width, focus/hover visibility, and themes.
 
 ## ThemedHeroImage (`themed-hero-image`)
 
@@ -1707,11 +1718,11 @@ A decorative, theme-aware hero background with coordinated overlays, fades, and 
 
 ## ThemeProvider / useTheme / ThemeToggle (`theme`)
 
-Application-level dark/light state, persistence, reduced-motion configuration, and a ready-made switch action.
+Application-level dark/light and accent state, persistence, reduced-motion configuration, and a ready-made switch action.
 
 - Category: Theme & media
 - Source: `src/components/ThemeProvider.tsx`
-- Public exports: `ThemeProvider`, `useTheme`, `ThemeToggle`, `Theme`, `ThemeContextValue`
+- Public exports: `ThemeProvider`, `useTheme`, `ThemeToggle`, `Theme`, `Accent`, `accentNames`, `ThemeContextValue`, `ThemeProviderProps`
 - Import: `import { ThemeProvider, ThemeToggle, useTheme } from '@ai-created/ui';`
 - Client component: yes
 - Design asset: Not applicable
@@ -1720,7 +1731,7 @@ Application-level dark/light state, persistence, reduced-motion configuration, a
 
 ### Use when
 
-- Applications supporting theme preference
+- Applications supporting theme and accent preferences
 
 ### Avoid when
 
@@ -1729,7 +1740,12 @@ Application-level dark/light state, persistence, reduced-motion configuration, a
 ### Public API
 
 - `ThemeProvider.children`: `ReactNode`. Default: required. Application subtree.
+- `ThemeProvider.accent`: `Accent`. Default: undefined. Controlled, fixed accent; wins over storage and defaults.
+- `ThemeProvider.defaultAccent`: `Accent`. Default: red. Uncontrolled fallback after storage and document accent.
+- `ThemeProvider.onAccentChange`: `(accent: Accent) => void`. Default: undefined. Receives setAccent requests in either mode; controlled changes are not persisted.
 - `useTheme().theme`: `dark | light`. Default: dark. Current theme.
+- `useTheme().accent`: `Accent`. Default: red. Current accent scheme.
+- `useTheme().setAccent`: `(accent: Accent) => void`. Default: undefined. Persists uncontrolled changes; controlled mode reports through the callback or is a no-op.
 - `useTheme().toggleTheme`: `() => void`. Default: undefined. Switches and persists the theme.
 - `ThemeToggle`: `component`. Default: undefined. Ready-made theme switch control.
 
@@ -1737,6 +1753,7 @@ Application-level dark/light state, persistence, reduced-motion configuration, a
 
 - dark: Default or saved dark preference. toggleTheme stores light and adds html.light.
 - light: Saved or pre-rendered light preference. toggleTheme stores dark and removes html.light.
+- accent scheme: Controlled accent prop, or uncontrolled saved accent > existing data-accent > defaultAccent > red. Uncontrolled setAccent persists, updates html[data-accent], and reports through onAccentChange. Controlled accent is fixed; setAccent reports through onAccentChange without persistence, or is a no-op when no callback exists. Destructive and feedback roles remain unchanged.
 
 ### Keyboard
 
@@ -1747,28 +1764,36 @@ Application-level dark/light state, persistence, reduced-motion configuration, a
 
 - Semantics: Context provider plus native motion button; ThemeToggle has a state-dependent aria-label and title.
 - Accessible name: ThemeToggle announces the action it will perform, such as Switch to light mode.
-- Run a pre-hydration theme script or equivalent to keep visual and context state aligned at first paint.
-- Do not encode information solely in the active theme.
+- Run a pre-hydration appearance script or equivalent to keep theme, accent, and context state aligned at first paint.
+- Do not encode information solely in the active theme or accent.
+- Every accent role must retain its browser-tested contrast contract across all dark/light foundations.
 - MotionConfig and CSS reduced-motion rules must remain enabled.
 
 ### Tokens
 
 - --color-bg / surface / surface2: Theme foundations.
 - --color-text / text2 / text3: Theme typography hierarchy.
-- --color-* semantic pairs: Theme-adjusted status and action colors.
+- --color-accent* / --color-action-primary* / --color-focus / --color-selection: Role-tuned active accent scheme colors.
+- --color-success / warning / info / error*: Stable feedback semantics that never follow the accent.
 - --motion-base / --motion-slow: Theme and image transitions.
 
 ### Composition
 
 - Wrap the app once with ThemeProvider.
 - Use useTheme for custom controls.
+- Use semantic accent tokens; destructive and feedback colors retain their meanings.
 
 ### Implementation notes
 
 - ThemeProvider reads localStorage after mount and falls back to the existing html class or dark.
-- toggleTheme updates context, localStorage, html.light, and theme-transitioning.
-- The current implementation adds theme-transitioning but does not remove it; consumers should account for the persistent class.
-- useTheme outside a provider receives the safe dark default context.
+- accent is controlled and fixed; defaultAccent is the uncontrolled fallback and red is the default.
+- onAccentChange receives setAccent requests in either mode; controlled changes are never persisted.
+- Uncontrolled precedence is valid localStorage[accent] > existing html[data-accent] > defaultAccent > red.
+- toggleTheme updates context, localStorage, html.light, and temporarily adds theme-transitioning.
+- Uncontrolled setAccent updates context, localStorage[accent], html[data-accent], and calls onAccentChange when provided.
+- The transition class is removed after the 500ms theme-media window, restarted on repeated toggles, and cleaned on unmount.
+- The token stylesheet sets color-scheme for native controls in both modes.
+- useTheme outside a provider receives the safe dark/red default context.
 
 ### Recipes
 
@@ -1778,17 +1803,20 @@ Application-level dark/light state, persistence, reduced-motion configuration, a
 
 - Provider instances: One provider at the application root. Remove nested ownership unless an isolated preview explicitly requires it.
 - Design-tool limit: There is no Figma component instance for context behavior; use variable modes and a documented visible toggle.
-- Design-tool limit: Prototype variables do not reproduce localStorage persistence or pre-hydration theme resolution.
+- Design-tool limit: Prototype variables do not reproduce localStorage persistence, accent persistence, or pre-hydration theme resolution.
 - Code limit: Wrap the app once and avoid component-owned global mode changes.
+- Code limit: Keep destructive and feedback colors independent from the selected accent.
 - Not applicable: Auto layout, padding, gap, resizing, and overflow do not apply to ThemeProvider or useTheme.
 
 ### Required tests
 
-- Unit: Resolves saved, existing-class, and default themes.
+- Unit: Resolves saved, existing-class, default themes, and uncontrolled accent precedence.
+- Unit: Controlled accent wins over storage/document/default; callback and no-op behavior are covered.
 - Unit: toggleTheme updates context, storage, and document class.
+- Unit: Uncontrolled setAccent updates context, storage, and html[data-accent].
 - Interaction: ThemeToggle changes mode by pointer and keyboard and updates its label/icon.
-- Accessibility: Control has an action-oriented name; reduced-motion preference is honored.
-- Visual: Capture every foundation and public component in both themes, including transition and no-motion states.
+- Accessibility: Accent choices have an accessible name and do not communicate meaning by color alone; reduced-motion preference is honored.
+- Visual: Capture every foundation and public component across all nine accents and both themes, including transition and no-motion states; browser-test accent text, muted text, borders, actions, focus, selection, and action foregrounds on bg, surface, and surface2.
 
 ## cn (`cn`)
 
@@ -1960,7 +1988,7 @@ Shared timing, easing, offsets, reveal recipes, and subtle hover behavior for Fr
 
 ## 01. Foundations (`foundations`)
 
-The visual, spatial, typographic, motion, and media decisions that every AI-Created interface inherits.
+The visual, spatial, typographic, motion, media, and accessible accent-scheme decisions that every AI-Created interface inherits.
 
 - Status: canonical
 - Owner: Design Systems
@@ -1968,7 +1996,7 @@ The visual, spatial, typographic, motion, and media decisions that every AI-Crea
 - Source of truth: styles/tokens.css and tailwind-preset.js
 
 - `token-architecture` Token architecture: Use a three-level naming model so raw values can change without altering product intent.
-- `color` Color and contrast: One red accent establishes action hierarchy. Neutral surfaces and semantic feedback colors carry the rest of the system.
+- `color` Color and contrast: Accent schemes, committed actions, destructive actions, neutral surfaces, and semantic feedback each have an explicit role.
 - `type-layout` Typography, spacing, and grid: Instrument Serif creates editorial moments. Space Grotesk carries every functional reading task.
 - `shape-motion-media` Shape, elevation, motion, icons, and media: Secondary visual systems remain restrained so content and interaction state stay primary.
 
@@ -2128,7 +2156,7 @@ Use for a short, resumable setup sequence where progress, permission, save failu
 
 # Drift and exception policy
 
-Run `npm run policy:check -- <paths...>` in a consumer repository. The validator rejects raw color values, direct reference-token use, internal package imports, unsupported theme palettes, arbitrary style values, and detectable local primitive copies. A necessary exception must name one rule, narrowly scoped files, a concrete reason, an owner, and a future review date. Expired exceptions fail validation.
+Run `npm run policy:check -- <paths...>` in a consumer repository. The validator rejects raw color values and stock palette utilities, direct reference-token use, internal package imports, unapproved font, radius, shadow, and arbitrary color values, and detectable local primitive copies. A zero-file scan fails unless the caller explicitly passes `--allow-empty`. A necessary exception must name one rule, narrowly scoped files, a concrete reason, an owner, and a future review date. Expired exceptions fail validation.
 
 # Validation commands
 

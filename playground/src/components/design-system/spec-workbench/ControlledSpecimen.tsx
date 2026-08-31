@@ -484,9 +484,9 @@ export default function ControlledSpecimen({
         <motion.div
           key={`${delay}-${offset}-${duration}`}
           {...fadeUpMotion(delay, offset, duration)}
-          className="max-w-md rounded-md border border-red-border bg-surface p-6"
+          className="max-w-md rounded-md border border-accent-border bg-surface p-6"
         >
-          <Check className="h-5 w-5 text-red" aria-hidden="true" />
+          <Check className="h-5 w-5 text-accent" aria-hidden="true" />
           <p className="mt-4 font-medium text-text">Motion contract applied</p>
           <p className="mt-2 text-sm text-text2">
             Delay {delay}s, offset {offset}px, duration {duration}s.

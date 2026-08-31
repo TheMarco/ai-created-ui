@@ -63,7 +63,7 @@ function RadioGroupInner<T extends string>(
               key={option.value}
               htmlFor={optionId}
               className={cn(
-                'flex min-h-[44px] items-center gap-2.5 cursor-pointer',
+                'group flex min-h-[44px] items-center gap-2.5 cursor-pointer',
                 isDisabled && 'cursor-not-allowed'
               )}
             >
@@ -85,12 +85,12 @@ function RadioGroupInner<T extends string>(
                     'peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-focus peer-focus-visible:outline-offset-[3px]',
                     isDisabled && 'cursor-not-allowed opacity-50',
                     isSelected
-                      ? 'border-red-solid bg-red-solid'
-                      : 'border-border-strong bg-transparent hover:border-text3'
+                      ? 'border-action-primary bg-action-primary'
+                      : 'border-control-border bg-transparent group-hover:border-control-border-strong'
                   )}
                 >
                   {isSelected && (
-                    <span className="h-[0.6rem] w-[0.6rem] rounded-full bg-white" />
+                    <span className="h-[0.6rem] w-[0.6rem] rounded-full bg-on-action" />
                   )}
                 </span>
               </span>

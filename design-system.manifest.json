@@ -4,7 +4,7 @@
   "schemaVersion": "1.0.0",
   "package": {
     "name": "@ai-created/ui",
-    "version": "1.2.2",
+    "version": "1.3.0",
     "description": "Shared design system for AI-Created apps",
     "sourcePath": "package.json",
     "publicApiPath": "src/index.ts",
@@ -134,7 +134,7 @@
       "repositoryPath": "playground/public/design-system/tokens.json",
       "publicPath": "/design-system/tokens.json",
       "format": "DTCG-shaped JSON",
-      "cssVariableCount": 76
+      "cssVariableCount": 154
     },
     "agentContext": {
       "sourcePath": "scripts/export-agent-context.mjs",
@@ -159,6 +159,13 @@
   "publicApi": {
     "sourcePath": "src/index.ts",
     "exports": [
+      {
+        "name": "Accent",
+        "localName": "Accent",
+        "kind": "type",
+        "modulePath": "./components/ThemeProvider",
+        "sourcePath": "src/components/ThemeProvider.tsx"
+      },
       {
         "name": "Badge",
         "localName": "default",
@@ -692,6 +699,13 @@
         "sourcePath": "src/components/Tooltip.tsx"
       },
       {
+        "name": "accentNames",
+        "localName": "accentNames",
+        "kind": "value",
+        "modulePath": "./components/ThemeProvider",
+        "sourcePath": "src/components/ThemeProvider.tsx"
+      },
+      {
         "name": "borderHoverMotion",
         "localName": "borderHoverMotion",
         "kind": "value",
@@ -936,13 +950,13 @@
           },
           {
             "property": "Icon-only target",
-            "value": "36 × 36px"
+            "value": "44 × 44px"
           }
         ],
         "rules": [
           "Keep labels on one line.",
           "Use the icon size for square icon-only controls; do not force an icon into text-button spacing.",
-          "Primary and destructive share the solid action color; their meaning comes from context and copy."
+          "Primary and destructive use distinct semantic action tokens; specific copy still communicates the consequence."
         ],
         "responsiveBehavior": [
           "Use fullWidth only when the surrounding layout calls for a full-row action.",
@@ -951,16 +965,20 @@
       },
       "designTokens": [
         {
-          "token": "--color-action-primary",
-          "purpose": "Primary and destructive background."
+          "token": "--color-action-primary / --color-action-primary-hover",
+          "purpose": "Primary action background and hover."
         },
         {
-          "token": "--color-action-primary-hover",
-          "purpose": "Solid button hover background."
+          "token": "--color-action-destructive / --color-action-destructive-hover",
+          "purpose": "Destructive action background and hover."
         },
         {
-          "token": "--color-border / --color-border-strong",
-          "purpose": "Secondary, filter, and icon borders."
+          "token": "--color-on-action",
+          "purpose": "Foreground on filled actions."
+        },
+        {
+          "token": "--color-control-border / --color-control-border-strong",
+          "purpose": "Secondary, filter, and icon control boundaries."
         },
         {
           "token": "--color-focus",
@@ -3233,6 +3251,13 @@
           "trigger": "Clipboard write resolves.",
           "visual": "Copy action becomes Copied for two seconds.",
           "behavior": "Diagnostic string is on the clipboard."
+        },
+        {
+          "name": "copy failed",
+          "trigger": "Clipboard write rejects or is unavailable.",
+          "visual": "Copy action becomes Copy failed for two seconds.",
+          "behavior": "The rejection is handled without an unhandled promise and the user may retry.",
+          "accessibility": "The polite live status announces the failure."
         }
       ],
       "keyboard": [
@@ -3255,11 +3280,11 @@
         "requirements": [
           "Never include credentials, tokens, personal data, or full query strings in details.",
           "Preserve aria-expanded and aria-controls on the disclosure.",
-          "Copy confirmation must remain visible long enough to perceive."
+          "Copy success and failure feedback must remain visible long enough to perceive."
         ],
         "announcements": [
           "The error Notice is assertively announced.",
-          "Copied is a visual label change; add a dedicated live announcement in consuming flows if confirmation is critical."
+          "Clipboard success or failure is announced through a polite live status."
         ]
       },
       "implementation": {
@@ -3268,7 +3293,8 @@
         "notes": [
           "details controls whether the disclosure and copy action exist.",
           "timestamp should be supplied for deterministic reports; otherwise it is created when debugInfo renders.",
-          "The URL is limited to origin and pathname."
+          "The URL is limited to origin and pathname.",
+          "Clipboard rejection is handled and the feedback timer is cleared on replacement and unmount."
         ]
       },
       "guidance": {
@@ -3284,16 +3310,16 @@
       "testing": {
         "unit": [
           "Assembles diagnostic text with optional details and timestamp.",
-          "Resets copied state after two seconds."
+          "Resets copy success or failure feedback after two seconds."
         ],
         "interaction": [
-          "Disclosure toggles and clipboard receives the expected sanitized string."
+          "Disclosure toggles; clipboard resolution and rejection both produce the expected status."
         ],
         "accessibility": [
-          "Alert, disclosure relationship, button names, and focus order are valid."
+          "Alert, disclosure relationship, button names, focus order, and polite clipboard status are valid."
         ],
         "visual": [
-          "Capture collapsed, expanded, copied, long-details, and both themes."
+          "Capture collapsed, expanded, copied, copy-failed, long-details, and both themes."
         ]
       },
       "relatedComponents": [
@@ -3626,11 +3652,11 @@
           "purpose": "Control background."
         },
         {
-          "token": "--color-border / --color-border-strong",
-          "purpose": "Default and hover borders."
+          "token": "--color-control-border / --color-control-border-strong",
+          "purpose": "Contrast-safe default and hover boundaries."
         },
         {
-          "token": "--color-accent-border",
+          "token": "--color-accent",
           "purpose": "Focused border."
         },
         {
@@ -4066,8 +4092,12 @@
           "purpose": "Checked fill and border."
         },
         {
-          "token": "--color-border-strong",
-          "purpose": "Unchecked border."
+          "token": "--color-on-action",
+          "purpose": "Checked mark."
+        },
+        {
+          "token": "--color-control-border / --color-control-border-strong",
+          "purpose": "Unchecked and hover boundary."
         },
         {
           "token": "--color-focus",
@@ -4461,8 +4491,12 @@
           "purpose": "Selected indicator."
         },
         {
-          "token": "--color-border-strong",
-          "purpose": "Unselected border."
+          "token": "--color-on-action",
+          "purpose": "Selected inner mark."
+        },
+        {
+          "token": "--color-control-border / --color-control-border-strong",
+          "purpose": "Unselected and hover boundary."
         },
         {
           "token": "--color-focus",
@@ -4867,12 +4901,16 @@
           "purpose": "On track fill and border."
         },
         {
+          "token": "--color-on-action",
+          "purpose": "Thumb fill."
+        },
+        {
           "token": "--color-surface2",
           "purpose": "Off track fill."
         },
         {
-          "token": "--color-border-strong",
-          "purpose": "Off track border."
+          "token": "--color-control-border / --color-control-border-strong",
+          "purpose": "Off track and hover boundary."
         },
         {
           "token": "--color-focus",
@@ -5275,8 +5313,8 @@
           "purpose": "Unfilled track."
         },
         {
-          "token": "--color-border",
-          "purpose": "Track border."
+          "token": "--color-control-border",
+          "purpose": "Track boundary."
         },
         {
           "token": "--color-bg",
@@ -5708,8 +5746,12 @@
           "purpose": "Options panel."
         },
         {
-          "token": "--color-border / --color-border-strong",
-          "purpose": "Resting and hover borders."
+          "token": "--color-control-border / --color-control-border-strong",
+          "purpose": "Trigger resting and hover boundaries."
+        },
+        {
+          "token": "--color-border",
+          "purpose": "Options panel border."
         },
         {
           "token": "--color-focus",
@@ -5718,6 +5760,10 @@
         {
           "token": "--color-accent",
           "purpose": "Selected check marker."
+        },
+        {
+          "token": "--shadow-elevation-medium / --layer-dropdown",
+          "purpose": "Options elevation and stacking."
         }
       ],
       "stateDefinitions": [
@@ -6955,8 +7001,8 @@
         "measurements": [
           {
             "property": "Panel max width",
-            "value": "448 / 576 / 768 / 1024px",
-            "notes": "sm / md / lg / xl."
+            "value": "384 / 512 / 672 / 896px",
+            "notes": "sm / md / lg / xl; shared with Dialog."
           },
           {
             "property": "Panel max height",
@@ -6977,6 +7023,10 @@
           {
             "property": "Header gap",
             "value": "16px"
+          },
+          {
+            "property": "Close target",
+            "value": "44 × 44px"
           }
         ],
         "rules": [
@@ -7054,7 +7104,6 @@
         "requirements": [
           "Always include ModalHeader with a meaningful heading or provide an equivalent Headless UI title.",
           "Supply an onClose control unless the operation intentionally prevents dismissal.",
-          "Do not mount the overlay before client hydration; the component waits for mount.",
           "Keep footer action order and labels explicit."
         ]
       },
@@ -7080,11 +7129,11 @@
       },
       "testing": {
         "unit": [
-          "Maps every panel size and region option.",
-          "Mount guard and optional onClose behavior are deterministic."
+          "Maps the shared Dialog panel sizes and every region option.",
+          "Optional onClose behavior is deterministic."
         ],
         "interaction": [
-          "Escape, backdrop setting, close button, focus trap, body scrolling, and restoration work."
+          "Escape, backdrop setting, 44px close button, focus trap, body scrolling, and restoration work."
         ],
         "accessibility": [
           "Dialog naming, description, role, focus order, and inert background are valid."
@@ -7458,7 +7507,7 @@
         "measurements": [
           {
             "property": "Panel width",
-            "value": "max 448px"
+            "value": "max 384px"
           },
           {
             "property": "Footer action gap",
@@ -7486,7 +7535,15 @@
         },
         {
           "token": "--color-action-primary",
-          "purpose": "Destructive confirmation when enabled."
+          "purpose": "Standard confirmation."
+        },
+        {
+          "token": "--color-action-destructive",
+          "purpose": "Destructive confirmation."
+        },
+        {
+          "token": "--color-on-action",
+          "purpose": "Filled action foreground."
         },
         {
           "token": "--color-text / --color-text2",
@@ -7855,7 +7912,7 @@
       "anatomy": [
         {
           "name": "Wrapper",
-          "description": "Relative inline positioning context.",
+          "description": "Inline trigger measurement context.",
           "required": true,
           "semanticElement": "span"
         },
@@ -7866,7 +7923,7 @@
         },
         {
           "name": "Tooltip bubble",
-          "description": "Conditionally mounted description associated while visible.",
+          "description": "Portalled, viewport-positioned description associated while visible.",
           "required": true,
           "semanticElement": "[role=tooltip]"
         }
@@ -7882,6 +7939,10 @@
             "value": "8px"
           },
           {
+            "property": "Viewport inset",
+            "value": "8px minimum"
+          },
+          {
             "property": "Maximum width",
             "value": "240px"
           },
@@ -7891,12 +7952,12 @@
           },
           {
             "property": "Entrance",
-            "value": "150ms fade"
+            "value": "200ms fade"
           }
         ],
         "rules": [
           "Keep content brief, plain text, and non-interactive.",
-          "Choose a position that avoids clipping; current positioning is relative and does not collision-shift.",
+          "Preferred placement flips when its opposite side has available space and clamps to the viewport.",
           "Do not hide essential instructions in the tooltip."
         ]
       },
@@ -7916,6 +7977,14 @@
         {
           "token": "--radius-md",
           "purpose": "Bubble radius."
+        },
+        {
+          "token": "--shadow-elevation-medium / --layer-tooltip",
+          "purpose": "Portalled elevation and stacking."
+        },
+        {
+          "token": "--motion-fast",
+          "purpose": "Entrance fade."
         }
       ],
       "stateDefinitions": [
@@ -7928,8 +7997,8 @@
         {
           "name": "visible",
           "trigger": "Pointer hover remains for delay milliseconds.",
-          "visual": "Bubble appears at the selected position.",
-          "behavior": "Leaving cancels and hides.",
+          "visual": "Bubble appears at the resolved viewport position.",
+          "behavior": "Pointer may cross onto the bubble without dismissing it; leaving both hides after a short bridge delay.",
           "accessibility": "Tooltip id is appended to aria-describedby while visible."
         },
         {
@@ -7952,8 +8021,7 @@
         },
         {
           "key": "Escape",
-          "action": "No explicit tooltip dismissal is implemented; blur dismisses.",
-          "condition": "Consumers should avoid trapping focus or placing interaction inside."
+          "action": "Dismisses the tooltip without moving focus."
         }
       ],
       "accessibilitySpec": {
@@ -7971,9 +8039,9 @@
         "clientComponent": true,
         "notes": [
           "The child element is cloned to compose hover, focus, blur, and touch handlers.",
-          "Show timeout is cleared on hide and unmount.",
-          "Positioning has no portal or collision detection.",
-          "Touch outside dismissal listens only while visible."
+          "Show and hover-bridge timeouts are cleared on hide and unmount.",
+          "The bubble portals to document.body, flips to the opposite side when needed, clamps to the viewport, and tracks scroll/resize.",
+          "Escape and outside touch listeners exist only while visible."
         ]
       },
       "guidance": {
@@ -7989,16 +8057,16 @@
       "testing": {
         "unit": [
           "Composes existing child handlers and aria-describedby.",
-          "Clears timers and outside-touch listener."
+          "Clears timers and temporary listeners."
         ],
         "interaction": [
-          "Hover/focus delay, leave/blur, touch toggle, and outside touch behave correctly."
+          "Hover/focus delay, pointer travel onto the bubble, Escape, leave/blur, touch toggle, outside touch, flip, clamp, scroll, and resize behave correctly."
         ],
         "accessibility": [
-          "Role, id relationship, trigger name, and keyboard discoverability are valid."
+          "Role, id relationship, trigger name, Escape dismissal, and keyboard discoverability are valid."
         ],
         "visual": [
-          "Capture all positions, wrapping at max width, focus/hover visibility, and themes."
+          "Capture all positions, viewport edges, wrapping at max width, focus/hover visibility, and themes."
         ]
       },
       "relatedComponents": [
@@ -8150,21 +8218,21 @@
           ]
         },
         "responsive": {
-          "strategy": "Bubble hugs content and is positioned relative to the trigger.",
+          "strategy": "Bubble hugs content, portals to the document, flips when the opposite side fits, and clamps within an 8px viewport inset.",
           "breakpoints": [
             "No internal breakpoint"
           ],
           "behavior": [
-            "Choose a side with available viewport space at the use site.",
+            "Preferred physical side remains consumer-selected.",
             "Do not depend on tooltip access for essential mobile instructions."
           ]
         },
         "limitations": {
           "figma": [
-            "Figma hover prototypes do not cover delayed focus, touch toggling, outside touch, or aria-describedby."
+            "Figma hover prototypes do not cover delayed focus, pointer travel, Escape, touch toggling, outside touch, viewport collision, or aria-describedby."
           ],
           "code": [
-            "The implementation does not perform automatic collision detection; product placement must avoid clipping."
+            "Keep content supplemental, plain text, and non-interactive."
           ],
           "notApplicable": []
         },
@@ -8629,9 +8697,9 @@
       "id": "theme",
       "name": "ThemeProvider / useTheme / ThemeToggle",
       "category": "Theme & media",
-      "purpose": "Controls and exposes the dark or light visual theme.",
+      "purpose": "Controls dark/light mode and the active accessible accent scheme.",
       "useWhen": [
-        "Applications supporting theme preference"
+        "Applications supporting theme and accent preferences"
       ],
       "avoidWhen": [
         "Components that should not own global theme state"
@@ -8644,10 +8712,40 @@
           "description": "Application subtree."
         },
         {
+          "prop": "ThemeProvider.accent",
+          "type": "Accent",
+          "defaultValue": "undefined",
+          "description": "Controlled, fixed accent; wins over storage and defaults."
+        },
+        {
+          "prop": "ThemeProvider.defaultAccent",
+          "type": "Accent",
+          "defaultValue": "red",
+          "description": "Uncontrolled fallback after storage and document accent."
+        },
+        {
+          "prop": "ThemeProvider.onAccentChange",
+          "type": "(accent: Accent) => void",
+          "defaultValue": "undefined",
+          "description": "Receives setAccent requests in either mode; controlled changes are not persisted."
+        },
+        {
           "prop": "useTheme().theme",
           "type": "dark | light",
           "defaultValue": "dark",
           "description": "Current theme."
+        },
+        {
+          "prop": "useTheme().accent",
+          "type": "Accent",
+          "defaultValue": "red",
+          "description": "Current accent scheme."
+        },
+        {
+          "prop": "useTheme().setAccent",
+          "type": "(accent: Accent) => void",
+          "defaultValue": "undefined",
+          "description": "Persists uncontrolled changes; controlled mode reports through the callback or is a no-op."
         },
         {
           "prop": "useTheme().toggleTheme",
@@ -8664,31 +8762,38 @@
       ],
       "states": [
         "dark",
-        "light"
+        "light",
+        "red / green / blue / orange / yellow / purple / teal / pink / magenta"
       ],
       "accessibility": [
         "ThemeToggle exposes a labelled button.",
-        "Respect system and saved theme setup before rendering content."
+        "Every accent is browser contrast-tested on dark and light foundations.",
+        "Respect saved theme and accent setup before rendering content.",
+        "Never communicate meaning by accent color alone; status colors remain independent."
       ],
       "composition": [
         "Wrap the app once with ThemeProvider.",
-        "Use useTheme for custom controls."
+        "Use useTheme for custom controls.",
+        "Use semantic accent tokens; destructive and feedback colors retain their meanings."
       ],
-      "code": "<ThemeProvider><ThemeToggle /><App /></ThemeProvider>",
+      "code": "<ThemeProvider defaultAccent=\"blue\"><ThemeToggle /><App /></ThemeProvider>",
       "slug": "theme",
-      "summary": "Application-level dark/light state, persistence, reduced-motion configuration, and a ready-made switch action.",
+      "summary": "Application-level dark/light and accent state, persistence, reduced-motion configuration, and a ready-made switch action.",
       "sourcePath": "src/components/ThemeProvider.tsx",
       "packageExports": [
         "ThemeProvider",
         "useTheme",
         "ThemeToggle",
         "Theme",
-        "ThemeContextValue"
+        "Accent",
+        "accentNames",
+        "ThemeContextValue",
+        "ThemeProviderProps"
       ],
       "anatomy": [
         {
           "name": "Theme provider",
-          "description": "Context owner and document-class synchronizer.",
+          "description": "Context owner and document class/data-attribute synchronizer.",
           "required": true
         },
         {
@@ -8698,29 +8803,35 @@
         },
         {
           "name": "Theme toggle",
-          "description": "Optional 40px icon action that reads and changes context.",
+          "description": "Optional 44px icon action that reads and changes context.",
           "required": false,
           "semanticElement": "button"
         },
         {
-          "name": "Root light class",
-          "description": "Document hook that activates semantic token overrides.",
+          "name": "Root theme class",
+          "description": "Document hook that activates dark/light semantic token overrides and native color-scheme.",
           "required": true,
           "semanticElement": "html.light"
+        },
+        {
+          "name": "Root accent attribute",
+          "description": "Document hook selecting the active accent scheme.",
+          "required": true,
+          "semanticElement": "html[data-accent]"
         }
       ],
       "visualSpec": {
         "measurements": [
           {
             "property": "ThemeToggle target",
-            "value": "40 × 40px"
+            "value": "44 × 44px"
           },
           {
             "property": "ThemeToggle icon",
             "value": "18 × 18px"
           },
           {
-            "property": "Theme transition",
+            "property": "Appearance transition",
             "value": "300ms colors / 500ms hero images"
           },
           {
@@ -8734,8 +8845,8 @@
         ],
         "rules": [
           "Wrap the application once.",
-          "Use semantic tokens so components switch without per-component theme branches.",
-          "Initialize the html class before paint in the consuming app to avoid a theme flash."
+          "Use semantic tokens so components switch without per-component theme or accent branches.",
+          "Initialize the html class and data-accent before paint in the consuming app to avoid an appearance flash."
         ]
       },
       "designTokens": [
@@ -8748,8 +8859,12 @@
           "purpose": "Theme typography hierarchy."
         },
         {
-          "token": "--color-* semantic pairs",
-          "purpose": "Theme-adjusted status and action colors."
+          "token": "--color-accent* / --color-action-primary* / --color-focus / --color-selection",
+          "purpose": "Role-tuned active accent scheme colors."
+        },
+        {
+          "token": "--color-success / warning / info / error*",
+          "purpose": "Stable feedback semantics that never follow the accent."
         },
         {
           "token": "--motion-base / --motion-slow",
@@ -8768,6 +8883,12 @@
           "trigger": "Saved or pre-rendered light preference.",
           "visual": "Warm-neutral background, dark text, light semantic palette; toggle shows moon.",
           "behavior": "toggleTheme stores dark and removes html.light."
+        },
+        {
+          "name": "accent scheme",
+          "trigger": "Controlled accent prop, or uncontrolled saved accent > existing data-accent > defaultAccent > red.",
+          "visual": "Accent, primary action, focus, selection, and supporting accent roles adopt the selected family.",
+          "behavior": "Uncontrolled setAccent persists, updates html[data-accent], and reports through onAccentChange. Controlled accent is fixed; setAccent reports through onAccentChange without persistence, or is a no-op when no callback exists. Destructive and feedback roles remain unchanged."
         }
       ],
       "keyboard": [
@@ -8784,8 +8905,9 @@
         "semantics": "Context provider plus native motion button; ThemeToggle has a state-dependent aria-label and title.",
         "accessibleName": "ThemeToggle announces the action it will perform, such as Switch to light mode.",
         "requirements": [
-          "Run a pre-hydration theme script or equivalent to keep visual and context state aligned at first paint.",
-          "Do not encode information solely in the active theme.",
+          "Run a pre-hydration appearance script or equivalent to keep theme, accent, and context state aligned at first paint.",
+          "Do not encode information solely in the active theme or accent.",
+          "Every accent role must retain its browser-tested contrast contract across all dark/light foundations.",
           "MotionConfig and CSS reduced-motion rules must remain enabled."
         ]
       },
@@ -8794,9 +8916,14 @@
         "clientComponent": true,
         "notes": [
           "ThemeProvider reads localStorage after mount and falls back to the existing html class or dark.",
-          "toggleTheme updates context, localStorage, html.light, and theme-transitioning.",
-          "The current implementation adds theme-transitioning but does not remove it; consumers should account for the persistent class.",
-          "useTheme outside a provider receives the safe dark default context."
+          "accent is controlled and fixed; defaultAccent is the uncontrolled fallback and red is the default.",
+          "onAccentChange receives setAccent requests in either mode; controlled changes are never persisted.",
+          "Uncontrolled precedence is valid localStorage[accent] > existing html[data-accent] > defaultAccent > red.",
+          "toggleTheme updates context, localStorage, html.light, and temporarily adds theme-transitioning.",
+          "Uncontrolled setAccent updates context, localStorage[accent], html[data-accent], and calls onAccentChange when provided.",
+          "The transition class is removed after the 500ms theme-media window, restarted on repeated toggles, and cleaned on unmount.",
+          "The token stylesheet sets color-scheme for native controls in both modes.",
+          "useTheme outside a provider receives the safe dark/red default context."
         ]
       },
       "guidance": {
@@ -8811,17 +8938,19 @@
       },
       "testing": {
         "unit": [
-          "Resolves saved, existing-class, and default themes.",
-          "toggleTheme updates context, storage, and document class."
+          "Resolves saved, existing-class, default themes, and uncontrolled accent precedence.",
+          "Controlled accent wins over storage/document/default; callback and no-op behavior are covered.",
+          "toggleTheme updates context, storage, and document class.",
+          "Uncontrolled setAccent updates context, storage, and html[data-accent]."
         ],
         "interaction": [
           "ThemeToggle changes mode by pointer and keyboard and updates its label/icon."
         ],
         "accessibility": [
-          "Control has an action-oriented name; reduced-motion preference is honored."
+          "Accent choices have an accessible name and do not communicate meaning by color alone; reduced-motion preference is honored."
         ],
         "visual": [
-          "Capture every foundation and public component in both themes, including transition and no-motion states."
+          "Capture every foundation and public component across all nine accents and both themes, including transition and no-motion states; browser-test accent text, muted text, borders, actions, focus, selection, and action foregrounds on bg, surface, and surface2."
         ]
       },
       "relatedComponents": [
@@ -8837,6 +8966,22 @@
           "options": [
             "dark",
             "light"
+          ]
+        },
+        "accent": {
+          "type": "select",
+          "label": "Accent",
+          "defaultValue": "red",
+          "options": [
+            "red",
+            "green",
+            "blue",
+            "orange",
+            "yellow",
+            "purple",
+            "teal",
+            "pink",
+            "magenta"
           ]
         }
       },
@@ -8885,6 +9030,25 @@
             "codeMapping": "ThemeProvider context and the dark or light Figma variable mode"
           },
           {
+            "name": "accent",
+            "label": "Accent scheme",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "red",
+            "options": [
+              "red",
+              "green",
+              "blue",
+              "orange",
+              "yellow",
+              "purple",
+              "teal",
+              "pink",
+              "magenta"
+            ],
+            "codeMapping": "ThemeProvider context and active data-accent selector"
+          },
+          {
             "name": "children",
             "label": "Application subtree",
             "type": "slot",
@@ -8898,7 +9062,7 @@
             "name": "Theme context",
             "kind": "provider",
             "required": true,
-            "description": "Stores and exposes the active mode.",
+            "description": "Stores and exposes the active mode and accent scheme.",
             "codeMapping": "ThemeProvider and useTheme"
           },
           {
@@ -8943,16 +9107,17 @@
             "Not applicable to provider"
           ],
           "behavior": [
-            "ThemeToggle preserves its 40px square footprint wherever placed."
+            "ThemeToggle preserves its 44px square footprint wherever placed."
           ]
         },
         "limitations": {
           "figma": [
             "There is no Figma component instance for context behavior; use variable modes and a documented visible toggle.",
-            "Prototype variables do not reproduce localStorage persistence or pre-hydration theme resolution."
+            "Prototype variables do not reproduce localStorage persistence, accent persistence, or pre-hydration theme resolution."
           ],
           "code": [
-            "Wrap the app once and avoid component-owned global mode changes."
+            "Wrap the app once and avoid component-owned global mode changes.",
+            "Keep destructive and feedback colors independent from the selected accent."
           ],
           "notApplicable": [
             "Auto layout, padding, gap, resizing, and overflow do not apply to ThemeProvider or useTheme."
@@ -8964,7 +9129,7 @@
           "lastReviewed": "2026-08-29",
           "canonicalSource": "src/components/ThemeProvider.tsx",
           "changePolicy": [
-            "Mode, persistence, or root-class changes require token, rendering, and accessibility review.",
+            "Mode, accent, persistence, root selector, or styles/tokens.css changes require token, rendering, and accessibility review across every scheme and both themes.",
             "A breaking property, token, or behavior change requires design and engineering approval, a migration note, and a major release.",
             "The design asset, implementation, documentation, accessibility contract, and regression coverage must ship in the same change."
           ]
@@ -8999,7 +9164,7 @@
       "composition": [
         "Pass the consumer className last when it should override defaults."
       ],
-      "code": "const classes = cn(\"rounded-md border\", active && \"border-red\", className);",
+      "code": "const classes = cn(\"rounded-md border\", active && \"border-accent\", className);",
       "slug": "cn",
       "summary": "The class-composition utility that filters conditional fragments and resolves conflicting Tailwind utilities.",
       "sourcePath": "src/lib/utils.ts",
@@ -9655,14 +9820,14 @@
       "index": "01",
       "title": "Foundations",
       "shortTitle": "Foundations",
-      "summary": "The visual, spatial, typographic, motion, and media decisions that every AI-Created interface inherits.",
+      "summary": "The visual, spatial, typographic, motion, media, and accessible accent-scheme decisions that every AI-Created interface inherits.",
       "status": "canonical",
       "owner": "Design Systems",
       "lastReviewed": "August 2026",
       "reviewCycle": "Quarterly and before any token release",
       "sourceOfTruth": "styles/tokens.css and tailwind-preset.js",
       "outcomes": [
-        "A product can switch themes without local color overrides.",
+        "A product can switch themes and accent schemes without local color overrides.",
         "Design decisions map to named semantic tokens before component styling.",
         "Layouts remain readable from 320px through the 1400px container maximum."
       ],
@@ -9711,8 +9876,8 @@
                   "description": "A token should explain why the value exists, not what its current hex value resembles."
                 },
                 {
-                  "title": "Change both modes together",
-                  "description": "Every semantic color change is reviewed in light and dark mode, including focus, selection, and feedback surfaces."
+                  "title": "Change every scheme together",
+                  "description": "Every accent role is tuned and reviewed across all nine schemes and light/dark mode, including focus and selection; feedback semantics remain stable."
                 },
                 {
                   "title": "Avoid product aliases",
@@ -9729,7 +9894,7 @@
         {
           "id": "color",
           "title": "Color and contrast",
-          "summary": "One red accent establishes action hierarchy. Neutral surfaces and semantic feedback colors carry the rest of the system.",
+          "summary": "Accent schemes, committed actions, destructive actions, neutral surfaces, and semantic feedback each have an explicit role.",
           "blocks": [
             {
               "type": "tokens",
@@ -9771,6 +9936,18 @@
                   "value": "Committed action",
                   "purpose": "High-emphasis action fill.",
                   "cssVariable": "--color-action-primary"
+                },
+                {
+                  "name": "Action destructive",
+                  "value": "Consequential action",
+                  "purpose": "Destructive action fill, distinct from ordinary commitment.",
+                  "cssVariable": "--color-action-destructive"
+                },
+                {
+                  "name": "Control border",
+                  "value": "Interactive boundary",
+                  "purpose": "Contrast-safe boundaries for inputs and outlined controls.",
+                  "cssVariable": "--color-control-border"
                 },
                 {
                   "name": "Success",
@@ -9815,9 +9992,10 @@
                   "title": "Avoid",
                   "items": [
                     "Raw reference colors in product code.",
-                    "Red decoration competing with primary actions.",
+                    "Accent decoration competing with primary actions.",
                     "Tinted text on tinted surfaces without contrast validation.",
-                    "Theme-specific assets without a paired alternative."
+                    "Theme-specific assets without a paired alternative.",
+                    "Letting accent schemes change destructive or feedback meanings."
                   ]
                 }
               ]

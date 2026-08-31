@@ -9,7 +9,7 @@ function RuleList({ items }: { items: string[] }) {
     <ul className="space-y-3">
       {items.map((item) => (
         <li key={item} className="flex gap-3 text-sm leading-relaxed text-text2">
-          <Check className="mt-0.5 h-4 w-4 shrink-0 text-red" aria-hidden="true" />
+          <Check className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
           <span>{item}</span>
         </li>
       ))}
@@ -72,7 +72,7 @@ function GuidelineBlockView({ block }: { block: GuidelineBlock }) {
           {block.items.map((item, index) => (
             <article key={item.title} className="border-b border-r border-border bg-surface/35 p-5 md:p-6">
               <div className="flex items-start gap-4">
-                <span className="font-mono text-[10px] text-red">{String(index + 1).padStart(2, '0')}</span>
+                <span className="font-mono text-[10px] text-accent">{String(index + 1).padStart(2, '0')}</span>
                 <div>
                   <h4 className="font-heading font-medium text-text">{item.title}</h4>
                   <p className="mt-2 text-sm leading-relaxed text-text2">{item.description}</p>
@@ -99,7 +99,7 @@ function GuidelineBlockView({ block }: { block: GuidelineBlock }) {
         <div className="grid gap-px overflow-hidden border border-border bg-border md:grid-cols-2 xl:grid-cols-3">
           {block.groups.map((group) => (
             <article key={group.title} className="bg-surface p-6">
-              <h4 className="font-mono text-[10px] uppercase tracking-widest text-red">{group.title}</h4>
+              <h4 className="font-mono text-[10px] uppercase tracking-widest text-accent">{group.title}</h4>
               <div className="mt-5"><RuleList items={group.items} /></div>
             </article>
           ))}
@@ -115,13 +115,13 @@ function GuidelineBlockView({ block }: { block: GuidelineBlock }) {
         <ol className="border-t border-border">
           {block.steps.map((step, index) => (
             <li key={step.title} className="grid gap-4 border-b border-border py-6 md:grid-cols-[52px_1fr_0.8fr] md:gap-6">
-              <span className="font-display text-3xl text-red">{String(index + 1).padStart(2, '0')}</span>
+              <span className="font-display text-3xl text-accent">{String(index + 1).padStart(2, '0')}</span>
               <div>
                 <h4 className="font-heading text-lg font-medium text-text">{step.title}</h4>
                 <p className="mt-1 font-mono text-[10px] uppercase tracking-wider text-text3">Owner: {step.owner}</p>
                 <p className="mt-3 text-sm leading-relaxed text-text2">{step.output}</p>
               </div>
-              <div className="border-l-2 border-red-border pl-4 text-sm leading-relaxed text-text2">
+              <div className="border-l-2 border-accent-border pl-4 text-sm leading-relaxed text-text2">
                 <span className="mb-1 block font-mono text-[10px] uppercase tracking-wider text-text3">Exit gate</span>
                 {step.gate}
               </div>
@@ -182,7 +182,7 @@ function GuidelineBlockView({ block }: { block: GuidelineBlock }) {
               <h4 className="font-heading font-medium text-text">{item.title}</h4>
               <p className="mt-1 max-w-3xl text-sm leading-relaxed text-text2">{item.description}</p>
             </div>
-            <span className="flex items-center gap-2 self-center whitespace-nowrap font-mono text-[10px] uppercase tracking-wider text-red">
+            <span className="flex items-center gap-2 self-center whitespace-nowrap font-mono text-[10px] uppercase tracking-wider text-accent">
               {item.action}
               {item.external ? <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /> : <Download className="h-3.5 w-3.5" aria-hidden="true" />}
             </span>
@@ -221,7 +221,7 @@ export default function GuidelinePage({ spec }: { spec: GuidelineSpec }) {
 
           <header className="mt-8 border-b border-border pb-12 lg:mt-0">
             <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-widest">
-              <span className="text-red">Guideline {spec.index}</span>
+              <span className="text-accent">Guideline {spec.index}</span>
               <span className="text-text3">{statusCopy[spec.status]}</span>
             </div>
             <h1 className="mt-5 max-w-4xl font-display text-5xl tracking-wide text-text md:text-7xl">{spec.title}</h1>
@@ -247,7 +247,7 @@ export default function GuidelinePage({ spec }: { spec: GuidelineSpec }) {
             <div className="mt-6 grid gap-4 md:grid-cols-3">
               {spec.outcomes.map((outcome, index) => (
                 <div key={outcome} className="flex gap-3 text-sm leading-relaxed text-text2">
-                  <span className="font-mono text-[10px] text-red">0{index + 1}</span>
+                  <span className="font-mono text-[10px] text-accent">0{index + 1}</span>
                   <p>{outcome}</p>
                 </div>
               ))}
@@ -260,7 +260,7 @@ export default function GuidelinePage({ spec }: { spec: GuidelineSpec }) {
               {spec.sections.map((section, index) => (
                 <li key={section.id}>
                   <a href={`#${section.id}`} className="group flex items-center gap-3 py-1 text-sm text-text2 hover:text-text">
-                    <span className="font-mono text-[10px] text-text3 group-hover:text-red">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="font-mono text-[10px] text-text3 group-hover:text-accent">{String(index + 1).padStart(2, '0')}</span>
                     {section.title}
                   </a>
                 </li>
@@ -272,7 +272,7 @@ export default function GuidelinePage({ spec }: { spec: GuidelineSpec }) {
             {spec.sections.map((section, index) => (
               <section key={section.id} id={section.id} className="scroll-mt-28" aria-labelledby={`${section.id}-heading`}>
                 <div className="grid gap-4 border-t border-border pt-5 md:grid-cols-[80px_1fr]">
-                  <span className="font-display text-3xl text-red">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="font-display text-3xl text-accent">{String(index + 1).padStart(2, '0')}</span>
                   <div>
                     <h2 id={`${section.id}-heading`} className="font-heading text-2xl font-medium text-text md:text-3xl">{section.title}</h2>
                     <p className="mt-3 max-w-3xl text-sm leading-relaxed text-text2 md:text-base">{section.summary}</p>
@@ -289,7 +289,7 @@ export default function GuidelinePage({ spec }: { spec: GuidelineSpec }) {
             {previous ? (
               <Link href={`/guidelines/${previous.slug}`} className="group border-b border-border py-8 sm:border-b-0 sm:border-r sm:pr-8">
                 <span className="font-mono text-[10px] uppercase tracking-wider text-text3">Previous</span>
-                <span className="mt-3 flex items-center gap-3 font-heading text-lg text-text group-hover:text-red">
+                <span className="mt-3 flex items-center gap-3 font-heading text-lg text-text group-hover:text-accent">
                   <ArrowLeft className="h-4 w-4" aria-hidden="true" /> {previous.title}
                 </span>
               </Link>
@@ -297,7 +297,7 @@ export default function GuidelinePage({ spec }: { spec: GuidelineSpec }) {
             {next ? (
               <Link href={`/guidelines/${next.slug}`} className="group py-8 sm:pl-8 sm:text-right">
                 <span className="font-mono text-[10px] uppercase tracking-wider text-text3">Next</span>
-                <span className="mt-3 flex items-center justify-end gap-3 font-heading text-lg text-text group-hover:text-red">
+                <span className="mt-3 flex items-center justify-end gap-3 font-heading text-lg text-text group-hover:text-accent">
                   {next.title} <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </span>
               </Link>

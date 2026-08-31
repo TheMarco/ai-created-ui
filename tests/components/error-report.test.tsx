@@ -23,4 +23,20 @@ describe('ErrorReport', () => {
     expect(screen.getByText(/Details: Status 500/)).toBeVisible();
     expect(onSubmit).not.toHaveBeenCalled();
   });
+
+  it('reports clipboard denial instead of creating an unhandled rejection', async () => {
+    const user = userEvent.setup();
+    const writeText = vi.fn().mockRejectedValue(new DOMException('Denied', 'NotAllowedError'));
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+
+    render(<ErrorReport message="Request failed" details="Status 500" />);
+    await user.click(screen.getByRole('button', { name: 'Debug info' }));
+    await user.click(screen.getByRole('button', { name: 'Copy debug info' }));
+
+    expect(writeText).toHaveBeenCalledOnce();
+    expect(await screen.findByRole('button', { name: 'Copy failed' })).toBeVisible();
+  });
 });

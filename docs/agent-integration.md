@@ -49,6 +49,18 @@ node node_modules/@ai-created/ui/scripts/validate-design-policy.mjs --config ai-
 
 The validator rejects direct reference-token use, raw colors, internal package imports, theme-specific palette utilities, arbitrary font/color/radius/shadow values, and detectable local primitive copies.
 
+A target that resolves to zero files fails validation so a bad path or over-broad ignore cannot produce a false green check. Use `--allow-empty` only in tooling that intentionally probes an optional or fully ignored path.
+
+## Preserve the appearance contract
+
+Agents must keep accent selection at the application root and continue using semantic utilities inside product UI. The supported accents are `red`, `green`, `blue`, `orange`, `yellow`, `purple`, `teal`, `pink`, and `magenta`; destructive and feedback colors never follow that choice.
+
+- Persisted user preference: use `<ThemeProvider defaultAccent="blue">`. The provider resolves a valid saved accent before an existing `html[data-accent]`, then `defaultAccent`, then red. `useTheme().setAccent()` updates the document and persists the choice.
+- Fixed or externally controlled product accent: use matching `<html data-accent="blue">` and `<ThemeProvider accent="blue">`. A controlled accent wins over storage and changes only when the prop changes. `onAccentChange` reports requested changes without persisting them.
+- First paint: preference mode must server-render the fallback `data-accent` matching `defaultAccent`, then let the validated README script replace it only with a valid stored accent. Fixed mode must set its controlled `data-accent` in server markup and use a theme-only initialization script so saved accent storage cannot cause a flash.
+
+Agents must import `accentNames` rather than maintaining a second list, and must use `--color-accent*`, `--color-action-primary*`, `--color-focus`, and `--color-selection` through the shared preset rather than selecting named palette steps.
+
 ## Exceptions
 
 If composition cannot satisfy a real requirement, keep the first implementation product-local. A validator exception must identify one rule, narrow file paths, a concrete reason, an accountable owner, and a future review date. Vague, broad, or expired exceptions are configuration errors and do not suppress findings.
@@ -64,7 +76,7 @@ npm run validate
 
 `agent:check` verifies generated tokens and manifests, Tailwind-to-token parity, documented component API parity, policy compliance, templates, and generated agent context. `validate` includes this gate plus typechecking, lint, all unit and accessibility tests, a production portal build, and package-boundary verification.
 
-Browser smoke, accessibility interaction, and visual regression checks remain a separate required CI job because they need a real browser.
+Browser smoke, accessibility interaction, semantic-token contrast, and visual regression checks remain a separate required CI job because they need a real browser. Contrast coverage includes both themes and the focus, status, control-boundary, accent, and filled-action contracts.
 
 ## Repository enforcement
 

@@ -16,7 +16,7 @@ export default function ThemeToggle() {
       className={buttonStyles({
         variant: 'icon',
         size: 'icon',
-        className: 'relative h-10 w-10 rounded-full border-border bg-surface text-text shadow-sm cursor-pointer hover:bg-surface2',
+        className: 'relative h-11 w-11 rounded-full border-control-border bg-surface text-text shadow-elevation-low cursor-pointer hover:border-control-border-strong hover:bg-surface2',
       })}
       whileTap={{ scale: 0.85 }}
       whileHover={{ scale: 1.1 }}

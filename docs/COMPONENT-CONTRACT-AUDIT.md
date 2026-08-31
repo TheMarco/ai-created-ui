@@ -1,6 +1,6 @@
 # Component Contract Audit
 
-Audit date: 2026-08-27
+Audit date: 2026-08-30
 
 This is the Phase 3 inventory of the public exports from `src/index.ts`. The audit was written before broad API work, then updated to record the compatibility-safe fixes accepted in this phase. “Ref status” identifies the exposed native root or shared foundation. “Current coverage” reflects this repository and its playground, not external application test coverage.
 
@@ -23,9 +23,9 @@ This is the Phase 3 inventory of the public exports from `src/index.ts`. The aud
 | Dialog | Headless UI Dialog | Controlled `open`; `onClose()` | No public ref | Label/description, focus trap, Escape, restoration, tab loop, axe, and playground demo | Registered description with the dialog context |
 | Modal family: `ModalOverlay`, `ModalPanel`, `ModalHeader`, `ModalBody`, `ModalFooter` | Headless UI Dialog foundation with composable native layout roots | Mounted overlay; declarative panel composition | Overlay and every layout primitive expose their native roots | Label/description, focus trap, Escape, restoration, backdrop policy, nesting, and direct tests | Preserved names/composition; added the accessibility behavior already promised by docs |
 | ConfirmDialog | Modal composition with `alertdialog` | Controlled `open`; confirm/cancel callbacks; loading lock | No public root ref | Alert-dialog name/description, actions, loading dismissal, custom loading label, and axe | Preserved callbacks; moved semantics to dialog root and fixed generic loading copy |
-| Tooltip | Cloned child plus positioned tooltip element | Internal visible state from hover/focus/touch timing | Child ref depends on clone contract | Focus/blur, delayed visibility, `aria-describedby`, axe, and playground positions | Preserved current API; portal/collision/Escape work remains deferred |
+| Tooltip | Cloned child plus portalled, viewport-positioned tooltip element | Internal visible state from hover/focus/touch timing | Child ref depends on clone contract | Focus/blur, pointer travel, Escape dismissal, `aria-describedby`, axe, fixed portal positioning, and playground positions | Preserved current API; added hover-safe dismissal, Escape handling, and viewport flip/clamp behavior |
 | ThemedHeroImage | Next Image/container composition | Theme is read through CSS; overlay is declarative | No public ref | Theme-aware source, overlay, fade, and hero token usage | Exported props; preserved intentionally decorative image contract |
-| ThemeProvider / `useTheme` | React context and DOM `html.light` class | Internal theme state plus localStorage/DOM synchronization | Context API, no DOM ref | Saved theme, pre-hydration class, persistence, and reduced-motion tests | Exported types; synchronized provider state with the document contract |
+| ThemeProvider / `useTheme` | React context and DOM `html.light`/`data-accent` hooks | Controlled or uncontrolled theme/accent state plus localStorage/DOM synchronization | Context API, no DOM ref | Controlled callback/no-op behavior, precedence, persistence, pre-hydration initialization, and reduced-motion tests | Exported types; synchronized provider state with the document contract |
 | ThemeToggle | Button using `useTheme` | Reads and toggles provider theme | No public ref | Saved-theme accessible label, provider persistence, and playground demo | Preserved behavior; label now follows synchronized provider state |
 
 ## Stable conventions
@@ -47,7 +47,6 @@ Known consumers in repository guidance are `ai-created.com` through the `ai-crea
 - Whether controlled primitives should also support uncontrolled defaults.
 - Whether narrow controlled controls need native-attribute escape hatches such as `inputProps`; add them only for a demonstrated form-integration need.
 - Whether Tabs should expose a root ref or richer orientation/keyboard contract beyond its current controlled horizontal API.
-- Whether Tooltip should gain Escape dismissal, portal positioning, and collision handling. Those changes need an explicit positioning contract rather than incremental patches.
 - Whether custom modal headers should gain a named title primitive. Today they must label `ModalOverlay` explicitly.
 - Whether appearance-named color props or variants need intent aliases beyond the token compatibility layer.
 - Whether changes to public generic types require a major release or can remain additive.

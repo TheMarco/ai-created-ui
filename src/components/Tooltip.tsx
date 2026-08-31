@@ -1,16 +1,68 @@
 'use client';
 
-import { cloneElement, useState, useRef, useCallback, useId, useEffect } from 'react';
+import {
+  cloneElement,
+  useState,
+  useRef,
+  useCallback,
+  useId,
+  useEffect,
+  useLayoutEffect,
+  type CSSProperties,
+} from 'react';
+import { createPortal } from 'react-dom';
 import { cn } from '../lib/utils';
 
 export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 
-const positionClasses: Record<TooltipPosition, string> = {
-  top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
-  bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
-  left: 'right-full top-1/2 -translate-y-1/2 mr-2',
-  right: 'left-full top-1/2 -translate-y-1/2 ml-2',
+const oppositePosition: Record<TooltipPosition, TooltipPosition> = {
+  top: 'bottom',
+  bottom: 'top',
+  left: 'right',
+  right: 'left',
 };
+
+const viewportPadding = 8;
+const tooltipGap = 8;
+const hoverBridgeDelay = 100;
+
+interface TooltipCoordinates {
+  top: number;
+  left: number;
+  ready: boolean;
+  placement: TooltipPosition;
+}
+
+function positionTooltip(
+  preferred: TooltipPosition,
+  trigger: DOMRect,
+  tooltip: DOMRect
+): TooltipCoordinates {
+  const fits: Record<TooltipPosition, boolean> = {
+    top: trigger.top - tooltipGap - tooltip.height >= viewportPadding,
+    bottom: trigger.bottom + tooltipGap + tooltip.height <= window.innerHeight - viewportPadding,
+    left: trigger.left - tooltipGap - tooltip.width >= viewportPadding,
+    right: trigger.right + tooltipGap + tooltip.width <= window.innerWidth - viewportPadding,
+  };
+  const resolved = fits[preferred] || !fits[oppositePosition[preferred]]
+    ? preferred
+    : oppositePosition[preferred];
+
+  let top = trigger.top + trigger.height / 2 - tooltip.height / 2;
+  let left = trigger.left + trigger.width / 2 - tooltip.width / 2;
+
+  if (resolved === 'top') top = trigger.top - tooltip.height - tooltipGap;
+  if (resolved === 'bottom') top = trigger.bottom + tooltipGap;
+  if (resolved === 'left') left = trigger.left - tooltip.width - tooltipGap;
+  if (resolved === 'right') left = trigger.right + tooltipGap;
+
+  return {
+    top: Math.max(viewportPadding, Math.min(top, window.innerHeight - tooltip.height - viewportPadding)),
+    left: Math.max(viewportPadding, Math.min(left, window.innerWidth - tooltip.width - viewportPadding)),
+    ready: true,
+    placement: resolved,
+  };
+}
 
 export interface TooltipProps {
   content: string;
@@ -35,40 +87,97 @@ export default function Tooltip({
   className,
 }: TooltipProps) {
   const [visible, setVisible] = useState(false);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const [coordinates, setCoordinates] = useState<TooltipCoordinates>({
+    top: 0,
+    left: 0,
+    ready: false,
+    placement: position,
+  });
+  const showTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const wrapperRef = useRef<HTMLSpanElement>(null);
+  const tooltipRef = useRef<HTMLSpanElement>(null);
   const id = useId();
   const tooltipId = `${id}-tooltip`;
 
   const show = useCallback(() => {
-    clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => setVisible(true), delay);
+    clearTimeout(showTimerRef.current);
+    clearTimeout(hideTimerRef.current);
+    showTimerRef.current = setTimeout(() => setVisible(true), delay);
   }, [delay]);
 
   const hide = useCallback(() => {
-    clearTimeout(timeoutRef.current);
+    clearTimeout(showTimerRef.current);
+    clearTimeout(hideTimerRef.current);
     setVisible(false);
+    setCoordinates((current) => ({ ...current, ready: false }));
+  }, []);
+
+  const scheduleHide = useCallback(() => {
+    clearTimeout(showTimerRef.current);
+    clearTimeout(hideTimerRef.current);
+    hideTimerRef.current = setTimeout(hide, hoverBridgeDelay);
+  }, [hide]);
+
+  const cancelScheduledHide = useCallback(() => {
+    clearTimeout(hideTimerRef.current);
   }, []);
 
   const handleTouchStart = useCallback(() => {
-    setVisible((prev) => !prev);
-  }, []);
+    if (visible) hide();
+    else {
+      clearTimeout(showTimerRef.current);
+      setVisible(true);
+    }
+  }, [hide, visible]);
+
+  useLayoutEffect(() => {
+    if (!visible) return;
+
+    const updatePosition = () => {
+      if (!wrapperRef.current || !tooltipRef.current) return;
+      setCoordinates(positionTooltip(
+        position,
+        wrapperRef.current.getBoundingClientRect(),
+        tooltipRef.current.getBoundingClientRect()
+      ));
+    };
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [position, visible]);
 
   useEffect(() => {
     if (!visible) return;
 
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') hide();
+    }
+
     function handleOutsideTouch(e: TouchEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
-        setVisible(false);
+        hide();
       }
     }
 
+    document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('touchstart', handleOutsideTouch);
-    return () => document.removeEventListener('touchstart', handleOutsideTouch);
-  }, [visible]);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('touchstart', handleOutsideTouch);
+    };
+  }, [hide, visible]);
 
   useEffect(() => {
-    return () => clearTimeout(timeoutRef.current);
+    return () => {
+      clearTimeout(showTimerRef.current);
+      clearTimeout(hideTimerRef.current);
+    };
   }, []);
 
   // cloneElement reads immutable element props, not a mutable ref value.
@@ -83,7 +192,7 @@ export default function Tooltip({
     },
     onMouseLeave: (event) => {
       children.props.onMouseLeave?.(event);
-      hide();
+      scheduleHide();
     },
     onFocus: (event) => {
       children.props.onFocus?.(event);
@@ -103,21 +212,32 @@ export default function Tooltip({
     <span ref={wrapperRef} className="relative inline-flex">
       {trigger}
 
-      {visible && (
-        <span
-          id={tooltipId}
-          role="tooltip"
-          className={cn(
-            'absolute z-50 rounded-md border border-border bg-surface px-3 py-1.5 text-xs text-text2 shadow-lg',
-            'whitespace-normal break-words w-max max-w-[240px]',
-            'animate-in fade-in duration-150',
-            positionClasses[position],
-            className
-          )}
-        >
-          {content}
-        </span>
-      )}
+      {visible && typeof document !== 'undefined'
+        ? createPortal(
+            <span
+              ref={tooltipRef}
+              id={tooltipId}
+              role="tooltip"
+              data-position={coordinates.placement}
+              onMouseEnter={cancelScheduledHide}
+              onMouseLeave={scheduleHide}
+              style={{
+                position: 'fixed',
+                top: coordinates.top,
+                left: coordinates.left,
+                visibility: coordinates.ready ? 'visible' : 'hidden',
+              } as CSSProperties}
+              className={cn(
+                'z-tooltip w-max max-w-[240px] whitespace-normal break-words rounded-md border border-border bg-surface px-3 py-1.5 text-xs text-text2 shadow-elevation-medium',
+                'animate-tooltip-in',
+                className
+              )}
+            >
+              {content}
+            </span>,
+            document.body
+          )
+        : null}
     </span>
   );
 }

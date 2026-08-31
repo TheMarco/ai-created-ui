@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  forwardRef,
-  useEffect,
-  useState,
-  type HTMLAttributes,
-  type ReactNode,
-} from 'react';
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react';
 import {
   Description,
   Dialog as HeadlessDialog,
@@ -15,17 +9,11 @@ import {
 } from '@headlessui/react';
 import { X } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { overlaySizeClasses, type OverlaySize } from '../lib/overlay';
 import { surfaceStyles } from './Surface';
 import Button from './Button';
 
-export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
-
-const sizeClasses: Record<ModalSize, string> = {
-  sm: 'max-w-md',
-  md: 'max-w-xl',
-  lg: 'max-w-3xl',
-  xl: 'max-w-5xl',
-};
+export type ModalSize = OverlaySize;
 
 export interface ModalOverlayProps extends HTMLAttributes<HTMLDivElement> {
   onClose?: () => void;
@@ -43,22 +31,13 @@ export const ModalOverlay = forwardRef<HTMLDivElement, ModalOverlayProps>(functi
   },
   ref
 ) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-
-  if (!mounted) return null;
-
   return (
     <HeadlessDialog
       ref={ref}
       open
       onClose={() => onClose?.()}
       role={role === 'alertdialog' ? 'alertdialog' : 'dialog'}
-      className={cn('relative z-50', className)}
+      className={cn('relative z-modal', className)}
       {...props}
     >
       <HeadlessDialogPanel className="fixed inset-0 overflow-y-auto">
@@ -92,7 +71,7 @@ export const ModalPanel = forwardRef<HTMLDivElement, ModalPanelProps>(function M
       className={cn(
         surfaceStyles({ variant: 'default', padding: 'none' }),
         'flex max-h-[calc(100dvh-3rem)] w-full flex-col overflow-hidden md:max-h-[calc(100dvh-4rem)]',
-        sizeClasses[size],
+        overlaySizeClasses[size],
         className
       )}
       {...props}

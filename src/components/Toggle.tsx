@@ -34,14 +34,14 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle(
           'group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-focus group-focus-visible:outline-offset-[3px]',
           disabled && 'cursor-not-allowed opacity-50',
           checked
-            ? 'border-red-solid bg-red-solid'
-            : 'border-border-strong bg-surface2 hover:border-text3'
+            ? 'border-action-primary bg-action-primary'
+            : 'border-control-border bg-surface2 group-hover:border-control-border-strong'
         )}
       >
         <span
           aria-hidden="true"
           className={cn(
-            'inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform duration-200',
+            'inline-block h-4 w-4 rounded-full bg-on-action shadow-elevation-low transition-transform duration-200',
             checked ? 'translate-x-[25px]' : 'translate-x-[3px]'
           )}
         />

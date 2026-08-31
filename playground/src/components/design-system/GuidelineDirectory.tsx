@@ -19,7 +19,7 @@ export default function GuidelineDirectory() {
             className="group flex min-h-72 flex-col border-b border-r border-border bg-surface/30 p-6 transition-colors hover:bg-surface md:p-8"
           >
             <div className="flex items-center justify-between gap-4">
-              <span className="font-mono text-xs text-red">{spec.index}</span>
+              <span className="font-mono text-xs text-accent">{spec.index}</span>
               <span className="font-mono text-[10px] uppercase tracking-wider text-text3">
                 {statusCopy[spec.status]}
               </span>
@@ -33,7 +33,7 @@ export default function GuidelineDirectory() {
                 {spec.sections.length} chapters
               </span>
               <ArrowRight
-                className="h-4 w-4 text-text3 transition-transform group-hover:translate-x-1 group-hover:text-red"
+                className="h-4 w-4 text-text3 transition-transform group-hover:translate-x-1 group-hover:text-accent"
                 aria-hidden="true"
               />
             </div>

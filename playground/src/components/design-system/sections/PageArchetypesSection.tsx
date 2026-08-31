@@ -124,7 +124,7 @@ export default function PageArchetypesSection({ onInView }: PageArchetypesSectio
         <ul className="space-y-2">
           {iaRules.map((rule) => (
             <li key={rule} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+              <span className="text-accent mt-0.5">-</span>
               <span>{rule}</span>
             </li>
           ))}
@@ -138,7 +138,7 @@ export default function PageArchetypesSection({ onInView }: PageArchetypesSectio
         <ul className="space-y-2">
           {accessibilityByArchetype.map((item) => (
             <li key={item} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+              <span className="text-accent mt-0.5">-</span>
               <span>{item}</span>
             </li>
           ))}

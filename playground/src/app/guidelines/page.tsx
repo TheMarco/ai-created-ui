@@ -18,7 +18,7 @@ export default function GuidelinesPage() {
 
       <header className="mt-12 grid gap-10 border-b border-border pb-14 lg:grid-cols-[minmax(0,1.3fr)_minmax(280px,0.7fr)] lg:items-end">
         <div>
-          <p className="font-mono text-xs uppercase tracking-widest text-red">Principal specification</p>
+          <p className="font-mono text-xs uppercase tracking-widest text-accent">Principal specification</p>
           <h1 className="mt-5 max-w-5xl font-display text-5xl tracking-wide text-text md:text-7xl">
             One system. Every decision.
           </h1>
@@ -26,7 +26,7 @@ export default function GuidelinesPage() {
             The complete operating contract for designing, building, reviewing, releasing, and evolving AI-Created product interfaces.
           </p>
         </div>
-        <div className="border-l-2 border-red-border pl-5 text-sm leading-relaxed text-text2">
+        <div className="border-l-2 border-accent-border pl-5 text-sm leading-relaxed text-text2">
           Use the component workbench for production APIs and live behavior. Use these guidelines for the cross-system decisions a component alone cannot carry.
         </div>
       </header>

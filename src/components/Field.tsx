@@ -21,7 +21,7 @@ export function fieldHintStyles(className?: string) {
 
 export function inputStyles(className?: string) {
   return cn(
-    'min-w-0 w-full rounded-md border border-border bg-surface2 px-4 py-3 text-sm text-text placeholder-text3 transition-colors duration-200 hover:border-border-strong focus:border-red-border disabled:cursor-not-allowed disabled:opacity-50',
+    'min-w-0 w-full rounded-md border border-control-border bg-surface2 px-4 py-3 text-sm text-text placeholder-text3 transition-colors duration-200 hover:border-control-border-strong focus:border-accent disabled:cursor-not-allowed disabled:opacity-50',
     className
   );
 }

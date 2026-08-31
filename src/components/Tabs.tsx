@@ -107,7 +107,7 @@ export default function Tabs<T extends string>({
             {tab.icon && <span aria-hidden="true">{tab.icon}</span>}
             {tab.label}
             {isActive && (
-              <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-red" aria-hidden="true" />
+              <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-accent" aria-hidden="true" />
             )}
           </button>
         );

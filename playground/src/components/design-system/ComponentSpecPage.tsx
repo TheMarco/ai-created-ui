@@ -20,7 +20,7 @@ function BulletList({ items }: { items: string[] }) {
     <ul className="space-y-3">
       {items.map((item) => (
         <li key={item} className="flex gap-3 text-sm leading-relaxed text-text2">
-          <span className="shrink-0 text-red" aria-hidden="true">-</span>
+          <span className="shrink-0 text-accent" aria-hidden="true">-</span>
           <span>{item}</span>
         </li>
       ))}
@@ -54,7 +54,7 @@ export default function ComponentSpecPage({
           </Link>
 
           <header className="mt-8 border-b border-border pb-12 lg:mt-0">
-            <p className="font-mono text-xs uppercase tracking-wider text-red">{spec.category}</p>
+            <p className="font-mono text-xs uppercase tracking-wider text-accent">{spec.category}</p>
             <h1 className="mt-4 max-w-4xl font-display text-4xl tracking-wide text-text md:text-6xl">
               {spec.name}
             </h1>
@@ -102,7 +102,7 @@ export default function ComponentSpecPage({
                 {spec.anatomy.map((part, index) => (
                   <article key={part.name} className="rounded-md border border-border bg-surface p-5">
                     <div className="flex items-start gap-4">
-                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-solid font-mono text-xs text-white">
+                      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-action-primary font-mono text-xs text-on-action">
                         {index + 1}
                       </span>
                       <div>
@@ -166,7 +166,7 @@ export default function ComponentSpecPage({
                 <div className="mt-5 grid gap-3 md:grid-cols-2">
                   {spec.designTokens.map((token) => (
                     <div key={token.token} className="rounded-sm bg-surface2 p-4">
-                      <code className="font-mono text-xs text-red">{token.token}</code>
+                      <code className="font-mono text-xs text-accent">{token.token}</code>
                       <p className="mt-2 text-xs leading-relaxed text-text2">{token.purpose}</p>
                     </div>
                   ))}

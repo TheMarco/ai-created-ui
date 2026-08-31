@@ -13,7 +13,7 @@ export interface ConfirmDialogProps {
   description?: ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
-  /** When true, the confirm button uses the destructive (primary/red) style */
+  /** When true, the confirm button uses the destructive action style. */
   destructive?: boolean;
   loading?: boolean;
   loadingLabel?: string;
@@ -51,7 +51,7 @@ export default function ConfirmDialog({
             {cancelLabel}
           </Button>
           <Button
-            variant={destructive ? 'primary' : 'secondary'}
+            variant={destructive ? 'destructive' : 'primary'}
             size="sm"
             onClick={onConfirm}
             disabled={loading}

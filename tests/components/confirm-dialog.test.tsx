@@ -22,12 +22,29 @@ describe('ConfirmDialog', () => {
     const dialog = await screen.findByRole('alertdialog', { name: 'Delete project?' });
     expect(dialog).toBeVisible();
     expect(dialog).toHaveAccessibleDescription('This cannot be undone.');
+    expect(screen.getByRole('button', { name: 'Confirm' })).toHaveClass('bg-action-primary');
 
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
     expect(onCancel).toHaveBeenCalledOnce();
 
     await user.click(screen.getByRole('button', { name: 'Confirm' }));
     expect(onConfirm).toHaveBeenCalledOnce();
+  });
+
+  it('uses the dedicated destructive action treatment when requested', async () => {
+    render(
+      <ConfirmDialog
+        open
+        destructive
+        onCancel={vi.fn()}
+        onConfirm={vi.fn()}
+        title="Delete project?"
+      />
+    );
+
+    expect(await screen.findByRole('button', { name: 'Confirm' })).toHaveClass(
+      'bg-action-destructive'
+    );
   });
 
   it('disables every dismissal path while loading', async () => {

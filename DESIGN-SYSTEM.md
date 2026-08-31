@@ -39,7 +39,7 @@ The system should feel:
 1. Product-first beats spectacle.
 2. Shared rules beat route-level improvisation.
 3. Serif is for tone, not for most UI.
-4. Red is an accent, not a second color system.
+4. Accent schemes are a role-based color system; red is the default scheme and legacy compatibility name.
 5. Light mode must feel intentionally designed, not inverted.
 6. Accessibility is part of the visual system, not a post-pass.
 7. Motion must explain hierarchy or state. If it does not, remove it.
@@ -204,18 +204,33 @@ Alpha colors remain semantic literals where introducing RGB-channel primitives w
 ### Public Semantic Tokens
 
 - Foundations: `--color-bg`, `--color-surface`, `--color-surface2`, `--color-border`, `--color-border-strong`
+- Control boundaries: `--color-control-border`, `--color-control-border-strong`
 - Text: `--color-text`, `--color-text2`, `--color-text3`
-- Accent: `--color-accent`, `--color-accent-muted`, `--color-accent-hover`, `--color-accent-border`
-- Actions: `--color-action-primary`, `--color-action-primary-hover`
+- Accent: `--color-accent`, `--color-accent-muted`, `--color-accent-hover`, `--color-accent-border` (selected by `data-accent`: red, green, blue, orange, yellow, purple, teal, pink, or magenta)
+- Actions: `--color-action-primary`, `--color-action-primary-hover`, `--color-action-destructive`, `--color-action-destructive-hover`, `--color-on-action`
 - Interaction: `--color-focus`, `--color-overlay`, `--color-highlight`, `--color-selection`
 - Feedback: `--color-success`, `--color-warning`, `--color-info`, `--color-error`, plus each token's `-surface` and `-border` variants
 
 The established `--color-red`, `--color-red2`, `--color-red-hover`, `--color-red-border`, `--color-red-solid`, and `--color-red-solid-hover` names remain supported public aliases. They are not deprecated. New shared code may use the intent names when the role is known, while existing consumers can migrate only when convenient.
 
-### Layout, Radius, and Motion Tokens
+### Accent Ownership and Precedence
+
+Accent is application-level appearance state. Product UI consumes semantic tokens; it does not branch on hue names or set `data-accent` inside individual components.
+
+- Persisted preference mode uses `ThemeProvider defaultAccent="blue"`. Resolution is a valid `localStorage['accent']`, then an existing valid `html[data-accent]`, then `defaultAccent`, then red. `useTheme().setAccent()` updates the document and storage. `onAccentChange` may observe the change.
+- Fixed mode uses matching server markup and provider state: `<html data-accent="blue">` with `<ThemeProvider accent="blue">`. The controlled prop wins over storage, the document, and `defaultAccent`; it does not read or write accent storage.
+- Externally controlled mode also passes `onAccentChange`. `setAccent()` reports the requested value, but the appearance changes only when the owner supplies a new `accent` prop. Without a callback, controlled `setAccent()` is intentionally a no-op.
+- Before hydration, preference mode must server-render the `data-accent` fallback that matches `defaultAccent`, then replace it only with a valid stored accent. Fixed mode must server-render its controlled accent and run a theme-only initialization script. These rules prevent the wrong accent from flashing on first paint.
+- Import `accentNames` and the `Accent` type for selectors and validation. Do not maintain a second supported-name list in application code.
+
+Destructive and feedback colors are semantic state, not brand state. They remain unchanged across every accent.
+
+### Layout, Radius, Elevation, Layer, and Motion Tokens
 
 - Radius: `--radius-sm`, `--radius-md`, `--radius-lg`
 - Layout: `--layout-container-max`, `--layout-gutter`, `--layout-gutter-mobile`
+- Elevation: `--shadow-elevation-low`, `--shadow-elevation-medium`, `--shadow-elevation-high`
+- Layers: `--layer-dropdown`, `--layer-tooltip`, `--layer-modal`
 - Motion: `--motion-fast`, `--motion-base`, `--motion-slow`
 
 ### Usage Rules
@@ -226,11 +241,14 @@ The established `--color-red`, `--color-red2`, `--color-red-hover`, `--color-red
 - `text` is primary content.
 - `text2` is supporting copy.
 - `text3` is metadata only.
-- `accent` is the brighter, warmer red for text, rules, indicators, and selective emphasis. `red` is its established compatibility name.
+- `accent` is the active scheme for text, rules, indicators, and selective emphasis. `red` and the established `red*` semantic names remain compatibility aliases resolving to the active scheme.
 - `red-hover` and `red-solid-hover` are state tokens. They support interaction feedback and should not be presented as equal palette roles.
-- `action-primary` is the filled action red for buttons, pills, and other surfaces that carry white text. `red-solid` is its established compatibility name.
+- `action-primary` is the filled brand action. `red-solid` is its established compatibility name.
+- `action-destructive` is the distinct danger-family fill for destructive actions. It must not alias the ordinary primary treatment.
+- `on-action` is the foreground for filled primary and destructive actions and control marks.
+- `control-border` and `control-border-strong` identify interactive boundaries; passive surfaces continue to use the quieter `border` pair.
 - `red2` and `red-border` are supporting tokens for overlays, glows, and borders. They are not primary brand colors.
-- `success`, `warning`, `info`, and `error` are semantic feedback tokens for system states. They should not be replaced with brand red unless the UI is actually a primary action.
+- `success`, `warning`, `info`, and `error` are stable semantic feedback tokens for system states. They never follow the selected accent and should not be replaced with brand color unless the UI is actually a primary action.
 - Avoid raw `white` and `black` utilities unless there is a documented exception.
 
 ### Token Addition Rules
@@ -240,7 +258,7 @@ The established `--color-red`, `--color-red2`, `--color-red-hover`, `--color-red
 3. Add a reference value only when an opaque palette value is used by the semantic layer. Do not build a complete scale in advance.
 4. Add a component-specific token only after a shared semantic token would be misleading.
 5. Preserve existing public token names. Use aliases for compatibility instead of broad renames.
-6. Keep one-off spacing, geometry, shadows, and behavior-specific motion local to the component.
+6. Keep one-off spacing, geometry, and behavior-specific motion local to the component. Shared floating elevation and stacking must use the semantic shadow and layer tokens.
 
 ### Light Mode Rule
 
@@ -251,7 +269,7 @@ Because the palette is softer:
 - do not rely on `text3` for important copy
 - test hover and border states in both themes
 - make sure primary actions still carry enough contrast
-- use `red-solid` for any filled red surface that carries white text
+- use the appropriate primary or destructive action pair with `on-action` foreground
 
 ## Typography
 
@@ -336,7 +354,7 @@ Do not respond by inventing smaller ad hoc text sizes. Use the system deliberate
 
 ### Selection
 
-`::selection` uses `rgba(255, 75, 43, 0.22)` (red accent at 22%).
+`::selection` follows the active accent scheme at the semantic selection opacity.
 
 ### Focus Strategy
 
@@ -373,7 +391,7 @@ These are the preferred starting points before building route-specific markup:
 - `Checkbox` for binary toggles with native input semantics and styled indicator
 - `Dropdown` for single-select option lists with Headless UI Listbox, full keyboard nav, and type-ahead
 - `RadioGroup` for single-select groups using native radio inputs in a fieldset with legend
-- `Slider` for range input with styled track, red-solid fill, and formatted output
+- `Slider` for range input with styled track, semantic action fill, and formatted output
 - `Toggle` for on/off switches using role="switch", visually distinct from checkboxes
 - `Dialog` for modal dialogs with Headless UI, focus trap, Escape/backdrop close, and size variants
 - `Tooltip` for contextual hints on hover, focus, and touch with configurable position and delay
@@ -414,8 +432,9 @@ Rules:
 
 - `text3` is metadata only.
 - Do not use `text3` for navigation, form labels, helper text, or primary calls to action.
-- Filled red controls with white text must use `red-solid` and `red-solid-hover`, not the brighter accent red.
-- Check dark and light theme contrast before shipping subtle states like borders, placeholders, and hover treatments.
+- Filled actions must use the scheme-aware primary/destructive action pair with `on-action`, not the brighter accent token directly.
+- Interactive boundaries use `control-border`; passive card and divider borders use the quieter `border` tokens.
+- Browser contrast checks enforce focus rings, status text on tinted surfaces, control boundaries, accent text, and filled-action foregrounds in both themes.
 
 ### Naming and Semantics
 
@@ -431,8 +450,8 @@ Rules:
 - `text` and `text2` carry real reading work.
 - `text3` is metadata only.
 - Focus uses `--color-focus`; do not invent ad hoc focus colors.
-- The brighter accent red does not carry white body text on dark UI. Filled red controls use `--color-red-solid`.
-- Red supports emphasis and action, but should never be the only signal for meaning.
+- The brighter active accent does not carry action foreground text. Filled controls use `--color-action-primary` or `--color-action-destructive` with `--color-on-action`.
+- The active accent supports emphasis and primary action, but should never be the only signal for meaning.
 
 ### Typography
 
@@ -506,7 +525,7 @@ Rules:
 - Reuse an existing shell before inventing a new card style.
 - Do not add generic components for completeness.
 - Keep metadata compact and mono-driven.
-- Use semantic border tokens such as `border-border` and `border-border-strong`, not raw `border-white/*` utilities, for production components.
+- Use `border-control-border` for interactive boundaries and `border-border` for passive structure; never use raw `border-white/*` utilities in production components.
 - For multi-tool product pages, prefer overview cards plus one active workspace over long stacked interfaces.
 - If an action cannot do anything useful yet, disable it or reframe it instead of shipping a dead-end click.
 - Buttons are not fully documented until default, hover, focus-visible, loading, and disabled states are shown.
@@ -532,7 +551,7 @@ Rules:
 - First use: solve the product problem with existing primitives and route-level composition.
 - Second similar use: identify the repeated pattern and define the shared interaction and accessibility contract.
 - Promote a new shared component only when the pattern repeats, clearly spans routes, or would otherwise create local drift.
-- Badges, dropdowns, radio groups, sliders, toggles, dialogs, modals, tooltips, empty states, confirm dialogs, and error reports are now shared primitives. Tooltip + Badge is the standard composition for interactive status pills. Do not add remaining patterns (tables, etc.) until the live site needs them.
+- Badges, dropdowns, radio groups, sliders, toggles, dialogs, modals, tooltips, empty states, confirm dialogs, and error reports are now shared primitives. Do not add remaining patterns (tables, etc.) until the live site needs them.
 - Promote repeated product UX patterns too: calm capacity states, honest empty states, right-aligned utilities, overview-plus-workspace, and status-first settings cards.
 - When a component is promoted, update the production usage, `/design-system`, and this file in the same pass.
 
@@ -552,8 +571,7 @@ Keyboard and focus behavior:
 - Focus restores to trigger element on close
 - VideoModal adds: F key toggles fullscreen, Escape exits fullscreen before closing
 
-Modal size variants: sm (max-w-md), md (max-w-xl), lg (max-w-3xl), xl (max-w-5xl)
-Dialog size variants: sm (max-w-sm), md (max-w-lg), lg (max-w-2xl), xl (max-w-4xl)
+Modal and Dialog share one size scale: sm (max-w-sm), md (max-w-lg), lg (max-w-2xl), xl (max-w-4xl).
 
 Close button uses a 44x44px touch target with a centered icon.
 
@@ -586,28 +604,30 @@ Usage patterns:
 
 Override `rounded-full` with `rounded` via className for compact assessment rows. Override text size with `text-[10px]` for dense metadata.
 
-### Tooltip + Badge Composition
+### Tooltip With Status Controls
 
-Wrapping a Badge in a Tooltip creates an interactive status pill with hover explanation. This is the standard pattern for audit metadata and fit assessments.
+A tooltip trigger must be focusable. When a status pill genuinely performs or reveals an action, put the Badge inside a labelled button and apply Tooltip to that control. Static status metadata should keep its explanation visible instead of becoming hover-only UI.
 
 ```tsx
 <Tooltip content="Strong signal: direct match with concrete evidence.">
-  <Badge variant="success" className="cursor-help">strong fit</Badge>
+  <button type="button" className="cursor-help rounded-full" aria-label="Strong fit details">
+    <Badge variant="success">strong fit</Badge>
+  </button>
 </Tooltip>
 ```
 
 Rules:
 
-- Always add `cursor-help` to the Badge so users know hover detail is available
-- Tooltip provides `aria-describedby` on the Badge automatically
-- Use for any label where a one-word status needs supporting context
-- For compact assessment rows, override Badge shape: `className="rounded px-1.5 py-0.5 text-[10px] cursor-help"`
+- The Tooltip child must be the focusable button, not the non-interactive Badge.
+- Tooltip adds `aria-describedby` while visible and supports hover, focus, touch, pointer travel, Escape dismissal, and viewport collision handling.
+- Keep essential status explanation in persistent text; use a tooltip only for supplemental detail.
+- Do not add click semantics to a static Badge merely to hide explanatory copy.
 
 ### Form States
 
 - Loading: spinner with `aria-busy` on form, disabled submit
-- Success: `role="status"` `aria-live="polite"`, auto-dismiss after 5s, green accent
-- Error: `role="alert"`, auto-dismiss after 5s, red accent
+- Success: `role="status"` `aria-live="polite"`, auto-dismiss after 5s, stable success semantic color
+- Error: `role="alert"`, auto-dismiss after 5s, stable error semantic color
 - Honeypot field for spam prevention (hidden, `tabIndex={-1}`, `aria-hidden`)
 
 ### Card Hover System
@@ -617,7 +637,7 @@ Rules:
 - Image: `group-hover:scale-[1.02]` with `transition-transform duration-500`
 - Lift: `whileHover={{ y: -2 }}` or `y: -4` via Framer Motion
 - Use `group` selector for coordinated hover on card links
-- Featured cards (ArtifactCard): `border-red-border` to `border-red2` on hover
+- Featured cards (ArtifactCard): `border-accent-border` to `border-accent-muted` on hover
 
 ### Dividers
 
@@ -660,7 +680,7 @@ These are not in the system yet. When the site needs them, here is how they shou
 - **Accordion**: Use Headless UI Disclosure. Each item needs a `<button>` trigger with `aria-expanded` and `aria-controls` pointing to the panel. Animate height with CSS grid `grid-template-rows: 0fr`/`1fr` for smooth open/close without JS height measurement. Group multiple items in a section with a shared heading. Consider whether only one item should be open at a time (accordion mode) or multiple (disclosure mode).
 - **Toast**: Ephemeral notifications that auto-dismiss. Use a portal to render outside the page flow at a fixed viewport position (bottom-right on desktop, bottom-center on mobile). Each toast needs `role="status"` and `aria-live="polite"` (or `role="alert"` for errors). Stack multiple toasts vertically. Include a close button with a 44x44px touch target. Auto-dismiss after 5s with a pause-on-hover behavior. Animate in/out with opacity and translateY.
 - **Popover**: Use Headless UI Popover. Similar trigger and positioning to Dropdown but renders arbitrary content instead of a listbox. Needs focus trap when open, Escape to close, and click-outside to dismiss. Useful for info panels, mini forms, or rich previews.
-- **Progress**: A determinate progress bar. Thin horizontal bar with red-solid fill on surface2 track, matching the slider visual language. Needs `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, and an accessible label. Consider an indeterminate variant with a repeating animation for unknown durations.
+- **Progress**: A determinate progress bar. Thin horizontal bar with semantic action fill on surface2 track, matching the slider visual language. Needs `role="progressbar"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, and an accessible label. Consider an indeterminate variant with a repeating animation for unknown durations.
 - **Command Palette**: A Cmd+K search overlay. Use Headless UI Combobox inside a Dialog. Needs type-ahead filtering, keyboard navigation, grouped results, and recent/suggested sections. Only worth building when the content library is large enough to justify it.
 
 ### Deprecated by Default
@@ -743,10 +763,8 @@ These may exist in experiments, but they are not core public-system primitives:
 
 Current documented exceptions include:
 
-- a few light-mode utility overrides where semantic token coverage is incomplete
-- invariant white labels and control marks on filled action surfaces
 - fixed-dark code samples in the playground
-- component geometry, standardized Tailwind shadows, and behavior-specific motion values
+- component geometry and behavior-specific motion values
 
 The goal is always to reduce exceptions, not normalize them.
 
@@ -804,7 +822,7 @@ Before shipping, confirm:
 - navigation still matches the public IA
 - the page fits a known archetype
 - typography usage follows the display/UI split
-- red is used as accent, not as decoration
+- the active accent scheme is used intentionally, not as decoration
 - metadata is still compact and secondary
 - focus states are visible and keyboard flow still works
 - decorative media is not being announced as meaningful content

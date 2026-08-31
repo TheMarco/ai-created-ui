@@ -195,7 +195,7 @@ function SurfaceSpecimen() {
               variant={variant}
               padding="sm"
               interaction="group"
-              className={cn('h-full', selected === variant && 'ring-1 ring-red-border')}
+              className={cn('h-full', selected === variant && 'ring-1 ring-accent-border')}
             >
               <p className="text-sm font-medium text-text">{variant[0].toUpperCase() + variant.slice(1)}</p>
               <p className="mt-1 text-xs text-text3">Border and semantic surface tokens.</p>
@@ -706,7 +706,7 @@ function CnSpecimen() {
   const [roundOverride, setRoundOverride] = useState(false);
   const mergedClasses = cn(
     'rounded-md border border-border bg-surface px-4 py-3 text-sm text-text2',
-    emphasized && 'border-red-border bg-error-surface text-error',
+    emphasized && 'border-error-border bg-error-surface text-error',
     wide ? 'w-full' : 'w-fit',
     roundOverride && 'rounded-full px-7'
   );
@@ -749,7 +749,7 @@ function MotionHelpersSpecimen() {
             {...fadeUpMotion(staggerDelay(index, 0.08), motionOffset.sm, duration)}
             className={surfaceStyles({ variant: index === 1 ? 'accent' : 'muted', padding: 'sm' })}
           >
-            <Sparkles className="h-4 w-4 text-red" aria-hidden="true" />
+            <Sparkles className="h-4 w-4 text-accent" aria-hidden="true" />
             <p className="mt-4 text-sm font-medium text-text">{label}</p>
             <p className="mt-1 font-mono text-xs text-text3">{duration}s</p>
           </motion.div>

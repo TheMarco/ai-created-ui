@@ -66,7 +66,7 @@ export default function DSPageShell() {
           <div className="grid gap-14 py-12 md:py-20 lg:grid-cols-5 lg:items-end lg:gap-20">
             <div className="max-w-4xl lg:col-span-3">
               <motion.p
-                className="mb-5 font-mono text-xs uppercase tracking-[0.18em] text-red-accent"
+                className="mb-5 font-mono text-xs uppercase tracking-[0.18em] text-accent"
                 {...fadeUpMotion(0, 16, 0.5)}
               >
                 @ai-created/ui · Open-source design system
@@ -115,18 +115,18 @@ export default function DSPageShell() {
                   <Link
                     key={href}
                     href={href}
-                    className="group grid grid-cols-[auto_1fr_auto] items-start gap-4 border-t border-border py-5 transition-colors hover:text-red-accent"
+                    className="group grid grid-cols-[auto_1fr_auto] items-start gap-4 border-t border-border py-5 transition-colors hover:text-accent"
                   >
-                    <Icon aria-hidden="true" className="mt-0.5 h-4 w-4 text-text3 transition-colors group-hover:text-red-accent" />
+                    <Icon aria-hidden="true" className="mt-0.5 h-4 w-4 text-text3 transition-colors group-hover:text-accent" />
                     <span>
-                      <span className="block text-sm font-medium text-text transition-colors group-hover:text-red-accent">
+                      <span className="block text-sm font-medium text-text transition-colors group-hover:text-accent">
                         {title}
                       </span>
                       <span className="mt-1 block text-sm leading-relaxed text-text2">
                         {description}
                       </span>
                     </span>
-                    <ArrowRight aria-hidden="true" className="mt-0.5 h-4 w-4 text-text3 transition-transform group-hover:translate-x-1 group-hover:text-red-accent" />
+                    <ArrowRight aria-hidden="true" className="mt-0.5 h-4 w-4 text-text3 transition-transform group-hover:translate-x-1 group-hover:text-accent" />
                   </Link>
                 ))}
               </div>
@@ -156,7 +156,7 @@ export default function DSPageShell() {
               className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-bg/90 backdrop-blur-lg lg:hidden"
             >
               <div className="h-px bg-border">
-                <div className="h-full bg-red-solid transition-[width] duration-300" style={{ width: `${progress}%` }} />
+                    <div className="h-full bg-action-primary transition-[width] duration-300" style={{ width: `${progress}%` }} />
               </div>
               <div className="flex items-center justify-between px-4 pt-2">
                 <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-text2">
@@ -173,7 +173,7 @@ export default function DSPageShell() {
                     href={`#${s.id}`}
                     className={`shrink-0 px-3 py-1.5 text-xs font-mono rounded-sm transition-colors whitespace-nowrap ${
                       activeSection === s.id
-                        ? 'bg-red-solid text-white'
+                        ? 'bg-action-primary text-on-action'
                         : 'text-text2 hover:text-text'
                     }`}
                   >

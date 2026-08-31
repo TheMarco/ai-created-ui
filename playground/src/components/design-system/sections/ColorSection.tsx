@@ -1,165 +1,61 @@
 'use client';
 
+import { accentNames, useTheme, type Accent } from '@ai-created/ui';
 import DSSection from '../DSSection';
 import DSCopyButton from '../DSCopyButton';
 
-const DARK_COLORS = {
-  bg: '#0A0A0B',
-  surface: '#101113',
-  surface2: '#14161A',
-  border: 'rgba(255,255,255,0.10)',
-  'border-strong': 'rgba(255,255,255,0.16)',
-  text: '#F5F7FA',
-  text2: 'rgba(245,247,250,0.72)',
-  text3: 'rgba(245,247,250,0.62)',
-  red: '#FF4B2B',
-  'red-hover': '#F13A1D',
-  'red-solid': '#D41010',
-  'red-solid-hover': '#B80E0E',
-  red2: 'rgba(255,75,43,0.72)',
-  'red-border': 'rgba(255,75,43,0.42)',
-  overlay: 'rgba(0,0,0,0.60)',
-  highlight: 'rgba(255,255,255,0.05)',
-  focus: 'rgba(255,75,43,0.72)',
-  success: '#55D39A',
-  'success-surface': 'rgba(85,211,154,0.12)',
-  'success-border': 'rgba(85,211,154,0.32)',
-  warning: '#F2B84B',
-  'warning-surface': 'rgba(242,184,75,0.12)',
-  'warning-border': 'rgba(242,184,75,0.30)',
-  info: '#6BB9FF',
-  'info-surface': 'rgba(107,185,255,0.12)',
-  'info-border': 'rgba(107,185,255,0.32)',
-  error: '#FF6B6B',
-  'error-surface': 'rgba(255,107,107,0.12)',
-  'error-border': 'rgba(255,107,107,0.32)',
+const accentValues: Record<Accent, {
+  dark: string;
+  darkHover: string;
+  light: string;
+  lightHover: string;
+  action: string;
+  actionHover: string;
+}> = {
+  red: { dark: '#FF4B2B', darkHover: '#F13A1D', light: '#C81E1E', lightHover: '#B80E0E', action: '#D41010', actionHover: '#C81010' },
+  green: { dark: '#03A32C', darkHover: '#029527', light: '#01761D', lightHover: '#016819', action: '#027B1F', actionHover: '#01741C' },
+  blue: { dark: '#268CFE', darkHover: '#027FF5', light: '#0264C2', lightHover: '#0158AD', action: '#0269CC', actionHover: '#0162BF' },
+  orange: { dark: '#D97001', darkHover: '#C86701', light: '#9E5000', lightHover: '#8C4601', action: '#A55401', actionHover: '#9B4E01' },
+  yellow: { dark: '#AC8802', darkHover: '#9E7D01', light: '#7C6202', lightHover: '#6E5600', action: '#826701', actionHover: '#7A6001' },
+  purple: { dark: '#A96CFF', darkHover: '#9D5FF1', light: '#8240D0', lightHover: '#7632C2', action: '#8746D6', actionHover: '#803ECE' },
+  teal: { dark: '#059E91', darkHover: '#059085', light: '#027268', lightHover: '#00655C', action: '#02776E', actionHover: '#017067' },
+  pink: { dark: '#F14E9C', darkHover: '#E23F8F', light: '#C01473', lightHover: '#AE0166', action: '#C71F78', actionHover: '#BE0F71' },
+  magenta: { dark: '#D25CDA', darkHover: '#C44FCD', light: '#A52EAE', lightHover: '#971CA0', action: '#AB35B3', actionHover: '#A32BAC' },
 };
 
-const LIGHT_COLORS = {
-  bg: '#F2EDE6',
-  surface: '#F7F3EC',
-  surface2: '#EAE4DB',
-  border: 'rgba(0,0,0,0.10)',
-  'border-strong': 'rgba(0,0,0,0.18)',
-  text: '#1D1D1F',
-  text2: 'rgba(29,29,31,0.72)',
-  text3: 'rgba(29,29,31,0.68)',
-  red: '#DE3A1F',
-  'red-hover': '#C92C18',
-  'red-solid': '#D41010',
-  'red-solid-hover': '#B80E0E',
-  red2: 'rgba(222,58,31,0.76)',
-  'red-border': 'rgba(222,58,31,0.35)',
-  overlay: 'rgba(0,0,0,0.45)',
-  highlight: 'rgba(0,0,0,0.04)',
-  focus: 'rgba(222,58,31,0.64)',
-  success: '#0F9F6E',
-  'success-surface': 'rgba(15,159,110,0.08)',
-  'success-border': 'rgba(15,159,110,0.22)',
-  warning: '#A86800',
-  'warning-surface': 'rgba(168,104,0,0.08)',
-  'warning-border': 'rgba(168,104,0,0.22)',
-  info: '#1F6FEB',
-  'info-surface': 'rgba(31,111,235,0.08)',
-  'info-border': 'rgba(31,111,235,0.22)',
-  error: '#C81E1E',
-  'error-surface': 'rgba(200,30,30,0.08)',
-  'error-border': 'rgba(200,30,30,0.20)',
-};
-
-const RED_ROLES = [
-  {
-    title: 'Accent red',
-    token: 'red',
-    hoverToken: 'red-hover',
-    description:
-      'The brighter red is for emphasis, active cues, rules, and selective highlights. It should read as signal, not as a filled control.',
-    usage: 'Use for dividers, highlighted text, active markers, and selective accents.',
-    contrast: '4.47:1 with white in dark mode',
-    note: 'Do not use this as a filled button with white text.',
-    contrastLabel: 'Not for white text',
-    preview: 'accent',
-  },
-  {
-    title: 'Action red',
-    token: 'red-solid',
-    hoverToken: 'red-solid-hover',
-    description:
-      'The darker red is the functional action color. It exists so filled controls can keep the same brand feel while remaining accessible.',
-    usage: 'Use for primary buttons, submit actions, and any red surface carrying white text.',
-    contrast: '5.41:1 with white in dark mode',
-    note: 'This is the default red for filled CTAs.',
-    contrastLabel: 'Accessible with white',
-    preview: 'action',
-  },
+const accentRoles = [
+  { token: 'accent', label: 'Accent', purpose: 'Links, icons, active rules, and selective emphasis.' },
+  { token: 'accent-muted', label: 'Muted accent', purpose: 'Accessible lower-chroma supporting emphasis.' },
+  { token: 'accent-hover', label: 'Accent hover', purpose: 'Text and icon interaction feedback.' },
+  { token: 'accent-border', label: 'Accent border', purpose: 'Contrast-safe accented boundaries.' },
+  { token: 'action-primary', label: 'Primary action', purpose: 'Solid branded controls with on-action text.' },
+  { token: 'action-primary-hover', label: 'Action hover', purpose: 'Hover fill that retains text and boundary contrast.' },
+  { token: 'focus', label: 'Focus', purpose: 'Global keyboard focus indicator.' },
+  { token: 'selection', label: 'Selection', purpose: 'Theme-aware text selection surface.' },
 ] as const;
 
-const groups = [
-  {
-    label: 'Backgrounds',
-    tokens: ['bg', 'surface', 'surface2'],
-  },
-  {
-    label: 'Text',
-    tokens: ['text', 'text2', 'text3'],
-  },
-  {
-    label: 'Red Support',
-    tokens: ['red2', 'red-border', 'focus'],
-  },
-  {
-    label: 'UI',
-    tokens: ['border', 'border-strong', 'overlay', 'highlight'],
-  },
-  {
-    label: 'Semantic Status',
-    tokens: [
-      'success',
-      'success-surface',
-      'success-border',
-      'warning',
-      'warning-surface',
-      'warning-border',
-      'info',
-      'info-surface',
-      'info-border',
-      'error',
-      'error-surface',
-      'error-border',
-    ],
-  },
-];
+const statusRoles = [
+  { token: 'success', label: 'Success' },
+  { token: 'warning', label: 'Warning' },
+  { token: 'info', label: 'Info' },
+  { token: 'error', label: 'Error' },
+  { token: 'action-destructive', label: 'Destructive' },
+] as const;
 
 const usageRules = [
-  {
-    title: 'Layering',
-    body: 'Use bg for page background, surface for primary cards and modules, and surface2 for nested controls or quieter sub-panels.',
-  },
-  {
-    title: 'Text Hierarchy',
-    body: 'text is primary content, text2 is supporting copy, and text3 is reserved for metadata, labels, and low-emphasis UI only.',
-  },
-  {
-    title: 'Accent Restraint',
-    body: 'The bright red token is for emphasis, dividers, and active state cues. Filled controls with white text use the darker solid red token.',
-  },
-  {
-    title: 'Light Mode Discipline',
-    body: 'Because light mode is warmer and softer, avoid leaning too hard on text3 for important copy or navigation.',
-  },
-  {
-    title: 'Semantic Status',
-    body: 'Success, info, warning, and error use dedicated tokens so status UI does not overload the brand red system.',
-  },
-];
+  ['Semantic first', 'Components consume accent, action, focus, and selection roles. They never select a named hue directly.'],
+  ['Red by default', 'Existing consumers remain red until data-accent or ThemeProvider selects another supported scheme.'],
+  ['Meaning stays fixed', 'Destructive, success, warning, info, and error never change when the accent changes.'],
+  ['Dual-theme contract', 'Every role is independently tuned for dark and light foundations instead of mechanically inverted.'],
+] as const;
 
 const accessibilityNotes = [
-  'Primary and secondary text tokens are safe for navigation, labels, and helper copy. `text3` is not.',
-  'Filled red controls use `red-solid` because the accent red is intentionally brighter and warmer, while `#D41010` reaches 5.41:1 with white text in dark mode.',
-  'Hover reds are state tokens, not separate brand colors. They support interaction feedback, not palette expansion.',
-  'Focus uses its own token so interactive outlines are visible in both themes without borrowing random utility colors.',
-  'Accent red should never become the only way to communicate meaning; it reinforces, it does not carry the whole signal.',
-  'Semantic status tokens are for confirmations, warnings, guidance, and failures. They should support meaning without competing with the core palette.',
+  'Accent, muted-accent, and hover text meet 4.5:1 on bg, surface, and surface2 in both themes.',
+  'Primary action and hover fills meet 4.5:1 with on-action text and 3:1 against every foundation.',
+  'Focus and accent borders meet 3:1 against all three foundations.',
+  'Selection keeps primary text at 4.5:1 or better on every foundation.',
+  'The browser suite exercises all nine accents across both themes: 18 appearance combinations per browser project.',
+  'Color reinforces state but never carries meaning without text, iconography, or native semantics.',
 ];
 
 interface ColorSectionProps {
@@ -167,328 +63,152 @@ interface ColorSectionProps {
 }
 
 export default function ColorSection({ onInView }: ColorSectionProps) {
+  const { accent, setAccent } = useTheme();
+  const selected = accentValues[accent];
+
   return (
     <DSSection
       id="colors"
       title="Colors"
-      subtitle="A dual-theme palette with explicit hierarchy, one accent red, one solid action red, and a small semantic status layer for system feedback."
+      subtitle="Nine accessible accent schemes share one semantic contract across dark and light mode. Status and destructive colors remain independent."
       onInView={onInView}
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
-        {usageRules.map((rule) => (
-          <div key={rule.title} className="bg-surface border border-border rounded-md p-6">
-            <h3 className="text-lg font-heading font-medium text-text mb-2">
-              {rule.title}
-            </h3>
-            <p className="text-sm text-text2 leading-relaxed">
-              {rule.body}
-            </p>
+      <div className="mb-16 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {usageRules.map(([title, body]) => (
+          <div key={title} className="rounded-md border border-border bg-surface p-6">
+            <h3 className="mb-2 text-lg font-heading font-medium text-text">{title}</h3>
+            <p className="text-sm leading-relaxed text-text2">{body}</p>
           </div>
         ))}
       </div>
 
-      <div className="mb-20">
-        <div className="mb-6">
-          <h3 className="text-xl font-heading font-medium text-text mb-2">
-            Red Roles
+      <section className="mb-20" aria-labelledby="accent-schemes-heading">
+        <div className="mb-6 max-w-3xl">
+          <h3 id="accent-schemes-heading" className="mb-2 text-xl font-heading font-medium text-text">
+            Accent schemes
           </h3>
-          <p className="text-sm text-text2 leading-relaxed max-w-3xl">
-            The red system is intentionally narrow. There are only two public-facing jobs here:
-            a brighter accent red for signal and a darker action red for filled controls.
-            Hover values exist as state, not as standalone color identities.
-          </p>
-          <p className="text-xs font-mono uppercase tracking-[0.16em] text-text2 mt-3">
-            Click any swatch or token row to copy its current value.
+          <p className="text-sm leading-relaxed text-text2">
+            Choose a scheme to preview the full portal. Dark display accents share the current red’s luminance target; light values and yellow-family actions deliberately deepen to preserve contrast.
           </p>
         </div>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          {accentNames.map((name) => {
+            const values = accentValues[name];
+            const active = accent === name;
+            return (
+              <button
+                key={name}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setAccent(name)}
+                className={`rounded-md border bg-surface p-3 text-left transition-colors ${active ? 'border-accent' : 'border-control-border hover:border-control-border-strong'}`}
+              >
+                <span className="mb-3 grid h-10 grid-cols-2 overflow-hidden rounded-sm border border-border" aria-hidden="true">
+                  <span style={{ backgroundColor: values.dark }} />
+                  <span style={{ backgroundColor: values.light }} />
+                </span>
+                <span className="block text-sm capitalize text-text">{name}</span>
+                <span className="mt-1 block font-mono text-[10px] uppercase tracking-wider text-text3">
+                  {active ? 'Active' : 'Preview'}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          {RED_ROLES.map((role) => (
-            <div key={role.title} className="bg-surface border border-border rounded-md p-6">
-              <div className="flex flex-col gap-2 mb-5">
-                <div className="flex items-center justify-between gap-4">
-                  <h4 className="text-lg font-heading font-medium text-text">
-                    {role.title}
-                  </h4>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-text3">
-                    {role.preview === 'action' ? 'filled controls' : 'signal only'}
-                  </span>
-                </div>
-                <p className="text-sm text-text2 leading-relaxed">
-                  {role.description}
-                </p>
-              </div>
+      <section className="mb-20" aria-labelledby="active-roles-heading">
+        <div className="mb-6">
+          <h3 id="active-roles-heading" className="mb-2 text-xl font-heading font-medium text-text">
+            Active {accent} roles
+          </h3>
+          <p className="max-w-3xl text-sm leading-relaxed text-text2">
+            Public utilities keep semantic names. The legacy red aliases resolve to these same active values for compatibility.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {accentRoles.map(({ token, label, purpose }) => (
+            <DSCopyButton
+              key={token}
+              value={`var(--color-${token})`}
+              className="w-full flex-col items-start gap-0 rounded-md border border-border bg-surface p-4 text-left"
+            >
+              <span
+                className="mb-4 h-16 w-full rounded-md border border-border"
+                style={{ backgroundColor: `var(--color-${token})` }}
+              />
+              <span className="text-sm text-text">{label}</span>
+              <span className="mt-1 font-mono text-[10px] text-accent">--color-{token}</span>
+              <span className="mt-2 text-xs leading-relaxed text-text3">{purpose}</span>
+            </DSCopyButton>
+          ))}
+        </div>
+      </section>
 
-              <div className="mb-5">
-                <DSCopyButton
-                  value={DARK_COLORS[role.token as keyof typeof DARK_COLORS]}
-                  className="w-full text-left flex-col items-start gap-0 rounded-md border border-border bg-surface2 p-3"
-                >
-                  <div
-                    className="w-full h-24 rounded-md border border-border mb-3"
-                    style={{ backgroundColor: `var(--color-${role.token})` }}
-                  />
-                  <div className="flex w-full items-start justify-between gap-4">
-                    <div>
-                      <span className="text-xs font-mono text-text block">
-                        {role.token}
-                      </span>
-                      <span className="text-[10px] font-mono text-text3 block">
-                        {`--color-${role.token}`}
-                      </span>
-                    </div>
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-mono uppercase tracking-[0.18em] ${
-                        role.preview === 'action'
-                          ? 'bg-red-solid text-white'
-                          : 'border border-red-border text-red'
-                      }`}
-                    >
-                      {role.contrastLabel}
-                    </span>
-                  </div>
-                </DSCopyButton>
-              </div>
-
-              <div className="rounded-md border border-border bg-surface2 p-3 mb-5">
-                <div className="flex items-center justify-between gap-4 mb-3">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-text3">
-                    Hover state
-                  </span>
-                  <span className="text-[10px] font-mono text-text3">
-                    {`--color-${role.hoverToken}`}
-                  </span>
-                </div>
-                <DSCopyButton
-                  value={DARK_COLORS[role.hoverToken as keyof typeof DARK_COLORS]}
-                  className="w-full text-left items-center justify-between gap-3"
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className="h-8 w-12 rounded-sm border border-border"
-                      style={{ backgroundColor: `var(--color-${role.hoverToken})` }}
-                    />
-                    <span className="text-xs font-mono text-text">
-                      {role.hoverToken}
-                    </span>
-                  </div>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-text3">
-                    state only
-                  </span>
-                </DSCopyButton>
-              </div>
-
-              <div className="rounded-md border border-border bg-bg p-4 mb-4">
-                {role.preview === 'accent' ? (
-                  <div className="space-y-4">
-                    <div
-                      className="h-px w-full"
-                      style={{ background: 'linear-gradient(90deg, var(--color-red), transparent)' }}
-                    />
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span className="inline-flex items-center rounded-full border border-red-border px-3 py-1 text-[11px] font-mono uppercase tracking-[0.18em] text-red">
-                        active cue
-                      </span>
-                      <span className="text-sm text-text2">
-                        Use the brighter red to point, not to shout.
-                      </span>
-                    </div>
-                    <p className="text-sm text-text2 leading-relaxed">
-                      <span className="text-text">Signal</span> and{' '}
-                      <span className="text-red">selective emphasis</span> should feel deliberate.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="flex flex-wrap gap-3">
-                      <span className="inline-flex items-center rounded-md bg-red-solid px-4 py-2 text-sm font-medium text-white">
-                        Launch Product
-                      </span>
-                      <span className="inline-flex items-center rounded-md bg-red-solid-hover px-4 py-2 text-sm font-medium text-white">
-                        Hover State
-                      </span>
-                    </div>
-                    <p className="text-sm text-text2 leading-relaxed">
-                      Filled red actions must preserve the brand while still reading clearly with white text.
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div className="rounded-md border border-border bg-surface2 px-3 py-3">
-                  <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">
-                    Use
-                  </span>
-                  <span className="text-text2 leading-relaxed">{role.usage}</span>
-                </div>
-                <div className="rounded-md border border-border bg-surface2 px-3 py-3">
-                  <span className="block text-[10px] font-mono uppercase tracking-[0.18em] text-text3 mb-1">
-                    Guardrail
-                  </span>
-                  <span className="text-text2 leading-relaxed">{role.note}</span>
-                </div>
-              </div>
-
-              <p className="mt-4 text-[11px] font-mono uppercase tracking-[0.16em] text-text3">
-                Contrast: {role.contrast}
-              </p>
+      <section className="mb-20 rounded-md border border-border bg-surface p-6" aria-labelledby="semantic-colors-heading">
+        <h3 id="semantic-colors-heading" className="mb-2 text-xl font-heading font-medium text-text">
+          Meaning does not follow the accent
+        </h3>
+        <p className="mb-6 max-w-3xl text-sm leading-relaxed text-text2">
+          A green brand accent does not turn errors green, and a red accent does not make routine information destructive.
+        </p>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+          {statusRoles.map(({ token, label }) => (
+            <div key={token} className="rounded-md border border-border bg-surface2 p-3">
+              <span className="mb-3 block h-8 rounded-sm" style={{ backgroundColor: `var(--color-${token})` }} />
+              <span className="text-xs text-text2">{label}</span>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Supporting Palette Grid */}
-      <div className="space-y-10 mb-20">
-        <div>
-          <h3 className="text-xl font-heading font-medium text-text mb-2">
-            Supporting Tokens
-          </h3>
-          <p className="text-sm text-text2 leading-relaxed max-w-3xl">
-            These tokens support the main palette. They matter, but they are not meant to compete
-            with the primary color roles above.
-          </p>
-        </div>
-        {groups.map((group) => (
-          <div key={group.label}>
-            <h3 className="text-xs font-mono uppercase tracking-[0.15em] text-text3 mb-4">
-              {group.label}
-            </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {group.tokens.map((token) => (
-                <DSCopyButton
-                  key={token}
-                  value={DARK_COLORS[token as keyof typeof DARK_COLORS]}
-                  className="w-full text-left flex-col items-start gap-0"
-                >
-                  <div
-                    className="w-full h-16 rounded-md border border-border mb-2"
-                    style={{ backgroundColor: `var(--color-${token})` }}
-                  />
-                  <span className="text-xs font-mono text-text block">
-                    {token}
-                  </span>
-                  <span className="text-[10px] font-mono text-text3 block">
-                    {`--color-${token}`}
-                  </span>
-                </DSCopyButton>
-              ))}
+      <section className="mb-20" aria-labelledby="theme-comparison-heading">
+        <h3 id="theme-comparison-heading" className="mb-6 text-xl font-heading font-medium text-text">
+          {accent} in dark and light
+        </h3>
+        <div data-visual="color-theme-comparison" className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="overflow-hidden rounded-lg border" style={{ backgroundColor: '#0A0A0B', borderColor: 'rgba(255,255,255,0.16)' }}>
+            <div className="border-b px-5 py-3" style={{ borderColor: 'rgba(255,255,255,0.16)', color: '#F5F7FA' }}>Dark mode</div>
+            <div className="space-y-5 p-5">
+              <p className="text-sm" style={{ color: selected.dark }}>Accent text remains readable on black foundations.</p>
+              <div className="flex flex-wrap gap-3">
+                <span className="rounded-md px-4 py-2 text-sm font-medium text-white" style={{ backgroundColor: selected.action }}>Primary action</span>
+                <span className="rounded-md px-4 py-2 text-sm font-medium text-white" style={{ backgroundColor: selected.actionHover }}>Hover state</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 font-mono text-[10px]" style={{ color: 'rgba(245,247,250,0.72)' }}>
+                <span>{selected.dark}</span><span>{selected.action}</span>
+              </div>
             </div>
           </div>
-        ))}
-      </div>
+          <div className="overflow-hidden rounded-lg border" style={{ backgroundColor: '#F2EDE6', borderColor: 'rgba(0,0,0,0.18)' }}>
+            <div className="border-b px-5 py-3" style={{ borderColor: 'rgba(0,0,0,0.18)', color: '#1D1D1F' }}>Light mode</div>
+            <div className="space-y-5 p-5">
+              <p className="text-sm" style={{ color: selected.light }}>Accent text deepens to remain readable on white foundations.</p>
+              <div className="flex flex-wrap gap-3">
+                <span className="rounded-md px-4 py-2 text-sm font-medium text-white" style={{ backgroundColor: selected.action }}>Primary action</span>
+                <span className="rounded-md px-4 py-2 text-sm font-medium text-white" style={{ backgroundColor: selected.actionHover }}>Hover state</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 font-mono text-[10px]" style={{ color: 'rgba(29,29,31,0.72)' }}>
+                <span>{selected.light}</span><span>{selected.action}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div className="bg-surface border border-border rounded-md p-8 mb-16">
-        <h3 className="text-xl font-heading font-medium text-text mb-4">
-          Accessibility Notes
+      <section className="rounded-md border border-border bg-surface p-8" aria-labelledby="contrast-contract-heading">
+        <h3 id="contrast-contract-heading" className="mb-4 text-xl font-heading font-medium text-text">
+          Accessibility contract
         </h3>
         <ul className="space-y-2">
           {accessibilityNotes.map((note) => (
-            <li key={note} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+            <li key={note} className="flex items-start gap-2 text-sm leading-relaxed text-text2">
+              <span className="mt-0.5 text-accent">-</span>
               <span>{note}</span>
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* Dark ↔ Light Comparison */}
-      <h3 className="text-xl font-heading font-medium text-text mb-6">
-        Dark &#8596; Light
-      </h3>
-      <div data-visual="color-theme-comparison" className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
-        {/* Dark Panel */}
-        <div className="rounded-lg overflow-hidden border border-border" style={{ backgroundColor: '#0A0A0B' }}>
-          <div className="px-5 py-3 border-b border-border">
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em]" style={{ color: 'rgba(245,247,250,0.62)' }}>
-              Dark Mode
-            </span>
-          </div>
-          <div className="p-5 space-y-2">
-            {Object.entries(DARK_COLORS).slice(0, 10).map(([name, value]) => (
-              <div key={name} className="flex items-center gap-3">
-                <div
-                  className="w-6 h-6 rounded-sm shrink-0 border border-border"
-                  style={{ backgroundColor: value }}
-                />
-                <span className="text-xs font-mono" style={{ color: 'rgba(245,247,250,0.62)' }}>
-                  {name}
-                </span>
-                <span className="text-[10px] font-mono ml-auto" style={{ color: 'rgba(245,247,250,0.36)' }}>
-                  {value}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Light Panel */}
-        <div className="rounded-lg overflow-hidden border" style={{ backgroundColor: '#F2EDE6', borderColor: 'rgba(0,0,0,0.10)' }}>
-          <div className="px-5 py-3" style={{ borderBottom: '1px solid rgba(0,0,0,0.10)' }}>
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em]" style={{ color: 'rgba(29,29,31,0.68)' }}>
-              Light Mode
-            </span>
-          </div>
-          <div className="p-5 space-y-2">
-            {Object.entries(LIGHT_COLORS).slice(0, 10).map(([name, value]) => (
-              <div key={name} className="flex items-center gap-3">
-                <div
-                  className="w-6 h-6 rounded-sm shrink-0"
-                  style={{ backgroundColor: value, border: '1px solid rgba(0,0,0,0.10)' }}
-                />
-                <span className="text-xs font-mono" style={{ color: 'rgba(29,29,31,0.68)' }}>
-                  {name}
-                </span>
-                <span className="text-[10px] font-mono ml-auto" style={{ color: 'rgba(29,29,31,0.32)' }}>
-                  {value}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Contrast Showcase */}
-      <h3 className="text-xl font-heading font-medium text-text mb-6">
-        In Context
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Dark card preview */}
-        <div className="rounded-lg overflow-hidden border border-border p-6" style={{ backgroundColor: '#101113' }}>
-          <h4 className="text-lg font-heading font-medium mb-2" style={{ color: '#F5F7FA' }}>
-            Card Heading
-          </h4>
-          <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(245,247,250,0.72)' }}>
-            Body text on a surface background. This demonstrates how the token hierarchy creates readable, layered interfaces.
-          </p>
-          <div className="flex gap-3">
-            <span className="px-4 py-1.5 text-sm font-medium rounded-md text-white" style={{ backgroundColor: '#D41010' }}>
-              Primary Action
-            </span>
-            <span className="px-4 py-1.5 text-sm font-medium rounded-md" style={{ border: '1px solid rgba(255,255,255,0.10)', color: 'rgba(245,247,250,0.72)' }}>
-              Secondary
-            </span>
-          </div>
-        </div>
-
-        {/* Light card preview */}
-        <div className="rounded-lg overflow-hidden p-6" style={{ backgroundColor: '#F7F3EC', border: '1px solid rgba(0,0,0,0.10)' }}>
-          <h4 className="text-lg font-heading font-medium mb-2" style={{ color: '#1D1D1F' }}>
-            Card Heading
-          </h4>
-          <p className="text-sm leading-relaxed mb-4" style={{ color: 'rgba(29,29,31,0.72)' }}>
-            Body text on a surface background. This demonstrates how the token hierarchy creates readable, layered interfaces.
-          </p>
-          <div className="flex gap-3">
-            <span className="px-4 py-1.5 text-sm font-medium rounded-md text-white" style={{ backgroundColor: '#D41010' }}>
-              Primary Action
-            </span>
-            <span className="px-4 py-1.5 text-sm font-medium rounded-md" style={{ border: '1px solid rgba(0,0,0,0.10)', color: 'rgba(29,29,31,0.72)' }}>
-              Secondary
-            </span>
-          </div>
-        </div>
-      </div>
+      </section>
     </DSSection>
   );
 }

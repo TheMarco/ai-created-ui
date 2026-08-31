@@ -34,6 +34,7 @@ Options:
   --config <path>   Read policy configuration from this JSON file.
   --json            Emit one machine-readable JSON result.
   --format json     Alias for --json.
+  --allow-empty     Permit a successful scan when no files match the targets.
   --help            Show this help.`;
 }
 
@@ -41,12 +42,17 @@ function parseArguments(argv) {
   const targets = [];
   let configPath = 'ai-created-ui.config.json';
   let json = false;
+  let allowEmpty = false;
 
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
     if (argument === '--help' || argument === '-h') return { help: true };
     if (argument === '--json') {
       json = true;
+      continue;
+    }
+    if (argument === '--allow-empty') {
+      allowEmpty = true;
       continue;
     }
     if (argument === '--format') {
@@ -68,7 +74,7 @@ function parseArguments(argv) {
     targets.push(argument);
   }
 
-  return { configPath, help: false, json, targets: targets.length > 0 ? targets : ['src'] };
+  return { allowEmpty, configPath, help: false, json, targets: targets.length > 0 ? targets : ['src'] };
 }
 
 function slash(value) {
@@ -277,24 +283,72 @@ function arbitraryValueDiagnostics(source, file, diagnostics) {
       excerpt: excerptAt(source, location.line),
     });
   }
+
+  const allowedRadiusValues = new Set(['none', 'sm', 'md', 'lg', 'full']);
+  const radiusDirections = new Set(['t', 'r', 'b', 'l', 'tl', 'tr', 'br', 'bl', 's', 'e', 'ss', 'se', 'es', 'ee', 'x', 'y']);
+  const radiusPattern = /(?<![a-z0-9_-])(?:[a-z0-9-]+:)*rounded(?:-[a-z0-9]+){0,2}(?![a-z0-9_-])/gi;
+
+  for (const match of source.matchAll(radiusPattern)) {
+    const className = match[0];
+    const utility = className.slice(className.lastIndexOf(':') + 1);
+    const parts = utility.split('-').slice(1);
+    if (parts.length === 0) continue;
+    const value = radiusDirections.has(parts[0]) ? parts[1] : parts[0];
+    if (value === undefined || allowedRadiusValues.has(value)) continue;
+    const location = locationAt(source, match.index);
+    diagnostics.push({
+      file,
+      ...location,
+      rule: 'no-arbitrary-style-value',
+      message: `Replace unapproved radius utility "${className}" with rounded-none, rounded-sm, rounded-md, rounded-lg, or rounded-full.`,
+      excerpt: excerptAt(source, location.line),
+    });
+  }
+
+  const shadowPattern = /(?<![a-z0-9_-])(?:[a-z0-9-]+:)*shadow(?:-[a-z0-9-]+)?(?![a-z0-9_[-])/gi;
+  const allowedShadowUtilities = new Set([
+    'shadow-none',
+    'shadow-elevation-low',
+    'shadow-elevation-medium',
+    'shadow-elevation-high',
+  ]);
+
+  for (const match of source.matchAll(shadowPattern)) {
+    const className = match[0];
+    const utility = className.slice(className.lastIndexOf(':') + 1);
+    if (allowedShadowUtilities.has(utility)) continue;
+    const location = locationAt(source, match.index);
+    diagnostics.push({
+      file,
+      ...location,
+      rule: 'no-arbitrary-style-value',
+      message: `Replace unapproved shadow utility "${className}" with shadow-none or shadow-elevation-low/medium/high.`,
+      excerpt: excerptAt(source, location.line),
+    });
+  }
 }
 
 function themePaletteDiagnostics(source, file, diagnostics) {
-  const candidatePattern = /(?:[a-z0-9-]+:)+(?:bg|text|border|ring|fill|stroke|from|via|to|outline|divide)-[a-z]+(?:-\d{2,3})?(?:\/[0-9]+)?/gi;
+  const candidatePattern = /(?<![a-z0-9_-])(?:[a-z0-9-]+:)*(?:bg|text|border|ring|fill|stroke|from|via|to|accent|caret|decoration|placeholder|outline|divide)-[a-z]+(?:-\d{2,3})?(?:\/[0-9]+)?(?![a-z0-9_/-])/gi;
 
   for (const match of source.matchAll(candidatePattern)) {
     const className = match[0];
-    const parts = className.split(':');
-    const utility = parts.pop();
-    if (!parts.some((part) => part === 'dark' || part === 'light')) continue;
-    const color = utility.replace(/^(?:bg|text|border|ring|fill|stroke|from|via|to|outline|divide)-/, '').split(/[-/]/)[0];
-    if (!RAW_PALETTES.has(color)) continue;
+    const utility = className.slice(className.lastIndexOf(':') + 1);
+    const colorValue = utility
+      .replace(/^(?:bg|text|border|ring|fill|stroke|from|via|to|accent|caret|decoration|placeholder|outline|divide)-/, '')
+      .split('/')[0];
+    const [palette, shade, ...rest] = colorValue.split('-');
+    const isStockPalette =
+      RAW_PALETTES.has(palette) &&
+      rest.length === 0 &&
+      ((palette === 'black' || palette === 'white') ? shade === undefined : /^\d{2,3}$/.test(shade ?? ''));
+    if (!isStockPalette) continue;
     const location = locationAt(source, match.index);
     diagnostics.push({
       file,
       ...location,
       rule: 'no-theme-palette',
-      message: `Replace theme-specific palette utility "${className}" with one semantic utility that resolves through theme tokens.`,
+      message: `Replace stock palette utility "${className}" with a semantic utility that resolves through design-system tokens.`,
       excerpt: excerptAt(source, location.line),
     });
   }
@@ -516,6 +570,16 @@ async function main() {
   }
 
   const diagnostics = [];
+  if (files.length === 0 && !options.allowEmpty) {
+    diagnostics.push({
+      file: '.',
+      line: 1,
+      column: 1,
+      rule: 'no-files-scanned',
+      message: 'No files matched the requested targets. Pass --allow-empty only when an empty scan is intentional.',
+      excerpt: '',
+    });
+  }
   for (const absoluteFile of files) {
     const source = await readFile(absoluteFile, 'utf8');
     const displayFile = slash(path.relative(cwd, absoluteFile));

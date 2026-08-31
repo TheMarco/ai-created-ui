@@ -200,6 +200,13 @@ ${manifest.canonicalSourcePrecedence.map(({ rank, scope, paths }) => `${rank}. $
 
 The generated manifest is a consumption projection only. It never overrides canonical source.
 
+## Appearance and accent contract
+
+- The supported \`accentNames\` are \`red\`, \`green\`, \`blue\`, \`orange\`, \`yellow\`, \`purple\`, \`teal\`, \`pink\`, and \`magenta\`. Accent-aware semantic tokens follow the selected accent; destructive and status tokens remain fixed.
+- The public appearance APIs are \`ThemeProvider\`, \`useTheme\`, \`accentNames\`, and the \`Accent\` type.
+- For a fixed product accent, use controlled mode with \`<ThemeProvider accent="blue">\`. \`onAccentChange\` reports requested changes in either mode, but controlled mode does not persist them. Render the matching \`data-accent\` on the root document before paint; do not initialize a fixed choice from saved preferences.
+- For a persisted user preference, use uncontrolled mode with \`<ThemeProvider defaultAccent="blue">\`. Resolution order is valid \`localStorage["accent"]\`, existing \`html[data-accent]\`, \`defaultAccent\`, then \`red\`. \`setAccent\` persists changes and calls \`onAccentChange\` in uncontrolled mode. Before hydration, server-render the fallback \`html[data-accent]\` that matches \`defaultAccent\` and replace it with any valid stored accent so the first paint matches the resolved preference.
+
 ## Machine resources
 
 - Full context: \`llms-full.txt\` or \`/llms-full.txt\`
@@ -260,7 +267,7 @@ ${templates.templates.map(renderTemplate).join('\n\n')}
 
 # Drift and exception policy
 
-Run \`npm run policy:check -- <paths...>\` in a consumer repository. The validator rejects raw color values, direct reference-token use, internal package imports, unsupported theme palettes, arbitrary style values, and detectable local primitive copies. A necessary exception must name one rule, narrowly scoped files, a concrete reason, an owner, and a future review date. Expired exceptions fail validation.
+Run \`npm run policy:check -- <paths...>\` in a consumer repository. The validator rejects raw color values and stock palette utilities, direct reference-token use, internal package imports, unapproved font, radius, shadow, and arbitrary color values, and detectable local primitive copies. A zero-file scan fails unless the caller explicitly passes \`--allow-empty\`. A necessary exception must name one rule, narrowly scoped files, a concrete reason, an owner, and a future review date. Expired exceptions fail validation.
 
 # Validation commands
 

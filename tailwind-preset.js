@@ -31,6 +31,8 @@ module.exports = {
         surface2: 'var(--color-surface2)',
         border: 'var(--color-border)',
         'border-strong': 'var(--color-border-strong)',
+        'control-border': 'var(--color-control-border)',
+        'control-border-strong': 'var(--color-control-border-strong)',
         text: 'var(--color-text)',
         text2: 'var(--color-text2)',
         text3: 'var(--color-text3)',
@@ -44,6 +46,11 @@ module.exports = {
           DEFAULT: 'var(--color-action-primary)',
           hover: 'var(--color-action-primary-hover)',
         },
+        'action-destructive': {
+          DEFAULT: 'var(--color-action-destructive)',
+          hover: 'var(--color-action-destructive-hover)',
+        },
+        'on-action': 'var(--color-on-action)',
         red: {
           DEFAULT: 'var(--color-red)',
           500: 'var(--color-red)',
@@ -93,11 +100,22 @@ module.exports = {
         base: 'var(--motion-base)',
         slow: 'var(--motion-slow)',
       },
+      boxShadow: {
+        'elevation-low': 'var(--shadow-elevation-low)',
+        'elevation-medium': 'var(--shadow-elevation-medium)',
+        'elevation-high': 'var(--shadow-elevation-high)',
+      },
+      zIndex: {
+        dropdown: 'var(--layer-dropdown)',
+        tooltip: 'var(--layer-tooltip)',
+        modal: 'var(--layer-modal)',
+      },
       animation: {
         'fade-in': 'fadeIn var(--motion-slow) ease-out',
         'slide-up': 'slideUp var(--motion-slow) ease-out',
         'scale-in': 'scaleIn var(--motion-slow) ease-out',
         'fade-in-up': 'fadeInUp var(--motion-slow) ease-out',
+        'tooltip-in': 'fadeIn var(--motion-fast) ease-out',
       },
       keyframes: {
         fadeIn: {

@@ -61,6 +61,27 @@ describe('AI agent context and query interface', () => {
     }
   });
 
+  it('publishes the compact appearance and accent contract for agents', () => {
+    const context = readFileSync(path.join(packageRoot, 'llms.txt'), 'utf8');
+
+    for (const requiredText of [
+      '## Appearance and accent contract',
+      'The supported `accentNames` are `red`, `green`, `blue`, `orange`, `yellow`, `purple`, `teal`, `pink`, and `magenta`.',
+      'destructive and status tokens remain fixed',
+      '`ThemeProvider`, `useTheme`, `accentNames`, and the `Accent` type',
+      '<ThemeProvider accent="blue">',
+      '`onAccentChange` reports requested changes in either mode, but controlled mode does not persist them',
+      '<ThemeProvider defaultAccent="blue">',
+      '`localStorage["accent"]`, existing `html[data-accent]`, `defaultAccent`, then `red`',
+      '`setAccent` persists changes and calls `onAccentChange` in uncontrolled mode',
+      'Render the matching `data-accent` on the root document before paint',
+      'Before hydration, server-render the fallback `html[data-accent]` that matches `defaultAccent`',
+      'replace it with any valid stored accent',
+    ]) {
+      expect(context).toContain(requiredText);
+    }
+  });
+
   it('returns complete component and template contracts as JSON', () => {
     const button = runAgent('component', 'button');
     const component = button.component as Record<string, unknown>;

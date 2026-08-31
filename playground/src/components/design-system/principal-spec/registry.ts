@@ -6,14 +6,14 @@ export const guidelineSpecs: GuidelineSpec[] = [
     index: '01',
     title: 'Foundations',
     shortTitle: 'Foundations',
-    summary: 'The visual, spatial, typographic, motion, and media decisions that every AI-Created interface inherits.',
+    summary: 'The visual, spatial, typographic, motion, media, and accessible accent-scheme decisions that every AI-Created interface inherits.',
     status: 'canonical',
     owner: 'Design Systems',
     lastReviewed: 'August 2026',
     reviewCycle: 'Quarterly and before any token release',
     sourceOfTruth: 'styles/tokens.css and tailwind-preset.js',
     outcomes: [
-      'A product can switch themes without local color overrides.',
+      'A product can switch themes and accent schemes without local color overrides.',
       'Design decisions map to named semantic tokens before component styling.',
       'Layouts remain readable from 320px through the 1400px container maximum.',
     ],
@@ -38,7 +38,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
             title: 'Token rules',
             items: [
               { title: 'Name the purpose', description: 'A token should explain why the value exists, not what its current hex value resembles.' },
-              { title: 'Change both modes together', description: 'Every semantic color change is reviewed in light and dark mode, including focus, selection, and feedback surfaces.' },
+              { title: 'Change every scheme together', description: 'Every accent role is tuned and reviewed across all nine schemes and light/dark mode, including focus and selection; feedback semantics remain stable.' },
               { title: 'Avoid product aliases', description: 'Do not create a new token for one screen. Promote a value only after a repeated semantic need is demonstrated.' },
               { title: 'Keep compatibility aliases secondary', description: 'Existing red aliases remain supported public contracts. New work can prefer accent and action names when intent is unambiguous.' },
             ],
@@ -48,7 +48,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
       {
         id: 'color',
         title: 'Color and contrast',
-        summary: 'One red accent establishes action hierarchy. Neutral surfaces and semantic feedback colors carry the rest of the system.',
+        summary: 'Accent schemes, committed actions, destructive actions, neutral surfaces, and semantic feedback each have an explicit role.',
         blocks: [
           {
             type: 'tokens',
@@ -61,6 +61,8 @@ export const guidelineSpecs: GuidelineSpec[] = [
               { name: 'Text', value: 'Primary content', purpose: 'Headings, labels, and critical information.', cssVariable: '--color-text' },
               { name: 'Accent', value: 'Identity', purpose: 'Links, emphasis, and non-destructive branded actions.', cssVariable: '--color-accent' },
               { name: 'Action primary', value: 'Committed action', purpose: 'High-emphasis action fill.', cssVariable: '--color-action-primary' },
+              { name: 'Action destructive', value: 'Consequential action', purpose: 'Destructive action fill, distinct from ordinary commitment.', cssVariable: '--color-action-destructive' },
+              { name: 'Control border', value: 'Interactive boundary', purpose: 'Contrast-safe boundaries for inputs and outlined controls.', cssVariable: '--color-control-border' },
               { name: 'Success', value: 'Positive state', purpose: 'Completed or healthy outcomes only.', cssVariable: '--color-success' },
               { name: 'Warning', value: 'Attention state', purpose: 'Recoverable risk or pending attention.', cssVariable: '--color-warning' },
               { name: 'Info', value: 'Neutral state', purpose: 'Contextual or process information.', cssVariable: '--color-info' },
@@ -72,7 +74,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
             title: 'Color acceptance',
             groups: [
               { title: 'Required', items: ['Body text meets 4.5:1 contrast.', 'Large text and icons conveying meaning meet 3:1 contrast.', 'Focus indicators meet 3:1 against adjacent colors.', 'Meaning never relies on color alone.'] },
-              { title: 'Avoid', items: ['Raw reference colors in product code.', 'Red decoration competing with primary actions.', 'Tinted text on tinted surfaces without contrast validation.', 'Theme-specific assets without a paired alternative.'] },
+              { title: 'Avoid', items: ['Raw reference colors in product code.', 'Accent decoration competing with primary actions.', 'Tinted text on tinted surfaces without contrast validation.', 'Theme-specific assets without a paired alternative.', 'Letting accent schemes change destructive or feedback meanings.'] },
             ],
           },
         ],

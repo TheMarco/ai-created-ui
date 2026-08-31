@@ -405,7 +405,7 @@ export default function ProductPatternsSection({ onInView }: ProductPatternsSect
         <ul className="space-y-2">
           {patternRules.map((rule) => (
             <li key={rule} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+              <span className="text-accent mt-0.5">-</span>
               <span>{rule}</span>
             </li>
           ))}

@@ -10,16 +10,10 @@ import {
   TransitionChild,
 } from '@headlessui/react';
 import { cn } from '../lib/utils';
+import { overlaySizeClasses, type OverlaySize } from '../lib/overlay';
 import { X } from 'lucide-react';
 
-export type DialogSize = 'sm' | 'md' | 'lg' | 'xl';
-
-const sizeClasses: Record<DialogSize, string> = {
-  sm: 'max-w-sm',
-  md: 'max-w-lg',
-  lg: 'max-w-2xl',
-  xl: 'max-w-4xl',
-};
+export type DialogSize = OverlaySize;
 
 export interface DialogProps {
   open: boolean;
@@ -42,7 +36,7 @@ export default function Dialog({
 }: DialogProps) {
   return (
     <Transition show={open} as={Fragment}>
-      <HeadlessDialog onClose={onClose} className="relative z-50">
+      <HeadlessDialog onClose={onClose} className="relative z-modal">
         <TransitionChild
           as={Fragment}
           enter="ease-out duration-200"
@@ -67,8 +61,8 @@ export default function Dialog({
           >
             <DialogPanel
               className={cn(
-                'w-full rounded-md border border-border bg-surface shadow-xl',
-                sizeClasses[size],
+                'w-full rounded-md border border-border bg-surface shadow-elevation-high',
+                overlaySizeClasses[size],
                 className
               )}
             >

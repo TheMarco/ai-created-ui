@@ -211,7 +211,7 @@ export default function TypographySection({ onInView }: TypographySectionProps) 
         <ul className="space-y-2">
           {accessibilityNotes.map((note) => (
             <li key={note} className="flex items-start gap-2 text-sm text-text2 leading-relaxed">
-              <span className="text-red mt-0.5">-</span>
+              <span className="text-accent mt-0.5">-</span>
               <span>{note}</span>
             </li>
           ))}

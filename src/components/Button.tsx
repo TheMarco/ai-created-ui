@@ -22,13 +22,13 @@ export interface ButtonStyleOptions {
 }
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: 'bg-red-solid text-white hover:bg-red-solid-hover',
-  destructive: 'bg-red-solid text-white hover:bg-red-solid-hover',
-  secondary: 'border border-border bg-transparent text-text2 hover:text-text hover:border-border-strong',
+  primary: 'bg-action-primary text-on-action hover:bg-action-primary-hover',
+  destructive: 'bg-action-destructive text-on-action hover:bg-action-destructive-hover',
+  secondary: 'border border-control-border bg-transparent text-text2 hover:text-text hover:border-control-border-strong',
   ghost: 'text-text2 hover:text-text',
-  filter: 'border border-border bg-surface text-text2 hover:text-text hover:border-border-strong',
-  'filter-active': 'border border-red-border bg-surface2 text-text',
-  icon: 'border border-transparent text-text2 hover:text-text hover:border-border-strong',
+  filter: 'border border-control-border bg-surface text-text2 hover:text-text hover:border-control-border-strong',
+  'filter-active': 'border border-accent bg-surface2 text-text',
+  icon: 'border border-transparent text-text2 hover:text-text hover:border-control-border-strong',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -37,7 +37,7 @@ const sizeClasses: Record<ButtonSize, string> = {
   md: 'px-5 py-2 text-sm',
   lg: 'px-6 py-3 text-sm',
   xl: 'px-8 py-3 text-sm',
-  icon: 'h-9 w-9 text-sm',
+  icon: 'h-11 w-11 text-sm',
 };
 
 export function buttonStyles({

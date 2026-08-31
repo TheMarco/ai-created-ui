@@ -24,7 +24,7 @@ export interface SurfaceStyleOptions {
 const variantClasses: Record<SurfaceVariant, string> = {
   default: 'bg-surface border-border',
   muted: 'bg-surface2 border-border',
-  accent: 'bg-surface border-red-border',
+  accent: 'bg-surface border-accent-border',
   inset: 'bg-bg border-border',
   success: 'bg-success-surface border-success-border',
   warning: 'bg-warning-surface border-warning-border',

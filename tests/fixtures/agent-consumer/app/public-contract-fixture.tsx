@@ -31,6 +31,7 @@ import {
   ThemeToggle,
   Toggle,
   Tooltip,
+  accentNames,
   borderHoverMotion,
   buttonStyles,
   cn,
@@ -51,6 +52,7 @@ import {
   useTheme,
 } from '@ai-created/ui';
 import type {
+  Accent,
   BadgeProps,
   ButtonProps,
   CheckboxProps,
@@ -86,6 +88,7 @@ import type {
 } from '@ai-created/ui';
 
 export type PublicPropsContract = [
+  Accent,
   BadgeProps,
   ButtonProps,
   CheckboxProps,
@@ -154,7 +157,7 @@ export default function PublicContractFixture() {
   const [frequency, setFrequency] = useState('daily');
   const [sliderValue, setSliderValue] = useState(40);
   const [activeTab, setActiveTab] = useState<'overview' | 'activity'>('overview');
-  const { theme } = useTheme();
+  const { accent, setAccent, theme } = useTheme();
   const overviewPanel = useTabPanelProps('overview', activeTab, 'fixture-tabs');
   const activityPanel = useTabPanelProps('activity', activeTab, 'fixture-tabs');
   const showPrimitiveModal = false;
@@ -163,6 +166,7 @@ export default function PublicContractFixture() {
     <main
       className="min-h-screen bg-bg px-5 py-10 text-text md:px-8"
       data-contract={String(publicStyleContract.length)}
+      data-accent={accent}
       data-theme={theme}
     >
       <div className="mx-auto max-w-8xl space-y-8">
@@ -171,7 +175,20 @@ export default function PublicContractFixture() {
             <Badge variant="info">Consumer fixture</Badge>
             <h1 className="mt-3 font-heading text-3xl text-text">Public package contract</h1>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <label>
+              <span className="sr-only">Accent color</span>
+              <select
+                aria-label="Accent color"
+                className="h-11 rounded-md border border-control-border bg-surface px-3 text-sm text-text"
+                value={accent}
+                onChange={(event) => setAccent(event.target.value as Accent)}
+              >
+                {accentNames.map((name) => <option key={name} value={name}>{name}</option>)}
+              </select>
+            </label>
+            <ThemeToggle />
+          </div>
         </header>
 
         <Notice variant="success" title="Token CSS loaded">All examples use semantic utilities from the shared preset.</Notice>

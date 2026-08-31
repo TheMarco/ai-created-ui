@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { ChevronDown, ChevronRight, Copy, Check } from 'lucide-react';
 import Notice from './Notice';
 import Button from './Button';
@@ -19,8 +19,11 @@ export default function ErrorReport({
   timestamp,
 }: ErrorReportProps) {
   const [expanded, setExpanded] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<'idle' | 'copied' | 'error'>('idle');
+  const copyResetTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const detailsId = useId();
+
+  useEffect(() => () => clearTimeout(copyResetTimerRef.current), []);
 
   const safeUrl = typeof window !== 'undefined'
     ? `${window.location.origin}${window.location.pathname}`
@@ -34,9 +37,14 @@ export default function ErrorReport({
   ].filter(Boolean).join('\n');
 
   async function handleCopy() {
-    await navigator.clipboard.writeText(debugInfo);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(debugInfo);
+      setCopyStatus('copied');
+    } catch {
+      setCopyStatus('error');
+    }
+    clearTimeout(copyResetTimerRef.current);
+    copyResetTimerRef.current = setTimeout(() => setCopyStatus('idle'), 2000);
   }
 
   return (
@@ -65,10 +73,10 @@ export default function ErrorReport({
                   {debugInfo}
                 </pre>
                 <Button variant="ghost" size="sm" onClick={handleCopy}>
-                  {copied ? (
-                    <><Check className="h-3 w-3" aria-hidden="true" /> Copied</>
+                  {copyStatus === 'copied' ? (
+                    <><Check className="h-3 w-3" aria-hidden="true" /> <span aria-live="polite">Copied</span></>
                   ) : (
-                    <><Copy className="h-3 w-3" aria-hidden="true" /> Copy debug info</>
+                    <><Copy className="h-3 w-3" aria-hidden="true" /> <span aria-live="polite">{copyStatus === 'error' ? 'Copy failed' : 'Copy debug info'}</span></>
                   )}
                 </Button>
               </div>

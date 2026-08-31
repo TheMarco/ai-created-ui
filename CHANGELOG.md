@@ -4,6 +4,27 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-08-30
+
+### Added
+
+- Nine persisted, theme-aware accent schemes: red, green, blue, orange, yellow, purple, teal, pink, and magenta.
+- `ThemeProvider` now supports controlled accents (`accent`/`onAccentChange`) and uncontrolled defaults (`defaultAccent`), with documented storage precedence and fixed-accent setup.
+- Consumer-visible accessibility tuning: light red and light status colors are darker for tinted-surface contrast, and legacy `red*` semantic aliases now follow the active accent family.
+- Browser-enforced dark and light contrast contracts for focus rings, status text, control boundaries, accent text, and filled actions.
+- Semantic destructive-action, on-action, control-boundary, elevation, and overlay-layer tokens.
+
+### Changed
+
+- Dialog and Modal now share one size scale, icon-only actions use 44px targets, and Tooltip portals with viewport flip/clamp positioning.
+- Consumer setup now documents the required type root, fonts, pre-hydration theme initialization, and native color-scheme behavior.
+
+### Fixed
+
+- Design-policy validation now catches bare stock palettes and unapproved named radii/shadows and fails accidental zero-file scans.
+- Light-mode focus and semantic status colors now meet their applicable contrast contracts, and interactive boundaries no longer reuse passive card borders.
+- Primary and destructive actions use distinct treatments, ordinary confirmations regain a primary affordance, Tooltip supports hover travel and Escape dismissal, and theme transition overrides are removed after completion.
+
 ## [1.2.2] - 2026-08-30
 
 ### Added

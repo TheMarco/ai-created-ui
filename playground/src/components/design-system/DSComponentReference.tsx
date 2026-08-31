@@ -8,7 +8,7 @@ function GuidanceList({ items }: { items: string[] }) {
     <ul className="space-y-2">
       {items.map((item) => (
         <li key={item} className="flex gap-2 text-sm leading-relaxed text-text2">
-          <span className="mt-0.5 text-red" aria-hidden="true">-</span>
+          <span className="mt-0.5 text-accent" aria-hidden="true">-</span>
           <span>{item}</span>
         </li>
       ))}

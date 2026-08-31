@@ -38,6 +38,32 @@ test('loads, switches theme, navigates sections, and shows focus', async ({ page
   await expect(buttonReference.getByRole('cell', { name: 'variant', exact: true })).toBeVisible();
 });
 
+test('switches and persists the accent scheme', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('html[data-playground-hydrated="true"]').waitFor();
+  await expect(page.getByRole('heading', { name: 'Design once. Build without drift.', level: 1 })).toBeVisible();
+
+  const accentPicker = page.getByRole('banner').getByRole('combobox', { name: 'Accent color' });
+  await expect(accentPicker).toHaveValue('red');
+  await accentPicker.selectOption('blue');
+  await expect(page.locator('html')).toHaveAttribute('data-accent', 'blue');
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('accent'))).toBe('blue');
+  await expect.poll(() => page.evaluate(() => {
+    const probe = document.createElement('span');
+    probe.style.color = 'var(--color-accent)';
+    document.body.append(probe);
+    const color = getComputedStyle(probe).color;
+    probe.remove();
+    return color;
+  })).toBe('rgb(38, 140, 254)');
+
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-accent', 'blue');
+  await expect(
+    page.getByRole('banner').getByRole('combobox', { name: 'Accent color' })
+  ).toHaveValue('blue');
+});
+
 test('browses and inspects a detailed component specification', async ({ page }) => {
   await page.goto('/components');
 
@@ -208,5 +234,12 @@ test('exercises the major form, selection, overlay, and disclosure flows', async
 
   const tooltipTrigger = page.locator('[data-demo="tooltip"]').getByRole('button', { name: 'Top' });
   await tooltipTrigger.hover();
-  await expect(page.getByRole('tooltip')).toHaveText('Tooltip on top');
+  const tooltip = page.getByRole('tooltip');
+  await expect(tooltip).toHaveText('Tooltip on top');
+  await expect(tooltip).toHaveCSS('position', 'fixed');
+  await tooltip.hover();
+  await page.waitForTimeout(150);
+  await expect(tooltip).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(tooltip).toHaveCount(0);
 });

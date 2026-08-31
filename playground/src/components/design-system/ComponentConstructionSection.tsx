@@ -7,7 +7,7 @@ function List({ items }: { items: string[] }) {
     <ul className="space-y-2">
       {items.map((item) => (
         <li key={item} className="flex gap-3 text-xs leading-relaxed text-text2">
-          <span className="text-red" aria-hidden="true">-</span>
+          <span className="text-accent" aria-hidden="true">-</span>
           <span>{item}</span>
         </li>
       ))}
@@ -116,7 +116,7 @@ export default function ComponentConstructionSection({ spec }: { spec: Component
                 <tr key={property.name} className="border-t border-border align-top">
                   <td className="px-4 py-4 font-medium text-text">
                     {property.label}
-                    {property.required ? <span className="ml-2 font-mono text-[9px] uppercase text-red">Required</span> : null}
+                    {property.required ? <span className="ml-2 font-mono text-[9px] uppercase text-accent">Required</span> : null}
                   </td>
                   <td className="px-4 py-4 font-mono text-xs text-text2">{property.type}</td>
                   <td className="px-4 py-4 font-mono text-xs text-text2">{property.defaultValue === null ? 'None' : String(property.defaultValue)}</td>
@@ -140,7 +140,7 @@ export default function ComponentConstructionSection({ spec }: { spec: Component
                   <span className="font-mono text-[9px] uppercase tracking-wider text-text3">{asset.kind}{asset.required ? ' / required' : ''}</span>
                 </div>
                 <p className="mt-2 text-xs leading-relaxed text-text2">{asset.description}</p>
-                <code className="mt-2 block break-words font-mono text-[10px] text-red">{asset.codeMapping}</code>
+                <code className="mt-2 block break-words font-mono text-[10px] text-accent">{asset.codeMapping}</code>
               </div>
             ))}
           </div>
@@ -153,7 +153,7 @@ export default function ComponentConstructionSection({ spec }: { spec: Component
               <div key={limit.target} className="py-4">
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h4 className="font-medium text-text">{limit.target}</h4>
-                  <span className="font-mono text-[10px] text-red">{limit.limit}</span>
+                  <span className="font-mono text-[10px] text-accent">{limit.limit}</span>
                 </div>
                 <p className="mt-2 text-xs leading-relaxed text-text2"><strong className="font-medium text-text">Overflow:</strong> {limit.overflowBehavior}</p>
                 <p className="mt-1 text-xs leading-relaxed text-text3">{limit.rationale}</p>
@@ -176,7 +176,7 @@ export default function ComponentConstructionSection({ spec }: { spec: Component
         <article className="bg-surface p-6">
           <h3 className="font-heading text-lg font-medium text-text">Responsive behavior</h3>
           <p className="mt-4 text-sm leading-relaxed text-text2">{construction.responsive.strategy}</p>
-          <p className="mt-4 font-mono text-[10px] text-red">{construction.responsive.breakpoints.join(' / ')}</p>
+          <p className="mt-4 font-mono text-[10px] text-accent">{construction.responsive.breakpoints.join(' / ')}</p>
           <div className="mt-5"><List items={construction.responsive.behavior} /></div>
         </article>
         <article className="bg-surface p-6">
@@ -185,12 +185,12 @@ export default function ComponentConstructionSection({ spec }: { spec: Component
         </article>
       </div>
 
-      <div className="mt-10 border-l-2 border-red-border pl-6">
+      <div className="mt-10 border-l-2 border-accent-border pl-6">
         <Label>Accountable owner</Label>
         <p className="mt-2 font-heading text-lg text-text">{construction.governance.ownerRole}</p>
         <p className="mt-2 font-mono text-[10px] text-text3">Canonical source: {construction.governance.canonicalSource}</p>
         <div className="mt-5"><List items={construction.governance.changePolicy} /></div>
-        <Link href="/guidelines/construction" className="mt-6 inline-flex items-center gap-2 text-sm text-red transition-colors hover:text-red-hover">
+                <Link href="/guidelines/construction" className="mt-6 inline-flex items-center gap-2 text-sm text-accent transition-colors hover:text-accent-hover">
           Read the system construction standard <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Link>
       </div>

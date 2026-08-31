@@ -40,7 +40,7 @@ export default function DSSidebar({ activeSection, activeIndex, progress }: DSSi
         </div>
         <div className="h-1 rounded-full bg-surface2 overflow-hidden">
           <div
-            className="h-full rounded-full bg-red-solid transition-[width] duration-300"
+            className="h-full rounded-full bg-action-primary transition-[width] duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -53,7 +53,7 @@ export default function DSSidebar({ activeSection, activeIndex, progress }: DSSi
             href={`#${section.id}`}
             className={`block py-1.5 pl-4 text-sm transition-colors duration-200 border-l-2 ${
               isActive
-                ? 'border-red text-text font-medium'
+                ? 'border-accent text-text font-medium'
                 : 'border-transparent text-text2 hover:text-text'
             }`}
             initial={{ opacity: 0, x: -10 }}

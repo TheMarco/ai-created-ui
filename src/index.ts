@@ -48,8 +48,8 @@ export { default as Tooltip } from './components/Tooltip';
 export type { TooltipProps, TooltipPosition } from './components/Tooltip';
 export { default as ThemedHeroImage } from './components/ThemedHeroImage';
 export type { ThemedHeroImageProps } from './components/ThemedHeroImage';
-export { ThemeProvider, useTheme } from './components/ThemeProvider';
-export type { Theme, ThemeContextValue, ThemeProviderProps } from './components/ThemeProvider';
+export { accentNames, ThemeProvider, useTheme } from './components/ThemeProvider';
+export type { Accent, Theme, ThemeContextValue, ThemeProviderProps } from './components/ThemeProvider';
 export { default as ThemeToggle } from './components/ThemeToggle';
 export {
   FieldGroup,

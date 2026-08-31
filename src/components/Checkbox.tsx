@@ -20,7 +20,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
     <label
       htmlFor={id}
       className={cn(
-        'flex items-center gap-2.5 cursor-pointer',
+        'group flex items-center gap-2.5 cursor-pointer',
         disabled && 'cursor-not-allowed',
         className
       )}
@@ -42,12 +42,12 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
             'peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-focus peer-focus-visible:outline-offset-[3px]',
             disabled && 'cursor-not-allowed opacity-50',
             checked
-              ? 'border-red-solid bg-red-solid'
-              : 'border-border-strong bg-transparent hover:border-text3',
-            !disabled && !checked && 'group-hover:border-text3'
+              ? 'border-action-primary bg-action-primary'
+              : 'border-control-border bg-transparent',
+            !disabled && !checked && 'group-hover:border-control-border-strong'
           )}
         >
-          {checked && <Check className="h-3 w-3 text-white" strokeWidth={3} />}
+          {checked && <Check className="h-3 w-3 text-on-action" strokeWidth={3} />}
         </span>
       </span>
       <span

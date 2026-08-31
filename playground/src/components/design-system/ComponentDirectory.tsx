@@ -79,7 +79,7 @@ export default function ComponentDirectory({ items }: { items: ComponentDirector
             if (event.key === 'Escape') setQuery('');
           }}
           placeholder="Search by component, behavior, or state"
-          className="w-full rounded-md border border-border bg-surface py-3 pl-11 pr-24 text-sm text-text placeholder:text-text3 transition-colors hover:border-border-strong focus:border-red-border"
+          className="w-full rounded-md border border-border bg-surface py-3 pl-11 pr-24 text-sm text-text placeholder:text-text3 transition-colors hover:border-border-strong focus:border-accent-border"
         />
         {hasQuery ? (
           <button
@@ -121,7 +121,7 @@ export default function ComponentDirectory({ items }: { items: ComponentDirector
                   className="group flex min-h-32 items-start justify-between gap-6 rounded-md border border-border bg-surface p-5 transition-colors hover:border-border-strong focus-visible:border-border-strong"
                 >
                   <div className="min-w-0">
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-red">{item.category}</p>
+                    <p className="font-mono text-[10px] uppercase tracking-wider text-accent">{item.category}</p>
                     <h3 className="mt-2 font-heading text-lg font-medium text-text">{item.name}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-text2">{item.purpose}</p>
                   </div>

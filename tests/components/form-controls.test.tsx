@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
-import Button from '../../src/components/Button';
+import Button, { buttonStyles } from '../../src/components/Button';
 import Checkbox from '../../src/components/Checkbox';
 import RadioGroup from '../../src/components/RadioGroup';
 import Slider from '../../src/components/Slider';
@@ -40,6 +40,13 @@ describe('Button', () => {
   it('allows consumers to opt into native submit behavior', () => {
     render(<Button type="submit">Create project</Button>);
     expect(screen.getByRole('button', { name: 'Create project' })).toHaveAttribute('type', 'submit');
+  });
+
+  it('keeps primary and destructive actions on distinct semantic treatments', () => {
+    expect(buttonStyles({ variant: 'primary' })).toContain('bg-action-primary');
+    expect(buttonStyles({ variant: 'destructive' })).toContain('bg-action-destructive');
+    expect(buttonStyles({ variant: 'primary' })).not.toBe(buttonStyles({ variant: 'destructive' }));
+    expect(buttonStyles({ variant: 'icon', size: 'icon' })).toContain('h-11');
   });
 });
 
