@@ -107,8 +107,17 @@ test('captures typography and spacing contracts', async ({ page }) => {
 
   for (const family of ['instrument-serif', 'space-grotesk']) {
     const typography = page.locator(`[data-visual="font-family-${family}"]`);
-    await typography.scrollIntoViewIfNeeded();
-    await expect(typography).toHaveScreenshot(`font-family-${family}-dark.png`, {
+    await typography.evaluate((element) => element.scrollIntoView({ block: 'center' }));
+    const box = await typography.boundingBox();
+    if (!box) throw new Error(`The ${family} visual contract is not visible.`);
+
+    await expect(page).toHaveScreenshot(`font-family-${family}-dark.png`, {
+      clip: {
+        x: Math.floor(box.x),
+        y: Math.floor(box.y),
+        width: 870,
+        height: family === 'instrument-serif' ? 397 : 437,
+      },
       maxDiffPixelRatio: 0.04,
     });
   }

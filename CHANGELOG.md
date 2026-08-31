@@ -4,6 +4,12 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-08-30
+
+### Fixed
+
+- Visual regression coverage now records the intentional control-boundary and semantic-feedback contrast changes and stabilizes typography specimen height across macOS and Linux Chromium.
+
 ## [1.3.0] - 2026-08-30
 
 ### Added
