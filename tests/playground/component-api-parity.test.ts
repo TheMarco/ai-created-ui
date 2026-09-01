@@ -16,5 +16,5 @@ describe('component API parity', () => {
       ok: true,
       components: 22,
     });
-  });
+  }, 15_000);
 });

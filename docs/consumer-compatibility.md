@@ -1,57 +1,60 @@
 # Consumer compatibility contract
 
-`@ai-created/ui` is compatible only when its release update passes in every supported consumer. The compatibility mechanism is the release update pull request in each consumer repository.
+This contract applies to any application that installs `@ai-created/ui`. A consumer owns its repository, update cadence, continuous integration, deployment, and final adoption decision. The design-system repository publishes immutable releases and compatibility guidance; it does not need to know that the consumer exists.
 
-## Supported consumers
+## Version boundary
 
-| Consumer | Canonical repository | Install | TypeScript | Build | Relevant tests |
-|---|---|---|---|---|---|
-| ai-created.com | `TheMarco/ai-created.com` | `npm ci --ignore-scripts`, `npm rebuild` | `npm run typecheck` | `npm run build` | `npm run lint`, including its design-system rules |
-| Human, Actually | `TheMarco/human-actually` | `npm ci --ignore-scripts`, `npm rebuild` | `npm run typecheck` | `npm run build:verify` | `npm run lint` and `npm run test:run` |
+Install an explicit public Git tag:
 
-Human, Actually's `build:verify` generates Prisma Client and runs `next build`. It never runs `prisma db push`, migrations, workers, deployments, or any command that can write application data. Its CI database URLs point to an unreachable local address and are present only because Prisma validates their shape.
+```json
+"@ai-created/ui": "git+https://github.com/TheMarco/ai-created-ui.git#vX.Y.Z"
+```
+
+Never install a moving `main` branch. An existing application remains on its installed release until its owner updates both the manifest and lockfile. Publishing a new release cannot silently change a deployed consumer.
 
 ## Release update flow
 
-1. `@ai-created/ui` publishes an immutable `vX.Y.Z` tag and GitHub Release.
-2. On its configured schedule, Renovate opens a consumer pull request that updates both `package.json` and `package-lock.json`. An operator can request immediate adoption through the two-step Dependency Dashboard flow documented in `docs/consumer-update-automation.md`.
-3. The consumer installs the public HTTPS Git dependency with lifecycle scripts disabled, then runs lifecycle scripts without any repository credential.
-4. The consumer's registered compatibility check runs its complete `validate:ui-update` command. In both current consumers, this is the **Validate application** job in the **Quality** workflow.
-5. A reviewer distinguishes that required compatibility result from provider previews, checks the release notes and visible or behavioral impact, then merges manually.
-6. The consumer's normal provider deploys the merged `main` branch and the product owner verifies the affected production workflow.
-7. The scheduled currency workflow returns to green after the release tag is adopted.
+1. `@ai-created/ui` publishes an immutable `vX.Y.Z` tag and matching GitHub Release.
+2. An optional dependency updater, such as Renovate, detects the tag and proposes a pull request. Manual updates are also supported.
+3. The update changes the consumer manifest and lockfile to the same release and commit.
+4. Consumer-owned compatibility checks run in the consumer repository.
+5. A reviewer reads the release and migration notes, checks visible or behavioral impact, and merges manually.
+6. The consumer's normal deployment system deploys the merged change.
+7. The consumer owner smoke-tests the affected deployed workflow.
 
-PATCH and MINOR releases still require green checks and review. MAJOR releases require migration notes, a separate pull request, and explicit approval. Automerge remains disabled for every design-system update.
+Automerge should remain disabled. PATCH and MINOR releases still require green checks and review. MAJOR releases require a separate pull request and explicit migration review.
 
-The update is complete only when the manifest and lockfile resolve the same release, the registered compatibility check is green, the PR is merged, the production deployment succeeds, and the affected workflow has been verified. A green Vercel preview or other provider status does not replace `validate:ui-update`. A green currency monitor proves version freshness, not product behavior. The current consumer `main` branches do not mechanically require the compatibility check through branch protection, so reviewers enforce it as release policy.
+## Required consumer checks
 
-## Public repository installation
+Every consumer chooses commands appropriate to its stack, but its update pull request should prove all applicable parts of this contract:
 
-Consumers install an explicit public HTTPS Git tag. No `AI_CREATED_UI_READ_TOKEN`, SSH deploy key, or cross-repository credential is required.
+- dependencies install from the committed lockfile without needing access to private design-system source;
+- the application typechecks and lints;
+- relevant unit, integration, and accessibility tests pass;
+- the design-policy validator scans the application source and reports no unapproved new drift;
+- a production-equivalent build completes without deployments, migrations, or external writes;
+- visible changes are reviewed at relevant breakpoints and with keyboard interaction when applicable.
 
-The workflow still uses `npm ci --ignore-scripts` before `npm rebuild`. This preserves the install-time safety boundary without introducing a repository credential that lifecycle code could access.
+Provider previews are useful evidence but do not replace application checks. Likewise, a green dependency-status monitor proves version freshness, not product behavior. Repositories may enforce checks with branch protection; otherwise the reviewer must wait for them before merging.
 
-Renovate needs access to each consumer repository. The public design-system tags are readable without separate repository authorization. Confirm `TheMarco/ai-created-ui` appears in the consumer dependency dashboard through the `github-tags` datasource after the first tag-based dependency is committed.
+## Consumer setup checklist
 
-## Future consumer checklist
+1. Install an explicit `git+https` `#vX.Y.Z` dependency and commit the matching lockfile.
+2. For Next.js, add `@ai-created/ui` to `transpilePackages` when required by the installed framework version.
+3. Import `@ai-created/ui/styles/tokens.css` once before consumer overrides.
+4. Use the shared Tailwind preset and include the package source in content scanning where the Tailwind version requires it.
+5. Add consumer-owned typecheck, lint, test, accessibility, production-build, and design-policy commands.
+6. Run those commands in a pull-request workflow without production secrets, schema changes, deployments, or other external writes.
+7. Optionally configure Renovate using `docs/examples/consumer-renovate.json` and the public setup guide in `docs/consumer-update-automation.md`.
+8. Optionally schedule `npx --no-install ai-created-ui-agent consumer-status` to make an outdated installed release visible.
+9. Name the person or team responsible for dependency review, deployment, and post-deployment verification.
 
-A new consumer is supported only after it has all of the following:
-
-1. An explicit dependency on `git+https://github.com/TheMarco/ai-created-ui.git#vX.Y.Z`, never `main` or an unversioned GitHub spec.
-2. `transpilePackages: ['@ai-created/ui']` when using Next.js.
-3. The shared Tailwind preset and the package source path in Tailwind content scanning.
-4. `@import '@ai-created/ui/styles/tokens.css'` before local CSS rules.
-5. A committed lockfile resolving the exact release-tag commit.
-6. Dedicated `typecheck`, production-equivalent build, relevant test, and `validate:ui-update` commands.
-7. The reviewed Renovate configuration from `docs/examples/consumer-renovate.json`.
-8. A consumer-local quality workflow based on `docs/examples/consumer-quality.yml`.
-9. No database migration, deployment, production secret, or external write in the compatibility workflow.
-10. A named maintainer who reviews breaking changes and visual or behavioral release notes.
-11. A scheduled call to the released `consumer-currency.yml` reusable workflow.
-12. A documented production deployment owner and smoke-test target.
+No registration in this repository is required. A team with many applications may keep its own inventory, shared Renovate preset, or organization dashboard, but those are consumer-owned operational choices rather than package requirements.
 
 ## Failure policy
 
-A failed consumer update blocks that consumer from adopting the release. Fix forward in the design system with a new patch when the shared package is at fault. Do not move a published tag, bypass required checks, weaken a consumer build to make an update pass, or expose consumer secrets to design-system pull requests. If a provider preview or production deployment fails while compatibility passes, investigate the consumer's deployment configuration separately and follow its recovery policy.
+A failed consumer update blocks only that consumer from adopting the release. If the shared package caused the problem, report it and use a new patch release to fix forward. If the consumer caused it, repair the consumer in the update pull request.
 
-The design-system release may still exist while a consumer update is blocked. Compatibility status is therefore represented by the consumer pull requests and post-merge verification, not by the release workflow alone. The daily currency workflow makes delayed adoption visible but does not create a PR, merge it, deploy it, or certify the product workflow.
+Do not move a published tag, bypass failed checks, weaken a build merely to make an update pass, or expose production credentials to dependency pull requests. If compatibility passes but a preview or production deployment fails, investigate the consumer's deployment configuration separately.
+
+The update is complete only after the manifest and lockfile agree, consumer checks pass, a person merges the change, deployment succeeds, and the affected workflow has been verified.

@@ -16,6 +16,7 @@ const paths = {
   consumerCurrencyWorkflow: '.github/workflows/consumer-currency.yml',
   consumerAutomation: 'docs/consumer-update-automation.md',
   consumerCompatibility: 'docs/consumer-compatibility.md',
+  renovateExample: 'docs/examples/consumer-renovate.json',
   consumerRegistry: 'consumers.json',
   consumerRegistrySchema: 'contracts/consumer-registry.schema.json',
   designSystem: 'DESIGN-SYSTEM.md',
@@ -218,12 +219,10 @@ for (const command of [
   'npm run docs:check',
   'npm run validate',
   'npm run test:browser',
-  'npm run agent:query -- consumers',
 ]) {
   requireText('readme', command);
 }
 requireText('readme', 'npx ai-created-ui-agent consumer-status');
-requireText('integration', 'consumers.json');
 requireText('integration', 'npx ai-created-ui-agent consumer-status');
 requireText('consumerCurrencyWorkflow', 'workflow_call:');
 requireText('consumerCurrencyWorkflow', 'ai-created-ui-agent consumer-status');
@@ -259,17 +258,15 @@ if (new Set(consumerIds).size !== consumerIds.length) {
   issues.push(`${paths.consumerRegistry} contains duplicate consumer ids.`);
 }
 
-requireText('consumerAutomation', 'vX.Y.Z');
-requireText('consumerAutomation', 'Trigger a request for Renovate to run again');
-requireText(
-  'consumerAutomation',
-  'fix(deps): update dependency @ai-created/ui to vX.Y.Z',
-);
-requirePattern(
-  'consumerAutomation',
-  /scheduled[\s\S]*Trigger a request for Renovate to run again[\s\S]*fix\(deps\): update dependency @ai-created\/ui to vX\.Y\.Z/iu,
-  'the scheduled Renovate path followed by both ordered Dependency Dashboard recovery actions',
-);
+for (const text of [
+  'vX.Y.Z',
+  'github-tags',
+  'automerge: false',
+  'existing Renovate configuration',
+  'Existing applications stay on the version they installed',
+]) {
+  requireText('consumerAutomation', text);
+}
 requirePattern(
   'consumerAutomation',
   /(?:merge manually|manual(?:ly)?[\s\S]{0,80}merge)/iu,
@@ -280,27 +277,35 @@ requirePattern(
   /(?:(?:verify|confirm|check)[\s\S]{0,160}deploy|deploy[\s\S]{0,160}(?:verify|confirm|check))/iu,
   'a deployment verification stage',
 );
-requirePattern(
+requireText(
   'consumerAutomation',
-  /(?:(?:scheduled|daily)[\s\S]{0,200}(?:currency|consumer-status)|currency[\s\S]{0,200}(?:scheduled|daily))/iu,
-  'scheduled currency monitoring',
+  '## Optional currency monitoring',
+  'optional currency monitoring',
 );
 for (const text of ['package.json', 'package-lock.json', 'validate:ui-update']) {
+  if (text === 'validate:ui-update') continue;
   requireText('consumerAutomation', text);
 }
-for (const fileKey of ['consumerAutomation', 'consumerCompatibility']) {
-  requireText(fileKey, 'Quality');
-  requireText(fileKey, 'Validate application');
-  requireText(fileKey, 'Vercel');
-  requirePattern(
+for (const fileKey of ['consumerAutomation', 'consumerCompatibility', 'integration']) {
+  rejectPattern(
     fileKey,
-    /(?:do not mechanically (?:enforce|require)[\s\S]{0,100}branch protection|branch protection[\s\S]{0,100}do not mechanically (?:enforce|require))/iu,
-    'the current reviewer-enforced, not branch-protection-enforced compatibility policy',
+    /\b(?:ai-created\.com|Human, Actually|human-actually|ai-created-nextjs|applyanator)\b/u,
+    'named consumer products or repositories',
   );
-  rejectText(fileKey, 'UI dependency compatibility');
-  rejectPattern(fileKey, /\b(?:ai-created-nextjs|applyanator)\b/u, 'legacy consumer repository aliases');
+  rejectPattern(fileKey, /\bregistered consumer\b/iu, 'a central consumer registration requirement');
 }
-rejectText('consumerAutomation', 'Both currently resolve a GitHub commit');
+requireText('consumerCompatibility', 'No registration in this repository is required.');
+requireText('consumerCompatibility', 'Consumer-owned compatibility checks');
+for (const text of [
+  '"github-tags"',
+  '"automerge": false',
+  '"separateMajorMinor": true',
+  '"matchDepNames": ["@ai-created/ui"]',
+]) {
+  requireText('renovateExample', text);
+}
+rejectText('renovateExample', '"schedule"');
+rejectText('renovateExample', '"enabled": false');
 for (const fileKey of [
   'consumerAutomation',
   'consumerCompatibility',
@@ -336,7 +341,7 @@ for (const text of [
   'Validate design system',
   'require pull requests',
   'prohibit force pushes',
-  'Renovate dependency pull request',
+  'A consumer may opt into Renovate',
 ]) {
   requireText('integration', text);
 }

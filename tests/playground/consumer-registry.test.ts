@@ -233,7 +233,7 @@ describe('consumer propagation contract', () => {
         liveRepositoryStateVerified: false,
       },
       nextAction: {
-        id: 'inspect-renovate-dashboard',
+        id: 'review-update-path',
         requiresLiveRepositoryInspection: true,
       },
     });

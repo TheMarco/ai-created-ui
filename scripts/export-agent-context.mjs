@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 const packageRoot = fileURLToPath(new URL('../', import.meta.url));
 const manifestPath = 'design-system.manifest.json';
 const templateManifestPath = 'templates/agent/manifest.json';
-const consumerRegistryPath = 'consumers.json';
 const outputs = {
   concise: ['llms.txt', 'playground/public/llms.txt'],
   full: ['llms-full.txt', 'playground/public/llms-full.txt'],
@@ -144,43 +143,21 @@ ${template.whenToUse}
 - Public imports: ${template.imports.join(', ')}`;
 }
 
-function renderConsumers(consumerRegistry) {
-  return consumerRegistry.consumers
-    .map((consumer) => {
-      const validationCommand = consumer.validation?.command ?? consumer.validationCommand;
-      const schedule = consumer.dependencyAutomation?.schedule;
-      const dashboard = consumer.dependencyAutomation?.dashboardIssue;
-      const workflowName = consumer.validation?.workflowName;
-      const requiredCheckName = consumer.validation?.policyRequiredCheckName;
-      const branchProtection = consumer.validation?.branchProtectionEnforced;
-      const deploymentTargets = consumer.deployment?.targets
-        ?.map(({ id, provider }) => `${id} (${provider})`)
-        .join(', ');
-      return `- ${consumer.name} (\`${consumer.repository}\`): manifest \`${consumer.manifestPath}\`; lockfile \`${consumer.lockfilePath ?? 'package-lock.json'}\`; Renovate schedule ${schedule ? `\`${schedule.expression}\` (${schedule.timezone})` : 'is consumer-owned'}; dashboard ${dashboard?.url ? `\`${dashboard.url}\`` : 'is consumer-owned'}; required gate \`${validationCommand}\`; compatibility check \`${workflowName ?? 'consumer-owned'} / ${requiredCheckName ?? 'consumer-owned'}\` (${branchProtection ? 'branch-protection enforced' : 'reviewer-enforced policy'}); currency command \`${consumer.currency?.command ?? 'npx ai-created-ui-agent consumer-status'}\`; deployment targets ${deploymentTargets ?? 'consumer-owned'}.`;
-    })
-    .join('\n');
-}
-
-function renderConsumerLifecycle(consumerRegistry) {
+function renderConsumerLifecycle() {
   return `## Downstream consumer lifecycle
 
-1. Publish an immutable \`vX.Y.Z\` tag and matching GitHub Release. Consumers never follow \`main\`.
-2. Discover the governed products in \`consumers.json\` or with \`npm run agent:query -- consumers\`.
-3. Renovate normally detects the newer tag on its configured schedule and opens a pull request that updates both the consumer manifest and lockfile.
-4. If the scheduled run has not produced that pull request, recover through the consumer's Renovate Dependency Dashboard: first check \`Trigger a request for Renovate to run again\`; after the refresh, check \`fix(deps): update dependency @ai-created/ui to vX.Y.Z\` to request the update immediately. GitHub returns 404 for unauthorized private repository issues, so authenticate with an account that has access and find the Dependency Dashboard from the consumer repository's Issues page before concluding that it is missing.
-5. Require the registered consumer validation command and compatibility check to pass by policy. In the current registry this is \`Quality / Validate application\`; branch protection does not enforce it today, and deployment-provider checks remain separate. Do not bypass failed install, typecheck, lint, test, policy, or production-build checks.
-6. Review the release notes and visible or behavioral impact, then merge manually. Design-system dependency updates do not auto-merge.
-7. Verify the consumer's normal deployment completed and the deployed product is healthy.
-8. Keep scheduled currency monitoring green with \`npx ai-created-ui-agent consumer-status\`. This command detects a stale immutable tag and fails visibly; it does not update, merge, or deploy the consumer.
+1. Install an immutable \`vX.Y.Z\` tag. Existing sites remain on that release until their owner deliberately adopts another one; consumers never follow \`main\`.
+2. Opt into update discovery with Renovate. Merge the documented \`@ai-created/ui\` package rule into the consumer's own Renovate configuration; no central registration is required.
+3. Renovate detects a newer GitHub tag and opens a pull request that updates both \`package.json\` and \`package-lock.json\`. The consumer owns any optional schedule and Dependency Dashboard settings.
+4. Run the consumer's own install, typecheck, lint, tests, design-policy validation, accessibility checks, and production build. Provider previews may help review but do not replace those compatibility checks.
+5. Review release notes and visible or behavioral impact, then merge manually. Design-system dependency updates do not auto-merge.
+6. Verify the consumer's normal deployment completed and smoke-test the affected workflow.
+7. Optionally run \`npx ai-created-ui-agent consumer-status\` on a schedule to make staleness visible. This command reports status; it does not update, merge, or deploy the consumer.
 
-Registered consumers:
-
-${renderConsumers(consumerRegistry)}
-
-Machine lifecycle stage order: ${(consumerRegistry.lifecycle?.stageOrder ?? ['release', 'detection', 'pull-request', 'validation', 'merge', 'deployment', 'currency']).map((stage) => `\`${stage}\``).join(' -> ')}. Read the structured lifecycle and each consumer's automation, validation, currency, and deployment fields from \`consumers.json\`; do not infer live status from this generated narrative. Use \`docs/consumer-update-automation.md\` for the complete operator runbook and recovery table.`;
+Use \`docs/consumer-update-automation.md\` for setup, configuration, review, troubleshooting, and removal. Use \`docs/examples/consumer-renovate.json\` as a standalone example or copy only its package rule into an existing Renovate configuration.`;
 }
 
-function createConcise(manifest, templates, consumerRegistry) {
+function createConcise(manifest, templates) {
   return `# @ai-created/ui agent entrypoint
 
 This repository and package include a machine-readable design-system contract for AI agents. Never infer component props, variants, tokens, or behavior from model memory.
@@ -215,11 +192,10 @@ The generated manifest is a consumption projection only. It never overrides cano
 - Page templates: \`templates/agent/manifest.json\`
 - Universal operating rules: \`AGENTS.md\`
 - Query CLI: \`npm run agent:query -- <command>\`
-- Consumer inventory: \`consumers.json\` or \`npm run agent:query -- consumers\`
 - Consumer currency check: \`npx ai-created-ui-agent consumer-status\`
 - Human and operator runbook: \`docs/consumer-update-automation.md\`
 
-${renderConsumerLifecycle(consumerRegistry)}
+${renderConsumerLifecycle()}
 
 ## Coverage
 
@@ -230,7 +206,7 @@ ${renderConsumerLifecycle(consumerRegistry)}
 `;
 }
 
-function createFull(manifest, templates, consumerRegistry) {
+function createFull(manifest, templates) {
   return `# @ai-created/ui complete agent reference
 
 This file is generated. Do not edit it directly. Canonical sources are listed below, and the machine-readable equivalent is \`design-system.manifest.json\`.
@@ -251,7 +227,7 @@ ${manifest.canonicalSourcePrecedence.map(({ rank, scope, paths, authority }) => 
 - Treat \`className\` as a composition hook, not a second visual language.
 - Run \`npm run agent:check\` before handoff.
 
-${renderConsumerLifecycle(consumerRegistry)}
+${renderConsumerLifecycle()}
 
 # Components
 
@@ -288,14 +264,13 @@ async function checkOutput(outputPath, expected) {
 }
 
 async function main() {
-  const [manifest, templates, consumerRegistry] = await Promise.all([
+  const [manifest, templates] = await Promise.all([
     readFile(absolute(manifestPath), 'utf8').then(JSON.parse),
     readFile(absolute(templateManifestPath), 'utf8').then(JSON.parse),
-    readFile(absolute(consumerRegistryPath), 'utf8').then(JSON.parse),
   ]);
   const content = {
-    concise: createConcise(manifest, templates, consumerRegistry),
-    full: createFull(manifest, templates, consumerRegistry),
+    concise: createConcise(manifest, templates),
+    full: createFull(manifest, templates),
   };
 
   for (const value of Object.values(content)) {

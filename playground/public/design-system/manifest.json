@@ -11393,7 +11393,7 @@
         {
           "id": "consumer-adoption",
           "title": "Consumer adoption lifecycle",
-          "summary": "A release becomes product reality through scheduled detection, consumer validation, manual approval, deployment, verification, and daily freshness monitoring.",
+          "summary": "Consumers opt into update discovery, validate releases in their own environment, approve them manually, and deploy on their own schedule.",
           "blocks": [
             {
               "type": "process",
@@ -11407,15 +11407,15 @@
                 },
                 {
                   "title": "Propose",
-                  "owner": "Renovate",
-                  "output": "One package.json and package-lock.json PR per registered consumer",
-                  "gate": "Both files resolve the same release tag."
+                  "owner": "Consumer updater",
+                  "output": "An optional package.json and package-lock.json pull request",
+                  "gate": "Both files resolve the same immutable release tag."
                 },
                 {
                   "title": "Validate",
                   "owner": "Consumer CI",
-                  "output": "Registered compatibility result from npm run validate:ui-update",
-                  "gate": "Quality / Validate application passes; Vercel does not substitute for compatibility."
+                  "output": "Consumer-owned typecheck, lint, tests, policy checks, accessibility checks, and production build",
+                  "gate": "Applicable compatibility checks pass; a provider preview does not substitute for them."
                 },
                 {
                   "title": "Approve",
@@ -11425,46 +11425,46 @@
                 },
                 {
                   "title": "Deploy and verify",
-                  "owner": "Product owner",
-                  "output": "Production deployment from main plus affected-workflow smoke test",
+                  "owner": "Consumer owner",
+                  "output": "Normal deployment plus an affected-workflow smoke test",
                   "gate": "The deployed consumer behaves as reviewed."
                 },
                 {
                   "title": "Monitor",
-                  "owner": "Consumer currency workflow",
-                  "output": "Daily freshness signal",
-                  "gate": "Staleness remains visible until the release is adopted."
+                  "owner": "Consumer owner",
+                  "output": "Optional scheduled freshness signal",
+                  "gate": "Monitoring reports staleness without changing the application."
                 }
               ]
             },
             {
               "type": "table",
-              "title": "Scheduled and immediate adoption",
+              "title": "Choose an adoption path",
               "columns": [
                 "Path",
-                "Operator action",
+                "Consumer choice",
                 "Expected result"
               ],
               "rows": [
                 [
-                  "Scheduled",
-                  "Wait for the configured Renovate run.",
-                  "Renovate opens the release PR automatically."
+                  "Renovate",
+                  "Add the focused @ai-created/ui package rule to the consumer repository.",
+                  "Eligible immutable tags produce reviewable pull requests."
                 ],
                 [
-                  "Immediate, step 1",
-                  "Check “Trigger a request for Renovate to run again” in the consumer Dependency Dashboard.",
-                  "Renovate rescans and exposes the discovered update."
+                  "Scheduled Renovate",
+                  "Add a consumer-chosen schedule to that package rule.",
+                  "Pull requests open during the preferred maintenance window."
                 ],
                 [
-                  "Immediate, step 2",
-                  "After refresh, check “fix(deps): update dependency @ai-created/ui to vX.Y.Z”.",
-                  "Renovate bypasses the schedule for this update and opens its PR."
+                  "Manual",
+                  "Update the tagged dependency and regenerate the lockfile together.",
+                  "The same review and compatibility contract applies without a bot."
                 ],
                 [
-                  "Private repository 404",
-                  "Sign into GitHub with consumer repository access, then find the dashboard from the repository Issues page.",
-                  "The private Dependency Dashboard becomes accessible."
+                  "No update",
+                  "Keep the currently installed immutable tag.",
+                  "The existing application remains unchanged."
                 ]
               ]
             },
@@ -11473,24 +11473,24 @@
               "title": "Operational boundaries",
               "items": [
                 {
-                  "title": "Compatibility is consumer-owned",
-                  "description": "In both current consumers, Quality / Validate application runs the safe typecheck, lint, tests, and production-equivalent build through validate:ui-update."
+                  "title": "No registration required",
+                  "description": "The design-system repository does not need to know which applications consume it. Teams may maintain their own inventory when useful."
                 },
                 {
-                  "title": "Reviewer enforcement is required",
-                  "description": "Current consumer branches do not mechanically require the compatibility job, so the reviewer waits for it before merge as release policy."
+                  "title": "Compatibility is consumer-owned",
+                  "description": "Each application defines the commands and environments that prove the release works with its stack."
                 },
                 {
                   "title": "Provider checks are separate",
-                  "description": "Vercel previews help review the product but do not replace validate:ui-update."
+                  "description": "Deployment previews help review the product but do not replace consumer-owned compatibility checks."
                 },
                 {
                   "title": "Completion includes production",
-                  "description": "A green PR is not the endpoint. Merge manually, confirm the main-branch deployment, and verify the affected product workflow."
+                  "description": "A green pull request is not the endpoint. Merge manually, confirm deployment, and verify the affected product workflow."
                 },
                 {
                   "title": "Monitoring reports rather than mutates",
-                  "description": "The daily currency check exposes a stale tag. It does not open, merge, deploy, or verify an update."
+                  "description": "The optional currency check exposes a stale tag. It does not open, merge, deploy, or verify an update."
                 },
                 {
                   "title": "Recover by fixing forward",

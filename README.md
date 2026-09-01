@@ -180,13 +180,12 @@ Agents do not need to infer this system from screenshots or scrape the documenta
 npm run agent:query -- context
 npm run agent:query -- component button
 npm run agent:query -- template dashboard
-npm run agent:query -- consumers
 npm run agent:check
 ```
 
 Installed releases expose the same JSON query interface through `npx ai-created-ui-agent`. Start with [llms.txt](https://ui.ai-created.com/llms.txt) for routing, use [llms-full.txt](https://ui.ai-created.com/llms-full.txt) when a task needs complete context, and use the [design-system manifest](https://ui.ai-created.com/design-system/manifest.json) for programmatic access. The manifest is generated from canonical runtime, token, component-spec, and guideline sources; it never overrides them.
 
-Every supported product is registered in `consumers.json`. Inside a consumer, `npx ai-created-ui-agent consumer-status` compares its immutable dependency tag with the latest reviewed GitHub Release and fails when the product is behind.
+Consumer applications do not register with this repository. Inside any consumer, `npx ai-created-ui-agent consumer-status` compares its immutable dependency tag with the latest reviewed GitHub Release and fails when the application is behind.
 
 `npm run agent:check` rejects stale generated artifacts, Tailwind/token mismatch, documented API mismatch, prohibited styling or imports, invalid templates, and stale agent context. A necessary deviation must be narrow, owned, justified, and time-bounded in `ai-created-ui.config.json`; silent exceptions are not allowed. See [the agent integration guide](docs/agent-integration.md) for consumer setup, CI, and MCP adapter guidance.
 
@@ -226,7 +225,6 @@ Faster focused commands are available during development:
 | `npm run tokens:export` | Regenerate the DTCG-shaped design-token JSON from canonical CSS |
 | `npm run tokens:check` | Verify the committed token artifact matches canonical CSS without writing |
 | `npm run agent:query -- component button` | Read a complete component contract as JSON |
-| `npm run agent:query -- consumers` | Read the canonical downstream consumer registry |
 | `npm run agent:export` | Regenerate tokens, the machine manifest, and both agent context files |
 | `npm run agent:check` | Run every machine-readable anti-drift gate |
 | `npm run docs:check` | Verify public counts, routes, workflow guidance, and CI propagation promises |
@@ -262,7 +260,7 @@ The compact overview uses `playground/src/components/design-system/componentDocs
 4. Run `npm run agent:export`, then review and commit the generated tokens, manifest, and agent context changes
 5. Update its portal demo if visible behavior changed and add a concise release-worthy note under `Unreleased` in `CHANGELOG.md`
 6. Run `npm run agent:check`, `npm run validate`, and the applicable browser checks, then commit and push
-7. When the change is released, follow `RELEASING.md`. Consumers update through a reviewable release-tag PR, not by following `main`; their scheduled currency workflow fails until the new release is adopted.
+7. When the change is released, follow `RELEASING.md`. Consumers update deliberately through a reviewable release-tag PR, never by following `main`.
 
 ### Release governance
 
@@ -293,7 +291,7 @@ npm install --install-links "git+https://github.com/TheMarco/ai-created-ui.git#v
 
 ### Promoting a new component from a consumer app
 
-When you build something in a consumer such as Human, Actually and realize it should be shared:
+When you build something in a consumer application and realize it should be shared:
 
 1. **Copy the component** from your app into this repo's `src/components/`
 2. **Fix imports** -- change any `@/lib/utils` to `../lib/utils`. The component should only import from `../lib/utils`, `../lib/motion`, or peer dependencies (react, next, headlessui, lucide, framer-motion). No `@/` path aliases.
@@ -337,18 +335,13 @@ Rule of thumb: if you'd copy-paste it into the next app, it belongs here.
 
 ---
 
-## Current consumers
+## Keep a consumer application up to date
 
-- **[ai-created.com](https://ai-created.com)** in [`TheMarco/ai-created.com`](https://github.com/TheMarco/ai-created.com) -- product lab portfolio and content platform
-- **[Human, Actually](https://human-actually.com)** in [`TheMarco/human-actually`](https://github.com/TheMarco/human-actually) -- applicant analysis platform
+Publishing a design-system release never changes an existing site automatically. Each consumer stays pinned to its installed immutable tag until its owner adopts another release.
 
-### Consumer release adoption
+For automatic discovery, enable Renovate and use the focused package rule in [the public update guide](docs/consumer-update-automation.md). Renovate then proposes a manifest-and-lockfile pull request whenever an eligible tag appears. It does not merge or deploy the change. The consumer runs its own checks, a person reviews the release notes and visible impact, and the consumer's normal deployment runs only after merge.
 
-A design-system release does not push directly into these products. Renovate detects each immutable `vX.Y.Z` GitHub Release and, on its configured schedule, opens one reviewable manifest and lockfile PR in each consumer. The registered compatibility check runs the consumer's `npm run validate:ui-update`. In both current consumers, that check is **Quality / Validate application**; Vercel is separate.
-
-Review the release notes and visible impact, wait for the compatibility check, then merge manually. The current consumer branches do not mechanically require that check, so the reviewer enforces it as policy. The consumer's normal provider deploys `main`; verify the affected production workflow after deployment. A daily currency workflow fails when a consumer is behind, making staleness visible without auto-merging a change.
-
-For an immediate update outside the schedule, the Renovate Dependency Dashboard requires two actions: trigger a rescan, then select the update-specific schedule bypass after the dashboard refreshes. Private repository dashboards return 404 when the browser is not signed into an authorized GitHub account. Follow the exact human runbook and recovery steps in [consumer update automation](docs/consumer-update-automation.md); the acceptance contract is in [consumer compatibility](docs/consumer-compatibility.md).
+No central registration, shared dashboard, particular CI provider, or fixed update schedule is required. The complete acceptance boundary is documented in [consumer compatibility](docs/consumer-compatibility.md).
 
 ## Attribution appreciated
 

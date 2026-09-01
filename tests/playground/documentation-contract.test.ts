@@ -29,6 +29,7 @@ const fixturePaths = [
   'docs/agent-integration.md',
   'docs/consumer-compatibility.md',
   'docs/consumer-update-automation.md',
+  'docs/examples/consumer-renovate.json',
   'package.json',
   'playground/src/app/layout.tsx',
   'playground/src/components/PlaygroundHeader.tsx',
@@ -81,14 +82,15 @@ describe('public documentation contract', () => {
     expect(() => runDocumentationCheck()).not.toThrow();
   });
 
-  it('fails when either manual Renovate dashboard action is missing', () => {
-    for (const action of [
-      'Trigger a request for Renovate to run again',
-      'fix(deps): update dependency @ai-created/ui to vX.Y.Z',
+  it('fails when generic Renovate onboarding guidance is missing', () => {
+    for (const requirement of [
+      'Existing applications stay on the version they installed',
+      'existing Renovate configuration',
+      'automerge: false',
     ]) {
       const root = createDocumentationFixture();
-      replaceInFixture(root, 'docs/consumer-update-automation.md', action, 'removed dashboard action');
-      expect(captureDocumentationFailure(root)).toContain(action);
+      replaceInFixture(root, 'docs/consumer-update-automation.md', requirement, 'removed guidance');
+      expect(captureDocumentationFailure(root)).toContain(requirement);
     }
   });
 
@@ -111,13 +113,13 @@ describe('public documentation contract', () => {
     );
   });
 
-  it('fails when manual merge or scheduled currency stages disappear', () => {
+  it('fails when manual merge or optional currency stages disappear', () => {
     const missingMerge = createDocumentationFixture();
     replaceInFixture(
       missingMerge,
       'docs/consumer-update-automation.md',
-      'Merge manually',
-      'Complete the review',
+      /manual(?:ly)?/giu,
+      'person-approved',
     );
     expect(captureDocumentationFailure(missingMerge)).toContain('a manual merge stage');
 
@@ -125,12 +127,32 @@ describe('public documentation contract', () => {
     replaceInFixture(
       missingCurrency,
       'docs/consumer-update-automation.md',
-      /(?:scheduled|daily)/giu,
-      'periodic',
+      'Optional currency monitoring',
+      'Freshness monitoring',
     );
     expect(captureDocumentationFailure(missingCurrency)).toContain(
-      'scheduled currency monitoring',
+      'optional currency monitoring',
     );
+  });
+
+  it('fails when the Renovate example adds a fixed schedule or enables automerge', () => {
+    const scheduled = createDocumentationFixture();
+    replaceInFixture(
+      scheduled,
+      'docs/examples/consumer-renovate.json',
+      '"dependencyDashboard": true,',
+      '"dependencyDashboard": true,\n  "schedule": ["before 9am on monday"],',
+    );
+    expect(captureDocumentationFailure(scheduled)).toContain('schedule');
+
+    const automerged = createDocumentationFixture();
+    replaceInFixture(
+      automerged,
+      'docs/examples/consumer-renovate.json',
+      '"automerge": false',
+      '"automerge": true',
+    );
+    expect(captureDocumentationFailure(automerged)).toContain('automerge');
   });
 
   it('fails when required consumer lifecycle registry fields violate the JSON Schema', () => {

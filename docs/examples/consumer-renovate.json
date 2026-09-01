@@ -1,18 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
-  "enabledManagers": ["npm"],
   "dependencyDashboard": true,
-  "timezone": "America/Los_Angeles",
-  "schedule": ["before 9am on monday"],
   "packageRules": [
     {
-      "description": "Keep unrelated dependencies outside the design-system update workflow",
-      "matchManagers": ["npm"],
-      "enabled": false
-    },
-    {
-      "description": "Track reviewed @ai-created/ui SemVer tags",
+      "description": "Track @ai-created/ui immutable SemVer release tags",
       "matchManagers": ["npm"],
       "matchDatasources": ["github-tags"],
       "matchDepNames": ["@ai-created/ui"],
@@ -21,7 +13,6 @@
       "rangeStrategy": "pin",
       "separateMajorMinor": true,
       "automerge": false,
-      "enabled": true,
       "labels": ["dependencies", "design-system"]
     }
   ]

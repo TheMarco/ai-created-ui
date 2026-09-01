@@ -45,9 +45,9 @@ Pushing a `v*.*.*` tag runs `.github/workflows/release.yml`. The workflow repeat
 
 The workflow's write permission exists only in the final release job after validation. Pull request code and dependency installation run with read-only repository access.
 
-## Update consumers
+## Publish consumer guidance
 
-After the GitHub Release exists, Renovate opens a tag update PR in each registered consumer on its configured schedule. The expected manifest shape is:
+After the GitHub Release exists, any consumer that opted into Renovate can detect the new tag according to its own configuration. Consumers that did not opt in remain safely pinned until their owners update manually. The expected manifest shape is:
 
 ```json
 {
@@ -57,18 +57,9 @@ After the GitHub Release exists, Renovate opens a tag update PR in each register
 }
 ```
 
-For normal adoption, wait for the scheduled PR. For immediate adoption, use the two Dependency Dashboard actions in order: request a Renovate rescan, then check the update-specific schedule-bypass box after the dashboard refreshes. A private repository dashboard may return 404 until the browser is signed into an authorized GitHub account.
+The release workflow does not contact, edit, merge, or deploy consumer repositories. Each consumer owns its updater, schedule, checks, approval, and deployment. Release notes must therefore clearly identify migrations and visible or behavioral impact.
 
-For every consumer:
-
-1. Confirm the PR changes `package.json` and `package-lock.json` to the same release.
-2. Wait for the registered consumer compatibility check to pass. In both current consumers, this is **Quality / Validate application**, which runs `npm run validate:ui-update`. Vercel is separate and does not replace it. The current consumer branches do not mechanically enforce this check, so the reviewer must.
-3. Read the release notes and inspect visible or behavioral impact.
-4. Merge manually. Major updates are always reviewed and no design-system update auto-merges.
-5. Confirm the consumer's normal deployment completes from `main`, then smoke-test the affected production workflow.
-6. Confirm the daily currency workflow returns to green.
-
-See `docs/consumer-update-automation.md` for the exact scheduled and immediate runbooks, private-repository access note, and recovery table. See `docs/consumer-compatibility.md` for the required current and future consumer checks.
+See `docs/consumer-update-automation.md` for the generic opt-in Renovate setup, review flow, and troubleshooting guide. See `docs/consumer-compatibility.md` for the consumer-owned acceptance contract.
 
 ## Correct a bad release
 

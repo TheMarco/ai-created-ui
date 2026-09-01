@@ -41,22 +41,24 @@ describe('AI agent context and query interface', () => {
       const context = readFileSync(path.join(packageRoot, file), 'utf8');
       for (const requiredText of [
         '## Downstream consumer lifecycle',
-        'consumers.json',
-        'npm run agent:query -- consumers',
         'npx ai-created-ui-agent consumer-status',
         'docs/consumer-update-automation.md',
-        'Trigger a request for Renovate to run again',
-        'fix(deps): update dependency @ai-created/ui to vX.Y.Z',
-        'GitHub returns 404 for unauthorized private repository issues',
-        'find the Dependency Dashboard from the consumer repository\'s Issues page',
-        'Quality / Validate application',
-        'branch protection does not enforce it today',
+        'Existing sites remain on that release',
+        'no central registration is required',
+        'The consumer owns any optional schedule',
+        'Provider previews may help review but do not replace those compatibility checks',
         'merge manually',
-        'Verify the consumer\'s normal deployment',
-        'scheduled currency monitoring',
-        'Machine lifecycle stage order',
+        'smoke-test the affected workflow',
+        'docs/examples/consumer-renovate.json',
       ]) {
         expect(context).toContain(requiredText);
+      }
+      for (const prohibitedText of [
+        'Registered consumers:',
+        'Quality / Validate application',
+        'GitHub returns 404 for unauthorized private repository issues',
+      ]) {
+        expect(context).not.toContain(prohibitedText);
       }
     }
   });

@@ -154,10 +154,10 @@ function lifecycleStatus(status, error) {
         liveRepositoryStateVerified: false,
       },
       nextAction: {
-        id: 'inspect-renovate-dashboard',
-        actor: 'maintainer',
+        id: 'review-update-path',
+        actor: 'consumer-owner',
         description:
-          'Inspect the registered Renovate dashboard: wait for its schedule, request a rescan, or use the release-specific schedule-bypass item. This command does not claim whether a live pull request exists.',
+          'Review the release notes, then adopt the immutable tag manually or inspect the dependency updater configured by this consumer. This command does not inspect live pull-request state.',
         requiresLiveRepositoryInspection: true,
       },
     };
