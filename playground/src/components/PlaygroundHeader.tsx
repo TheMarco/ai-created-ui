@@ -13,7 +13,7 @@ const documentationLinks = [
 
 export default function PlaygroundHeader() {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-bg/80 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-30 border-b border-border bg-bg/80 backdrop-blur-md">
       <div className="container-custom flex h-16 items-center justify-between">
         <Link
           href="/"

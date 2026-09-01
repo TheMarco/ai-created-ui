@@ -46,6 +46,32 @@ test('switches and persists the accent scheme', async ({ page }) => {
   const accentPicker = page.getByRole('banner').getByRole('button', { name: /Accent color/ });
   await expect(accentPicker).toContainText('Red');
   await accentPicker.click();
+  const listbox = page.getByRole('listbox');
+  await expect(listbox).toBeVisible();
+
+  const stacking = await listbox.evaluate((element) => {
+    const header = document.querySelector('header');
+    if (!(header instanceof HTMLElement)) {
+      return { overlapHeight: 0, listboxIsOnTop: false };
+    }
+
+    const listboxBounds = element.getBoundingClientRect();
+    const headerBounds = header.getBoundingClientRect();
+    const overlapTop = Math.max(listboxBounds.top, headerBounds.top);
+    const overlapBottom = Math.min(listboxBounds.bottom, headerBounds.bottom);
+    const overlapHeight = Math.max(0, overlapBottom - overlapTop);
+    const sampleX = listboxBounds.left + listboxBounds.width / 2;
+    const sampleY = overlapTop + overlapHeight / 2;
+    const topElement = document.elementFromPoint(sampleX, sampleY);
+
+    return {
+      overlapHeight,
+      listboxIsOnTop: overlapHeight > 0 && topElement !== null && element.contains(topElement),
+    };
+  });
+
+  expect(stacking.overlapHeight).toBeGreaterThan(0);
+  expect(stacking.listboxIsOnTop).toBe(true);
   await page.getByRole('option', { name: 'Blue' }).click();
   await expect(accentPicker).toContainText('Blue');
   await expect(page.locator('html')).toHaveAttribute('data-accent', 'blue');
