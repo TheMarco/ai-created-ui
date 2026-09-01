@@ -1,23 +1,32 @@
 'use client';
 
-import { accentNames, useTheme, type Accent } from '@ai-created/ui';
+import {
+  Dropdown,
+  accentNames,
+  useTheme,
+  type Accent,
+  type DropdownOption,
+} from '@ai-created/ui';
 
-export default function AccentPicker() {
+const accentOptions: DropdownOption<Accent>[] = accentNames.map((name) => ({
+  value: name,
+  label: `${name.charAt(0).toUpperCase()}${name.slice(1)}`,
+}));
+
+interface AccentPickerProps {
+  compact?: boolean;
+}
+
+export default function AccentPicker({ compact = false }: AccentPickerProps) {
   const { accent, setAccent } = useTheme();
 
   return (
-    <label className="relative">
-      <span className="sr-only">Accent color</span>
-      <select
-        aria-label="Accent color"
-        value={accent}
-        onChange={(event) => setAccent(event.target.value as Accent)}
-        className="h-11 rounded-md border border-control-border bg-surface px-3 text-xs capitalize text-text transition-colors hover:border-control-border-strong focus:border-accent"
-      >
-        {accentNames.map((name) => (
-          <option key={name} value={name}>{name}</option>
-        ))}
-      </select>
-    </label>
+    <Dropdown
+      options={accentOptions}
+      value={accent}
+      onChange={setAccent}
+      label="Accent color"
+      className={compact ? 'w-28 [&>label]:sr-only' : 'w-40'}
+    />
   );
 }

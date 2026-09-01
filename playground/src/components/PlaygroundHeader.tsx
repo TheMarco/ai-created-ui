@@ -41,7 +41,7 @@ export default function PlaygroundHeader() {
           >
             ai-created.com
           </a>
-          <AccentPicker />
+          <AccentPicker compact />
           <ThemeToggle />
         </div>
       </div>

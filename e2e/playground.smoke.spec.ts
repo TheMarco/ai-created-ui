@@ -43,9 +43,11 @@ test('switches and persists the accent scheme', async ({ page }) => {
   await page.locator('html[data-playground-hydrated="true"]').waitFor();
   await expect(page.getByRole('heading', { name: 'Design once. Build without drift.', level: 1 })).toBeVisible();
 
-  const accentPicker = page.getByRole('banner').getByRole('combobox', { name: 'Accent color' });
-  await expect(accentPicker).toHaveValue('red');
-  await accentPicker.selectOption('blue');
+  const accentPicker = page.getByRole('banner').getByRole('button', { name: /Accent color/ });
+  await expect(accentPicker).toContainText('Red');
+  await accentPicker.click();
+  await page.getByRole('option', { name: 'Blue' }).click();
+  await expect(accentPicker).toContainText('Blue');
   await expect(page.locator('html')).toHaveAttribute('data-accent', 'blue');
   await expect.poll(() => page.evaluate(() => localStorage.getItem('accent'))).toBe('blue');
   await expect.poll(() => page.evaluate(() => {
@@ -60,8 +62,8 @@ test('switches and persists the accent scheme', async ({ page }) => {
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-accent', 'blue');
   await expect(
-    page.getByRole('banner').getByRole('combobox', { name: 'Accent color' })
-  ).toHaveValue('blue');
+    page.getByRole('banner').getByRole('button', { name: /Accent color/ })
+  ).toContainText('Blue');
 });
 
 test('browses and inspects a detailed component specification', async ({ page }) => {
