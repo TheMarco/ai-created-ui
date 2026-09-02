@@ -18,7 +18,7 @@ export const OverlayCloseButton = forwardRef<HTMLButtonElement, OverlayCloseButt
         aria-label={label}
         {...props}
       >
-        <X className="h-[16px] w-[16px]" aria-hidden="true" />
+        <X className="h-[24px] w-[24px]" aria-hidden="true" />
       </button>
     );
   }

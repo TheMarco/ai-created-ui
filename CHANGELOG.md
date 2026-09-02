@@ -4,6 +4,12 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.3.5] - 2026-09-02
+
+### Changed
+
+- The shared Dialog, Modal, and ConfirmDialog close glyph is now 24px within its unchanged 44px interaction target.
+
 ## [1.3.4] - 2026-09-02
 
 ### Changed

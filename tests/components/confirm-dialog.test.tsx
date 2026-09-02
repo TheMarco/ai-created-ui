@@ -33,6 +33,7 @@ describe('ConfirmDialog', () => {
       'focus-visible:outline'
     );
     expect(closeButton).not.toHaveClass('border', 'hover:border-control-border-strong');
+    expect(closeButton.querySelector('svg')).toHaveClass('h-[24px]', 'w-[24px]');
     expect(closeButton.parentElement).toHaveClass('relative', 'py-[12px]', 'pe-[56px]');
 
     await user.click(screen.getByRole('button', { name: 'Cancel' }));

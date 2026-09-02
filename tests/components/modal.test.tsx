@@ -54,6 +54,7 @@ describe('Modal', () => {
       'focus-visible:outline'
     );
     expect(closeButton).not.toHaveClass('border', 'hover:border-control-border-strong');
+    expect(closeButton.querySelector('svg')).toHaveClass('h-[24px]', 'w-[24px]');
     expect(closeButton.parentElement).toHaveClass('relative', 'py-[12px]', 'pe-[56px]');
     await waitFor(() => expect(dialog).toContainElement(document.activeElement as HTMLElement));
 

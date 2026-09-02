@@ -22,8 +22,10 @@ async function expectUnifiedClosePattern(page: Page, dialog: Locator) {
 
   const glyphTopInset = iconBounds!.y - panelBounds!.y;
   const glyphEndInset = panelBounds!.x + panelBounds!.width - iconBounds!.x - iconBounds!.width;
-  expect(Math.abs(glyphTopInset - 20)).toBeLessThanOrEqual(1);
-  expect(Math.abs(glyphEndInset - 20)).toBeLessThanOrEqual(1);
+  expect(iconBounds!.width).toBe(24);
+  expect(iconBounds!.height).toBe(24);
+  expect(Math.abs(glyphTopInset - 16)).toBeLessThanOrEqual(1);
+  expect(Math.abs(glyphEndInset - 16)).toBeLessThanOrEqual(1);
 
   await closeButton.hover();
   await expect(closeButton).toHaveCSS('border-top-width', '0px');
