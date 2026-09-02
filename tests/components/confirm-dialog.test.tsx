@@ -23,7 +23,17 @@ describe('ConfirmDialog', () => {
     expect(dialog).toBeVisible();
     expect(dialog).toHaveAccessibleDescription('This cannot be undone.');
     expect(screen.getByRole('button', { name: 'Confirm' })).toHaveClass('bg-action-primary');
-    expect(screen.getByRole('button', { name: 'Close dialog' })).toHaveClass('-me-3.5');
+    const closeButton = screen.getByRole('button', { name: 'Close dialog' });
+    expect(closeButton).toHaveClass(
+      'absolute',
+      'end-[6px]',
+      'top-[6px]',
+      'h-[44px]',
+      'w-[44px]',
+      'focus-visible:outline'
+    );
+    expect(closeButton).not.toHaveClass('border', 'hover:border-control-border-strong');
+    expect(closeButton.parentElement).toHaveClass('relative', 'py-[12px]', 'pe-[56px]');
 
     await user.click(screen.getByRole('button', { name: 'Cancel' }));
     expect(onCancel).toHaveBeenCalledOnce();

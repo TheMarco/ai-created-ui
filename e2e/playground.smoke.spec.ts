@@ -1,25 +1,37 @@
 import { expect, gotoPlayground, stabilizeVisuals, test } from './fixtures';
-import type { Locator } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 async function center(locator: Locator) {
   await locator.evaluate((element: Element) => element.scrollIntoView({ block: 'center' }));
 }
 
-async function expectCloseGlyphAlignedWithHeaderInset(dialog: Locator, headingName: string) {
+async function expectUnifiedClosePattern(page: Page, dialog: Locator) {
   const closeButton = dialog.getByRole('button', { name: 'Close dialog' });
-  const [headingBounds, iconBounds, panelBounds] = await Promise.all([
-    dialog.getByRole('heading', { name: headingName }).boundingBox(),
+  const [buttonBounds, iconBounds, panelBounds] = await Promise.all([
+    closeButton.boundingBox(),
     closeButton.locator('svg').boundingBox(),
     closeButton.locator('..').locator('..').boundingBox(),
   ]);
 
-  expect(headingBounds).not.toBeNull();
+  expect(buttonBounds).not.toBeNull();
   expect(iconBounds).not.toBeNull();
   expect(panelBounds).not.toBeNull();
 
-  const headingInset = headingBounds!.x - panelBounds!.x;
-  const closeGlyphInset = panelBounds!.x + panelBounds!.width - iconBounds!.x - iconBounds!.width;
-  expect(Math.abs(headingInset - closeGlyphInset)).toBeLessThanOrEqual(1);
+  expect(buttonBounds!.width).toBe(44);
+  expect(buttonBounds!.height).toBe(44);
+
+  const glyphTopInset = iconBounds!.y - panelBounds!.y;
+  const glyphEndInset = panelBounds!.x + panelBounds!.width - iconBounds!.x - iconBounds!.width;
+  expect(Math.abs(glyphTopInset - 20)).toBeLessThanOrEqual(1);
+  expect(Math.abs(glyphEndInset - 20)).toBeLessThanOrEqual(1);
+
+  await closeButton.hover();
+  await expect(closeButton).toHaveCSS('border-top-width', '0px');
+  await closeButton.focus();
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Shift+Tab');
+  await expect(closeButton).toBeFocused();
+  await expect(closeButton).toHaveCSS('outline-style', 'solid');
 }
 
 test('loads, switches theme, navigates sections, and shows focus', async ({ page }, testInfo) => {
@@ -253,7 +265,7 @@ test('exercises the major form, selection, overlay, and disclosure flows', async
   await dialogTrigger.click();
   const dialog = page.getByRole('dialog', { name: 'Confirm action' });
   await expect(dialog.getByText('Confirm action')).toBeVisible();
-  await expectCloseGlyphAlignedWithHeaderInset(dialog, 'Confirm action');
+  await expectUnifiedClosePattern(page, dialog);
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
   await expect(dialogTrigger).toBeFocused();
@@ -262,7 +274,7 @@ test('exercises the major form, selection, overlay, and disclosure flows', async
   await modalTrigger.click();
   const modal = page.getByRole('dialog', { name: 'Create workspace' });
   await expect(modal.getByRole('heading', { name: 'Create workspace' })).toBeVisible();
-  await expectCloseGlyphAlignedWithHeaderInset(modal, 'Create workspace');
+  await expectUnifiedClosePattern(page, modal);
   await page.getByRole('button', { name: 'Close dialog' }).click();
   await expect(modal).toHaveCount(0);
 
@@ -270,7 +282,7 @@ test('exercises the major form, selection, overlay, and disclosure flows', async
   await confirmDemo.getByRole('button', { name: 'Open confirmation' }).click();
   const confirmDialog = page.getByRole('alertdialog', { name: 'Archive this project?' });
   await expect(confirmDialog.getByText('Archive this project?')).toBeVisible();
-  await expectCloseGlyphAlignedWithHeaderInset(confirmDialog, 'Archive this project?');
+  await expectUnifiedClosePattern(page, confirmDialog);
   await page.getByRole('button', { name: 'Cancel' }).click();
   await expect(confirmDemo.getByRole('status')).toContainText('Archive cancelled');
 

@@ -4,7 +4,7 @@
   "schemaVersion": "1.0.0",
   "package": {
     "name": "@ai-created/ui",
-    "version": "1.3.3",
+    "version": "1.3.4",
     "description": "Shared design system for AI-Created apps",
     "sourcePath": "package.json",
     "publicApiPath": "src/index.ts",
@@ -6562,7 +6562,7 @@
           },
           {
             "property": "Header padding",
-            "value": "24px horizontal / 16px vertical"
+            "value": "20px horizontal mobile / 24px md; 12px vertical"
           },
           {
             "property": "Body padding",
@@ -6574,12 +6574,14 @@
           },
           {
             "property": "Close glyph inset",
-            "value": "24px",
-            "notes": "The 16px glyph aligns with the header content edge inside its 44px target."
+            "value": "20px from top and logical end",
+            "notes": "The target is positioned independently so it does not make a title-only header taller."
           }
         ],
         "rules": [
           "Keep the title visible and specific.",
+          "Use the shared overlay header and close-control pattern.",
+          "Hover strengthens the icon without drawing a border; keyboard focus retains the standard outline.",
           "Use one scroll strategy; Dialog itself does not constrain body height.",
           "Keep primary and dismissal actions inside the panel."
         ],
@@ -6733,7 +6735,7 @@
           "applicable": true,
           "direction": "vertical",
           "gap": "0px between framed regions",
-          "padding": "16px viewport inset; 24px internal horizontal padding; close target overlaps end padding to align its glyph",
+          "padding": "16px viewport inset; 20px mobile / 24px desktop header inset; 12px header block padding; close target pinned 6px from the top and logical end",
           "alignment": "Stretch",
           "wrap": "Content wraps",
           "notes": []
@@ -7022,12 +7024,12 @@
             "value": "64px"
           },
           {
-            "property": "Region padding",
-            "value": "20px horizontal mobile / 24px md; 16px vertical"
+            "property": "Header padding",
+            "value": "20px horizontal mobile / 24px md; 12px vertical"
           },
           {
-            "property": "Header gap",
-            "value": "16px"
+            "property": "Body/footer padding",
+            "value": "20px horizontal mobile / 24px md; 16px vertical"
           },
           {
             "property": "Close target",
@@ -7035,12 +7037,14 @@
           },
           {
             "property": "Close glyph inset",
-            "value": "20px mobile / 24px md",
-            "notes": "The 16px glyph aligns with the header content edge inside its 44px target."
+            "value": "20px from top and logical end",
+            "notes": "Shared with Dialog; the target does not determine header height."
           }
         ],
         "rules": [
           "Compose regions only inside ModalPanel.",
+          "Use the shared overlay header and close-control pattern.",
+          "Hover strengthens the icon without drawing a border; keyboard focus retains the standard outline.",
           "Keep a single scrollable body between fixed header and footer.",
           "Use alertdialog role only for consequential confirmations."
         ],
@@ -7197,7 +7201,7 @@
           "applicable": true,
           "direction": "vertical",
           "gap": "0px between regions",
-          "padding": "16px viewport inset; region padding owned by subcomponents; close target overlaps header end padding to align its glyph",
+          "padding": "16px viewport inset; region padding owned by subcomponents; close target pinned 6px from the header top and logical end",
           "alignment": "Stretch",
           "wrap": "Region content wraps",
           "notes": []
@@ -7524,13 +7528,17 @@
             "value": "12px"
           },
           {
-            "property": "Header/body/footer padding",
-            "value": "20px horizontal mobile / 24px md"
+            "property": "Header padding",
+            "value": "20px horizontal mobile / 24px md; 12px vertical"
+          },
+          {
+            "property": "Body/footer padding",
+            "value": "20px horizontal mobile / 24px md; 16px vertical"
           },
           {
             "property": "Close glyph inset",
-            "value": "20px mobile / 24px md",
-            "notes": "Inherited from ModalHeader while the dialog is dismissible."
+            "value": "20px from top and logical end",
+            "notes": "Inherited from the shared overlay header while the dialog is dismissible."
           }
         ],
         "rules": [

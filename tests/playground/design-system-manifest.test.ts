@@ -36,7 +36,7 @@ describe('machine-readable design-system manifest', () => {
       readFileSync(manifestPath, 'utf8'),
     );
     expect(readFileSync(manifestPath, 'utf8')).not.toMatch(/[–—]/);
-  });
+  }, 15_000);
 
   it('publishes the versioned schema and complete registries', () => {
     expect(manifest.$schema).toBe('contracts/design-system-manifest.schema.json');

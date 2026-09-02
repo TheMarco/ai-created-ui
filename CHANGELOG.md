@@ -4,6 +4,16 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.3.4] - 2026-09-02
+
+### Changed
+
+- Dialog, Modal, and ConfirmDialog now use one compact shared header pattern with 12px vertical padding, a fixed 44px close target, and a fixed 16px close glyph positioned 20px from the top and logical end.
+
+### Fixed
+
+- Modal and ConfirmDialog close controls no longer draw a border on hover; all overlay close controls use the same color-only hover treatment and visible keyboard-focus outline.
+
 ## [1.3.3] - 2026-09-02
 
 ### Fixed

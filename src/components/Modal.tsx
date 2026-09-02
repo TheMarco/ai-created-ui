@@ -7,11 +7,10 @@ import {
   DialogPanel as HeadlessDialogPanel,
   DialogTitle,
 } from '@headlessui/react';
-import { X } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { overlaySizeClasses, type OverlaySize } from '../lib/overlay';
 import { surfaceStyles } from './Surface';
-import Button from './Button';
+import { OverlayHeaderFrame } from './OverlayHeader';
 
 export type ModalSize = OverlaySize;
 
@@ -93,9 +92,10 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(function
   ref
 ) {
   return (
-    <div
+    <OverlayHeaderFrame
       ref={ref}
-      className={cn('flex items-start justify-between gap-4 border-b border-border px-5 py-4 md:px-6', className)}
+      onClose={onClose}
+      className={className}
       {...props}
     >
       <div className="min-w-0 space-y-1.5">
@@ -104,18 +104,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(function
         {description ? <Description className="text-sm text-text2">{description}</Description> : null}
         {children}
       </div>
-      {onClose ? (
-        <Button
-          variant="icon"
-          size="icon"
-          onClick={onClose}
-          className="-me-3.5 shrink-0"
-          aria-label="Close dialog"
-        >
-          <X className="h-4 w-4" aria-hidden="true" />
-        </Button>
-      ) : null}
-    </div>
+    </OverlayHeaderFrame>
   );
 });
 

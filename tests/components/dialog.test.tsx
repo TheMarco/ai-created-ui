@@ -31,12 +31,18 @@ describe('Dialog', () => {
 
     const dialog = await screen.findByRole('dialog', { name: 'Delete project?' });
     expect(dialog).toHaveAccessibleDescription('This action cannot be undone.');
-    expect(screen.getByRole('button', { name: 'Close dialog' })).toHaveClass(
-      'h-11',
-      'w-11',
-      '-me-3.5',
-      'ms-4'
+    const closeButton = screen.getByRole('button', { name: 'Close dialog' });
+    expect(closeButton).toHaveClass(
+      'absolute',
+      'end-[6px]',
+      'top-[6px]',
+      'h-[44px]',
+      'w-[44px]',
+      'hover:text-text',
+      'focus-visible:outline'
     );
+    expect(closeButton).not.toHaveClass('border', 'hover:border-control-border-strong');
+    expect(closeButton.parentElement).toHaveClass('relative', 'py-[12px]', 'pe-[56px]');
     await waitFor(() => expect(dialog).toContainElement(document.activeElement as HTMLElement));
 
     await user.keyboard('{Escape}');

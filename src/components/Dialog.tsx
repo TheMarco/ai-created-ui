@@ -11,7 +11,7 @@ import {
 } from '@headlessui/react';
 import { cn } from '../lib/utils';
 import { overlaySizeClasses, type OverlaySize } from '../lib/overlay';
-import { X } from 'lucide-react';
+import { OverlayHeaderFrame } from './OverlayHeader';
 
 export type DialogSize = OverlaySize;
 
@@ -67,28 +67,20 @@ export default function Dialog({
               )}
             >
               {(title || description) && (
-                <div className="flex items-start justify-between border-b border-border px-6 py-4">
-                  <div>
+                <OverlayHeaderFrame onClose={onClose}>
+                  <div className="min-w-0 space-y-1.5">
                     {title && (
-                      <DialogTitle className="text-base font-heading font-medium text-text">
+                      <DialogTitle className="font-heading text-xl text-text">
                         {title}
                       </DialogTitle>
                     )}
                     {description && (
-                      <Description className="mt-1 text-sm text-text2">
+                      <Description className="text-sm text-text2">
                         {description}
                       </Description>
                     )}
                   </div>
-                  <button
-                    type="button"
-                    onClick={onClose}
-                    className="-me-3.5 ms-4 flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-text3 transition-colors duration-200 hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-[3px]"
-                    aria-label="Close dialog"
-                  >
-                    <X className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                </div>
+                </OverlayHeaderFrame>
               )}
 
               <div className="px-6 py-5">{children}</div>

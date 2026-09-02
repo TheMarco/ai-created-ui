@@ -573,7 +573,7 @@ Keyboard and focus behavior:
 
 Modal and Dialog share one size scale: sm (max-w-sm), md (max-w-lg), lg (max-w-2xl), xl (max-w-4xl).
 
-Close buttons use a 44x44px touch target with a centered 16px icon. The visible icon aligns with the header content inset while the larger target preserves pointer, touch, and focus access.
+Dialog, Modal, and ConfirmDialog share one internal header and close-control pattern. Headers use 12px vertical padding, while the 44x44px close target is positioned independently so it does not make title-only headers taller. The centered 16px icon sits 20px from the panel's top and logical end. Hover strengthens the icon without drawing a border; keyboard focus retains the standard visible outline.
 
 Structural requirements:
 

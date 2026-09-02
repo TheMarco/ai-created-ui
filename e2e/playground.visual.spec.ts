@@ -145,7 +145,7 @@ test('captures typography and spacing contracts', async ({ page }) => {
   }
 });
 
-test('captures open Dialog and Modal states', async ({ page }) => {
+test('captures open Dialog, Modal, and ConfirmDialog states', async ({ page }) => {
   await gotoPlayground(page);
   await stabilizeVisuals(page);
 
@@ -159,4 +159,10 @@ test('captures open Dialog and Modal states', async ({ page }) => {
   await modalDemo.scrollIntoViewIfNeeded();
   await modalDemo.getByRole('button', { name: 'Open Modal' }).click();
   await expect(page).toHaveScreenshot('modal-open-dark.png');
+  await page.keyboard.press('Escape');
+
+  const confirmDialogDemo = page.locator('[data-demo="confirm-dialog"]');
+  await confirmDialogDemo.scrollIntoViewIfNeeded();
+  await confirmDialogDemo.getByRole('button', { name: 'Open confirmation' }).click();
+  await expect(page).toHaveScreenshot('confirm-dialog-open-dark.png');
 });

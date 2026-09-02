@@ -43,11 +43,18 @@ describe('Modal', () => {
 
     const dialog = await screen.findByRole('dialog', { name: 'Settings' });
     expect(dialog).toHaveAccessibleDescription('Manage your account preferences.');
-    expect(screen.getByRole('button', { name: 'Close dialog' })).toHaveClass(
-      'h-11',
-      'w-11',
-      '-me-3.5'
+    const closeButton = screen.getByRole('button', { name: 'Close dialog' });
+    expect(closeButton).toHaveClass(
+      'absolute',
+      'end-[6px]',
+      'top-[6px]',
+      'h-[44px]',
+      'w-[44px]',
+      'hover:text-text',
+      'focus-visible:outline'
     );
+    expect(closeButton).not.toHaveClass('border', 'hover:border-control-border-strong');
+    expect(closeButton.parentElement).toHaveClass('relative', 'py-[12px]', 'pe-[56px]');
     await waitFor(() => expect(dialog).toContainElement(document.activeElement as HTMLElement));
 
     for (let index = 0; index < 4; index += 1) {
