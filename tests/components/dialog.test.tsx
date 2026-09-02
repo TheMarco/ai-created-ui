@@ -31,6 +31,12 @@ describe('Dialog', () => {
 
     const dialog = await screen.findByRole('dialog', { name: 'Delete project?' });
     expect(dialog).toHaveAccessibleDescription('This action cannot be undone.');
+    expect(screen.getByRole('button', { name: 'Close dialog' })).toHaveClass(
+      'h-11',
+      'w-11',
+      '-me-3.5',
+      'ms-4'
+    );
     await waitFor(() => expect(dialog).toContainElement(document.activeElement as HTMLElement));
 
     await user.keyboard('{Escape}');

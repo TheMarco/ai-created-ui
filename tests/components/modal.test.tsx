@@ -43,7 +43,11 @@ describe('Modal', () => {
 
     const dialog = await screen.findByRole('dialog', { name: 'Settings' });
     expect(dialog).toHaveAccessibleDescription('Manage your account preferences.');
-    expect(screen.getByRole('button', { name: 'Close dialog' })).toHaveClass('h-11', 'w-11');
+    expect(screen.getByRole('button', { name: 'Close dialog' })).toHaveClass(
+      'h-11',
+      'w-11',
+      '-me-3.5'
+    );
     await waitFor(() => expect(dialog).toContainElement(document.activeElement as HTMLElement));
 
     for (let index = 0; index < 4; index += 1) {

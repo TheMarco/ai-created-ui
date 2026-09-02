@@ -83,7 +83,7 @@ export default function Dialog({
                   <button
                     type="button"
                     onClick={onClose}
-                    className="ml-4 flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-text3 transition-colors duration-200 hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-[3px]"
+                    className="-me-3.5 ms-4 flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-text3 transition-colors duration-200 hover:text-text focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-[3px]"
                     aria-label="Close dialog"
                   >
                     <X className="h-4 w-4" aria-hidden="true" />

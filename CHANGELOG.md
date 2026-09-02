@@ -4,6 +4,12 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.3.3] - 2026-09-02
+
+### Fixed
+
+- Dialog, Modal, and ConfirmDialog close glyphs now align with the header content inset while preserving their 44px target and logical positioning in right-to-left layouts.
+
 ## [1.3.2] - 2026-08-30
 
 ### Fixed

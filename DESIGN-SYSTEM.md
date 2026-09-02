@@ -573,7 +573,7 @@ Keyboard and focus behavior:
 
 Modal and Dialog share one size scale: sm (max-w-sm), md (max-w-lg), lg (max-w-2xl), xl (max-w-4xl).
 
-Close button uses a 44x44px touch target with a centered icon.
+Close buttons use a 44x44px touch target with a centered 16px icon. The visible icon aligns with the header content inset while the larger target preserves pointer, touch, and focus access.
 
 Structural requirements:
 

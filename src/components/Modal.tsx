@@ -109,7 +109,7 @@ export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(function
           variant="icon"
           size="icon"
           onClick={onClose}
-          className="shrink-0"
+          className="-me-3.5 shrink-0"
           aria-label="Close dialog"
         >
           <X className="h-4 w-4" aria-hidden="true" />
