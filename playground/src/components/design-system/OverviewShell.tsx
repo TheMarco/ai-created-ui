@@ -131,8 +131,8 @@ export default function OverviewShell() {
               </h1>
               <p className="mt-6 max-w-2xl text-base leading-relaxed hero-text-muted sm:text-lg">
                 Designers, engineers, and coding agents build against one versioned interface contract. The same
-                tokens, components, accessibility rules, and page patterns, validated through blocking checks in every
-                consumer.
+                tokens, components, accessibility rules, and page patterns,
+                validated through blocking checks in every consumer.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">

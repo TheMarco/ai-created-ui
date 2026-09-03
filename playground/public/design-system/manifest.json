@@ -10183,7 +10183,7 @@
                 [
                   "Elevation",
                   "Border first; shadow only when depth changes interaction meaning",
-                  "Canonical low, medium, and high shadow tokens"
+                  "Canonical low, medium, and high elevation tokens"
                 ],
                 [
                   "Motion",
