@@ -6,10 +6,11 @@ If the live UI changes, update this file and the living specification in the sam
 
 ## Living Specification
 
-The public design-system portal has four layers:
+The public design-system portal has five layers:
 
-- `/` is the design-system entry hub and visual foundations overview.
-- `/components` is the searchable component workbench and implementation reference.
+- `/` is the product-level overview: what the system is, who consumes it, and how the contract is enforced.
+- `/foundations` is the canonical foundation reference for tokens, color, typography, spacing, motion, and themes.
+- `/components` is the searchable component workbench, live specimen overview, and implementation reference.
 - `/guidelines` is the principal-level operating specification for foundations, construction, patterns, content, accessibility, governance, and reusable assets.
 - `/agents` explains how coding agents consume that same contract, what design-policy validation rejects, and how an exception reaches human review. The canonical agent rules stay in `/guidelines/assets#agent-contract` and `AGENTS.md`.
 
@@ -50,27 +51,22 @@ The system should feel:
 
 ## Information Architecture
 
-Public navigation is:
-
-- Home
-- Products
-- 0→1 Stories
-- Lab Notes
-- Media
-- About
-- Design System
+Information architecture is owned by each consuming product. The design system constrains how navigation
+behaves, not which routes a product ships.
 
 Rules:
 
-- Do not add a new top-level nav item without a strong IA reason.
-- `0→1 Stories` stays top-level. It is part of the brand language.
-- `Resume` lives under `About` as a context page, not as a primary pillar.
+- Do not add a new top-level navigation item without a strong IA reason.
+- Workflow steps belong in task navigation. Help, settings, and other support utilities stay adjacent to the workflow instead of masquerading as peer tasks.
 - Deprecated routes should redirect to the current IA rather than keep old layouts alive.
-- Workflow steps belong in task navigation. Help, settings, and other support utilities should stay adjacent to the workflow instead of masquerading as peer tasks.
+- A product's own route names, labels, and section vocabulary are consumer decisions. Record them in the consumer repository, not here.
 
 ## Page Archetypes
 
-Every new page must fit one of these patterns.
+Every new page must fit one of these patterns. Route notation below is generic: `<collection>` and
+`<static-page>` stand for whatever a consuming product actually calls them. The same five ids are the
+`approvedArchetypes` in `ai-created-ui.config.json`, and `templates/agent` ships a reviewed implementation
+for the directory, detail, form, settings, dashboard, and onboarding shapes.
 
 ### 1. Home
 
@@ -88,10 +84,8 @@ Expected structure:
 ### 2. Browse
 
 Routes:
-- `/products`
-- `/stories`
-- `/lab-notes`
-- `/media`
+- `/<collection>`
+- `/<collection>?query=`
 
 Purpose:
 - help people scan and choose
@@ -105,9 +99,7 @@ Expected structure:
 ### 3. Detail
 
 Routes:
-- `/products/[slug]`
-- `/stories/[slug]`
-- `/lab-notes/[slug]`
+- `/<collection>/[slug]`
 
 Purpose:
 - keep one item in focus
@@ -121,8 +113,7 @@ Expected structure:
 ### 4. Context
 
 Routes:
-- `/about`
-- `/resume`
+- `/<static-page>`
 
 Purpose:
 - build credibility and explain the builder behind the work

@@ -1,4 +1,4 @@
-import { expect, gotoPlayground, stabilizeVisuals, test } from './fixtures';
+import { expect, gotoComponents, gotoFoundations, gotoPlayground, stabilizeVisuals, test } from './fixtures';
 
 test.beforeEach(({ browserName }, testInfo) => {
   test.skip(
@@ -15,13 +15,18 @@ for (const theme of ['dark', 'light'] as const) {
     await expect(page).toHaveScreenshot(`hero-${theme}.png`);
   });
 
-  test(`captures ${theme} color and component contracts`, async ({ page }) => {
-    await gotoPlayground(page, theme);
+  test(`captures the ${theme} color contract`, async ({ page }) => {
+    await gotoFoundations(page, theme);
     await stabilizeVisuals(page);
 
     const colorComparison = page.locator('[data-visual="color-theme-comparison"]');
     await colorComparison.scrollIntoViewIfNeeded();
     await expect(colorComparison).toHaveScreenshot(`color-theme-comparison-${theme}.png`);
+  });
+
+  test(`captures ${theme} component contracts`, async ({ page }) => {
+    await gotoComponents(page, theme);
+    await stabilizeVisuals(page);
 
     for (const demoId of ['buttons-links', 'form-controls', 'semantic-feedback']) {
       const demo = page.locator(`[data-demo="${demoId}"]`);
@@ -120,8 +125,19 @@ test.describe.serial('agents page visuals', () => {
   }
 });
 
+test.describe.serial('foundations visuals', () => {
+  for (const theme of ['dark', 'light'] as const) {
+    test(`captures the ${theme} foundations entry`, async ({ page }) => {
+      await gotoFoundations(page, theme);
+      await stabilizeVisuals(page);
+      await page.evaluate(() => window.scrollTo(0, 0));
+      await expect(page).toHaveScreenshot(`foundations-${theme}.png`);
+    });
+  }
+});
+
 test('captures typography and spacing contracts', async ({ page }) => {
-  await gotoPlayground(page);
+  await gotoFoundations(page);
   await stabilizeVisuals(page);
 
   for (const family of ['instrument-serif', 'space-grotesk']) {
@@ -164,7 +180,7 @@ test('captures typography and spacing contracts', async ({ page }) => {
   }
 });
 
-test('captures the hero-to-principles section boundary', async ({ page }) => {
+test('captures the hero-to-overview section boundary', async ({ page }) => {
   await gotoPlayground(page);
   await stabilizeVisuals(page);
   const heroBounds = await page.locator('[data-visual="portal-hero"]').boundingBox();
@@ -172,11 +188,11 @@ test('captures the hero-to-principles section boundary', async ({ page }) => {
   const scrollTarget = Math.round(heroBounds.y + heroBounds.height - 80);
   await page.evaluate((top) => window.scrollTo(0, top), scrollTarget);
   await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(scrollTarget);
-  await expect(page).toHaveScreenshot('principles-section-boundary-dark.png');
+  await expect(page).toHaveScreenshot('overview-section-boundary-dark.png');
 });
 
 test('captures open Dialog, Modal, and ConfirmDialog states', async ({ page }) => {
-  await gotoPlayground(page);
+  await gotoComponents(page);
   await stabilizeVisuals(page);
 
   const dialogDemo = page.locator('[data-demo="dialog"]');

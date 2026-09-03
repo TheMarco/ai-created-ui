@@ -1,23 +1,16 @@
-'use client';
-
-import { useEffect } from 'react';
-import DSPageShell from '@/components/design-system/DSPageShell';
+import OverviewShell from '@/components/design-system/OverviewShell';
 import PlaygroundHeader from '@/components/PlaygroundHeader';
+import HydrationMarker from '@/components/HydrationMarker';
+import LegacyHashRedirect from '@/components/LegacyHashRedirect';
 
 export default function PlaygroundHome() {
-  useEffect(() => {
-    document.documentElement.dataset.playgroundHydrated = 'true';
-
-    return () => {
-      delete document.documentElement.dataset.playgroundHydrated;
-    };
-  }, []);
-
   return (
     <>
+      <HydrationMarker />
+      <LegacyHashRedirect />
       <PlaygroundHeader />
       <main id="main-content" tabIndex={-1} className="min-h-screen bg-bg">
-        <DSPageShell />
+        <OverviewShell />
       </main>
     </>
   );

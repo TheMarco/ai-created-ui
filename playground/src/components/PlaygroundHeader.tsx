@@ -4,16 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@ai-created/ui';
 import AccentPicker from './AccentPicker';
+import { release } from '@/lib/release';
 
 const documentationLinks = [
-  { href: '/', label: 'Foundations' },
+  { href: '/foundations', label: 'Foundations' },
   { href: '/components', label: 'Components' },
   { href: '/guidelines', label: 'Guidelines' },
   { href: '/agents', label: 'Agents' },
 ] as const;
 
 function isActive(pathname: string, href: string) {
-  if (href === '/') return pathname === '/';
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -22,9 +22,10 @@ export default function PlaygroundHeader() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-30 border-b border-border bg-bg/80 backdrop-blur-md">
-      <div className="container-custom flex h-16 items-center justify-between">
+      <div className="container-custom no-scrollbar flex h-16 items-center justify-between gap-3 overflow-x-auto">
         <Link
           href="/"
+          aria-current={pathname === '/' ? 'page' : undefined}
           className="whitespace-nowrap font-heading text-base tracking-tight text-text transition-colors hover:text-text2 sm:text-lg"
         >
           @ai-created/ui
@@ -49,10 +50,19 @@ export default function PlaygroundHeader() {
             })}
           </nav>
           <a
+            href={release.releasesUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`${release.packageName} ${release.version} release notes`}
+            className="hidden whitespace-nowrap font-mono text-xs text-text3 transition-colors hover:text-text md:block"
+          >
+            v{release.version}
+          </a>
+          <a
             href="https://www.ai-created.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden whitespace-nowrap text-xs text-text2 transition-colors hover:text-text md:block md:text-sm"
+            className="hidden whitespace-nowrap text-xs text-text2 transition-colors hover:text-text lg:block lg:text-sm"
           >
             ai-created.com
           </a>

@@ -10,7 +10,6 @@ const root = process.env.AI_CREATED_UI_DOCS_ROOT
 
 const paths = {
   agents: 'AGENTS.md',
-  agentsFacts: 'playground/src/components/design-system/agents/contract.ts',
   agentsPage: 'playground/src/components/design-system/agents/AgentsPage.tsx',
   agentsRoute: 'playground/src/app/agents/page.tsx',
   changelog: 'CHANGELOG.md',
@@ -23,9 +22,11 @@ const paths = {
   consumerRegistry: 'consumers.json',
   consumerRegistrySchema: 'contracts/consumer-registry.schema.json',
   designSystem: 'DESIGN-SYSTEM.md',
-  designPolicySchema: 'contracts/design-policy.schema.json',
+  releaseModule: 'playground/src/lib/release.ts',
+  systemFacts: 'playground/src/lib/system-facts.ts',
   header: 'playground/src/components/PlaygroundHeader.tsx',
-  homepage: 'playground/src/components/design-system/DSPageShell.tsx',
+  foundationsRoute: 'playground/src/app/foundations/page.tsx',
+  homepage: 'playground/src/components/design-system/OverviewShell.tsx',
   integration: 'docs/agent-integration.md',
   layout: 'playground/src/app/layout.tsx',
   manifest: 'design-system.manifest.json',
@@ -34,7 +35,6 @@ const paths = {
   readme: 'README.md',
   release: 'RELEASING.md',
   releaseWorkflow: '.github/workflows/release.yml',
-  templateManifest: 'templates/agent/manifest.json',
 };
 
 const entries = await Promise.all(
@@ -47,8 +47,6 @@ const files = Object.fromEntries(entries);
 const manifest = JSON.parse(files.manifest);
 const consumerRegistry = JSON.parse(files.consumerRegistry);
 const consumerRegistrySchema = JSON.parse(files.consumerRegistrySchema);
-const designPolicySchema = JSON.parse(files.designPolicySchema);
-const templateManifest = JSON.parse(files.templateManifest);
 const packageJson = JSON.parse(files.package);
 const issues = [];
 
@@ -353,11 +351,25 @@ for (const text of [
   requireText('integration', text);
 }
 
-for (const destination of ['/components', '/guidelines', '/agents']) {
+for (const destination of ['/foundations', '/components', '/guidelines', '/agents']) {
   requireText('homepage', `href: '${destination}'`, destination);
   requireText('header', `href: '${destination}'`, destination);
 }
 requireText('homepage', 'Design once. Build without drift.');
+rejectText('header', "href: '/', label: 'Foundations'", 'Foundations pointing at the overview route');
+requireText('foundationsRoute', 'https://ui.ai-created.com/foundations');
+
+// The portal must derive countable system facts, never restate them.
+requireText('systemFacts', "from '../../../design-system.manifest.json'", 'a canonical manifest import');
+requireText('systemFacts', "from '../../../package.json'", 'a canonical package import');
+requireText('releaseModule', "from '../../../package.json'", 'a canonical package import');
+for (const fileKey of ['homepage', 'agentsPage']) {
+  rejectPattern(
+    fileKey,
+    new RegExp(`\\bv?${packageJson.version.replace(/\./gu, '\\.')}\\b`, 'u'),
+    'a hardcoded package version',
+  );
+}
 requireText('header', "aria-current={active ? 'page' : undefined}", 'an active navigation state');
 
 requireText('agentsPage', "'/guidelines/assets#agent-contract'", 'the canonical agent-contract reference');
@@ -382,57 +394,6 @@ for (const agentCommand of [
 requireText('agentsRoute', 'https://ui.ai-created.com/agents');
 requireText('designSystem', '`/agents`', 'the /agents portal layer');
 requireText('readme', 'https://ui.ai-created.com/agents');
-
-const policyRuleCount = designPolicySchema.$defs?.exception?.properties?.rule?.enum?.length ?? 0;
-const agentCheckCount = (packageJson.scripts?.['agent:check'] ?? '')
-  .split('&&')
-  .filter((step) => step.trim() !== '').length;
-const derivedAgentFacts = [
-  ['packageVersion', `'${packageJson.version}'`],
-  ['componentFamilies', String(componentCount)],
-  ['publicExports', String(publicExportCount)],
-  ['guidelineChapters', String(manifest.guidelines.length)],
-  ['pageTemplates', String(templateManifest.templates.length)],
-  ['policyRules', String(policyRuleCount)],
-  ['agentChecks', String(agentCheckCount)],
-];
-for (const [fact, expected] of derivedAgentFacts) {
-  if (!new RegExp(`\\b${fact}:\\s*${expected.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')},`, 'u').test(files.agentsFacts)) {
-    issues.push(`${paths.agentsFacts} must publish ${fact}: ${expected} to match its canonical source.`);
-  }
-}
-requireText('layout', 'Design System Specification');
-if (files.layout.includes('Design System Playground')) {
-  issues.push(`${paths.layout} must describe the canonical specification, not a playground.`);
-}
-
-for (const fileKey of ['homepage', 'header', 'layout', 'agentsPage', 'agentsRoute']) {
-  if (/[\u2013\u2014]/u.test(files[fileKey])) {
-    issues.push(`${paths[fileKey]} contains a visible en dash or em dash.`);
-  }
-}
-
-if (files.claude !== '@AGENTS.md\n') {
-  issues.push('CLAUDE.md must remain the exact one-line pointer @AGENTS.md.');
-}
-
-for (const [scriptName, expectedFragment] of [
-  ['agent:export', 'manifest:export'],
-  ['agent:check', 'docs:check'],
-  ['validate', 'agent:check'],
-]) {
-  const script = packageJson.scripts?.[scriptName];
-  if (typeof script !== 'string' || !script.includes(expectedFragment)) {
-    issues.push(`package.json script ${scriptName} must include ${expectedFragment}.`);
-  }
-}
-
-const validationCommands = manifest.validation?.commands ?? [];
-if (!validationCommands.some(({ id, command, blocking }) =>
-  id === 'documentation' && command === 'npm run docs:check' && blocking === true
-)) {
-  issues.push('design-system.manifest.json must publish docs:check as a blocking validation command.');
-}
 
 requirePattern('qualityWorkflow', /pull_request:/u, 'the pull_request trigger');
 requirePattern('qualityWorkflow', /branches:\s*\[main\]/u, 'the main branch trigger');

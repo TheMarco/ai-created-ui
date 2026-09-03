@@ -1,4 +1,4 @@
-import { expect, gotoPlayground, stabilizeVisuals, test } from './fixtures';
+import { expect, gotoComponents, gotoFoundations, gotoPlayground, stabilizeVisuals, test } from './fixtures';
 import type { Locator, Page } from '@playwright/test';
 
 async function center(locator: Locator) {
@@ -36,7 +36,7 @@ async function expectUnifiedClosePattern(page: Page, dialog: Locator) {
   await expect(closeButton).toHaveCSS('outline-style', 'solid');
 }
 
-test('loads, switches theme, navigates sections, and shows focus', async ({ page }, testInfo) => {
+test('loads the overview, switches theme, and shows focus', async ({ page }) => {
   await gotoPlayground(page);
   await stabilizeVisuals(page);
 
@@ -52,34 +52,49 @@ test('loads, switches theme, navigates sections, and shows focus', async ({ page
   await expect(page.locator('html')).toHaveClass(/\blight\b/);
   await expect(header.getByRole('button', { name: 'Switch to dark mode' })).toBeVisible();
 
-  const navigationName = testInfo.project.name === 'mobile-chromium'
-    ? 'Mobile section navigation'
-    : 'Design system sections';
-  const navigation = page.getByRole('navigation', { name: navigationName });
-  await expect(navigation).toBeVisible();
-  await navigation.getByRole('link', { name: 'Components', exact: true }).click();
-  await expect(page.locator('#components')).toBeInViewport();
+  const main = page.getByRole('main');
+  await expect(main.getByRole('heading', { level: 2, name: 'One system. Three consumers.' })).toBeVisible();
+  await expect(main.getByRole('heading', { level: 2, name: 'System architecture' })).toBeVisible();
+  await expect(main.getByRole('heading', { level: 1 })).toHaveCount(1);
 
-  await navigation.getByRole('link', { name: 'API Reference', exact: true }).click();
-  await expect(page.locator('#reference')).toBeInViewport();
-  const buttonReference = page.locator('[data-component-doc="button"]');
-  await center(buttonReference);
-  await buttonReference.locator('summary').click();
-  await expect(buttonReference.getByRole('columnheader', { name: 'Prop' })).toBeVisible();
-  await expect(buttonReference.getByRole('cell', { name: 'variant', exact: true })).toBeVisible();
+  // The overview links onward rather than restating the reference material.
+  await expect(main.getByRole('heading', { name: 'Component Reference' })).toHaveCount(0);
+  await expect(main.locator('[data-demo="form-controls"]')).toHaveCount(0);
 });
 
-test('keeps the first documentation heading clear of the hero separator', async ({ page }, testInfo) => {
-  await gotoPlayground(page);
+test('navigates the foundation sections and their section navigation', async ({ page }, testInfo) => {
+  await gotoFoundations(page);
   await stabilizeVisuals(page);
 
   const navigationName = testInfo.project.name === 'mobile-chromium'
-    ? 'Mobile section navigation'
-    : 'Design system sections';
-  await page
-    .getByRole('navigation', { name: navigationName })
-    .getByRole('link', { name: 'Principles', exact: true })
-    .click();
+    ? 'Mobile foundation navigation'
+    : 'Foundation sections';
+  const navigation = page.getByRole('navigation', { name: navigationName });
+  await expect(navigation).toBeVisible();
+
+  await navigation.getByRole('link', { name: 'Color', exact: true }).click();
+  await expect(page.locator('#colors')).toBeInViewport();
+
+  await navigation.getByRole('link', { name: 'Typography', exact: true }).click();
+  await expect(page.locator('#typography')).toBeInViewport();
+
+  await navigation.getByRole('link', { name: 'Themes', exact: true }).click();
+  await expect(page.locator('#theme')).toBeInViewport();
+});
+
+test('documents the public Button API on its component specification', async ({ page }) => {
+  await page.goto('/components/button');
+  await expect(page.getByRole('heading', { level: 1, name: 'Button / buttonStyles' })).toBeVisible();
+
+  const apiTable = page.getByRole('table').filter({ has: page.getByRole('columnheader', { name: 'Prop' }) }).first();
+  await center(apiTable);
+  await expect(apiTable.getByRole('cell', { name: 'variant', exact: true }).first()).toBeVisible();
+  await expect(page.getByText('44 × 44px')).toBeVisible();
+});
+
+test('keeps the first overview heading clear of the hero separator', async ({ page }) => {
+  await gotoPlayground(page);
+  await stabilizeVisuals(page);
 
   const hero = page.locator('[data-visual="portal-hero"]');
   const content = page.locator('[data-visual="portal-content"]');
@@ -96,12 +111,6 @@ test('keeps the first documentation heading clear of the hero separator', async 
   const separatorGap = sectionBounds!.y - (heroBounds!.y + heroBounds!.height);
   expect(separatorGap).toBeGreaterThanOrEqual(58);
   expect(separatorGap).toBeLessThanOrEqual(62);
-
-  if (testInfo.project.name === 'desktop-chromium') {
-    const sidebarBounds = await page.locator('[data-visual="portal-sidebar"]').boundingBox();
-    expect(sidebarBounds).not.toBeNull();
-    expect(Math.abs(sidebarBounds!.y - sectionBounds!.y)).toBeLessThanOrEqual(1);
-  }
 });
 
 test('switches and persists the accent scheme', async ({ page }) => {
@@ -159,12 +168,12 @@ test('switches and persists the accent scheme', async ({ page }) => {
 });
 
 test('browses and inspects a detailed component specification', async ({ page }) => {
-  await page.goto('/components');
+  await gotoComponents(page);
 
-  await expect(page.getByRole('heading', { level: 1, name: 'Build from documented contracts.' })).toBeVisible();
-  const search = page.getByRole('searchbox', { name: 'Search components' });
+  const directory = page.locator('[data-visual="component-directory"]');
+  const search = directory.getByRole('searchbox', { name: 'Search components' });
   await search.fill('button focus');
-  await expect(page.getByRole('status')).toContainText('1 of 22 match');
+  await expect(directory.getByRole('status')).toContainText('1 of 22 match');
 
   const searchResults = page.getByRole('region', { name: 'Search results' });
   await expect(searchResults.getByRole('link')).toHaveCount(1);
@@ -257,7 +266,7 @@ test('browses the principal specification and its reusable assets', async ({ pag
 });
 
 test('exercises the major form, selection, overlay, and disclosure flows', async ({ page }) => {
-  await gotoPlayground(page);
+  await gotoComponents(page);
   await stabilizeVisuals(page);
   await page.locator('#components').scrollIntoViewIfNeeded();
 
@@ -429,4 +438,137 @@ test('keeps the agents page free of horizontal overflow at narrow widths and 200
   });
   expect(zoomedOverflow, 'no horizontal overflow at 200% text zoom').toBeLessThanOrEqual(1);
   await expect(page.getByRole('heading', { level: 2, name: 'Exceptions stay explicit' })).toBeVisible();
+});
+
+test('routes the primary navigation and preserves moved deep links', async ({ page }, testInfo) => {
+  await gotoPlayground(page);
+
+  const navigationName = testInfo.project.name === 'mobile-chromium'
+    ? 'Mobile documentation'
+    : 'Primary documentation';
+  const documentationNav = page.getByRole('navigation', { name: navigationName });
+
+  for (const [label, href] of [
+    ['Foundations', '/foundations'],
+    ['Components', '/components'],
+    ['Guidelines', '/guidelines'],
+    ['Agents', '/agents'],
+  ] as const) {
+    await expect(documentationNav.getByRole('link', { name: label, exact: true })).toHaveAttribute('href', href);
+  }
+
+  // The wordmark owns the overview route; Foundations must not also claim it.
+  await expect(page.getByRole('banner').getByRole('link', { name: '@ai-created/ui' })).toHaveAttribute('href', '/');
+
+  for (const [route, label] of [
+    ['/foundations', 'Foundations'],
+    ['/components', 'Components'],
+    ['/guidelines', 'Guidelines'],
+    ['/agents', 'Agents'],
+  ] as const) {
+    await page.goto(route);
+    await expect(
+      page.getByRole('navigation', { name: navigationName }).getByRole('link', { name: label, exact: true }),
+    ).toHaveAttribute('aria-current', 'page');
+  }
+
+  // Active state must survive on child routes.
+  await page.goto('/guidelines/foundations');
+  await expect(
+    page.getByRole('navigation', { name: navigationName }).getByRole('link', { name: 'Guidelines', exact: true }),
+  ).toHaveAttribute('aria-current', 'page');
+
+  // Anchors that used to live on the overview route now resolve to their canonical home.
+  for (const [hash, destination] of [
+    ['#colors', /\/foundations#colors$/],
+    ['#typography', /\/foundations#typography$/],
+    ['#components', /\/components#components$/],
+    ['#archetypes', /\/guidelines\/patterns#page-archetypes$/],
+    ['#accessibility', /\/guidelines\/accessibility$/],
+  ] as const) {
+    await page.goto(`/${hash}`);
+    await page.waitForURL(destination);
+  }
+});
+
+test('resolves every internal link the portal renders', async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop-chromium', 'One crawl of the route graph is enough.');
+
+  const routes = ['/', '/foundations', '/components', '/guidelines', '/agents'];
+  const checked = new Map<string, number>();
+
+  for (const route of routes) {
+    await page.goto(route);
+    const hrefs = await page.locator('a[href^="/"]').evaluateAll((anchors) =>
+      [...new Set(anchors.map((anchor) => anchor.getAttribute('href') ?? ''))].filter(Boolean),
+    );
+
+    for (const href of hrefs) {
+      const target = href.split('#')[0];
+      if (target === '' || checked.has(target)) continue;
+      const response = await page.request.get(target);
+      checked.set(target, response.status());
+    }
+  }
+
+  const broken = [...checked.entries()].filter(([, status]) => status >= 400);
+  expect(broken, `broken internal links: ${JSON.stringify(broken)}`).toEqual([]);
+  expect(checked.size).toBeGreaterThan(8);
+});
+
+test('exposes release, source, and license facts in the global footer', async ({ page }) => {
+  await gotoPlayground(page);
+
+  const footer = page.getByRole('contentinfo');
+  await expect(footer).toBeVisible();
+
+  const packageVersion = await page.request
+    .get('/design-system/manifest.json')
+    .then((response) => response.json())
+    .then((manifest) => manifest.package.version);
+
+  await expect(footer.getByText(`v${packageVersion}`, { exact: false }).first()).toBeVisible();
+  await expect(footer.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
+    'href',
+    'https://github.com/TheMarco/ai-created-ui',
+  );
+  await expect(footer.getByRole('link', { name: 'Releases' })).toHaveAttribute(
+    'href',
+    'https://github.com/TheMarco/ai-created-ui/releases',
+  );
+  await expect(footer.getByRole('link', { name: 'MIT License' })).toHaveAttribute(
+    'href',
+    'https://github.com/TheMarco/ai-created-ui/blob/main/LICENSE',
+  );
+
+  // The package is not on npm; the portal must not imply otherwise.
+  await expect(page.getByText('npm install @ai-created/ui')).toHaveCount(0);
+});
+
+test('keeps the overview and foundations free of horizontal overflow at 200% text zoom', async ({ page }) => {
+  for (const route of ['/', '/foundations']) {
+    for (const viewport of [
+      { width: 390, height: 844 },
+      { width: 1280, height: 900 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto(route);
+      await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+      const overflow = await page.evaluate(() => {
+        const widest = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+        return widest - document.documentElement.clientWidth;
+      });
+      expect(overflow, `no overflow on ${route} at ${viewport.width}px`).toBeLessThanOrEqual(1);
+    }
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto(route);
+    await page.addStyleTag({ content: 'html { font-size: 250% !important; }' });
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    const zoomed = await page.evaluate(() => {
+      const widest = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+      return widest - document.documentElement.clientWidth;
+    });
+    expect(zoomed, `no overflow on ${route} at 200% text zoom`).toBeLessThanOrEqual(1);
+  }
 });

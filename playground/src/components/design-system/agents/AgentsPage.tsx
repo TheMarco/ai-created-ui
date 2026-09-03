@@ -1,16 +1,17 @@
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Check, ExternalLink, X } from 'lucide-react';
-import AgentsCtaLink from './AgentsCtaLink';
+import DSCtaLink from '../DSCtaLink';
 import DSCodeBlock from '../DSCodeBlock';
-import { agentContractFacts } from './contract';
+import { release } from '@/lib/release';
+import { systemFacts } from '@/lib/system-facts';
 
 const AGENT_CONTRACT_HREF = '/guidelines/assets#agent-contract';
 
 const heroStats = [
-  { label: 'Versioned contract', value: `v${agentContractFacts.packageVersion}` },
-  { label: 'Policy validation', value: `${agentContractFacts.policyRules} rules` },
-  { label: 'Approved templates', value: `${agentContractFacts.pageTemplates} page templates` },
-  { label: 'Drift detection', value: `${agentContractFacts.agentChecks} blocking checks` },
+  { label: 'Versioned contract', value: `v${release.version}` },
+  { label: 'Policy validation', value: `${systemFacts.policyRules} rules` },
+  { label: 'Approved templates', value: `${systemFacts.pageTemplates} page templates` },
+  { label: 'Drift detection', value: `${systemFacts.agentChecks} blocking checks` },
 ] as const;
 
 const consumers = [
@@ -277,14 +278,14 @@ const machineResources: MachineResource[] = [
   },
   {
     title: 'Agent templates',
-    description: `${agentContractFacts.pageTemplates} approved page archetypes with declared slots, required states, imported primitives, and their own compile check.`,
+    description: `${systemFacts.pageTemplates} approved page archetypes with declared slots, required states, imported primitives, and their own compile check.`,
     href: 'https://github.com/TheMarco/ai-created-ui/tree/main/templates/agent',
     action: 'View source',
     external: true,
   },
   {
     title: 'Design-policy validator',
-    description: `The ${agentContractFacts.policyRules} rules that turn implementation drift into a failing command, plus the schema for scoped exceptions.`,
+    description: `The ${systemFacts.policyRules} rules that turn implementation drift into a failing command, plus the schema for scoped exceptions.`,
     href: 'https://github.com/TheMarco/ai-created-ui/blob/main/scripts/validate-design-policy.mjs',
     action: 'View source',
     external: true,
@@ -449,13 +450,13 @@ export default function AgentsPage() {
         </p>
 
         <div className="mt-9 flex flex-wrap gap-3">
-          <AgentsCtaLink href={AGENT_CONTRACT_HREF}>
+          <DSCtaLink href={AGENT_CONTRACT_HREF}>
             Explore the agent contract
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </AgentsCtaLink>
-          <AgentsCtaLink href="/llms.txt" variant="secondary">
+          </DSCtaLink>
+          <DSCtaLink href="/llms.txt" variant="secondary">
             View machine-readable context
-          </AgentsCtaLink>
+          </DSCtaLink>
         </div>
 
         <dl className="mt-12 grid grid-cols-1 gap-px overflow-hidden border border-border bg-border sm:grid-cols-2 xl:grid-cols-4">
@@ -486,7 +487,7 @@ export default function AgentsPage() {
                 <p className="mt-6 font-mono text-[10px] uppercase tracking-widest text-text3">Consumes</p>
                 <ul className="mt-4 flex-1 space-y-2 text-sm leading-relaxed text-text2">
                   {consumer.consumes.map((item) => (
-                    <li key={item} className="flex gap-3">
+                    <li key={item} className="flex min-w-0 gap-3">
                       <span className="mt-2 h-px w-3 shrink-0 bg-accent" aria-hidden="true" />
                       <span>{item}</span>
                     </li>
@@ -502,9 +503,9 @@ export default function AgentsPage() {
             <div className="border-b border-r border-border bg-surface/35 p-6 text-center md:p-8">
             <h3 className="font-heading text-xl font-medium text-text md:text-2xl">One interface contract</h3>
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-text2">
-              {agentContractFacts.componentFamilies} documented component families, {agentContractFacts.publicExports}{' '}
-              verified public exports, {agentContractFacts.guidelineChapters} principal guideline chapters, and{' '}
-              {agentContractFacts.pageTemplates} approved page templates, published as one versioned release.
+              {systemFacts.componentFamilies} documented component families, {systemFacts.publicExports}{' '}
+              verified public exports, {systemFacts.guidelineChapters} principal guideline chapters, and{' '}
+              {systemFacts.pageTemplates} approved page templates, published as one versioned release.
             </p>
             </div>
           </div>
@@ -740,7 +741,7 @@ export default function AgentsPage() {
             <div>
               <h3 className="font-heading text-lg font-medium text-text">Agent-specific contract checks</h3>
               <p className="mt-2 text-sm leading-relaxed text-text2">
-                These {agentContractFacts.agentChecks} checks are the machine contract itself. Together they run as{' '}
+                These {systemFacts.agentChecks} checks are the machine contract itself. Together they run as{' '}
                 <code className="font-mono text-xs text-text">npm run agent:check</code>.
               </p>
               <dl className="mt-6 divide-y divide-border border-y border-border">
@@ -845,7 +846,7 @@ export default function AgentsPage() {
             The schema at{' '}
             <code className="font-mono text-xs text-text">contracts/design-policy.schema.json</code> requires all five
             fields, rejects catch-all globs, and limits the rule to one of the{' '}
-            {agentContractFacts.policyRules} policy rules. Read the full policy in the{' '}
+            {systemFacts.policyRules} policy rules. Read the full policy in the{' '}
             <Link href="/guidelines/governance" className="text-accent underline underline-offset-4 hover:text-text">
               governance guideline
             </Link>
@@ -908,13 +909,13 @@ export default function AgentsPage() {
           decisions into a versioned contract that can be read, implemented, and validated by both.
         </p>
         <div className="mt-9 flex flex-wrap gap-3">
-          <AgentsCtaLink href={AGENT_CONTRACT_HREF}>
+          <DSCtaLink href={AGENT_CONTRACT_HREF}>
             Read the agent contract
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </AgentsCtaLink>
-          <AgentsCtaLink href="/components" variant="secondary">
+          </DSCtaLink>
+          <DSCtaLink href="/components" variant="secondary">
             Browse components
-          </AgentsCtaLink>
+          </DSCtaLink>
         </div>
       </section>
     </div>

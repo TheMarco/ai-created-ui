@@ -246,6 +246,8 @@ Every component has a demo at **[ui.ai-created.com](https://ui.ai-created.com)**
 
 Any component change should be reflected in the playground in the same pass. That is the canonical reference both for future contributors and for anyone hitting the live site.
 
+The portal opens on a concise overview at `/`, with the canonical foundation reference at `/foundations`: design tokens, color, typography, spacing and layout, motion, and theme behavior. Anchors that previously lived on the overview route redirect to their new home.
+
 The playground also provides a searchable living specification at `/components`. Every public component, provider, utility, and motion-helper family has its own page with a production specimen, interactive controls, URL-shareable states, synchronized copy-ready JSX, installation guidance, anatomy, visual measurements, token dependencies, state behavior, keyboard and accessibility contracts, implementation recipes, public API, usage guidance, and required tests. Each entry also defines its Figma-equivalent asset name, auto-layout, resizing, exposed properties, slots, content limits, localization, RTL, responsive behavior, authoring limitations, maturity, ownership, review date, source, and change policy.
 
 The portal also explains the agent architecture at `/agents`: the three consumers of one contract, the query-to-validation workflow, a real design-policy failure and its compliant counterpart, the machine-readable resources, and the exception path. It links into the canonical rules rather than restating them.

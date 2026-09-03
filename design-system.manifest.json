@@ -1163,7 +1163,7 @@
           "maxHeight": "44px",
           "overflow": "visible",
           "notes": [
-            "Text variants hug by default. Icon-only uses a fixed 36px square."
+            "Text variants hug by default. Icon-only uses a fixed 44px square that is both the visual size and the interaction target."
           ]
         },
         "exposedProperties": [

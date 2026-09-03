@@ -168,13 +168,13 @@ export default function TypographySection({ onInView }: TypographySectionProps) 
       </p>
       <div className="space-y-4">
         {typeScale.map((entry) => (
-          <div key={entry.class} className="flex items-baseline gap-6">
-            <div className="w-44 shrink-0 text-right">
+          <div key={entry.class} className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-6">
+            <div className="shrink-0 sm:w-44 sm:text-right">
               <span className="text-[10px] font-mono text-text3">{entry.class}</span>
               <span className="text-[10px] font-mono text-text3 ml-2 opacity-50">{entry.size}</span>
             </div>
             <div className="min-w-0">
-              <span className={`${entry.class} text-text leading-tight block`}>
+              <span className={`${entry.class} block break-words text-text leading-tight`}>
                 {entry.sample}
               </span>
               <span className="text-[10px] font-mono text-text3 block mt-1">

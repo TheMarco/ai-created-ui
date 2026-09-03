@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import ComponentDirectory from '@/components/design-system/ComponentDirectory';
+import ComponentsSection from '@/components/design-system/sections/ComponentsSection';
 import { componentDocs } from '@/components/design-system/componentDocs';
 
 export const metadata: Metadata = {
@@ -32,6 +33,14 @@ export default function ComponentsPage() {
 
       <div className="mt-16 border-t border-border pt-10">
         <ComponentDirectory items={componentDocs} />
+      </div>
+
+      {/*
+        The specimens were composed for the documentation content column, so keep
+        that measure here. A rem value keeps the column growing with text zoom.
+      */}
+      <div className="mx-auto mt-32 w-full max-w-[43.5rem]">
+        <ComponentsSection />
       </div>
     </div>
   );

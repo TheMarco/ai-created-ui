@@ -140,7 +140,7 @@ export const componentConstructionSpecs = {
   button: {
     asset: { kind: 'component', figmaName: 'Components/Actions/Button', localName: 'Button', canvasApplicability: 'Publish as a component set with variant and size axes plus boolean and swap properties.' },
     autoLayout: layout('horizontal', '8px', '8px 16px to 12px 32px by size', 'Center in both axes', 'No wrap', ['Use logical leading and trailing slots. The icon size is a square frame with centered content.']),
-    resizing: resize('hug', 'fixed', '36px', 'Hug content or fill parent when Full width is true', '36px', '44px', 'visible', ['Text variants hug by default. Icon-only uses a fixed 36px square.']),
+    resizing: resize('hug', 'fixed', '36px', 'Hug content or fill parent when Full width is true', '36px', '44px', 'visible', ['Text variants hug by default. Icon-only uses a fixed 44px square that is both the visual size and the interaction target.']),
     exposedProperties: [
       property('variant', 'Variant', 'variant', 'primary', 'variant', ['primary', 'secondary', 'destructive', 'ghost', 'filter', 'filter-active', 'icon']),
       property('size', 'Size', 'variant', 'md', 'size', ['inline', 'sm', 'md', 'lg', 'xl', 'icon']),

@@ -29,6 +29,20 @@ body {
 body {
   color: var(--color-text);
   background: var(--color-bg);
+  /* Break a word only when it cannot otherwise fit its line. */
+  overflow-wrap: break-word;
+}
+
+/*
+  Identifiers like --shadow-elevation-medium have no break opportunity and are
+  longer than a narrow reference column at 200% text zoom. Let them break
+  anywhere so dense layouts reflow instead of pushing the page sideways.
+*/
+code,
+kbd,
+samp,
+.font-mono {
+  overflow-wrap: anywhere;
 }
 
 main[id='main-content'] {

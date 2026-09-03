@@ -184,8 +184,13 @@ export default function ThemeSection({ onInView }: ThemeSectionProps) {
 
       {/* Variable Reference Table */}
       <h3 className="text-xl font-heading font-medium text-text mb-6">Token Reference</h3>
-      <div className="border border-border rounded-md overflow-hidden">
-        <div className="grid grid-cols-[1fr_1fr_1fr] gap-0 text-[10px] font-mono uppercase tracking-wider text-text3 border-b border-border bg-surface">
+      <div
+        role="region"
+        aria-label="Token reference"
+        tabIndex={0}
+        className="border border-border rounded-md overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-[3px]"
+      >
+        <div className="grid min-w-[32rem] grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] gap-0 text-[10px] font-mono uppercase tracking-wider text-text3 border-b border-border bg-surface">
           <div className="px-4 py-2.5">Variable</div>
           <div className="px-4 py-2.5">Dark</div>
           <div className="px-4 py-2.5">Light</div>
@@ -193,7 +198,7 @@ export default function ThemeSection({ onInView }: ThemeSectionProps) {
         {darkVars.map((v, i) => (
           <div
             key={v.name}
-            className={`grid grid-cols-[1fr_1fr_1fr] gap-0 text-xs font-mono ${
+            className={`grid min-w-[32rem] grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1fr)] gap-0 text-xs font-mono ${
               i < darkVars.length - 1 ? 'border-b border-border' : ''
             }`}
           >

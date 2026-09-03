@@ -101,13 +101,13 @@ export default function ColorSection({ onInView }: ColorSectionProps) {
                 type="button"
                 aria-pressed={active}
                 onClick={() => setAccent(name)}
-                className={`rounded-md border bg-surface p-3 text-left transition-colors ${active ? 'border-accent' : 'border-control-border hover:border-control-border-strong'}`}
+                className={`min-w-0 rounded-md border bg-surface p-3 text-left transition-colors ${active ? 'border-accent' : 'border-control-border hover:border-control-border-strong'}`}
               >
                 <span className="mb-3 grid h-10 grid-cols-2 overflow-hidden rounded-sm border border-border" aria-hidden="true">
                   <span style={{ backgroundColor: values.dark }} />
                   <span style={{ backgroundColor: values.light }} />
                 </span>
-                <span className="block text-sm capitalize text-text">{name}</span>
+                <span className="block break-words text-sm capitalize text-text">{name}</span>
                 <span className="mt-1 block font-mono text-[10px] uppercase tracking-wider text-text3">
                   {active ? 'Active' : 'Preview'}
                 </span>
@@ -154,9 +154,9 @@ export default function ColorSection({ onInView }: ColorSectionProps) {
         </p>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
           {statusRoles.map(({ token, label }) => (
-            <div key={token} className="rounded-md border border-border bg-surface2 p-3">
+            <div key={token} className="min-w-0 rounded-md border border-border bg-surface2 p-3">
               <span className="mb-3 block h-8 rounded-sm" style={{ backgroundColor: `var(--color-${token})` }} />
-              <span className="text-xs text-text2">{label}</span>
+              <span className="block break-words text-xs text-text2">{label}</span>
             </div>
           ))}
         </div>

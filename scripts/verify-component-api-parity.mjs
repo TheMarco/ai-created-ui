@@ -126,6 +126,72 @@ for (const component of manifest.components) {
   }
 }
 
+// Square control geometry is authored once, as a Tailwind height/width pair in the
+// component source. Every documented projection of that number must agree with it,
+// so an icon-only target or close target cannot drift in prose alone.
+const REM_PX = 4;
+
+function squareSizesFromSource(source) {
+  const sizes = new Set();
+  for (const match of source.matchAll(/\bh-(\d+)\s+w-\1(?![\w.-])/g)) {
+    sizes.add(Number(match[1]) * REM_PX);
+  }
+  for (const match of source.matchAll(/\bh-\[(\d+)px\]\s+w-\[\1px\]/g)) {
+    sizes.add(Number(match[1]));
+  }
+  return sizes;
+}
+
+function squareClaims(text) {
+  const claims = [];
+  for (const match of text.matchAll(/(\d+)\s*(?:×|x)\s*(\d+)\s*px/gu)) {
+    if (match[1] === match[2]) claims.push(Number(match[1]));
+  }
+  for (const match of text.matchAll(/(\d+)px\s+square/gu)) {
+    claims.push(Number(match[1]));
+  }
+  return claims;
+}
+
+function documentedGeometryText(component) {
+  const parts = [];
+  for (const measurement of component.visualSpec?.measurements ?? []) {
+    parts.push(`${measurement.property} ${measurement.value} ${measurement.notes ?? ''}`);
+  }
+  for (const part of component.anatomy ?? []) parts.push(part.description ?? '');
+  for (const note of component.construction?.resizing?.notes ?? []) parts.push(note);
+  for (const key of ['minWidth', 'maxWidth', 'minHeight', 'maxHeight']) {
+    const value = component.construction?.resizing?.[key];
+    if (typeof value === 'string') parts.push(value);
+  }
+  return parts.join('\n');
+}
+
+const geometrySources = new Map();
+for (const component of manifest.components) {
+  if (typeof component.sourcePath !== 'string') continue;
+  if (geometrySources.has(component.sourcePath)) continue;
+  try {
+    geometrySources.set(component.sourcePath, await readFile(path.join(root, component.sourcePath), 'utf8'));
+  } catch {
+    issues.push(`${component.id}: cannot read declared source ${component.sourcePath}.`);
+  }
+}
+
+for (const component of manifest.components) {
+  const source = geometrySources.get(component.sourcePath);
+  if (!source) continue;
+  const sizes = squareSizesFromSource(source);
+  if (sizes.size === 0) continue;
+  for (const claim of new Set(squareClaims(documentedGeometryText(component)))) {
+    if (!sizes.has(claim)) {
+      issues.push(
+        `${component.id}: documentation states a ${claim}px square control, but ${component.sourcePath} declares ${[...sizes].sort((a, b) => a - b).join('px, ')}px.`,
+      );
+    }
+  }
+}
+
 const diagnostics = ts.getPreEmitDiagnostics(program).filter(
   (diagnostic) => diagnostic.category === ts.DiagnosticCategory.Error,
 );

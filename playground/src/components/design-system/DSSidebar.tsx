@@ -3,29 +3,37 @@
 import { motion } from 'framer-motion';
 import { motionDuration, staggerDelay } from '@ai-created/ui';
 
-const sections = [
-  { id: 'overview', label: 'Principles' },
-  { id: 'product-ux', label: 'Product UX' },
-  { id: 'colors', label: 'Colors' },
+export interface DSSidebarSection {
+  id: string;
+  label: string;
+}
+
+export const foundationSections: DSSidebarSection[] = [
+  { id: 'tokens', label: 'Design tokens' },
+  { id: 'colors', label: 'Color' },
   { id: 'typography', label: 'Typography' },
-  { id: 'spacing', label: 'Layout' },
-  { id: 'accessibility', label: 'Accessibility' },
-  { id: 'archetypes', label: 'Page Archetypes' },
-  { id: 'components', label: 'Components' },
-  { id: 'reference', label: 'API Reference' },
+  { id: 'spacing', label: 'Spacing & layout' },
   { id: 'motion', label: 'Motion' },
-  { id: 'theme', label: 'Theme Rules' },
+  { id: 'theme', label: 'Themes' },
 ];
 
 interface DSSidebarProps {
+  sections: DSSidebarSection[];
+  label?: string;
   activeSection: string;
   activeIndex: number;
   progress: number;
 }
 
-export default function DSSidebar({ activeSection, activeIndex, progress }: DSSidebarProps) {
+export default function DSSidebar({
+  sections,
+  label = 'Design system sections',
+  activeSection,
+  activeIndex,
+  progress,
+}: DSSidebarProps) {
   return (
-    <nav aria-label="Design system sections" className="space-y-1">
+    <nav aria-label={label} className="space-y-1">
       <div className="mb-4 pl-4">
         <span className="block text-[10px] font-mono uppercase tracking-[0.2em] text-text3 mb-2">
           Contents
@@ -67,5 +75,3 @@ export default function DSSidebar({ activeSection, activeIndex, progress }: DSSi
     </nav>
   );
 }
-
-export { sections };

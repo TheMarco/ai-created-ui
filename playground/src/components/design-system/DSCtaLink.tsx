@@ -3,17 +3,17 @@
 import Link from 'next/link';
 import { buttonStyles, type ButtonVariant } from '@ai-created/ui';
 
-interface AgentsCtaLinkProps {
+interface DSCtaLinkProps {
   href: string;
   variant?: ButtonVariant;
   children: React.ReactNode;
 }
 
 /**
- * buttonStyles ships from a client module, so the server-rendered /agents page
- * routes its calls-to-action through this boundary instead of copying classes.
+ * buttonStyles ships from a client module, so server-rendered pages route their
+ * calls-to-action through this boundary instead of copying button classes.
  */
-export default function AgentsCtaLink({ href, variant = 'primary', children }: AgentsCtaLinkProps) {
+export default function DSCtaLink({ href, variant = 'primary', children }: DSCtaLinkProps) {
   const className = buttonStyles({ variant, size: 'lg' });
 
   if (href.startsWith('/') && !href.includes('.')) {

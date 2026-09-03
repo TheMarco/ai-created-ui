@@ -1,5 +1,5 @@
 import type { Locator } from '@playwright/test';
-import { expect, gotoPlayground, test } from './fixtures';
+import { expect, gotoComponents, test } from './fixtures';
 
 async function primaryFieldMetrics(root: Locator) {
   return root.evaluate((element) => {
@@ -125,7 +125,7 @@ async function horizontalOverflowDiagnostics(root: Locator) {
 
 for (const theme of ['dark', 'light'] as const) {
   test(`keeps Field-family spacing and Dropdown alignment stable in the ${theme} theme`, async ({ page }, testInfo) => {
-    await gotoPlayground(page, theme);
+    await gotoComponents(page, theme);
     const demo = page.locator('[data-demo="form-controls"]');
     await demo.scrollIntoViewIfNeeded();
 
@@ -173,7 +173,7 @@ for (const theme of ['dark', 'light'] as const) {
 }
 
 test('preserves wrapped-label alignment and reflow at 200% text zoom', async ({ page }, testInfo) => {
-  await gotoPlayground(page);
+  await gotoComponents(page);
   await page.evaluate(() => {
     const currentSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
     document.documentElement.style.fontSize = `${currentSize * 2}px`;

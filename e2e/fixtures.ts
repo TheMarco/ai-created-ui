@@ -23,14 +23,38 @@ export const test = base.extend<BrowserFixtures>({
 
 export { expect } from '@playwright/test';
 
-export async function gotoPlayground(page: Page, theme: 'dark' | 'light' = 'dark') {
+async function applyTheme(page: Page, theme: 'dark' | 'light') {
   await page.addInitScript((initialTheme) => {
     localStorage.clear();
     localStorage.setItem('theme', initialTheme);
   }, theme);
+}
+
+/** The overview route. */
+export async function gotoPlayground(page: Page, theme: 'dark' | 'light' = 'dark') {
+  await applyTheme(page, theme);
   await page.goto('/');
   await page.locator('html[data-playground-hydrated="true"]').waitFor();
   await expect(page.getByRole('heading', { name: 'Design once. Build without drift.', level: 1 })).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+}
+
+/** The canonical foundation reference: tokens, color, typography, spacing, motion, themes. */
+export async function gotoFoundations(page: Page, theme: 'dark' | 'light' = 'dark') {
+  await applyTheme(page, theme);
+  await page.goto('/foundations');
+  await expect(
+    page.getByRole('heading', { name: 'The decisions every surface inherits.', level: 1 }),
+  ).toBeVisible();
+  await page.evaluate(() => document.fonts.ready);
+}
+
+/** The component directory and its live specimen overview. */
+export async function gotoComponents(page: Page, theme: 'dark' | 'light' = 'dark') {
+  await applyTheme(page, theme);
+  await page.goto('/components');
+  await expect(page.getByRole('heading', { name: 'Build from documented contracts.', level: 1 })).toBeVisible();
+  await page.locator('[data-visual="component-directory"][data-hydrated="true"]').waitFor();
   await page.evaluate(() => document.fonts.ready);
 }
 
