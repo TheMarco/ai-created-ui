@@ -136,11 +136,11 @@ export default function DSPageShell() {
       </section>
 
       {/* Main Content */}
-      <section className="pb-32">
+      <section className="pb-32 pt-12" data-visual="portal-content">
         <div className="container-custom">
           <div className="flex gap-16">
             {/* Sidebar - desktop only */}
-            <aside className="hidden w-56 shrink-0 lg:block">
+            <aside className="hidden w-56 shrink-0 lg:block" data-visual="portal-sidebar">
               <div className="sticky top-28 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
                 <DSSidebar
                   activeSection={activeSection}

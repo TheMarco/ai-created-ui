@@ -145,6 +145,17 @@ test('captures typography and spacing contracts', async ({ page }) => {
   }
 });
 
+test('captures the hero-to-principles section boundary', async ({ page }) => {
+  await gotoPlayground(page);
+  await stabilizeVisuals(page);
+  const heroBounds = await page.locator('[data-visual="portal-hero"]').boundingBox();
+  if (!heroBounds) throw new Error('The portal hero is not visible.');
+  const scrollTarget = Math.round(heroBounds.y + heroBounds.height - 80);
+  await page.evaluate((top) => window.scrollTo(0, top), scrollTarget);
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(scrollTarget);
+  await expect(page).toHaveScreenshot('principles-section-boundary-dark.png');
+});
+
 test('captures open Dialog, Modal, and ConfirmDialog states', async ({ page }) => {
   await gotoPlayground(page);
   await stabilizeVisuals(page);

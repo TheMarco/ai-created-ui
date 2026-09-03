@@ -69,6 +69,41 @@ test('loads, switches theme, navigates sections, and shows focus', async ({ page
   await expect(buttonReference.getByRole('cell', { name: 'variant', exact: true })).toBeVisible();
 });
 
+test('keeps the first documentation heading clear of the hero separator', async ({ page }, testInfo) => {
+  await gotoPlayground(page);
+  await stabilizeVisuals(page);
+
+  const navigationName = testInfo.project.name === 'mobile-chromium'
+    ? 'Mobile section navigation'
+    : 'Design system sections';
+  await page
+    .getByRole('navigation', { name: navigationName })
+    .getByRole('link', { name: 'Principles', exact: true })
+    .click();
+
+  const hero = page.locator('[data-visual="portal-hero"]');
+  const content = page.locator('[data-visual="portal-content"]');
+  const firstSection = page.locator('#overview');
+  await expect(content).toHaveCSS('padding-top', '60px');
+  const [heroBounds, sectionBounds] = await Promise.all([
+    hero.boundingBox(),
+    firstSection.boundingBox(),
+  ]);
+
+  expect(heroBounds).not.toBeNull();
+  expect(sectionBounds).not.toBeNull();
+
+  const separatorGap = sectionBounds!.y - (heroBounds!.y + heroBounds!.height);
+  expect(separatorGap).toBeGreaterThanOrEqual(58);
+  expect(separatorGap).toBeLessThanOrEqual(62);
+
+  if (testInfo.project.name === 'desktop-chromium') {
+    const sidebarBounds = await page.locator('[data-visual="portal-sidebar"]').boundingBox();
+    expect(sidebarBounds).not.toBeNull();
+    expect(Math.abs(sidebarBounds!.y - sectionBounds!.y)).toBeLessThanOrEqual(1);
+  }
+});
+
 test('switches and persists the accent scheme', async ({ page }) => {
   await page.goto('/');
   await page.locator('html[data-playground-hydrated="true"]').waitFor();
