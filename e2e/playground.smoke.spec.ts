@@ -546,6 +546,10 @@ test('exposes release, source, and license facts in the global footer', async ({
 });
 
 test('keeps the overview and foundations free of horizontal overflow at 200% text zoom', async ({ page }) => {
+  // Six navigations across two routes and three viewports, each against a cold
+  // development-server compile. The default single-navigation timeout is too tight.
+  test.slow();
+
   for (const route of ['/', '/foundations']) {
     for (const viewport of [
       { width: 390, height: 844 },
