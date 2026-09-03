@@ -4,14 +4,14 @@ import { ThemeProvider } from '@ai-created/ui';
 import PlaygroundFooter from '@/components/PlaygroundFooter';
 
 export const metadata: Metadata = {
-  title: '@ai-created/ui | Design System Specification',
+  title: 'AI-Created UI · Design once. Build without drift.',
   description:
     'Design once. Build without drift. A versioned design system consumed by designers, engineers, and coding agents through one interface contract.',
   alternates: {
     canonical: 'https://ui.ai-created.com',
   },
   openGraph: {
-    title: '@ai-created/ui | Design System Specification',
+    title: 'AI-Created UI · Design once. Build without drift.',
     description:
       'Design once. Build without drift. A versioned design system consumed by designers, engineers, and coding agents through one interface contract.',
     url: 'https://ui.ai-created.com',

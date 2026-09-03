@@ -36,10 +36,11 @@ export default function FoundationsPage() {
           The decisions every surface inherits.
         </h1>
         <p className="mt-5 max-w-3xl text-base leading-relaxed text-text2 md:text-lg">
-          Tokens, color, typography, spacing, motion, and theme behavior resolve the same way in every component and
-          every consuming product. Cross-system rules that sit above these primitives live in the{' '}
+          This is the implementation reference: token values, live specimens, and the exact CSS variables that resolve
+          the same way in every component and every consuming product. The principles, decisions, and acceptance rules
+          that govern them live in the{' '}
           <Link href="/guidelines/foundations" className="text-accent underline underline-offset-4 hover:text-text">
-            principal specification
+            Foundations guideline
           </Link>
           .
         </p>

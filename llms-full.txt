@@ -1982,14 +1982,14 @@ Shared timing, easing, offsets, reveal recipes, and subtle hover behavior for Fr
 
 ## 01. Foundations (`foundations`)
 
-The visual, spatial, typographic, motion, media, and accessible accent-scheme decisions that every AI-Created interface inherits.
+The principles, decisions, and acceptance rules behind the visual, spatial, typographic, motion, media, and accessible accent-scheme systems every AI-Created interface inherits. Token values and live specimens live in the Foundations reference.
 
 - Status: canonical
 - Owner: Design Systems
 - Review cycle: Quarterly and before any token release
 - Source of truth: styles/tokens.css and tailwind-preset.js
 
-- `token-architecture` Token architecture: Use a three-level naming model so raw values can change without altering product intent.
+- `token-architecture` Token architecture: Use a three-level naming model so raw values can change without altering product intent. This guideline owns the rules; the Foundations reference owns the values.
 - `color` Color and contrast: Accent schemes, committed actions, destructive actions, neutral surfaces, and semantic feedback each have an explicit role.
 - `type-layout` Typography, spacing, and grid: Instrument Serif creates editorial moments. Space Grotesk carries every functional reading task.
 - `shape-motion-media` Shape, elevation, motion, icons, and media: Secondary visual systems remain restrained so content and interaction state stay primary.

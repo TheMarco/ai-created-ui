@@ -2,13 +2,12 @@
 
 Notable changes to `@ai-created/ui` are recorded here. Entries are written and reviewed by people when the change is made. Versions are not inferred from commit messages.
 
-## [Unreleased]
+## [1.4.0] - 2026-09-03
 
 ### Added
 
 - The specification portal has a top-level `/agents` route that explains how coding agents query the machine-readable contract, which validation rejects design-system drift, and how a departure becomes an explicit, owned, expiring exception. Primary navigation now points `Agents` at that page; the canonical agent contract stays in `/guidelines/assets#agent-contract`.
 - `npm run docs:check` verifies the version, component, export, guideline, template, policy-rule, and agent-check counts published by the `/agents` page against their owning sources.
-
 - `/foundations` is a top-level route carrying the canonical foundation reference: design tokens, color, typography, spacing and layout, motion, and themes. Primary navigation points `Foundations` at it, and anchors that used to live on the overview route redirect to their new home.
 - A global footer and a header version link expose the current release, GitHub source, releases, changelog, license, and the machine-readable context files. Every value derives from `package.json`.
 - Browser coverage for the route map, active navigation state, internal-link resolution, the footer release facts, and 200% text zoom on the overview and foundations routes.
@@ -20,10 +19,14 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 - Product-specific AI-Created navigation and routes no longer appear as universal system rules. `DESIGN-SYSTEM.md` and the `approvedArchetypes` route examples in `ai-created-ui.config.json` use generic notation, and the reusable page archetypes remain canonical.
 - The portal derives its countable facts, version, and license from `package.json`, `design-system.manifest.json`, `consumers.json`, `templates/agent/manifest.json`, and the design-policy schema instead of restating them.
 - `DSCodeBlock` code regions are keyboard focusable and carry an accessible name, so a horizontally scrolling sample can be reached and scrolled without a pointer.
+- `/foundations` and `/guidelines/foundations` state their distinct roles. The route is the implementation reference for values, specimens, and CSS variables; the guideline holds principles, decisions, and acceptance rules and links to the reference instead of restating values.
+- The overview no longer claims every consumer runs the same blocking checks. The shared contract is validated through blocking checks in each consumer, which owns its own compatibility suite.
+- The default document title is `AI-Created UI · Design once. Build without drift.`, matching the overview route it now describes.
 
 ### Fixed
 
 - The portal header, the foundation section rail, the type-scale specimen, and the theme token reference no longer push the page sideways at 200% text zoom.
+- The principal foundations inventory recorded elevation as local Tailwind effects. `--shadow-elevation-low`, `--shadow-elevation-medium`, and `--shadow-elevation-high` are canonical tokens mapped into the Tailwind preset, and the inventory now says so.
 
 ## [1.3.5] - 2026-09-02
 

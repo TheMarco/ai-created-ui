@@ -6,7 +6,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
     index: '01',
     title: 'Foundations',
     shortTitle: 'Foundations',
-    summary: 'The visual, spatial, typographic, motion, media, and accessible accent-scheme decisions that every AI-Created interface inherits.',
+    summary: 'The principles, decisions, and acceptance rules behind the visual, spatial, typographic, motion, media, and accessible accent-scheme systems every AI-Created interface inherits. Token values and live specimens live in the Foundations reference.',
     status: 'canonical',
     owner: 'Design Systems',
     lastReviewed: 'August 2026',
@@ -21,7 +21,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
       {
         id: 'token-architecture',
         title: 'Token architecture',
-        summary: 'Use a three-level naming model so raw values can change without altering product intent.',
+        summary: 'Use a three-level naming model so raw values can change without altering product intent. This guideline owns the rules; the Foundations reference owns the values.',
         blocks: [
           {
             type: 'table',
@@ -41,6 +41,14 @@ export const guidelineSpecs: GuidelineSpec[] = [
               { title: 'Change every scheme together', description: 'Every accent role is tuned and reviewed across all nine schemes and light/dark mode, including focus and selection; feedback semantics remain stable.' },
               { title: 'Avoid product aliases', description: 'Do not create a new token for one screen. Promote a value only after a repeated semantic need is demonstrated.' },
               { title: 'Keep compatibility aliases secondary', description: 'Existing red aliases remain supported public contracts. New work can prefer accent and action names when intent is unambiguous.' },
+            ],
+          },
+          {
+            type: 'resources',
+            title: 'Where each answer lives',
+            description: 'This page states principles, decisions, and acceptance rules. Concrete token values, specimens, and implementation detail are read from the reference so a value is never restated in two places.',
+            items: [
+              { title: 'Foundations reference', description: 'Live token values, color and typography specimens, spacing and layout scales, motion durations, and the exact CSS variables to use in product code.', href: '/foundations', action: 'Open reference' },
             ],
           },
         ],
@@ -130,7 +138,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
             columns: ['Area', 'Contract', 'Current support'],
             rows: [
               ['Radius', '4px small, 6px default, 10px large, full for pills', 'Canonical tokens'],
-              ['Elevation', 'Border first; shadow only when depth changes interaction meaning', 'Local Tailwind effects, not yet canonical tokens'],
+              ['Elevation', 'Border first; shadow only when depth changes interaction meaning', 'Canonical low, medium, and high shadow tokens'],
               ['Motion', '200ms feedback, 300ms transitions, 500ms entrances', 'Canonical duration tokens and shared helpers'],
               ['Icons', 'Lucide, 16px inline, 20px controls, 32px empty states', 'Code dependency; no separate icon package'],
               ['Imagery', 'Theme-paired, art-directed, useful at crop extremes', 'ThemedHeroImage plus product-owned assets'],

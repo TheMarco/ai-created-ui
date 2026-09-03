@@ -4,7 +4,7 @@
   "schemaVersion": "1.0.0",
   "package": {
     "name": "@ai-created/ui",
-    "version": "1.3.5",
+    "version": "1.4.0",
     "description": "Shared design system for AI-Created apps",
     "sourcePath": "package.json",
     "publicApiPath": "src/index.ts",
@@ -9859,7 +9859,7 @@
       "index": "01",
       "title": "Foundations",
       "shortTitle": "Foundations",
-      "summary": "The visual, spatial, typographic, motion, media, and accessible accent-scheme decisions that every AI-Created interface inherits.",
+      "summary": "The principles, decisions, and acceptance rules behind the visual, spatial, typographic, motion, media, and accessible accent-scheme systems every AI-Created interface inherits. Token values and live specimens live in the Foundations reference.",
       "status": "canonical",
       "owner": "Design Systems",
       "lastReviewed": "August 2026",
@@ -9874,7 +9874,7 @@
         {
           "id": "token-architecture",
           "title": "Token architecture",
-          "summary": "Use a three-level naming model so raw values can change without altering product intent.",
+          "summary": "Use a three-level naming model so raw values can change without altering product intent. This guideline owns the rules; the Foundations reference owns the values.",
           "blocks": [
             {
               "type": "table",
@@ -9925,6 +9925,19 @@
                 {
                   "title": "Keep compatibility aliases secondary",
                   "description": "Existing red aliases remain supported public contracts. New work can prefer accent and action names when intent is unambiguous."
+                }
+              ]
+            },
+            {
+              "type": "resources",
+              "title": "Where each answer lives",
+              "description": "This page states principles, decisions, and acceptance rules. Concrete token values, specimens, and implementation detail are read from the reference so a value is never restated in two places.",
+              "items": [
+                {
+                  "title": "Foundations reference",
+                  "description": "Live token values, color and typography specimens, spacing and layout scales, motion durations, and the exact CSS variables to use in product code.",
+                  "href": "/foundations",
+                  "action": "Open reference"
                 }
               ]
             }
@@ -10170,7 +10183,7 @@
                 [
                   "Elevation",
                   "Border first; shadow only when depth changes interaction meaning",
-                  "Local Tailwind effects, not yet canonical tokens"
+                  "Canonical low, medium, and high shadow tokens"
                 ],
                 [
                   "Motion",
