@@ -546,9 +546,12 @@ test('exposes release, source, and license facts in the global footer', async ({
 });
 
 test('keeps the overview and foundations free of horizontal overflow at 200% text zoom', async ({ page }) => {
-  // Six navigations across two routes and three viewports, each against a cold
-  // development-server compile. The default single-navigation timeout is too tight.
-  test.slow();
+  // The overview hero sources multi-megabyte PNGs, and the development server
+  // re-optimizes them for every new viewport width. Overflow is measured from
+  // document geometry, and the hero sits inside an overflow-hidden section with
+  // fixed placement, so waiting for the DOM is enough and waiting for every
+  // subresource is not.
+  const settle = { waitUntil: 'domcontentloaded' } as const;
 
   for (const route of ['/', '/foundations']) {
     for (const viewport of [
@@ -556,7 +559,7 @@ test('keeps the overview and foundations free of horizontal overflow at 200% tex
       { width: 1280, height: 900 },
     ]) {
       await page.setViewportSize(viewport);
-      await page.goto(route);
+      await page.goto(route, settle);
       await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
       const overflow = await page.evaluate(() => {
         const widest = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
@@ -566,7 +569,7 @@ test('keeps the overview and foundations free of horizontal overflow at 200% tex
     }
 
     await page.setViewportSize({ width: 1280, height: 900 });
-    await page.goto(route);
+    await page.goto(route, settle);
     await page.addStyleTag({ content: 'html { font-size: 250% !important; }' });
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     const zoomed = await page.evaluate(() => {
