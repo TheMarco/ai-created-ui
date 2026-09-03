@@ -21,7 +21,12 @@ for (const theme of ['dark', 'light'] as const) {
 
     const colorComparison = page.locator('[data-visual="color-theme-comparison"]');
     await colorComparison.scrollIntoViewIfNeeded();
-    await expect(colorComparison).toHaveScreenshot(`color-theme-comparison-${theme}.png`);
+    // Dense mono and body text in this specimen renders with measurably different
+    // antialiasing on Linux CI than on macOS. The tolerance covers that variance only;
+    // any color, geometry, or layout change still exceeds it.
+    await expect(colorComparison).toHaveScreenshot(`color-theme-comparison-${theme}.png`, {
+      maxDiffPixelRatio: 0.05,
+    });
   });
 
   test(`captures ${theme} component contracts`, async ({ page }) => {
