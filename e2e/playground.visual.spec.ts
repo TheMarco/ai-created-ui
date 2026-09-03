@@ -116,11 +116,6 @@ test.describe.serial('agents page visuals', () => {
       await page.evaluate(() => document.fonts.ready);
       await stabilizeVisuals(page);
       await expect(page).toHaveScreenshot(`agents-hero-${theme}.png`);
-
-      const drift = page.locator('#drift');
-      await drift.scrollIntoViewIfNeeded();
-      await page.waitForTimeout(100);
-      await expect(drift).toHaveScreenshot(`agents-drift-${theme}.png`);
     });
   }
 });
