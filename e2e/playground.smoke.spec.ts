@@ -340,3 +340,93 @@ test('exercises the major form, selection, overlay, and disclosure flows', async
   await page.keyboard.press('Escape');
   await expect(tooltip).toHaveCount(0);
 });
+
+test('reaches the agents page from primary navigation and resolves its contract links', async ({ page }, testInfo) => {
+  await gotoPlayground(page);
+
+  const navigationName = testInfo.project.name === 'mobile-chromium'
+    ? 'Mobile documentation'
+    : 'Primary documentation';
+  const documentationNav = page.getByRole('navigation', { name: navigationName });
+  const agentsLink = documentationNav.getByRole('link', { name: 'Agents', exact: true });
+  await expect(agentsLink).toHaveAttribute('href', '/agents');
+
+  await Promise.all([page.waitForURL(/\/agents$/), agentsLink.click()]);
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Design once. Agents build without drift.' })
+  ).toBeVisible();
+  await expect(
+    documentationNav.getByRole('link', { name: 'Agents', exact: true })
+  ).toHaveAttribute('aria-current', 'page');
+
+  const main = page.getByRole('main');
+  await expect(main.getByRole('link', { name: /Explore the agent contract/ })).toHaveAttribute(
+    'href',
+    '/guidelines/assets#agent-contract'
+  );
+  await expect(main.getByRole('link', { name: 'View machine-readable context' })).toHaveAttribute(
+    'href',
+    '/llms.txt'
+  );
+
+  for (const [name, href] of [
+    ['design-system.manifest.json', '/design-system/manifest.json'],
+    ['llms-full.txt', '/llms-full.txt'],
+  ] as const) {
+    const resource = main.getByRole('link', { name: new RegExp(`^${name}`) }).first();
+    await expect(resource).toHaveAttribute('href', href);
+    const response = await page.request.get(href);
+    expect(response.ok(), `${href} should resolve`).toBe(true);
+  }
+
+  await expect(main.getByRole('heading', { level: 2, name: 'One system. Three consumers.' })).toBeVisible();
+  await expect(main.getByRole('heading', { level: 2, name: 'The contract is enforced' })).toBeVisible();
+  await expect(main.getByRole('heading', { level: 1 })).toHaveCount(1);
+
+  const invalidRule = main.getByText('no-local-primitive', { exact: true });
+  await expect(invalidRule).toBeVisible();
+
+  const invalidFigure = main
+    .locator('figure')
+    .filter({ hasText: 'Implementation that bypasses the system' });
+  const codeRegion = invalidFigure.getByRole('region', {
+    name: 'Implementation that bypasses the system',
+  });
+  await expect(codeRegion).toHaveCSS('overflow-x', 'auto');
+  await invalidFigure.getByRole('button', { name: 'Copy code' }).focus();
+  await page.keyboard.press('Tab');
+  await expect(codeRegion).toBeFocused();
+  await expect(codeRegion).toHaveCSS('outline-style', 'solid');
+});
+
+test('keeps the agents page free of horizontal overflow at narrow widths and 200% text zoom', async ({ page }) => {
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+    { width: 1440, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto('/agents');
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Design once. Agents build without drift.' })
+    ).toBeVisible();
+    const overflow = await page.evaluate(() => {
+      const widest = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+      return widest - document.documentElement.clientWidth;
+    });
+    expect(overflow, `no horizontal overflow at ${viewport.width}px`).toBeLessThanOrEqual(1);
+  }
+
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto('/agents');
+  await page.addStyleTag({ content: 'html { font-size: 250% !important; }' });
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Design once. Agents build without drift.' })
+  ).toBeVisible();
+  const zoomedOverflow = await page.evaluate(() => {
+    const widest = Math.max(document.documentElement.scrollWidth, document.body.scrollWidth);
+    return widest - document.documentElement.clientWidth;
+  });
+  expect(zoomedOverflow, 'no horizontal overflow at 200% text zoom').toBeLessThanOrEqual(1);
+  await expect(page.getByRole('heading', { level: 2, name: 'Exceptions stay explicit' })).toBeVisible();
+});

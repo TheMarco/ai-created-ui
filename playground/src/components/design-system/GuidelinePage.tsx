@@ -169,13 +169,17 @@ function GuidelineBlockView({ block }: { block: GuidelineBlock }) {
     <div>
       <BlockHeader title={block.title} description={block.description} />
       <div className="divide-y divide-border border-y border-border">
-        {block.items.map((item) => (
+        {block.items.map((item) => {
+          const isFile = /\.(?:json|txt)$/.test(item.href);
+          const ActionIcon = item.external ? ExternalLink : isFile ? Download : ArrowRight;
+
+          return (
           <a
             key={item.title}
             href={item.href}
             target={item.external ? '_blank' : undefined}
             rel={item.external ? 'noopener noreferrer' : undefined}
-            download={!item.external && /\.(?:json|txt)$/.test(item.href) ? true : undefined}
+            download={!item.external && isFile ? true : undefined}
             className="group grid gap-4 py-5 transition-colors hover:bg-surface/60 sm:grid-cols-[1fr_auto] sm:px-4"
           >
             <div>
@@ -184,10 +188,11 @@ function GuidelineBlockView({ block }: { block: GuidelineBlock }) {
             </div>
             <span className="flex items-center gap-2 self-center whitespace-nowrap font-mono text-[10px] uppercase tracking-wider text-accent">
               {item.action}
-              {item.external ? <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /> : <Download className="h-3.5 w-3.5" aria-hidden="true" />}
+              <ActionIcon className="h-3.5 w-3.5" aria-hidden="true" />
             </span>
           </a>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -101,6 +101,30 @@ test.describe.serial('principal specification visuals', () => {
   }
 });
 
+test.describe.serial('agents page visuals', () => {
+  for (const theme of ['dark', 'light'] as const) {
+    test(`captures the ${theme} agents page`, async ({ page }) => {
+      await page.addInitScript((initialTheme) => {
+        localStorage.clear();
+        localStorage.setItem('theme', initialTheme);
+      }, theme);
+
+      await page.goto('/agents');
+      await expect(
+        page.getByRole('heading', { level: 1, name: 'Design once. Agents build without drift.' })
+      ).toBeVisible();
+      await page.evaluate(() => document.fonts.ready);
+      await stabilizeVisuals(page);
+      await expect(page).toHaveScreenshot(`agents-hero-${theme}.png`);
+
+      const drift = page.locator('#drift');
+      await drift.scrollIntoViewIfNeeded();
+      await page.waitForTimeout(100);
+      await expect(drift).toHaveScreenshot(`agents-drift-${theme}.png`);
+    });
+  }
+});
+
 test('captures typography and spacing contracts', async ({ page }) => {
   await gotoPlayground(page);
   await stabilizeVisuals(page);

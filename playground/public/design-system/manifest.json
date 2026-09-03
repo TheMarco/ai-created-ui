@@ -11734,6 +11734,26 @@
               "description": "Commands return JSON and validate the same contract that ships with the selected package version.",
               "language": "bash",
               "code": "npm run agent:query -- component button\nnpm run agent:query -- guideline accessibility\nnpm run agent:query -- template dashboard\nnpm run agent:check"
+            },
+            {
+              "type": "resources",
+              "title": "Agent entry points",
+              "description": "Start at the overview when introducing the model to a team. Stay in this chapter for the canonical rules.",
+              "items": [
+                {
+                  "title": "Agents overview",
+                  "description": "Product-level explanation of how agents query the contract, what validation rejects, and how exceptions reach human review.",
+                  "href": "/agents",
+                  "action": "Open page"
+                },
+                {
+                  "title": "AI agent integration guide",
+                  "description": "Consumer setup, required gates, repository enforcement, and adapter guidance.",
+                  "href": "https://github.com/TheMarco/ai-created-ui/blob/main/docs/agent-integration.md",
+                  "action": "Read guide",
+                  "external": true
+                }
+              ]
             }
           ]
         },

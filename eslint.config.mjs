@@ -43,6 +43,8 @@ export default tseslint.config(
       'no-undef': 'off',
       // These mount-time state synchronizations are valid client hydration guards.
       'react-hooks/set-state-in-effect': 'off',
+      // A horizontally scrollable region must be reachable by keyboard (WCAG 2.1.1).
+      'jsx-a11y/no-noninteractive-tabindex': ['error', { tags: [], roles: ['tabpanel', 'region'] }],
     },
   },
   {

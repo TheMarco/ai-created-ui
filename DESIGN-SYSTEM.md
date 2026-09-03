@@ -6,11 +6,12 @@ If the live UI changes, update this file and the living specification in the sam
 
 ## Living Specification
 
-The public design-system portal has three layers:
+The public design-system portal has four layers:
 
 - `/` is the design-system entry hub and visual foundations overview.
 - `/components` is the searchable component workbench and implementation reference.
 - `/guidelines` is the principal-level operating specification for foundations, construction, patterns, content, accessibility, governance, and reusable assets.
+- `/agents` explains how coding agents consume that same contract, what design-policy validation rejects, and how an exception reaches human review. The canonical agent rules stay in `/guidelines/assets#agent-contract` and `AGENTS.md`.
 
 Component documentation is canonical only when the live production specimen, public API, implementation examples, Figma-equivalent construction contract, accessibility contract, and tests describe the same behavior. System guidance is canonical only when it names an owner, maturity, review cadence, source of truth, and required outcomes.
 

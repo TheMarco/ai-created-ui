@@ -4,6 +4,15 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+### Added
+
+- The specification portal has a top-level `/agents` route that explains how coding agents query the machine-readable contract, which validation rejects design-system drift, and how a departure becomes an explicit, owned, expiring exception. Primary navigation now points `Agents` at that page; the canonical agent contract stays in `/guidelines/assets#agent-contract`.
+- `npm run docs:check` verifies the version, component, export, guideline, template, policy-rule, and agent-check counts published by the `/agents` page against their owning sources.
+
+### Changed
+
+- `DSCodeBlock` code regions are keyboard focusable and carry an accessible name, so a horizontally scrolling sample can be reached and scrolled without a pointer.
+
 ## [1.3.5] - 2026-09-02
 
 ### Changed

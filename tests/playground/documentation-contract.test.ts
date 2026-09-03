@@ -25,15 +25,20 @@ const fixturePaths = [
   'RELEASING.md',
   'consumers.json',
   'contracts/consumer-registry.schema.json',
+  'contracts/design-policy.schema.json',
   'design-system.manifest.json',
   'docs/agent-integration.md',
   'docs/consumer-compatibility.md',
   'docs/consumer-update-automation.md',
   'docs/examples/consumer-renovate.json',
   'package.json',
+  'playground/src/app/agents/page.tsx',
   'playground/src/app/layout.tsx',
   'playground/src/components/PlaygroundHeader.tsx',
   'playground/src/components/design-system/DSPageShell.tsx',
+  'playground/src/components/design-system/agents/AgentsPage.tsx',
+  'playground/src/components/design-system/agents/contract.ts',
+  'templates/agent/manifest.json',
 ];
 const temporaryRoots: string[] = [];
 

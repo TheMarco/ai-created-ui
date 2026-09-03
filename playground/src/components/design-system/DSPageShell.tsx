@@ -32,10 +32,10 @@ const portalPaths = [
     description: 'Product principles, content rules, patterns, and governance.',
   },
   {
-    href: '/guidelines/assets#agent-contract',
+    href: '/agents',
     icon: FileCode2,
-    title: 'Agent resources',
-    description: 'Machine-readable manifests, prompts, policies, and templates.',
+    title: 'Agents',
+    description: 'How coding agents query, build against, and get validated by the system.',
   },
 ] as const;
 

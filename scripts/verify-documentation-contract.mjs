@@ -10,6 +10,9 @@ const root = process.env.AI_CREATED_UI_DOCS_ROOT
 
 const paths = {
   agents: 'AGENTS.md',
+  agentsFacts: 'playground/src/components/design-system/agents/contract.ts',
+  agentsPage: 'playground/src/components/design-system/agents/AgentsPage.tsx',
+  agentsRoute: 'playground/src/app/agents/page.tsx',
   changelog: 'CHANGELOG.md',
   claude: 'CLAUDE.md',
   contributing: 'CONTRIBUTING.md',
@@ -20,6 +23,7 @@ const paths = {
   consumerRegistry: 'consumers.json',
   consumerRegistrySchema: 'contracts/consumer-registry.schema.json',
   designSystem: 'DESIGN-SYSTEM.md',
+  designPolicySchema: 'contracts/design-policy.schema.json',
   header: 'playground/src/components/PlaygroundHeader.tsx',
   homepage: 'playground/src/components/design-system/DSPageShell.tsx',
   integration: 'docs/agent-integration.md',
@@ -30,6 +34,7 @@ const paths = {
   readme: 'README.md',
   release: 'RELEASING.md',
   releaseWorkflow: '.github/workflows/release.yml',
+  templateManifest: 'templates/agent/manifest.json',
 };
 
 const entries = await Promise.all(
@@ -42,6 +47,8 @@ const files = Object.fromEntries(entries);
 const manifest = JSON.parse(files.manifest);
 const consumerRegistry = JSON.parse(files.consumerRegistry);
 const consumerRegistrySchema = JSON.parse(files.consumerRegistrySchema);
+const designPolicySchema = JSON.parse(files.designPolicySchema);
+const templateManifest = JSON.parse(files.templateManifest);
 const packageJson = JSON.parse(files.package);
 const issues = [];
 
@@ -346,21 +353,60 @@ for (const text of [
   requireText('integration', text);
 }
 
-for (const destination of [
-  '/components',
-  '/guidelines',
-  '/guidelines/assets#agent-contract',
-]) {
+for (const destination of ['/components', '/guidelines', '/agents']) {
   requireText('homepage', `href: '${destination}'`, destination);
   requireText('header', `href: '${destination}'`, destination);
 }
 requireText('homepage', 'Design once. Build without drift.');
+requireText('header', "aria-current={active ? 'page' : undefined}", 'an active navigation state');
+
+requireText('agentsPage', "'/guidelines/assets#agent-contract'", 'the canonical agent-contract reference');
+requireText('agentsPage', 'Design once. Agents build without drift.');
+for (const machineResource of [
+  '/design-system/manifest.json',
+  '/design-system/tokens.json',
+  '/llms.txt',
+  '/llms-full.txt',
+  'AGENTS.md',
+]) {
+  requireText('agentsPage', machineResource);
+}
+for (const agentCommand of [
+  'npm run agent:query -- context',
+  'npm run agent:query -- templates',
+  'npm run agent:check',
+  'npm run validate',
+]) {
+  requireText('agentsPage', agentCommand);
+}
+requireText('agentsRoute', 'https://ui.ai-created.com/agents');
+requireText('designSystem', '`/agents`', 'the /agents portal layer');
+requireText('readme', 'https://ui.ai-created.com/agents');
+
+const policyRuleCount = designPolicySchema.$defs?.exception?.properties?.rule?.enum?.length ?? 0;
+const agentCheckCount = (packageJson.scripts?.['agent:check'] ?? '')
+  .split('&&')
+  .filter((step) => step.trim() !== '').length;
+const derivedAgentFacts = [
+  ['packageVersion', `'${packageJson.version}'`],
+  ['componentFamilies', String(componentCount)],
+  ['publicExports', String(publicExportCount)],
+  ['guidelineChapters', String(manifest.guidelines.length)],
+  ['pageTemplates', String(templateManifest.templates.length)],
+  ['policyRules', String(policyRuleCount)],
+  ['agentChecks', String(agentCheckCount)],
+];
+for (const [fact, expected] of derivedAgentFacts) {
+  if (!new RegExp(`\\b${fact}:\\s*${expected.replace(/[.*+?^${}()|[\]\\]/gu, '\\$&')},`, 'u').test(files.agentsFacts)) {
+    issues.push(`${paths.agentsFacts} must publish ${fact}: ${expected} to match its canonical source.`);
+  }
+}
 requireText('layout', 'Design System Specification');
 if (files.layout.includes('Design System Playground')) {
   issues.push(`${paths.layout} must describe the canonical specification, not a playground.`);
 }
 
-for (const fileKey of ['homepage', 'header', 'layout']) {
+for (const fileKey of ['homepage', 'header', 'layout', 'agentsPage', 'agentsRoute']) {
   if (/[\u2013\u2014]/u.test(files[fileKey])) {
     issues.push(`${paths[fileKey]} contains a visible en dash or em dash.`);
   }
