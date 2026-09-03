@@ -35,6 +35,8 @@ const paths = {
   readme: 'README.md',
   release: 'RELEASING.md',
   releaseWorkflow: '.github/workflows/release.yml',
+  principalSpec: 'playground/src/components/design-system/principal-spec/registry.ts',
+  tokens: 'styles/tokens.css',
 };
 
 const entries = await Promise.all(
@@ -356,8 +358,25 @@ for (const destination of ['/foundations', '/components', '/guidelines', '/agent
   requireText('header', `href: '${destination}'`, destination);
 }
 requireText('homepage', 'Design once. Build without drift.');
+requireText('homepage', 'consumer-owned blocking validation', 'consumer-owned blocking validation');
+rejectText('homepage', 'same blocking', 'identical blocking checks across consumers');
 rejectText('header', "href: '/', label: 'Foundations'", 'Foundations pointing at the overview route');
 requireText('foundationsRoute', 'https://ui.ai-created.com/foundations');
+
+// Published foundation status must agree with canonical token availability.
+for (const elevationToken of [
+  '--shadow-elevation-low',
+  '--shadow-elevation-medium',
+  '--shadow-elevation-high',
+]) {
+  requireText('tokens', elevationToken);
+}
+requireText(
+  'principalSpec',
+  'Canonical low, medium, and high elevation tokens',
+  'canonical elevation-token status',
+);
+rejectText('principalSpec', 'not yet canonical tokens', 'stale non-canonical elevation status');
 
 // The portal must derive countable system facts, never restate them.
 requireText('systemFacts', "from '../../../design-system.manifest.json'", 'a canonical manifest import');

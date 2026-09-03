@@ -4,11 +4,12 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-09-03
+
 ### Added
 
 - The specification portal has a top-level `/agents` route that explains how coding agents query the machine-readable contract, which validation rejects design-system drift, and how a departure becomes an explicit, owned, expiring exception. Primary navigation now points `Agents` at that page; the canonical agent contract stays in `/guidelines/assets#agent-contract`.
 - `npm run docs:check` verifies the version, component, export, guideline, template, policy-rule, and agent-check counts published by the `/agents` page against their owning sources.
-
 - `/foundations` is a top-level route carrying the canonical foundation reference: design tokens, color, typography, spacing and layout, motion, and themes. Primary navigation points `Foundations` at it, and anchors that used to live on the overview route redirect to their new home.
 - A global footer and a header version link expose the current release, GitHub source, releases, changelog, license, and the machine-readable context files. Every value derives from `package.json`.
 - Browser coverage for the route map, active navigation state, internal-link resolution, the footer release facts, and 200% text zoom on the overview and foundations routes.
@@ -24,6 +25,8 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 ### Fixed
 
 - The portal header, the foundation section rail, the type-scale specimen, and the theme token reference no longer push the page sideways at 200% text zoom.
+- The Principal Specification now identifies elevation as a canonical token family, matching `styles/tokens.css`, the Tailwind preset, and the top-level Foundations reference. `npm run docs:check` rejects the stale non-canonical description if it returns.
+- The overview describes consumer-owned blocking validation accurately instead of implying every consumer runs an identical check suite, and its page and Open Graph titles now match the overview proposition.
 
 ## [1.3.5] - 2026-09-02
 

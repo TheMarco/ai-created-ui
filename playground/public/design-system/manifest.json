@@ -4,7 +4,7 @@
   "schemaVersion": "1.0.0",
   "package": {
     "name": "@ai-created/ui",
-    "version": "1.3.5",
+    "version": "1.4.0",
     "description": "Shared design system for AI-Created apps",
     "sourcePath": "package.json",
     "publicApiPath": "src/index.ts",
@@ -10170,7 +10170,7 @@
                 [
                   "Elevation",
                   "Border first; shadow only when depth changes interaction meaning",
-                  "Local Tailwind effects, not yet canonical tokens"
+                  "Canonical low, medium, and high elevation tokens"
                 ],
                 [
                   "Motion",

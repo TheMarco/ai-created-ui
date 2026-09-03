@@ -131,7 +131,8 @@ export default function OverviewShell() {
               </h1>
               <p className="mt-6 max-w-2xl text-base leading-relaxed hero-text-muted sm:text-lg">
                 Designers, engineers, and coding agents build against one versioned interface contract. The same
-                tokens, components, accessibility rules, and page patterns, enforced by the same blocking checks.
+                tokens, components, accessibility rules, and page patterns are validated through blocking checks in
+                every consumer.
               </p>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -182,7 +183,7 @@ export default function OverviewShell() {
               aria-label="Design system destinations"
               className="border-l border-border pl-5 sm:pl-8 lg:col-span-2"
             >
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-text3">Enter by responsibility</p>
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-text3">Explore the system</p>
               <div className="mt-4 border-b border-border">
                 {destinations.map(({ href, title, description }) => (
                   <Link
@@ -241,7 +242,8 @@ export default function OverviewShell() {
             <div className="border-b border-r border-border bg-surface/35 p-6 text-center md:p-8">
               <h3 className="font-heading text-xl font-medium text-text md:text-2xl">One interface contract</h3>
               <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-text2">
-                Published as one versioned release, with the same blocking validation for every consumer.
+                Published as one versioned contract, with consumer-owned blocking validation across every
+                implementation.
               </p>
             </div>
           </div>

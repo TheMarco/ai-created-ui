@@ -37,8 +37,10 @@ const fixturePaths = [
   'playground/src/app/foundations/page.tsx',
   'playground/src/components/design-system/OverviewShell.tsx',
   'playground/src/components/design-system/agents/AgentsPage.tsx',
+  'playground/src/components/design-system/principal-spec/registry.ts',
   'playground/src/lib/release.ts',
   'playground/src/lib/system-facts.ts',
+  'styles/tokens.css',
 ];
 const temporaryRoots: string[] = [];
 
@@ -85,6 +87,18 @@ afterEach(() => {
 describe('public documentation contract', () => {
   it('matches the canonical manifest, portal routes, workflows, and contribution guidance', () => {
     expect(() => runDocumentationCheck()).not.toThrow();
+  });
+
+  it('fails when foundation guidance contradicts canonical elevation tokens', () => {
+    const root = createDocumentationFixture();
+    replaceInFixture(
+      root,
+      'playground/src/components/design-system/principal-spec/registry.ts',
+      'Canonical low, medium, and high elevation tokens',
+      'Local Tailwind effects, not yet canonical tokens',
+    );
+
+    expect(captureDocumentationFailure(root)).toContain('canonical elevation-token status');
   });
 
   it('fails when generic Renovate onboarding guidance is missing', () => {

@@ -130,7 +130,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
             columns: ['Area', 'Contract', 'Current support'],
             rows: [
               ['Radius', '4px small, 6px default, 10px large, full for pills', 'Canonical tokens'],
-              ['Elevation', 'Border first; shadow only when depth changes interaction meaning', 'Local Tailwind effects, not yet canonical tokens'],
+              ['Elevation', 'Border first; shadow only when depth changes interaction meaning', 'Canonical low, medium, and high elevation tokens'],
               ['Motion', '200ms feedback, 300ms transitions, 500ms entrances', 'Canonical duration tokens and shared helpers'],
               ['Icons', 'Lucide, 16px inline, 20px controls, 32px empty states', 'Code dependency; no separate icon package'],
               ['Imagery', 'Theme-paired, art-directed, useful at crop extremes', 'ThemedHeroImage plus product-owned assets'],
