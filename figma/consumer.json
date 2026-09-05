@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "ai-created-ui-figma",
+  "kind": "figma-library",
+  "name": "AI-Created UI",
+  "owner": "Marco Design",
+  "fileKey": "JArZlZoEHCZh5SdZ9FFOMA",
+  "sourceUrl": "https://www.figma.com/design/JArZlZoEHCZh5SdZ9FFOMA/AI-Created-UI",
+  "communityUrl": "https://www.figma.com/community/file/1677871391096215128",
+  "referenceRootPx": 20,
+  "accentModes": ["red", "green", "blue", "orange", "yellow", "purple", "teal", "pink", "magenta"],
+  "lifecycle": ["detect", "reconcile-draft", "inspect", "record-audit", "merge-source", "publish-library", "publish-community", "record-publication"],
+  "syncWorkflow": "docs/figma-consumer.md",
+  "sourcePolicy": "Canonical source content fingerprints, with package version. Unreleased working-tree baselines are identified in the audit; they are not immutable package releases."
+}

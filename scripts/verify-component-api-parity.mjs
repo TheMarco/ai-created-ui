@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 import { readFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
+import { rootFontSizeFromCss, squareClaims, squareSizesFromSource } from './lib/component-geometry.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const manifest = JSON.parse(await readFile(path.join(root, 'design-system.manifest.json'), 'utf8'));
@@ -127,31 +129,15 @@ for (const component of manifest.components) {
 }
 
 // Square control geometry is authored once, as a Tailwind height/width pair in the
-// component source. Every documented projection of that number must agree with it,
-// so an icon-only target or close target cannot drift in prose alone.
-const REM_PX = 4;
-
-function squareSizesFromSource(source) {
-  const sizes = new Set();
-  for (const match of source.matchAll(/\bh-(\d+)\s+w-\1(?![\w.-])/g)) {
-    sizes.add(Number(match[1]) * REM_PX);
-  }
-  for (const match of source.matchAll(/\bh-\[(\d+)px\]\s+w-\[\1px\]/g)) {
-    sizes.add(Number(match[1]));
-  }
-  return sizes;
-}
-
-function squareClaims(text) {
-  const claims = [];
-  for (const match of text.matchAll(/(\d+)\s*(?:×|x)\s*(\d+)\s*px/gu)) {
-    if (match[1] === match[2]) claims.push(Number(match[1]));
-  }
-  for (const match of text.matchAll(/(\d+)px\s+square/gu)) {
-    claims.push(Number(match[1]));
-  }
-  return claims;
-}
+// component source. The comparison is computed at the playground's reviewed
+// reference root; it describes rendered playground geometry, not a package invariant.
+const playgroundRequire = createRequire(path.join(root, 'playground/package.json'));
+const resolveTailwindConfig = playgroundRequire('tailwindcss/resolveConfig');
+const tailwindTheme = resolveTailwindConfig(playgroundRequire('./tailwind.config.js')).theme;
+const geometryContext = {
+  spacing: tailwindTheme.spacing,
+  rootFontPx: rootFontSizeFromCss(await readFile(path.join(root, 'playground/src/app/globals.css'), 'utf8')),
+};
 
 function documentedGeometryText(component) {
   const parts = [];
@@ -181,12 +167,12 @@ for (const component of manifest.components) {
 for (const component of manifest.components) {
   const source = geometrySources.get(component.sourcePath);
   if (!source) continue;
-  const sizes = squareSizesFromSource(source);
+  const sizes = squareSizesFromSource(source, geometryContext);
   if (sizes.size === 0) continue;
   for (const claim of new Set(squareClaims(documentedGeometryText(component)))) {
     if (!sizes.has(claim)) {
       issues.push(
-        `${component.id}: documentation states a ${claim}px square control, but ${component.sourcePath} declares ${[...sizes].sort((a, b) => a - b).join('px, ')}px.`,
+        `${component.id}: at the playground reference root, documentation states a ${claim}px square control, but ${component.sourcePath} renders ${[...sizes].sort((a, b) => a - b).join('px, ')}px.`,
       );
     }
   }
@@ -208,7 +194,7 @@ if (issues.length) {
   }
   process.exitCode = 1;
 } else if (process.argv.includes('--json')) {
-  process.stdout.write(`${JSON.stringify({ ok: true, components: manifest.components.length, exports: manifest.publicApi.exports.length })}\n`);
+  process.stdout.write(`${JSON.stringify({ ok: true, components: manifest.components.length, exports: manifest.publicApi.exports.length, geometryReferenceRootPx: geometryContext.rootFontPx })}\n`);
 } else {
   console.log(`Component API parity verified: ${manifest.components.length} contracts and ${manifest.publicApi.exports.length} exports.`);
 }

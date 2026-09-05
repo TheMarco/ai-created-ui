@@ -7,6 +7,11 @@ import { productionConsumers, systemFacts } from '@/lib/system-facts';
 
 const destinations = [
   {
+    href: '/designers',
+    title: 'Designers',
+    description: 'Editable Figma components, themes, and templates for your next mockup.',
+  },
+  {
     href: '/foundations',
     title: 'Foundations',
     description: 'Tokens, color, typography, spacing, motion, and theme behavior.',
@@ -31,9 +36,9 @@ const destinations = [
 const consumers = [
   {
     role: 'Designer',
-    reads: 'Semantic decisions, anatomy, variants, and composition rules.',
-    contract: 'Design contract',
-    href: '/foundations',
+    reads: 'Editable Figma components, semantic variables, themes, and page templates.',
+    contract: 'Figma design kit',
+    href: '/designers',
   },
   {
     role: 'Engineer',
@@ -100,7 +105,7 @@ const qualityContract = [
 ] as const;
 
 const startingPoints = [
-  { intent: 'Design with the system', action: 'Foundations and guidelines', href: '/foundations' },
+  { intent: 'Design with the system', action: 'Figma kit and design workflow', href: '/designers' },
   { intent: 'Build with components', action: 'Component specifications', href: '/components' },
   { intent: 'Build with an agent', action: 'Agent architecture', href: '/agents' },
   { intent: 'Inspect or contribute', action: 'GitHub repository', href: release.repositoryUrl, external: true },
@@ -111,7 +116,7 @@ export default function OverviewShell() {
     <>
       <section
         data-visual="portal-hero"
-        className="relative overflow-hidden border-b border-border pt-32 sm:pt-24"
+        className="relative overflow-hidden border-b border-border pt-32 xl:pt-24"
       >
         <ThemedHeroImage
           darkSrc="/images/hero/designsystem-hero.png"

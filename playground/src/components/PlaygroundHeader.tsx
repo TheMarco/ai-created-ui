@@ -7,6 +7,7 @@ import AccentPicker from './AccentPicker';
 import { release } from '@/lib/release';
 
 const documentationLinks = [
+  { href: '/designers', label: 'Designers' },
   { href: '/foundations', label: 'Foundations' },
   { href: '/components', label: 'Components' },
   { href: '/guidelines', label: 'Guidelines' },
@@ -31,7 +32,7 @@ export default function PlaygroundHeader() {
           @ai-created/ui
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
-          <nav aria-label="Primary documentation" className="hidden items-center gap-1 sm:flex">
+          <nav aria-label="Primary documentation" className="hidden items-center gap-1 xl:flex">
             {documentationLinks.map(({ href, label }) => {
               const active = isActive(pathname, href);
 
@@ -72,7 +73,7 @@ export default function PlaygroundHeader() {
       </div>
       <nav
         aria-label="Mobile documentation"
-        className="container-custom flex h-11 items-center justify-between gap-0 overflow-x-auto border-t border-border sm:hidden"
+        className="container-custom flex h-11 items-center justify-between gap-0 overflow-x-auto border-t border-border xl:hidden"
       >
         {documentationLinks.map(({ href, label }) => {
           const active = isActive(pathname, href);
@@ -82,7 +83,7 @@ export default function PlaygroundHeader() {
               key={href}
               href={href}
               aria-current={active ? 'page' : undefined}
-              className={`shrink-0 rounded-md px-2 py-2 text-[11px] transition-colors hover:bg-surface2 hover:text-text ${
+              className={`shrink-0 rounded-md px-2 py-2 text-[11px] transition-colors hover:bg-surface2 hover:text-text sm:px-3 sm:text-sm ${
                 active ? 'bg-surface2 text-text' : 'text-text2'
               }`}
             >

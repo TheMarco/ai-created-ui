@@ -123,7 +123,7 @@ The primary action primitive, with explicit hierarchy, size, and semantic-button
 
 - Label: One line, recommended 2 to 24 characters, maximum 32. Never truncate; revise the label or allow the parent to allocate more width.
 - Icons: At most one icon on either side. Remove redundant icons.
-- Design-tool limit: Figma interactive variants may demonstrate hover and press but cannot reproduce native button semantics.
+- Design-tool limit: Figma states demonstrate default, hover, focus-visible, and disabled appearances; the runtime defines no separate pressed appearance. Native button semantics remain in code.
 - Design-tool limit: Do not detach instances to make one-off sizes.
 - Code limit: Icon-only use requires an accessible name that is not represented by visual geometry.
 - Code limit: buttonStyles can style another element but does not supply button behavior.
@@ -354,7 +354,8 @@ An inline live-region message for informational, positive, cautionary, or error 
 
 - --color-*-surface: Tone background.
 - --color-*-border: Tone border.
-- --color-info / success / warning / error: Title and icon.
+- --color-info / success /warning / error: Title.
+- --color-text: Inherited decorative icon color.
 - --color-text2: Body copy.
 
 ### Composition
@@ -652,7 +653,7 @@ Composable labels, hints, text controls, and style helpers for consistent form f
 
 ### Public API
 
-- `FieldGroup`: `HTMLAttributes<HTMLDivElement>`. Default: undefined. Groups a label, control, and hint with one 8px sibling gap.
+- `FieldGroup`: `HTMLAttributes<HTMLDivElement>`. Default: undefined. Groups a label, control, and hint with one 10px sibling gap.
 - `FieldLabel`: `LabelHTMLAttributes<HTMLLabelElement>`. Default: undefined. Native label without exterior spacing.
 - `FieldLegend`: `HTMLAttributes<HTMLSpanElement>`. Default: undefined. Visual legend text without exterior spacing; not a semantic fieldset legend.
 - `FieldHint`: `HTMLAttributes<HTMLParagraphElement>`. Default: undefined. Supporting or validation text without exterior spacing.
@@ -696,7 +697,7 @@ Composable labels, hints, text controls, and style helpers for consistent form f
 ### Implementation notes
 
 - Every primitive forwards its native ref and attributes.
-- FieldGroup owns the 8px sibling gap; FieldLabel, FieldLegend, and FieldHint add no exterior margin.
+- FieldGroup owns the 10px sibling gap; FieldLabel, FieldLegend, and FieldHint add no exterior margin.
 - Style helpers support custom controls inside the same group spacing contract without duplicating class contracts.
 - The family does not generate ids or accessibility relationships for the consumer.
 
@@ -710,6 +711,7 @@ Composable labels, hints, text controls, and style helpers for consistent form f
 - Hint or error: One or two short sentences. Move extended help outside the field.
 - Text area: Default visible size should cover the expected response, then grow or scroll. Use a counter or explicit maximum for constrained data.
 - Design-tool limit: Figma properties cannot guarantee label, hint, and control ID associations.
+- Design-tool limit: Required and invalid are native attributes supplied in code, not inert canvas booleans. Add localized required wording to the label and explain invalid input with the semantic error hint.
 - Code limit: Consumers must connect htmlFor, id, aria-describedby, required, and aria-invalid correctly.
 
 ### Required tests
@@ -885,7 +887,7 @@ A controlled fieldset for selecting exactly one value from a small, visible opti
 ### Content and authoring limits
 
 - Options: Recommended two to seven choices. Use Dropdown or a searchable picker for larger sets.
-- Option label: One line preferred, maximum two lines. Wrap and align indicator with the first line.
+- Option label: One line preferred, maximum two lines. Wrap with the indicator vertically centered, matching items-center.
 - Design-tool limit: Figma variants cannot reproduce native arrow-key selection.
 - Code limit: Values are stable domain keys and must not be translated even when labels are.
 
@@ -1063,8 +1065,8 @@ A controlled native range input for choosing a numeric value from a bounded cont
 
 - Label: One concise line. Wrap only when required by localization.
 - Displayed value: One short formatted number and unit. Use compact localized formatting.
-- Design-tool limit: Figma number properties demonstrate position but not keyboard increments.
-- Code limit: min must be less than max, step must be positive, and value must remain within the range.
+- Design-tool limit: Figma uses finite Position variants (min/25/50/75/max) and editable value text; it cannot model the full numeric continuum or keyboard increments.
+- Code limit: value, min, max, step, and formatValue remain code-only runtime behavior; min must be less than max, step must be positive, and value must remain within the range.
 
 ### Required tests
 
@@ -1247,7 +1249,9 @@ A controlled, keyboard-navigable tablist for switching between peer panels in pl
 - Tabs: Recommended two to five peer views. Use page navigation or another information architecture for larger sets.
 - Tab label: One or two words, maximum 20 characters. Do not truncate.
 - Design-tool limit: Prototype active variants do not validate roving focus or panel relationships.
+- Design-tool limit: The required label is an accessibility-only tablist name; it has no visible text property in the canvas asset.
 - Code limit: Consumers must pass the same stable id to Tabs and useTabPanelProps.
+- Code limit: Generic tab keys and the tablist accessible label remain code-owned.
 
 ### Required tests
 
@@ -1337,6 +1341,7 @@ A ready-made animated modal dialog for a short focused task or decision.
 - Description: Maximum three lines. Move long instructions into the body.
 - Task scope: One focused task or decision. Move complex multi-section work to a page.
 - Design-tool limit: Figma overlays cannot validate focus trapping, restoration, Escape, or scroll lock.
+- Design-tool limit: The canvas asset represents an open panel; open controls mounting in code or visibility in a prototype, not an inert component property.
 - Code limit: Always provide an accessible title through title or a correctly associated custom heading.
 
 ### Required tests
@@ -1427,7 +1432,10 @@ A composable Headless UI modal shell for richer application layouts with header,
 - Footer actions: One primary and up to two secondary actions. Move tertiary actions into body content.
 - Body: One focused workflow. Use a full page for broad or deeply nested tasks.
 - Design-tool limit: Figma nesting demonstrates structure but not portal, focus, inert background, or scroll-lock behavior.
+- Design-tool limit: Set the scroll-preview panel height to viewport minus 60px below md or 80px at md; Figma does not calculate CSS viewport units.
+- Design-tool limit: Body layout is a canvas preview, while the standalone ModalBody Scroll property maps the runtime scroll flag.
 - Code limit: Consumers own whether the ModalOverlay is mounted; this family has no open prop itself.
+- Code limit: closeOnBackdrop and role remain code-owned behavior rather than inert appearance controls.
 
 ### Required tests
 
@@ -1522,6 +1530,8 @@ A constrained alert dialog for confirming one consequential or irreversible acti
 - Description: One short paragraph describing consequence. Move detailed policy outside the dialog.
 - Action labels: Specific verbs, recommended maximum 24 characters. Stack actions if localization requires it.
 - Design-tool limit: Figma loading variants cannot validate blocked backdrop and Escape dismissal.
+- Design-tool limit: The canvas represents the open panel; open remains runtime mounting or prototype visibility.
+- Design-tool limit: Edit copy through the exposed native Header and Button instances. The API cannot forward text properties through instance sublayers; separate confirm and loading actions preserve both label overrides when State changes.
 - Code limit: The consumer owns asynchronous completion and must clear loading or close the dialog.
 
 ### Required tests
@@ -1612,7 +1622,8 @@ A brief, non-interactive description shown from pointer, focus, or touch.
 - Content: One short sentence, maximum about 120 characters. Wrap up to 240px; move longer guidance into persistent UI.
 - Children: Exactly one focusable trigger. Wrap compound visuals in one semantic control.
 - Design-tool limit: Figma hover prototypes do not cover delayed focus, pointer travel, Escape, touch toggling, outside touch, viewport collision, or aria-describedby.
-- Code limit: Keep content supplemental, plain text, and non-interactive.
+- Design-tool limit: Native auto-layout anchors preserve the 8px gap when copy or trigger size changes. The 208px text-width cap is fixed because the API cannot bind maxWidth on a text node; it derives from the bound 240px bubble cap minus 30px padding and 2px borders.
+- Code limit: The 300ms delay default and delay prop remain code-only; keep content supplemental, plain text, and non-interactive.
 
 ### Required tests
 
@@ -1699,7 +1710,9 @@ A decorative, theme-aware hero background with coordinated overlays, fades, and 
 
 - Media role: Decorative hero imagery only. Use a semantic image component for meaningful content.
 - File weight: Use the smallest source that remains sharp at rendered sizes. Create responsive optimized assets.
-- Design-tool limit: Figma fills do not validate Next Image loading, responsive source selection, or blend behavior.
+- Design-tool limit: Figma fills do not validate Next Image loading or responsive source selection. Native multiply previews the light-mode blend.
+- Design-tool limit: Image swaps represent string URL props conceptually. Change objectPosition by editing the source image fill crop; there is no inert focal-point text property.
+- Design-tool limit: CSS image alpha 0 to 1 maps to Figma opacity percentages 0 to 100. Theme-matched transparent gradient endpoints reproduce CSS premultiplied fades without gray bands.
 - Code limit: Always decorative; do not use for content that needs alternative text.
 
 ### Required tests
@@ -2077,7 +2090,7 @@ Reusable tokens, package exports, presets, icon policy, media requirements, and 
 - `downloads` Reusable downloads: The downloadable token artifact is generated from canonical CSS. Code consumers use package exports directly.
 - `agent-contract` AI agent contract: Agents use the same versioned inputs and blocking gates as human contributors, without inferring undocumented design decisions.
 - `source-map` Source-of-truth map: Each asset has one canonical authoring location and an explicit distribution path.
-- `library-model` Design library model: A future design-tool library should mirror this portal without becoming a competing source of truth.
+- `library-model` Design library model: The published Figma library mirrors the public components, semantic tokens and reviewed specifications. Community copies are editable snapshots; connected library consumers review published updates.
 - `asset-quality` Asset quality gates: Reusable assets are complete only when their licensing, modes, states, naming, and fallback behavior are documented.
 
 # Approved page templates

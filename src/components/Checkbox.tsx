@@ -39,7 +39,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
           aria-hidden="true"
           className={cn(
             'flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border transition-colors duration-200',
-            'peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-focus peer-focus-visible:outline-offset-[3px]',
+            'peer-focus-visible:[outline-style:solid] peer-focus-visible:outline-2 peer-focus-visible:outline-focus peer-focus-visible:outline-offset-[3px]',
             disabled && 'cursor-not-allowed opacity-50',
             checked
               ? 'border-action-primary bg-action-primary'

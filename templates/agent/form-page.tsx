@@ -77,7 +77,7 @@ export default function FormPage({
             onSubmit();
           }}
         >
-          <Surface padding="lg" className="space-y-6">
+          <Surface padding="sm" className="space-y-6 md:p-8">
             {status === 'success' ? (
               <Notice variant="success" title="Changes saved">Your information is up to date.</Notice>
             ) : null}
@@ -148,7 +148,7 @@ export default function FormPage({
             />
             {errors.acknowledged ? <p role="alert" className="text-xs text-error">{errors.acknowledged}</p> : null}
 
-            <div className="flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
+            <div className="flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:justify-end">
               <Button variant="secondary" onClick={onCancel} disabled={isSaving}>Cancel</Button>
               <Button type="submit" disabled={isSaving}>{isSaving ? 'Saving…' : 'Save changes'}</Button>
             </div>

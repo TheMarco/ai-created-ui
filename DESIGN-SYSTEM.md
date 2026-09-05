@@ -288,7 +288,7 @@ Because the palette is softer:
 
 ### Scale Note
 
-The root font size is 20px. This makes the site feel slightly larger and more editorial by default.
+The reviewed playground sets `html` font size to `125%`, which is `20px` at the browser default of `16px`. Package tokens do not change the host application's root size: rem-based dimensions scale with the consumer root, while literal pixel dimensions remain fixed. For example, `h-11 w-11` is `2.75rem`, rendering at `44px` with a `16px` root and `55px` with a `20px` root. Figma measurements use the `20px` reference root.
 
 Do not respond by inventing smaller ad hoc text sizes. Use the system deliberately.
 
@@ -414,8 +414,9 @@ Rules:
 ### Touch Targets
 
 - All interactive controls must have a minimum 44x44px touch target (WCAG 2.5.5).
-- For small visual elements (radio dots, toggle tracks, checkboxes), the tappable label row provides the full target via `min-h-[44px]`.
-- Dialog close buttons use explicit `h-11 w-11` (44x44px) with a centered icon.
+- Checkbox source does not set a minimum 44px row; consumers should provide an appropriate touch target.
+- RadioGroup, Toggle, and Slider source provide a minimum 44px target.
+- Dialog close buttons use the OverlayHeader source's explicit `h-[44px] w-[44px]` target with a centered icon.
 - Dropdown options use `py-3` to ensure adequate height.
 - Slider thumbs are 22px with `touch-action: none` to prevent scroll hijacking during drag. The track wrapper uses `min-h-[44px]`.
 - Tooltips support touch via tap-to-toggle and outside-tap-to-dismiss.
@@ -447,7 +448,7 @@ Rules:
 
 ### Typography
 
-- The 20px root size is intentional and should keep default reading sizes comfortable.
+- The reviewed playground's 20px root size is intentional and keeps default reading sizes comfortable; package tokens do not change a consumer root, rem dimensions scale with it, and literal pixel dimensions remain fixed.
 - Dense UI stays in `Space Grotesk`.
 - Serif is expressive, not structural.
 - Heading levels must remain semantically correct regardless of how they are styled.

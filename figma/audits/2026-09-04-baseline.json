@@ -1,0 +1,543 @@
+{
+  "schemaVersion": 1,
+  "fileKey": "JArZlZoEHCZh5SdZ9FFOMA",
+  "sourceFingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101",
+  "auditedAt": "2026-09-05T01:29:26.951Z",
+  "reviewer": "Codex, with Marco reviewing and publishing the Community resource",
+  "sourceBasis": "Initial adoption of the already audited library. Content fingerprint covers current reviewed working-tree source beyond v1.4.0; this does not claim the immutable v1.4.0 tag contains those changes.",
+  "reviewedComponentIds": [
+    "badge",
+    "button",
+    "checkbox",
+    "cn",
+    "confirm-dialog",
+    "dialog",
+    "dropdown",
+    "empty-state",
+    "error-report",
+    "field",
+    "modal",
+    "motion-helpers",
+    "notice",
+    "radio-group",
+    "skeleton",
+    "slider",
+    "surface",
+    "tabs",
+    "theme",
+    "themed-hero-image",
+    "toggle",
+    "tooltip"
+  ],
+  "checks": {
+    "tokens": "passed",
+    "components": "passed",
+    "themes": "passed",
+    "templates": "passed",
+    "visualReview": "passed"
+  },
+  "evidence": [
+    "docs/figma-library.md#verification: completed source-to-Figma parity, typography, geometry, bindings, authoring, and template audits from the original build.",
+    "https://www.figma.com/design/JArZlZoEHCZh5SdZ9FFOMA/AI-Created-UI?node-id=174-2: QA and coverage page contains the original completed visual and structural review.",
+    "Fresh read-only Figma MCP inspection confirmed all 48 known public asset IDs exist and report CURRENT, 390 variables, 100 text styles, Semantic dark/light modes, all 9 accents, and 37 named pages. Full observed inventory is included in this receipt.",
+    "playground/public/images/figma/dashboard-dark.png and dashboard-light.png: actual Figma exports visually inspected in both themes during website integration.",
+    "New website navigation, tablet-header adjustments and distribution documentation do not change the Figma component or template contract. Source UI focus and template changes were already included in the prior Figma audit. No new Figma source mutations were made for this baseline registration.",
+    "Community resource https://www.figma.com/community/file/1677871391096215128 was published by Marco and inspected live with Open in Figma and CC BY 4.0. Existing Community copies remain independent."
+  ],
+  "observed": {
+    "componentAssets": [
+      {
+        "id": "24:9",
+        "name": "Icons/Check",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:14",
+        "name": "Icons/CheckForCheckbox",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:19",
+        "name": "Icons/ChevronDown",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:24",
+        "name": "Icons/ChevronRight",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:29",
+        "name": "Icons/Copy",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:35",
+        "name": "Icons/X",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:41",
+        "name": "Icons/NoticeInfo",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:46",
+        "name": "Icons/NoticeSuccess",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:51",
+        "name": "Icons/NoticeWarning",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:56",
+        "name": "Icons/NoticeError",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:61",
+        "name": "Icons/ThemeToggleMoon",
+        "status": "CURRENT"
+      },
+      {
+        "id": "24:66",
+        "name": "Icons/ThemeToggleSun",
+        "status": "CURRENT"
+      },
+      {
+        "id": "88:3",
+        "name": "Icons/Inbox",
+        "status": "CURRENT"
+      },
+      {
+        "id": "26:23",
+        "name": "Components/Feedback/Badge",
+        "status": "CURRENT"
+      },
+      {
+        "id": "29:209",
+        "name": "Components/Actions/Button",
+        "status": "CURRENT"
+      },
+      {
+        "id": "33:52",
+        "name": "Components/Layout/Surface",
+        "status": "CURRENT"
+      },
+      {
+        "id": "42:357",
+        "name": "Components/Feedback/Notice",
+        "status": "CURRENT"
+      },
+      {
+        "id": "48:9",
+        "name": "Components/Feedback/Skeleton/Block",
+        "status": "CURRENT"
+      },
+      {
+        "id": "49:26",
+        "name": "Components/Feedback/Skeleton/Presets",
+        "status": "CURRENT"
+      },
+      {
+        "id": "50:60",
+        "name": "Components/Forms/Checkbox",
+        "status": "CURRENT"
+      },
+      {
+        "id": "52:46",
+        "name": "Components/Forms/Toggle",
+        "status": "CURRENT"
+      },
+      {
+        "id": "54:52",
+        "name": "Components/Forms/Radio option",
+        "status": "CURRENT"
+      },
+      {
+        "id": "55:488",
+        "name": "Components/Forms/Radio group",
+        "status": "CURRENT"
+      },
+      {
+        "id": "56:25",
+        "name": "Components/Forms/FieldLabel",
+        "status": "CURRENT"
+      },
+      {
+        "id": "56:27",
+        "name": "Components/Forms/FieldLegend",
+        "status": "CURRENT"
+      },
+      {
+        "id": "56:33",
+        "name": "Components/Forms/FieldHint",
+        "status": "CURRENT"
+      },
+      {
+        "id": "57:57",
+        "name": "Components/Forms/TextInput",
+        "status": "CURRENT"
+      },
+      {
+        "id": "58:42",
+        "name": "Components/Forms/TextArea",
+        "status": "CURRENT"
+      },
+      {
+        "id": "59:10",
+        "name": "Components/Forms/Field",
+        "status": "CURRENT"
+      },
+      {
+        "id": "59:20",
+        "name": "Components/Forms/FieldGroup",
+        "status": "CURRENT"
+      },
+      {
+        "id": "68:301",
+        "name": "Components/Forms/Slider",
+        "status": "CURRENT"
+      },
+      {
+        "id": "72:41",
+        "name": "Components/Forms/Dropdown option",
+        "status": "CURRENT"
+      },
+      {
+        "id": "74:408",
+        "name": "Components/Forms/Dropdown",
+        "status": "CURRENT"
+      },
+      {
+        "id": "79:48",
+        "name": "Components/Navigation/Tab",
+        "status": "CURRENT"
+      },
+      {
+        "id": "80:149",
+        "name": "Components/Navigation/Tabs",
+        "status": "CURRENT"
+      },
+      {
+        "id": "90:122",
+        "name": "Components/Content/Empty state",
+        "status": "CURRENT"
+      },
+      {
+        "id": "106:300",
+        "name": "Components/Feedback/Error report",
+        "status": "CURRENT"
+      },
+      {
+        "id": "118:356",
+        "name": "Components/Overlays/Dialog",
+        "status": "CURRENT"
+      },
+      {
+        "id": "121:60",
+        "name": "Components/Overlays/Modal header",
+        "status": "CURRENT"
+      },
+      {
+        "id": "121:73",
+        "name": "Components/Overlays/Modal panel",
+        "status": "CURRENT"
+      },
+      {
+        "id": "121:86",
+        "name": "Components/Overlays/Modal body",
+        "status": "CURRENT"
+      },
+      {
+        "id": "122:57",
+        "name": "Components/Overlays/Modal footer",
+        "status": "CURRENT"
+      },
+      {
+        "id": "123:289",
+        "name": "Components/Overlays/Modal",
+        "status": "CURRENT"
+      },
+      {
+        "id": "123:711",
+        "name": "Components/Overlays/Modal overlay",
+        "status": "CURRENT"
+      },
+      {
+        "id": "126:419",
+        "name": "Components/Overlays/Confirm dialog",
+        "status": "CURRENT"
+      },
+      {
+        "id": "129:78",
+        "name": "Components/Overlays/Tooltip",
+        "status": "CURRENT"
+      },
+      {
+        "id": "134:98",
+        "name": "Components/Media/Themed hero image",
+        "status": "CURRENT"
+      },
+      {
+        "id": "139:86",
+        "name": "Components/Actions/Theme toggle",
+        "status": "CURRENT"
+      }
+    ],
+    "variables": 390,
+    "textStyles": 100,
+    "collections": [
+      {
+        "id": "VariableCollectionId:2:2",
+        "name": "AI-Created UI / Reference",
+        "modes": [
+          "Value"
+        ]
+      },
+      {
+        "id": "VariableCollectionId:2:3",
+        "name": "AI-Created UI / Accent",
+        "modes": [
+          "red",
+          "green",
+          "blue",
+          "orange",
+          "yellow",
+          "purple",
+          "teal",
+          "pink",
+          "magenta"
+        ]
+      },
+      {
+        "id": "VariableCollectionId:2:4",
+        "name": "AI-Created UI / Semantic",
+        "modes": [
+          "dark",
+          "light"
+        ]
+      },
+      {
+        "id": "VariableCollectionId:2:5",
+        "name": "AI-Created UI / Metrics",
+        "modes": [
+          "Value"
+        ]
+      },
+      {
+        "id": "VariableCollectionId:82:2",
+        "name": "AI-Created UI / Icon ink",
+        "modes": [
+          "Text",
+          "Secondary text",
+          "Tertiary text",
+          "On action",
+          "Accent"
+        ]
+      },
+      {
+        "id": "VariableCollectionId:99:2090",
+        "name": "AI-Created UI / Icon size",
+        "modes": [
+          "24 px",
+          "15 px",
+          "16 px",
+          "20 px",
+          "60 px"
+        ]
+      },
+      {
+        "id": "VariableCollectionId:109:449",
+        "name": "AI-Created UI / Error report state",
+        "modes": [
+          "collapsed",
+          "message-only",
+          "expanded",
+          "copied",
+          "copy-failed"
+        ]
+      },
+      {
+        "id": "VariableCollectionId:139:9",
+        "name": "AI-Created UI / Theme toggle state",
+        "modes": [
+          "default",
+          "hover",
+          "pressed",
+          "focus-visible"
+        ]
+      }
+    ],
+    "pages": [
+      {
+        "id": "0:1",
+        "name": "00 · Cover"
+      },
+      {
+        "id": "12:2",
+        "name": "01 · Getting started"
+      },
+      {
+        "id": "12:3",
+        "name": "02 · Color"
+      },
+      {
+        "id": "12:4",
+        "name": "03 · Typography"
+      },
+      {
+        "id": "12:5",
+        "name": "04 · Layout and motion"
+      },
+      {
+        "id": "24:2",
+        "name": "10 · Icons"
+      },
+      {
+        "id": "26:3",
+        "name": "11 · Badge"
+      },
+      {
+        "id": "29:19",
+        "name": "12 · Button"
+      },
+      {
+        "id": "33:2",
+        "name": "13 · Surface"
+      },
+      {
+        "id": "40:2",
+        "name": "14 · Notice"
+      },
+      {
+        "id": "48:2",
+        "name": "15 · Skeleton"
+      },
+      {
+        "id": "50:2",
+        "name": "16 · Checkbox"
+      },
+      {
+        "id": "52:2",
+        "name": "17 · Toggle"
+      },
+      {
+        "id": "54:2",
+        "name": "18 · Radio group"
+      },
+      {
+        "id": "56:18",
+        "name": "19 · Field"
+      },
+      {
+        "id": "68:27",
+        "name": "20 · Slider"
+      },
+      {
+        "id": "72:2",
+        "name": "21 · Dropdown"
+      },
+      {
+        "id": "79:4",
+        "name": "22 · Tabs"
+      },
+      {
+        "id": "89:2",
+        "name": "23 · Empty state"
+      },
+      {
+        "id": "92:2",
+        "name": "24 · Error report"
+      },
+      {
+        "id": "115:2",
+        "name": "25 · Dialog"
+      },
+      {
+        "id": "121:2",
+        "name": "26 · Modal"
+      },
+      {
+        "id": "126:68",
+        "name": "27 · Confirm dialog"
+      },
+      {
+        "id": "129:25",
+        "name": "28 · Tooltip"
+      },
+      {
+        "id": "133:2",
+        "name": "29 · Themed hero image"
+      },
+      {
+        "id": "139:2",
+        "name": "30 · Theme toggle"
+      },
+      {
+        "id": "145:11",
+        "name": "40 · Template — Directory"
+      },
+      {
+        "id": "151:2",
+        "name": "41 · Template — Detail"
+      },
+      {
+        "id": "153:6617",
+        "name": "42 · Template — Form"
+      },
+      {
+        "id": "156:2",
+        "name": "43 · Template — Settings"
+      },
+      {
+        "id": "158:2",
+        "name": "44 · Template — Dashboard"
+      },
+      {
+        "id": "160:2",
+        "name": "45 · Template — Onboarding"
+      },
+      {
+        "id": "12:6",
+        "name": "80 · Patterns"
+      },
+      {
+        "id": "12:7",
+        "name": "90 · Accessibility"
+      },
+      {
+        "id": "12:8",
+        "name": "91 · Governance"
+      },
+      {
+        "id": "174:2",
+        "name": "92 · QA and coverage"
+      },
+      {
+        "id": "12:9",
+        "name": "99 · Deprecated"
+      }
+    ]
+  },
+  "limitations": [
+    "This receipt carries forward the completed full audit and adds a fresh inventory/publication inspection. It is not a new pixel comparison of every node.",
+    "Notice structural authoring improvement remains blocked pending explicit approval. Existing masters are usable; do not retry that migration from background maintenance.",
+    "Code Connect requires an account entitlement not available during the initial build. No Code Connect publication is claimed.",
+    "Six legacy effect styles remain available alongside three preferred theme-aware elevation styles."
+  ],
+  "publication": {
+    "library": {
+      "sourceFingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101",
+      "verifiedAt": "2026-09-05T01:29:26.951Z",
+      "evidence": "Fresh getPublishStatusAsync returned CURRENT for all 48 public assets."
+    },
+    "community": {
+      "sourceFingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101",
+      "verifiedAt": "2026-09-05T01:29:26.951Z",
+      "evidence": "User published resource 1677871391096215128; live resource and Open in Figma action inspected. No subsequent Figma mutations."
+    }
+  }
+}

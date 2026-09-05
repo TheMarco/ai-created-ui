@@ -213,7 +213,7 @@ export default function GuidelinePage({ spec }: { spec: GuidelineSpec }) {
     <div className="container-custom py-10 md:py-16">
       <div className="lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12 xl:grid-cols-[240px_minmax(0,1fr)] xl:gap-16">
         <aside className="hidden lg:block">
-          <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-3">
+          <div className="sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto pr-3 xl:top-24 xl:max-h-[calc(100vh-7rem)]">
             <GuidelineNav activeSlug={spec.slug} />
           </div>
         </aside>

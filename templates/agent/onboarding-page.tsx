@@ -92,7 +92,7 @@ export default function OnboardingPage({
                 <div className="mt-3"><Button variant="secondary" size="sm" onClick={onExit}>Exit setup</Button></div>
               </Notice>
             ) : (
-              <Surface padding="lg">
+              <Surface padding="sm" className="md:p-8">
                 <p className="font-mono text-xs uppercase tracking-wider text-text3">Step {safeStep + 1} of {steps.length}</p>
                 <h2 id="setup-step-title" className="mt-3 font-heading text-3xl text-text">Name your workspace</h2>
                 <p className="mt-3 text-sm leading-relaxed text-text2">Use a short, durable name and explain what this team owns.</p>
@@ -133,7 +133,7 @@ export default function OnboardingPage({
                   </FieldGroup>
                 </div>
 
-                <div className="mt-8 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:justify-between">
+                <div className="mt-8 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:justify-between">
                   <Button variant="secondary" onClick={onBack} disabled={isSaving || safeStep === 0}>Back</Button>
                   <Button onClick={onContinue} disabled={isSaving || !workspaceName.trim() || !teamPurpose.trim()}>
                     {isSaving ? 'Saving…' : safeStep === steps.length - 1 ? 'Finish setup' : 'Continue'}

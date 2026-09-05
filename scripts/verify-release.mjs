@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const packageRoot = fileURLToPath(new URL('../', import.meta.url));
 const packageJson = JSON.parse(
@@ -42,6 +43,8 @@ if (!releaseHeading.test(changelog)) {
     `CHANGELOG.md needs a dated "## [${packageJson.version}]" release section.`
   );
 }
+
+execFileSync(process.execPath, [fileURLToPath(new URL('./figma-consumer.mjs', import.meta.url)), 'release-check'], { stdio: 'inherit' });
 
 console.log(
   `Release metadata verified for ${requestedTag ?? expectedTag} in ${packageRoot}.`

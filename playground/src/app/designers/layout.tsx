@@ -1,6 +1,6 @@
 import PlaygroundHeader from '@/components/PlaygroundHeader';
 
-export default function ComponentsLayout({ children }: { children: React.ReactNode }) {
+export default function DesignersLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <PlaygroundHeader />

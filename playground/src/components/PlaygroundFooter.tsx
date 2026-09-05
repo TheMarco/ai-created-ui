@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { release } from '@/lib/release';
 
 const documentation = [
+  { href: '/designers', label: 'Designers' },
   { href: '/foundations', label: 'Foundations' },
   { href: '/components', label: 'Components' },
   { href: '/guidelines', label: 'Guidelines' },

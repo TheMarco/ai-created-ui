@@ -73,6 +73,18 @@ When the system does not cover a real requirement:
 
 Never weaken a global rule to make one screen pass.
 
+## Figma release updates
+
+When the user declares or prepares a new design-system version (for example, “Release v1.5.0”), include the Figma update in that release task without requiring a separate request. “Update Figma for vX.Y.Z” also invokes this workflow. Follow `docs/figma-consumer.md` and use the existing consumer in `figma/consumer.json`.
+
+- Compare the requested version's canonical sources with the last audited Figma snapshot using `npm run figma:plan`. Include all accumulated changes, not just the latest commit. Confirm the source and package version match the requested release; do not label newer working-tree content as an older release.
+- Reconcile affected variables, styles, components, states, templates and documentation through the Figma MCP. Preserve component IDs, connected instances, overrides and editable properties. Inspect both light and dark themes and applicable responsive and exceptional states.
+- Record real review evidence with `npm run figma:record -- --evidence <audit.json>`. Never hand-edit the generated lock or manufacture an audit to pass a check. Document changes with no Figma impact.
+- After source acceptance, publish the library and update the existing Community resource, verify both, and record publication evidence before creating the immutable release tag. Existing Community duplicates remain independent.
+- `release:check` requires a current audit and both publication receipts. If access, fonts or approval blocks completion, report the exact blocker and leave the release pending. Source remains canonical; preserve unrelated work and existing blocked migrations.
+
+Ordinary development tasks and pull requests do not require a Figma sync. `agent:check` and `validate` do not gate on Figma freshness; the release check does. These instructions apply only to this design-system repository. There is no scheduled updater or background process.
+
 ## Generated files
 
 Do not edit these directly:
@@ -84,6 +96,7 @@ Do not edit these directly:
 - `llms-full.txt`
 - `playground/public/llms.txt`
 - `playground/public/llms-full.txt`
+- `figma/consumer.lock.json` (record only from verified audit evidence)
 
 Regenerate them through the package scripts and commit the owning-source change with the resulting artifact.
 

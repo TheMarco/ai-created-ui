@@ -936,27 +936,33 @@
           },
           {
             "property": "Content gap",
-            "value": "8px"
+            "value": "10px"
           },
           {
             "property": "Horizontal padding",
-            "value": "16 / 20 / 24 / 32px",
+            "value": "20 / 25 / 30 / 40px",
             "notes": "sm / md / lg / xl."
           },
           {
             "property": "Vertical padding",
-            "value": "8 / 8 / 12 / 12px",
+            "value": "10 / 10 / 15 / 15px",
             "notes": "sm / md / lg / xl."
           },
           {
+            "property": "Text button height",
+            "value": "Content-derived: inline 25/27px, sm/md 45/47px, lg/xl 55/57px including the 1px border where present",
+            "notes": "Measurements use the 20px root; text sizes and line heights are content-driven."
+          },
+          {
             "property": "Icon-only target",
-            "value": "44 × 44px"
+            "value": "55 × 55px"
           }
         ],
         "rules": [
           "Keep labels on one line.",
           "Use the icon size for square icon-only controls; do not force an icon into text-button spacing.",
-          "Primary and destructive use distinct semantic action tokens; specific copy still communicates the consequence."
+          "Primary and destructive use distinct semantic action tokens; specific copy still communicates the consequence.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ],
         "responsiveBehavior": [
           "Use fullWidth only when the surrounding layout calls for a full-row action.",
@@ -1140,30 +1146,31 @@
           "kind": "component",
           "figmaName": "Components/Actions/Button",
           "localName": "Button",
-          "canvasApplicability": "Publish as a component set with variant and size axes plus boolean and swap properties."
+          "canvasApplicability": "Publish one public component set with Variant, Size, and State controls and editable label/icon properties. Preserve all 168 supported combinations so designers can change visual treatment without replacing an instance. Theme, accent, and icon rendering use shared variable modes."
         },
         "autoLayout": {
           "applicable": true,
           "direction": "horizontal",
-          "gap": "8px",
-          "padding": "8px 16px to 12px 32px by size",
+          "gap": "10px",
+          "padding": "10px 20px to 15px 40px by size",
           "alignment": "Center in both axes",
           "wrap": "No wrap",
           "notes": [
-            "Use logical leading and trailing slots. The icon size is a square frame with centered content."
+            "Use logical leading and trailing slots. The icon size is a square frame with centered content.",
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
           ]
         },
         "resizing": {
           "applicable": true,
           "width": "hug",
-          "height": "fixed",
-          "minWidth": "36px",
+          "height": "hug",
+          "minWidth": "Content width",
           "maxWidth": "Hug content or fill parent when Full width is true",
-          "minHeight": "36px",
-          "maxHeight": "44px",
+          "minHeight": "Content-derived",
+          "maxHeight": "Content-derived",
           "overflow": "visible",
           "notes": [
-            "Text variants hug by default. Icon-only uses a fixed 44px square that is both the visual size and the interaction target."
+            "Text variants use hug height: inline is 25px content-derived, sm/md 45px, and lg/xl 55px before any border contribution; icon-only uses a fixed 55px square that is both the visual size and the interaction target. Full width is represented by native Fill container sizing in Figma, not an inert component Boolean."
           ]
         },
         "exposedProperties": [
@@ -1201,28 +1208,42 @@
             "codeMapping": "size"
           },
           {
-            "name": "fullWidth",
-            "label": "Full width",
-            "type": "boolean",
+            "name": "state",
+            "label": "State",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "fullWidth"
-          },
-          {
-            "name": "disabled",
-            "label": "Disabled",
-            "type": "boolean",
-            "required": false,
-            "defaultValue": false,
-            "codeMapping": "disabled"
+            "defaultValue": "default",
+            "options": [
+              "default",
+              "hover",
+              "focus-visible",
+              "disabled"
+            ],
+            "codeMapping": "Interaction preview; disabled maps to the native disabled prop"
           },
           {
             "name": "label",
             "label": "Label",
-            "type": "slot",
+            "type": "text",
             "required": true,
             "defaultValue": "Save changes",
             "codeMapping": "children"
+          },
+          {
+            "name": "showLeadingIcon",
+            "label": "Show leading icon",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "codeMapping": "Presence of an optional leading icon child"
+          },
+          {
+            "name": "showTrailingIcon",
+            "label": "Show trailing icon",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "codeMapping": "Presence of an optional trailing icon child"
           },
           {
             "name": "leadingIcon",
@@ -1306,7 +1327,7 @@
         },
         "limitations": {
           "figma": [
-            "Figma interactive variants may demonstrate hover and press but cannot reproduce native button semantics.",
+            "Figma states demonstrate default, hover, focus-visible, and disabled appearances; the runtime defines no separate pressed appearance. Native button semantics remain in code.",
             "Do not detach instances to make one-off sizes."
           ],
           "code": [
@@ -1404,11 +1425,11 @@
           },
           {
             "property": "Horizontal padding",
-            "value": "8px"
+            "value": "10px"
           },
           {
             "property": "Vertical padding",
-            "value": "2px"
+            "value": "2.5px"
           },
           {
             "property": "Radius",
@@ -1421,7 +1442,8 @@
         ],
         "rules": [
           "Keep labels brief and non-wrapping.",
-          "Choose a tone that matches the status meaning, not decoration."
+          "Choose a tone that matches the status meaning, not decoration.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -1557,10 +1579,12 @@
           "applicable": true,
           "direction": "horizontal",
           "gap": "0px",
-          "padding": "2px 8px",
+          "padding": "2.5px 10px",
           "alignment": "Center in both axes",
           "wrap": "No wrap",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -1568,10 +1592,12 @@
           "height": "hug",
           "minWidth": "Content width",
           "maxWidth": "Recommended 160px",
-          "minHeight": "18px",
+          "minHeight": "23.5px",
           "maxHeight": "One line",
           "overflow": "visible",
-          "notes": []
+          "notes": [
+            "At the 20px root, one 16.5px line plus 2.5px vertical padding on each side and 2px total border yields 23.5px."
+          ]
         },
         "exposedProperties": [
           {
@@ -1747,17 +1773,18 @@
           },
           {
             "property": "Padding",
-            "value": "0 / 16 / 24 / 32 / 40px",
+            "value": "0 / 20 / 30 / 40 / 50px",
             "notes": "none / sm / md / lg / xl."
           },
           {
             "property": "Responsive padding",
-            "value": "32px, then 48px at md"
+            "value": "40px, then 60px at md"
           }
         ],
         "rules": [
           "Pick a surface variant for structural or semantic meaning.",
-          "Interaction styling only supplies visual feedback; the consumer owns interactive semantics."
+          "Interaction styling only supplies visual feedback; the consumer owns interactive semantics.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ],
         "responsiveBehavior": [
           "Responsive padding increases at the md breakpoint.",
@@ -1898,17 +1925,18 @@
           "kind": "component",
           "figmaName": "Components/Layout/Surface",
           "localName": "Surface",
-          "canvasApplicability": "Publish as a container component with nested content enabled."
+          "canvasApplicability": "Publish one Assets entry with Variant × Padding × Border controls and a shared native Content slot. Preserve custom slot content when changing tone or padding."
         },
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
           "gap": "Inherited from content",
-          "padding": "0, 16px, 24px, 32px, 40px, or responsive 32px/48px",
+          "padding": "0, 20px, 30px, 40px, 50px, or responsive 40px/60px",
           "alignment": "Stretch children horizontally",
           "wrap": "Content controlled",
           "notes": [
-            "The component supplies padding only; child spacing belongs to the content composition."
+            "The component supplies padding only; child spacing belongs to the content composition.",
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
           ]
         },
         "resizing": {
@@ -1955,22 +1983,22 @@
               "md",
               "lg",
               "xl",
-              "responsive"
+              "responsive-compact",
+              "responsive-wide"
             ],
-            "codeMapping": "padding"
+            "codeMapping": "padding; responsive-compact and responsive-wide map to responsive below/above md"
           },
           {
-            "name": "interaction",
-            "label": "Interaction",
+            "name": "border",
+            "label": "Border",
             "type": "variant",
             "required": false,
-            "defaultValue": "none",
+            "defaultValue": "rest",
             "options": [
-              "none",
-              "group",
-              "within"
+              "rest",
+              "emphasis"
             ],
-            "codeMapping": "interaction"
+            "codeMapping": "rest is idle; emphasis previews group hover/focus-visible or within hover/focus-within"
           },
           {
             "name": "content",
@@ -2012,7 +2040,7 @@
         "responsive": {
           "strategy": "Fill its parent while height follows content.",
           "breakpoints": [
-            "md: responsive padding changes from 32px to 48px"
+            "md: responsive padding changes from 40px to 60px"
           ],
           "behavior": [
             "Responsive padding is the only built-in breakpoint behavior.",
@@ -2135,15 +2163,15 @@
         "measurements": [
           {
             "property": "Padding",
-            "value": "24px"
+            "value": "30px"
           },
           {
             "property": "Content gap",
-            "value": "16px"
+            "value": "20px"
           },
           {
             "property": "Icon",
-            "value": "16 × 16px"
+            "value": "20 × 20px"
           },
           {
             "property": "Radius",
@@ -2151,12 +2179,13 @@
           },
           {
             "property": "Title/body gap",
-            "value": "8px"
+            "value": "10px"
           }
         ],
         "rules": [
           "Align icon and content to the top unless centered is intentionally used.",
-          "Use semantic surface, border, text, and icon color as a coordinated set."
+          "Use semantic surface, border and title colors together. The decorative icon inherits the surrounding primary text color.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -2169,8 +2198,12 @@
           "purpose": "Tone border."
         },
         {
-          "token": "--color-info / success / warning / error",
-          "purpose": "Title and icon."
+          "token": "--color-info / success /warning / error",
+          "purpose": "Title."
+        },
+        {
+          "token": "--color-text",
+          "purpose": "Inherited decorative icon color."
         },
         {
           "token": "--color-text2",
@@ -2302,11 +2335,13 @@
         "autoLayout": {
           "applicable": true,
           "direction": "horizontal",
-          "gap": "16px",
-          "padding": "24px",
+          "gap": "20px",
+          "padding": "30px",
           "alignment": "Start; optional centered composition",
           "wrap": "Content wraps",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -2352,28 +2387,28 @@
             "codeMapping": "children"
           },
           {
-            "name": "centered",
-            "label": "Centered",
-            "type": "boolean",
+            "name": "alignment",
+            "label": "Alignment",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "centered"
+            "defaultValue": "start",
+            "options": [
+              "start",
+              "center"
+            ],
+            "codeMapping": "centered: false for start, true for center"
           },
           {
-            "name": "hideIcon",
-            "label": "Hide icon",
-            "type": "boolean",
+            "name": "iconVisibility",
+            "label": "Icon",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "hideIcon"
-          },
-          {
-            "name": "icon",
-            "label": "Status icon",
-            "type": "instance-swap",
-            "required": false,
-            "defaultValue": null,
-            "codeMapping": "Derived from variant; custom replacement is design-only and needs implementation review"
+            "defaultValue": "shown",
+            "options": [
+              "shown",
+              "hidden"
+            ],
+            "codeMapping": "hideIcon: false for shown, true for hidden; the default tone never has an icon"
           }
         ],
         "nestedAssets": [
@@ -2528,7 +2563,8 @@
         ],
         "rules": [
           "Match the dimensions and shape of the content being loaded.",
-          "Preserve stable layout between placeholder and resolved content."
+          "Preserve stable layout between placeholder and resolved content.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -2629,21 +2665,22 @@
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "8px for composition examples",
+          "gap": "15px in the text composition preview (space-y-3)",
           "padding": "0px",
           "alignment": "Stretch or align to target content",
           "wrap": "Composition controlled",
           "notes": [
-            "The exported code component is one block; multi-line examples are grouped instances."
+            "The exported code component is one block; multi-line examples are grouped instances.",
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
           ]
         },
         "resizing": {
           "applicable": true,
           "width": "fill",
           "height": "fixed",
-          "minWidth": "16px",
+          "minWidth": "Consumer controlled; no intrinsic minimum",
           "maxWidth": "Parent controlled",
-          "minHeight": "4px",
+          "minHeight": "Consumer controlled; no intrinsic minimum",
           "maxHeight": "Target content height",
           "overflow": "clip",
           "notes": [
@@ -2831,33 +2868,34 @@
         "measurements": [
           {
             "property": "Padding",
-            "value": "32px mobile / 48px md+"
+            "value": "40px mobile / 60px md+"
           },
           {
             "property": "Icon",
-            "value": "48 × 48px"
+            "value": "60 × 60px"
           },
           {
             "property": "Icon bottom margin",
-            "value": "16px"
+            "value": "20px"
           },
           {
             "property": "Title/description gap",
-            "value": "8px"
+            "value": "10px"
           },
           {
             "property": "Action top margin",
-            "value": "24px"
+            "value": "30px"
           },
           {
             "property": "Copy width with icon",
-            "value": "max-width 448px"
+            "value": "max-width 560px"
           }
         ],
         "rules": [
           "Center all content.",
           "Keep actions subordinate to the explanation.",
-          "Use muted Surface styling rather than error styling."
+          "Use muted Surface styling rather than error styling.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -2963,11 +3001,13 @@
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "8px copy gap; 16px icon gap; 24px action gap",
-          "padding": "32px mobile; 48px desktop",
+          "gap": "10px copy gap; 20px icon gap; 30px action gap",
+          "padding": "40px mobile; 60px desktop",
           "alignment": "Center",
           "wrap": "Content wraps",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -2982,16 +3022,40 @@
         },
         "exposedProperties": [
           {
+            "name": "viewport",
+            "label": "Viewport preview",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "wide",
+            "options": [
+              "wide",
+              "compact"
+            ],
+            "codeMapping": "Responsive Surface padding at md"
+          },
+          {
+            "name": "artwork",
+            "label": "Icon preview",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "shown",
+            "options": [
+              "shown",
+              "hidden"
+            ],
+            "codeMapping": "Boolean(icon); also controls the 560px copy limit"
+          },
+          {
             "name": "icon",
-            "label": "Icon",
+            "label": "Icon (nested content)",
             "type": "instance-swap",
             "required": false,
-            "defaultValue": null,
-            "codeMapping": "icon"
+            "defaultValue": "Inbox",
+            "codeMapping": "icon; playground example"
           },
           {
             "name": "title",
-            "label": "Title",
+            "label": "Title (nested content)",
             "type": "text",
             "required": true,
             "defaultValue": "No projects yet",
@@ -2999,15 +3063,31 @@
           },
           {
             "name": "description",
-            "label": "Description",
+            "label": "Description (nested content)",
             "type": "text",
             "required": false,
-            "defaultValue": null,
+            "defaultValue": "Create a project when you are ready to collect sources and notes.",
             "codeMapping": "description"
           },
           {
+            "name": "showDescription",
+            "label": "Show description (nested content)",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": true,
+            "codeMapping": "Boolean(description)"
+          },
+          {
+            "name": "showAction",
+            "label": "Show action (nested content)",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": true,
+            "codeMapping": "Boolean(children)"
+          },
+          {
             "name": "action",
-            "label": "Action",
+            "label": "Action (nested content)",
             "type": "slot",
             "required": false,
             "defaultValue": null,
@@ -3026,7 +3106,7 @@
             "name": "Icon",
             "kind": "slot",
             "required": false,
-            "description": "Decorative 48px context icon.",
+            "description": "Decorative 60px context icon.",
             "codeMapping": "icon"
           },
           {
@@ -3076,7 +3156,7 @@
         "responsive": {
           "strategy": "Fill the empty collection region.",
           "breakpoints": [
-            "md: padding increases from 32px to 48px"
+            "md: padding increases from 40px to 60px"
           ],
           "behavior": [
             "Copy remains centered.",
@@ -3197,24 +3277,25 @@
         "measurements": [
           {
             "property": "Notice padding",
-            "value": "24px"
+            "value": "30px"
           },
           {
             "property": "Internal vertical gap",
-            "value": "8px"
+            "value": "10px"
           },
           {
             "property": "Diagnostic padding",
-            "value": "12px"
+            "value": "15px"
           },
           {
             "property": "Disclosure icon",
-            "value": "12 × 12px"
+            "value": "15 × 15px"
           }
         ],
         "rules": [
           "Keep the user-facing message readable without opening diagnostics.",
-          "Prevent long diagnostic lines from breaking the containing layout."
+          "Prevent long diagnostic lines from breaking the containing layout.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -3348,16 +3429,18 @@
           "kind": "component",
           "figmaName": "Components/Feedback/Error report",
           "localName": "ErrorReport",
-          "canvasApplicability": "Publish collapsed, expanded, and copied interactive states as component variants."
+          "canvasApplicability": "Publish one component set with collapsed, message-only, expanded, copied, and copy-failed states. Reuse the Surface, status icon, title style, and Button shared with Notice; expose editable content directly. State modes drive disclosure visibility and copy feedback through nested instances."
         },
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "8px",
-          "padding": "Inherited 24px Notice padding",
+          "gap": "10px",
+          "padding": "Inherited 30px Notice padding",
           "alignment": "Stretch",
           "wrap": "Content wraps",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -3372,6 +3455,21 @@
         },
         "exposedProperties": [
           {
+            "name": "state",
+            "label": "State",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "collapsed",
+            "options": [
+              "collapsed",
+              "message-only",
+              "expanded",
+              "copied",
+              "copy-failed"
+            ],
+            "codeMapping": "Internal visual preview; message-only represents absent details and no public state prop exists"
+          },
+          {
             "name": "title",
             "label": "Title",
             "type": "text",
@@ -3381,7 +3479,7 @@
           },
           {
             "name": "message",
-            "label": "Message",
+            "label": "Message (exposed Message and diagnostics)",
             "type": "text",
             "required": true,
             "defaultValue": null,
@@ -3389,27 +3487,11 @@
           },
           {
             "name": "details",
-            "label": "Debug details",
+            "label": "Debug info (exposed Message and diagnostics)",
             "type": "text",
             "required": false,
             "defaultValue": null,
-            "codeMapping": "details"
-          },
-          {
-            "name": "expanded",
-            "label": "Expanded preview",
-            "type": "boolean",
-            "required": false,
-            "defaultValue": false,
-            "codeMapping": "Internal disclosure state; no public prop"
-          },
-          {
-            "name": "copied",
-            "label": "Copied preview",
-            "type": "boolean",
-            "required": false,
-            "defaultValue": false,
-            "codeMapping": "Transient internal state; no public prop"
+            "codeMapping": "Representative assembled message, details, timestamp, and sanitized current URL; not a public debugInfo prop"
           }
         ],
         "nestedAssets": [
@@ -3520,7 +3602,7 @@
           "prop": "FieldGroup",
           "type": "HTMLAttributes<HTMLDivElement>",
           "defaultValue": "undefined",
-          "description": "Groups a label, control, and hint with one 8px sibling gap."
+          "description": "Groups a label, control, and hint with one 10px sibling gap."
         },
         {
           "prop": "FieldLabel",
@@ -3620,7 +3702,7 @@
         "measurements": [
           {
             "property": "FieldGroup sibling gap",
-            "value": "8px"
+            "value": "10px"
           },
           {
             "property": "Label, legend, and hint exterior margin",
@@ -3628,7 +3710,7 @@
           },
           {
             "property": "Input padding",
-            "value": "16px horizontal / 12px vertical"
+            "value": "20px horizontal / 15px vertical"
           },
           {
             "property": "Input radius",
@@ -3643,7 +3725,8 @@
           "FieldGroup is the single owner of vertical spacing between its label, control, and optional hint.",
           "Keep labels persistently visible; placeholders are examples, not labels.",
           "Apply validation meaning and relationships in consuming code.",
-          "TextArea disables manual resizing by default."
+          "TextArea disables manual resizing by default.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -3720,7 +3803,7 @@
         "clientComponent": true,
         "notes": [
           "Every primitive forwards its native ref and attributes.",
-          "FieldGroup owns the 8px sibling gap; FieldLabel, FieldLegend, and FieldHint add no exterior margin.",
+          "FieldGroup owns the 10px sibling gap; FieldLabel, FieldLegend, and FieldHint add no exterior margin.",
           "Style helpers support custom controls inside the same group spacing contract without duplicating class contracts.",
           "The family does not generate ids or accessibility relationships for the consumer."
         ]
@@ -3792,12 +3875,13 @@
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "8px",
+          "gap": "10px",
           "padding": "0px",
           "alignment": "Stretch",
           "wrap": "Content wraps",
           "notes": [
-            "FieldGroup owns the sibling gap; FieldLabel, FieldLegend, controls, and FieldHint do not add exterior spacing."
+            "FieldGroup owns the sibling gap; FieldLabel, FieldLegend, controls, and FieldHint do not add exterior spacing.",
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
           ]
         },
         "resizing": {
@@ -3806,7 +3890,7 @@
           "height": "hug",
           "minWidth": "160px",
           "maxWidth": "Parent controlled",
-          "minHeight": "44px plus labels and hints",
+          "minHeight": "Content-derived: 57px single-line input plus labels and hints",
           "maxHeight": "Content controlled",
           "overflow": "visible",
           "notes": []
@@ -3826,43 +3910,62 @@
           },
           {
             "name": "label",
-            "label": "Label",
+            "label": "Label text (exposed nested instance)",
             "type": "text",
             "required": true,
-            "defaultValue": "Label",
+            "defaultValue": "Email",
             "codeMapping": "FieldLabel children"
           },
           {
             "name": "hint",
-            "label": "Hint or error",
+            "label": "Hint text (exposed nested instance)",
             "type": "text",
             "required": false,
-            "defaultValue": null,
+            "defaultValue": "We will never share it.",
             "codeMapping": "FieldHint children"
           },
           {
-            "name": "disabled",
-            "label": "Disabled",
+            "name": "showHint",
+            "label": "Show hint",
             "type": "boolean",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "disabled on the native control"
+            "defaultValue": true,
+            "codeMapping": "Conditional FieldHint rendering"
           },
           {
-            "name": "invalid",
-            "label": "Invalid",
+            "name": "showLegend",
+            "label": "Show visual legend",
             "type": "boolean",
             "required": false,
             "defaultValue": false,
-            "codeMapping": "aria-invalid on the native control plus semantic hint content"
+            "codeMapping": "Conditional FieldLegend rendering"
           },
           {
-            "name": "required",
-            "label": "Required",
-            "type": "boolean",
+            "name": "controlState",
+            "label": "Control state (exposed nested instance)",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "required on the native control and a localized label indicator"
+            "defaultValue": "default",
+            "options": [
+              "default",
+              "hover",
+              "focus-visible",
+              "disabled",
+              "disabled-hover"
+            ],
+            "codeMapping": "Native hover/focus-visible and disabled on TextInput or TextArea"
+          },
+          {
+            "name": "hintTone",
+            "label": "Hint tone (exposed nested instance)",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "default",
+            "options": [
+              "default",
+              "error"
+            ],
+            "codeMapping": "Default FieldHint or approved validation composition className=text-error"
           }
         ],
         "nestedAssets": [
@@ -3944,7 +4047,8 @@
         },
         "limitations": {
           "figma": [
-            "Figma properties cannot guarantee label, hint, and control ID associations."
+            "Figma properties cannot guarantee label, hint, and control ID associations.",
+            "Required and invalid are native attributes supplied in code, not inert canvas booleans. Add localized required wording to the label and explain invalid input with the semantic error hint."
           ],
           "code": [
             "Consumers must connect htmlFor, id, aria-describedby, required, and aria-invalid correctly."
@@ -4043,7 +4147,7 @@
         },
         {
           "name": "Visual box",
-          "description": "16px state indicator and focus target proxy.",
+          "description": "20px state indicator and focus target proxy.",
           "required": true
         },
         {
@@ -4061,7 +4165,7 @@
         "measurements": [
           {
             "property": "Indicator",
-            "value": "16 × 16px"
+            "value": "20 × 20px"
           },
           {
             "property": "Indicator radius",
@@ -4069,21 +4173,22 @@
           },
           {
             "property": "Content gap",
-            "value": "10px"
+            "value": "12.5px"
           },
           {
             "property": "Check icon",
-            "value": "12 × 12px, 3px stroke"
+            "value": "15 × 15px, 3px SVG stroke at its 24px viewBox"
           },
           {
             "property": "Label text",
-            "value": "12px"
+            "value": "15px"
           }
         ],
         "rules": [
           "The whole label is clickable.",
           "Keep label adjacent to the indicator.",
-          "Use checkbox only for choices that can stand independently."
+          "Use checkbox only for choices that can stand independently.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -4123,7 +4228,7 @@
         {
           "name": "unchecked",
           "trigger": "checked is false.",
-          "visual": "Transparent box with strong border.",
+          "visual": "Transparent box with standard control border at rest; strong on enabled hover.",
           "behavior": "Activation requests true through onChange."
         },
         {
@@ -4224,15 +4329,17 @@
         "autoLayout": {
           "applicable": true,
           "direction": "horizontal",
-          "gap": "10px",
+          "gap": "12.5px",
           "padding": "0px",
           "alignment": "Center vertically",
           "wrap": "Label wraps",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
-          "width": "hug",
+          "width": "fill",
           "height": "hug",
           "minWidth": "44px interaction area recommended",
           "maxWidth": "Parent controlled",
@@ -4245,18 +4352,28 @@
           {
             "name": "checked",
             "label": "Checked",
-            "type": "boolean",
+            "type": "variant",
             "required": true,
-            "defaultValue": false,
-            "codeMapping": "checked"
+            "defaultValue": "false",
+            "options": [
+              "false",
+              "true"
+            ],
+            "codeMapping": "checked boolean"
           },
           {
-            "name": "disabled",
-            "label": "Disabled",
-            "type": "boolean",
+            "name": "state",
+            "label": "State preview",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "disabled"
+            "defaultValue": "default",
+            "options": [
+              "default",
+              "hover",
+              "focus-visible",
+              "disabled"
+            ],
+            "codeMapping": "Native hover/focus-visible and disabled boolean"
           },
           {
             "name": "label",
@@ -4279,7 +4396,7 @@
             "name": "Indicator",
             "kind": "subcomponent",
             "required": true,
-            "description": "16px visual check surface.",
+            "description": "20px visual check surface.",
             "codeMapping": "Internal visual span"
           },
           {
@@ -4312,12 +4429,13 @@
           ]
         },
         "responsive": {
-          "strategy": "Hug content up to the parent width.",
+          "strategy": "Fill the parent width with a content-height label.",
           "breakpoints": [
             "No internal breakpoint"
           ],
           "behavior": [
-            "Label wraps while indicator remains aligned to the first line.",
+            "Label wraps while the indicator remains vertically centered, matching items-center.",
+            "The Figma label fills the remaining width and the instance hugs its height; the default authoring width is 320px.",
             "Parent controls list spacing."
           ]
         },
@@ -4442,7 +4560,7 @@
         },
         {
           "name": "Indicator",
-          "description": "16px circular selection mark.",
+          "description": "20px circular selection mark.",
           "required": true
         },
         {
@@ -4460,29 +4578,30 @@
           },
           {
             "property": "Indicator",
-            "value": "16 × 16px"
+            "value": "20 × 20px"
           },
           {
             "property": "Selected dot",
-            "value": "9.6 × 9.6px"
+            "value": "12 × 12px"
           },
           {
             "property": "Indicator/label gap",
-            "value": "10px"
+            "value": "12.5px"
           },
           {
             "property": "Vertical option gap",
-            "value": "10px"
+            "value": "12.5px"
           },
           {
             "property": "Horizontal option gap",
-            "value": "16px"
+            "value": "20px"
           }
         ],
         "rules": [
           "Show all choices when the set is short enough.",
           "Use vertical orientation when labels vary in length.",
-          "Stable values belong in domain data; labels may change."
+          "Stable values belong in domain data; labels may change.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -4518,7 +4637,7 @@
         {
           "name": "unselected",
           "trigger": "Option value differs.",
-          "visual": "Transparent indicator with strong border.",
+          "visual": "Transparent indicator with standard control border at rest; strong on hover (including disabled options, at reduced opacity).",
           "behavior": "Activation selects this value."
         },
         {
@@ -4633,11 +4752,13 @@
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "12px between legend and options; 12px options vertically or 24px horizontally",
+          "gap": "15px between legend and options; 12.5px options vertically or 20px horizontally",
           "padding": "0px",
           "alignment": "Start",
           "wrap": "Horizontal options may wrap",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -4665,19 +4786,30 @@
           },
           {
             "name": "value",
-            "label": "Selected value",
+            "label": "Selected preset",
             "type": "variant",
             "required": true,
-            "defaultValue": null,
-            "codeMapping": "value"
+            "defaultValue": "none",
+            "options": [
+              "none",
+              "design",
+              "engineering",
+              "research"
+            ],
+            "codeMapping": "Finite preview of value; custom selections are edited on nested Radio option instances"
           },
           {
-            "name": "disabled",
-            "label": "Disabled",
-            "type": "boolean",
+            "name": "availability",
+            "label": "Availability preset",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "disabled"
+            "defaultValue": "enabled",
+            "options": [
+              "enabled",
+              "disabled",
+              "research-disabled"
+            ],
+            "codeMapping": "disabled or options[index].disabled; custom options are edited on nested instances"
           },
           {
             "name": "legend",
@@ -4729,7 +4861,7 @@
           {
             "target": "Option label",
             "limit": "One line preferred, maximum two lines",
-            "overflowBehavior": "Wrap and align indicator with the first line.",
+            "overflowBehavior": "Wrap with the indicator vertically centered, matching items-center.",
             "rationale": "Peer choices need parallel, concise wording."
           }
         ],
@@ -4853,12 +4985,12 @@
         },
         {
           "name": "Track",
-          "description": "40 × 24px visual state container and focus proxy.",
+          "description": "50 × 30px visual state container and focus proxy.",
           "required": true
         },
         {
           "name": "Thumb",
-          "description": "16px moving state marker.",
+          "description": "20px moving state marker.",
           "required": true
         },
         {
@@ -4875,11 +5007,11 @@
           },
           {
             "property": "Track",
-            "value": "40 × 24px"
+            "value": "50 × 30px"
           },
           {
             "property": "Thumb",
-            "value": "16 × 16px"
+            "value": "20 × 20px"
           },
           {
             "property": "Thumb position",
@@ -4887,12 +5019,13 @@
           },
           {
             "property": "Label gap",
-            "value": "10px"
+            "value": "12.5px"
           }
         ],
         "rules": [
           "Use on for the enabled/active meaning.",
-          "The setting takes effect on activation; use a checkbox or form action when changes are deferred."
+          "The setting takes effect on activation; use a checkbox or form action when changes are deferred.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -5029,16 +5162,18 @@
           "kind": "component",
           "figmaName": "Components/Forms/Toggle",
           "localName": "Toggle",
-          "canvasApplicability": "Publish on, off, disabled, hover, focus, and pressed states with a label property."
+          "canvasApplicability": "Publish on, off, disabled, hover, and focus states with a label property; pressed has no separate runtime styling."
         },
         "autoLayout": {
           "applicable": true,
           "direction": "horizontal",
-          "gap": "10px",
+          "gap": "12.5px",
           "padding": "0px",
           "alignment": "Center vertically",
           "wrap": "Label wraps",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -5055,18 +5190,29 @@
           {
             "name": "checked",
             "label": "On",
-            "type": "boolean",
+            "type": "variant",
             "required": true,
-            "defaultValue": false,
-            "codeMapping": "checked"
+            "defaultValue": "false",
+            "options": [
+              "false",
+              "true"
+            ],
+            "codeMapping": "checked boolean"
           },
           {
-            "name": "disabled",
-            "label": "Disabled",
-            "type": "boolean",
+            "name": "state",
+            "label": "State preview",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "disabled"
+            "defaultValue": "default",
+            "options": [
+              "default",
+              "hover",
+              "focus-visible",
+              "disabled",
+              "disabled-hover"
+            ],
+            "codeMapping": "Native hover/focus-visible and disabled boolean"
           },
           {
             "name": "label",
@@ -5089,14 +5235,14 @@
             "name": "Track",
             "kind": "subcomponent",
             "required": true,
-            "description": "40px by 24px state surface.",
+            "description": "50px by 30px state surface.",
             "codeMapping": "Internal span"
           },
           {
             "name": "Thumb",
             "kind": "subcomponent",
             "required": true,
-            "description": "16px moving state indicator.",
+            "description": "20px moving state indicator.",
             "codeMapping": "Internal span"
           },
           {
@@ -5290,7 +5436,7 @@
           },
           {
             "property": "Label/track gap",
-            "value": "8px"
+            "value": "10px"
           },
           {
             "property": "Hover thumb scale",
@@ -5300,7 +5446,8 @@
         "rules": [
           "Always expose units through formatValue when the raw number is ambiguous.",
           "Use a step appropriate to the precision users can perceive.",
-          "Provide direct numeric entry instead when exact values matter."
+          "Provide direct numeric entry instead when exact values matter.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -5411,13 +5558,22 @@
         "dropdown"
       ],
       "controls": {
-        "value": {
-          "type": "number",
+        "position": {
+          "type": "select",
+          "label": "Position",
+          "defaultValue": "50",
+          "options": [
+            "min",
+            "25",
+            "50",
+            "75",
+            "max"
+          ]
+        },
+        "valueLabel": {
+          "type": "text",
           "label": "Value",
-          "defaultValue": 50,
-          "min": 0,
-          "max": 100,
-          "step": 1
+          "defaultValue": "50"
         },
         "showValue": {
           "type": "boolean",
@@ -5435,16 +5591,18 @@
           "kind": "component",
           "figmaName": "Components/Forms/Slider",
           "localName": "Slider",
-          "canvasApplicability": "Publish value, disabled, and value-label properties with a number property for the thumb position."
+          "canvasApplicability": "Publish finite position and interaction-state variants, an exposed nested editable value, and show-value visibility; numeric range behavior remains code-owned."
         },
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "8px",
+          "gap": "10px",
           "padding": "0px",
           "alignment": "Stretch",
           "wrap": "No wrap inside track",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -5452,43 +5610,34 @@
           "height": "hug",
           "minWidth": "160px",
           "maxWidth": "Parent controlled",
-          "minHeight": "44px including label and target",
+          "minHeight": "Content-derived: 79px for one label line and the 44px interaction row",
           "maxHeight": "Content controlled",
           "overflow": "visible",
           "notes": []
         },
         "exposedProperties": [
           {
-            "name": "value",
-            "label": "Value",
-            "type": "number",
+            "name": "position",
+            "label": "Position",
+            "type": "variant",
             "required": true,
-            "defaultValue": 50,
-            "codeMapping": "value"
+            "defaultValue": "50",
+            "options": [
+              "min",
+              "25",
+              "50",
+              "75",
+              "max"
+            ],
+            "codeMapping": "Normalized visual preview of value between min and max"
           },
           {
-            "name": "min",
-            "label": "Minimum",
-            "type": "number",
+            "name": "valueLabel",
+            "label": "Value (exposed nested output)",
+            "type": "text",
             "required": false,
-            "defaultValue": 0,
-            "codeMapping": "min"
-          },
-          {
-            "name": "max",
-            "label": "Maximum",
-            "type": "number",
-            "required": false,
-            "defaultValue": 100,
-            "codeMapping": "max"
-          },
-          {
-            "name": "step",
-            "label": "Step",
-            "type": "number",
-            "required": false,
-            "defaultValue": 1,
-            "codeMapping": "step"
+            "defaultValue": "50",
+            "codeMapping": "formatValue(value) / String(value); each position has its own numeric default"
           },
           {
             "name": "showValue",
@@ -5499,19 +5648,25 @@
             "codeMapping": "showValue"
           },
           {
-            "name": "disabled",
-            "label": "Disabled",
-            "type": "boolean",
+            "name": "state",
+            "label": "State preview",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "disabled"
+            "defaultValue": "default",
+            "options": [
+              "default",
+              "hover",
+              "focus-visible",
+              "disabled"
+            ],
+            "codeMapping": "Native hover/focus-visible and disabled boolean"
           },
           {
             "name": "label",
             "label": "Label",
             "type": "text",
             "required": true,
-            "defaultValue": "Value",
+            "defaultValue": "Volume",
             "codeMapping": "label"
           }
         ],
@@ -5579,10 +5734,10 @@
         },
         "limitations": {
           "figma": [
-            "Figma number properties demonstrate position but not keyboard increments."
+            "Figma uses finite Position variants (min/25/50/75/max) and editable value text; it cannot model the full numeric continuum or keyboard increments."
           ],
           "code": [
-            "min must be less than max, step must be positive, and value must remain within the range."
+            "value, min, max, step, and formatValue remain code-only runtime behavior; min must be less than max, step must be positive, and value must remain within the range."
           ],
           "notApplicable": []
         },
@@ -5703,15 +5858,15 @@
         "measurements": [
           {
             "property": "Label-to-trigger gap",
-            "value": "8px"
+            "value": "10px"
           },
           {
             "property": "Trigger padding",
-            "value": "16px left / 40px right / 12px vertical"
+            "value": "20px left / 50px right / 15px vertical"
           },
           {
             "property": "Option padding",
-            "value": "40px left / 16px right / 12px vertical"
+            "value": "50px left / 20px right / 15px vertical"
           },
           {
             "property": "Radius",
@@ -5719,21 +5874,22 @@
           },
           {
             "property": "Panel maximum height",
-            "value": "240px"
+            "value": "300px"
           },
           {
             "property": "Panel offset",
-            "value": "4px"
+            "value": "5px"
           },
           {
             "property": "Icons",
-            "value": "16 × 16px"
+            "value": "20 × 20px"
           }
         ],
         "rules": [
           "Keep option labels on one line when possible; rows truncate overflow.",
           "The panel width follows the trigger.",
-          "Use the placeholder only before a meaningful value is selected."
+          "Use the placeholder only before a meaningful value is selected.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -5900,11 +6056,13 @@
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "8px label gap; 4px trigger to menu",
+          "gap": "10px label gap; 5px trigger to menu",
           "padding": "0px",
           "alignment": "Stretch",
           "wrap": "Menu options do not wrap by default",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -5912,11 +6070,12 @@
           "height": "hug",
           "minWidth": "200px",
           "maxWidth": "Parent controlled",
-          "minHeight": "44px closed",
-          "maxHeight": "Menu maximum 240px plus trigger",
+          "minHeight": "Content-derived: 92px with a single-line label and 57px trigger",
+          "maxHeight": "Menu maximum 300px plus labelled control",
           "overflow": "visible",
           "notes": [
-            "Menu width matches the trigger and scrolls after its maximum height."
+            "Menu width matches the trigger and scrolls after its maximum height.",
+            "The Options slot anchors a floating Options panel; add rows inside that panel so label wrapping and menu growth preserve the 5px offset."
           ]
         },
         "exposedProperties": [
@@ -5925,40 +6084,44 @@
             "label": "Label",
             "type": "text",
             "required": true,
-            "defaultValue": "Select option",
-            "codeMapping": "label"
+            "defaultValue": "Sort by",
+            "codeMapping": "Required label; canvas example only"
           },
           {
-            "name": "value",
-            "label": "Selected value",
+            "name": "content",
+            "label": "Content preview",
             "type": "variant",
             "required": true,
-            "defaultValue": null,
-            "codeMapping": "value"
+            "defaultValue": "placeholder",
+            "options": [
+              "placeholder",
+              "selected"
+            ],
+            "codeMapping": "Whether value resolves to a selected option"
           },
           {
-            "name": "placeholder",
-            "label": "Placeholder",
+            "name": "displayText",
+            "label": "Text (exposed Trigger)",
             "type": "text",
             "required": false,
             "defaultValue": "Select an option",
-            "codeMapping": "placeholder"
+            "codeMapping": "placeholder or selected option label; selected preview defaults to Most recent"
           },
           {
-            "name": "disabled",
-            "label": "Disabled",
-            "type": "boolean",
+            "name": "state",
+            "label": "State preview",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "disabled"
-          },
-          {
-            "name": "open",
-            "label": "Open preview",
-            "type": "boolean",
-            "required": false,
-            "defaultValue": false,
-            "codeMapping": "Internal Headless UI state; no public prop"
+            "defaultValue": "default",
+            "options": [
+              "default",
+              "hover",
+              "focus-visible",
+              "disabled",
+              "disabled-hover",
+              "open"
+            ],
+            "codeMapping": "Native hover/focus-visible, disabled boolean and internal Headless UI open state"
           },
           {
             "name": "options",
@@ -5966,7 +6129,7 @@
             "type": "slot",
             "required": true,
             "defaultValue": null,
-            "codeMapping": "options"
+            "codeMapping": "options; edit attached option rows inside Options panel"
           }
         ],
         "nestedAssets": [
@@ -6155,15 +6318,15 @@
         "measurements": [
           {
             "property": "Tab padding",
-            "value": "16px horizontal / 8px vertical"
+            "value": "20px horizontal / 10px vertical"
           },
           {
             "property": "Tab gap",
-            "value": "2px"
+            "value": "2.5px"
           },
           {
             "property": "Icon/label gap",
-            "value": "8px"
+            "value": "10px"
           },
           {
             "property": "Active indicator",
@@ -6177,7 +6340,8 @@
         "rules": [
           "Use one concise row when possible.",
           "The active state combines background, text, and indicator, not color alone.",
-          "Render only peer views that share the same page context."
+          "Render only peer views that share the same page context.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ],
         "responsiveBehavior": [
           "The consumer should provide horizontal scrolling or an alternate pattern if labels overflow.",
@@ -6263,7 +6427,7 @@
       },
       "guidance": {
         "dos": [
-          "Use for two to six related peer views.",
+          "Use for two to five related peer views.",
           "Keep labels short and use a stable default tab."
         ],
         "donts": [
@@ -6312,39 +6476,50 @@
         "autoLayout": {
           "applicable": true,
           "direction": "horizontal",
-          "gap": "2px",
+          "gap": "2.5px",
           "padding": "0px",
           "alignment": "End aligned on the active indicator",
           "wrap": "No wrap",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
           "width": "hug",
-          "height": "fixed",
+          "height": "hug",
           "minWidth": "Content width",
           "maxWidth": "Parent or viewport width",
-          "minHeight": "36px",
-          "maxHeight": "36px",
+          "minHeight": "Content-derived: 45px for one line",
+          "maxHeight": "Content controlled",
           "overflow": "visible",
           "notes": []
         },
         "exposedProperties": [
           {
             "name": "active",
-            "label": "Active tab",
+            "label": "Active preview",
             "type": "variant",
             "required": true,
-            "defaultValue": null,
-            "codeMapping": "active"
+            "defaultValue": "overview",
+            "options": [
+              "overview",
+              "activity",
+              "settings"
+            ],
+            "codeMapping": "Finite starter keys; custom tabs edit each nested Selected state"
           },
           {
-            "name": "label",
-            "label": "Tab list label",
-            "type": "text",
-            "required": true,
-            "defaultValue": "Views",
-            "codeMapping": "label"
+            "name": "state",
+            "label": "State preview",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "default",
+            "options": [
+              "default",
+              "focus-visible"
+            ],
+            "codeMapping": "Keyboard focus on the active starter tab"
           },
           {
             "name": "tabs",
@@ -6352,15 +6527,31 @@
             "type": "slot",
             "required": true,
             "defaultValue": null,
-            "codeMapping": "tabs"
+            "codeMapping": "tabs; attached Tab instances"
+          },
+          {
+            "name": "tabLabel",
+            "label": "Label (nested Tab)",
+            "type": "text",
+            "required": false,
+            "defaultValue": "Overview",
+            "codeMapping": "Tab.label"
+          },
+          {
+            "name": "showIcon",
+            "label": "Show icon (nested Tab)",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "codeMapping": "Boolean(Tab.icon)"
           },
           {
             "name": "icon",
-            "label": "Tab icon",
+            "label": "Icon (nested Tab)",
             "type": "instance-swap",
             "required": false,
             "defaultValue": null,
-            "codeMapping": "Tab.icon"
+            "codeMapping": "Tab.icon; source icon example is 24px, while consumer code owns dimensions"
           }
         ],
         "nestedAssets": [
@@ -6426,10 +6617,12 @@
         },
         "limitations": {
           "figma": [
-            "Prototype active variants do not validate roving focus or panel relationships."
+            "Prototype active variants do not validate roving focus or panel relationships.",
+            "The required label is an accessibility-only tablist name; it has no visible text property in the canvas asset."
           ],
           "code": [
-            "Consumers must pass the same stable id to Tabs and useTabPanelProps."
+            "Consumers must pass the same stable id to Tabs and useTabPanelProps.",
+            "Generic tab keys and the tablist accessible label remain code-owned."
           ],
           "notApplicable": []
         },
@@ -6549,11 +6742,11 @@
         "measurements": [
           {
             "property": "Viewport padding",
-            "value": "16px"
+            "value": "20px"
           },
           {
             "property": "Panel max width",
-            "value": "384 / 512 / 672 / 896px",
+            "value": "480 / 640 / 840 / 1120px",
             "notes": "sm / md / lg / xl."
           },
           {
@@ -6566,7 +6759,7 @@
           },
           {
             "property": "Body padding",
-            "value": "24px horizontal / 20px vertical"
+            "value": "30px horizontal / 25px vertical"
           },
           {
             "property": "Close target",
@@ -6587,7 +6780,8 @@
           "Use the shared overlay header and close-control pattern.",
           "Hover strengthens the icon without drawing a border; keyboard focus retains the standard outline.",
           "Use one scroll strategy; Dialog itself does not constrain body height.",
-          "Keep primary and dismissal actions inside the panel."
+          "Keep primary and dismissal actions inside the panel.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ],
         "responsiveBehavior": [
           "Panel width is fluid up to its size max-width and viewport padding.",
@@ -6733,37 +6927,31 @@
           "kind": "component",
           "figmaName": "Components/Overlays/Dialog",
           "localName": "Dialog",
-          "canvasApplicability": "Publish size variants with open state, title, description, and nested body content."
+          "canvasApplicability": "One panel component set with size, header-content and viewport previews, editable title and description, and a direct native Body slot. Document the viewport backdrop in attached-instance examples."
         },
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
           "gap": "0px between framed regions",
-          "padding": "16px viewport inset; 20px mobile / 24px desktop header inset; 12px header block padding; close target pinned 6px from the top and logical end",
+          "padding": "20px viewport inset; 20px mobile / 24px desktop header inset; 12px header block padding; close target pinned 6px from the top and logical end",
           "alignment": "Stretch",
           "wrap": "Content wraps",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
           "width": "fill",
           "height": "hug",
           "minWidth": "280px",
-          "maxWidth": "sm 384px; md 512px; lg 672px; xl 896px",
+          "maxWidth": "sm 480px; md 640px; lg 840px; xl 1120px",
           "minHeight": "Content controlled",
-          "maxHeight": "Viewport minus 32px",
-          "overflow": "auto",
+          "maxHeight": "Content controlled; no built-in height cap",
+          "overflow": "visible",
           "notes": []
         },
         "exposedProperties": [
-          {
-            "name": "open",
-            "label": "Open",
-            "type": "boolean",
-            "required": true,
-            "defaultValue": false,
-            "codeMapping": "open"
-          },
           {
             "name": "size",
             "label": "Size",
@@ -6771,19 +6959,45 @@
             "required": false,
             "defaultValue": "md",
             "options": [
-              "sm",
               "md",
+              "sm",
               "lg",
               "xl"
             ],
             "codeMapping": "size"
           },
           {
+            "name": "header",
+            "label": "Header",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "title-description",
+            "options": [
+              "title-description",
+              "title-only",
+              "description-only",
+              "none"
+            ],
+            "codeMapping": "Presence of title and description"
+          },
+          {
+            "name": "viewport",
+            "label": "Viewport",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "wide",
+            "options": [
+              "wide",
+              "compact"
+            ],
+            "codeMapping": "Header padding at the md breakpoint"
+          },
+          {
             "name": "title",
             "label": "Title",
             "type": "text",
             "required": false,
-            "defaultValue": null,
+            "defaultValue": "Rename project",
             "codeMapping": "title"
           },
           {
@@ -6791,12 +7005,12 @@
             "label": "Description",
             "type": "text",
             "required": false,
-            "defaultValue": null,
+            "defaultValue": "Choose a clear name your team will recognize.",
             "codeMapping": "description"
           },
           {
             "name": "content",
-            "label": "Content",
+            "label": "Body",
             "type": "slot",
             "required": true,
             "defaultValue": null,
@@ -6870,9 +7084,9 @@
           ]
         },
         "responsive": {
-          "strategy": "Width is capped by size and inset 16px from the viewport.",
+          "strategy": "Width is capped by size and inset 20px from the viewport.",
           "breakpoints": [
-            "No internal breakpoint"
+            "md header padding"
           ],
           "behavior": [
             "Panel shrinks to viewport width.",
@@ -6881,7 +7095,8 @@
         },
         "limitations": {
           "figma": [
-            "Figma overlays cannot validate focus trapping, restoration, Escape, or scroll lock."
+            "Figma overlays cannot validate focus trapping, restoration, Escape, or scroll lock.",
+            "The canvas asset represents an open panel; open controls mounting in code or visibility in a prototype, not an inert component property."
           ],
           "code": [
             "Always provide an accessible title through title or a correctly associated custom heading."
@@ -7012,20 +7227,20 @@
         "measurements": [
           {
             "property": "Panel max width",
-            "value": "384 / 512 / 672 / 896px",
+            "value": "480 / 640 / 840 / 1120px",
             "notes": "sm / md / lg / xl; shared with Dialog."
           },
           {
             "property": "Panel max height",
-            "value": "viewport − 48px mobile / viewport − 64px md+"
+            "value": "viewport − 60px mobile / viewport − 80px md+"
           },
           {
             "property": "Overlay padding",
-            "value": "16px mobile / 24px md+"
+            "value": "20px mobile / 30px md+"
           },
           {
             "property": "Top offset mobile",
-            "value": "64px"
+            "value": "80px"
           },
           {
             "property": "Header padding",
@@ -7033,7 +7248,7 @@
           },
           {
             "property": "Body/footer padding",
-            "value": "20px horizontal mobile / 24px md; 16px vertical"
+            "value": "25px horizontal mobile / 30px md; 20px vertical"
           },
           {
             "property": "Close target",
@@ -7054,7 +7269,8 @@
           "Use the shared overlay header and close-control pattern.",
           "Hover strengthens the icon without drawing a border; keyboard focus retains the standard outline.",
           "Keep a single scrollable body between fixed header and footer.",
-          "Use alertdialog role only for consequential confirmations."
+          "Use alertdialog role only for consequential confirmations.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ],
         "responsiveBehavior": [
           "Aligns near the top on small screens and centers from sm upward.",
@@ -7203,37 +7419,31 @@
           "kind": "component",
           "figmaName": "Components/Overlays/Modal",
           "localName": "Modal family",
-          "canvasApplicability": "Publish a composable overlay component with panel, header, body, and footer slots."
+          "canvasApplicability": "Publish one assembled Modal with an exposed Header and direct native Body/Footer slots, plus the public overlay, panel, header, body and footer building blocks."
         },
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
           "gap": "0px between regions",
-          "padding": "16px viewport inset; region padding owned by subcomponents; close target pinned 6px from the header top and logical end",
+          "padding": "20px mobile / 30px md+ viewport inset; region padding owned by subcomponents; close target pinned 6px from the header top and logical end",
           "alignment": "Stretch",
           "wrap": "Region content wraps",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
           "width": "fill",
           "height": "content-controlled",
           "minWidth": "280px",
-          "maxWidth": "sm 384px; md 512px; lg 672px; xl 896px",
+          "maxWidth": "sm 480px; md 640px; lg 840px; xl 1120px",
           "minHeight": "Content controlled",
-          "maxHeight": "Viewport minus 32px",
+          "maxHeight": "Viewport minus 60px mobile / 80px md+",
           "overflow": "auto",
           "notes": []
         },
         "exposedProperties": [
-          {
-            "name": "open",
-            "label": "Open",
-            "type": "boolean",
-            "required": false,
-            "defaultValue": false,
-            "codeMapping": "Conditional rendering of ModalOverlay"
-          },
           {
             "name": "size",
             "label": "Size",
@@ -7241,44 +7451,112 @@
             "required": false,
             "defaultValue": "lg",
             "options": [
+              "lg",
               "sm",
               "md",
-              "lg",
               "xl"
             ],
             "codeMapping": "ModalPanel.size"
           },
           {
-            "name": "closeOnBackdrop",
-            "label": "Backdrop closes",
-            "type": "boolean",
+            "name": "viewport",
+            "label": "Viewport",
+            "type": "variant",
             "required": false,
-            "defaultValue": true,
-            "codeMapping": "ModalOverlay.closeOnBackdrop"
+            "defaultValue": "wide",
+            "options": [
+              "wide",
+              "compact"
+            ],
+            "codeMapping": "Region padding at md"
           },
           {
-            "name": "scroll",
-            "label": "Scrollable body",
+            "name": "bodyLayout",
+            "label": "Body layout",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "hug",
+            "options": [
+              "hug",
+              "scroll"
+            ],
+            "codeMapping": "Canvas height preview: natural content or a constrained scrollable ModalBody"
+          },
+          {
+            "name": "showFooter",
+            "label": "Show footer",
             "type": "boolean",
             "required": false,
             "defaultValue": true,
-            "codeMapping": "ModalBody.scroll"
+            "codeMapping": "Presence of ModalFooter"
           },
           {
             "name": "heading",
-            "label": "Heading",
+            "label": "Heading (nested Header)",
             "type": "text",
             "required": true,
-            "defaultValue": "Settings",
+            "defaultValue": "Workspace settings",
             "codeMapping": "ModalHeader.heading"
           },
           {
             "name": "description",
-            "label": "Description",
+            "label": "Description (nested Header)",
             "type": "text",
             "required": false,
-            "defaultValue": null,
+            "defaultValue": "Manage access and defaults for your team.",
             "codeMapping": "ModalHeader.description"
+          },
+          {
+            "name": "showDescription",
+            "label": "Show description (nested Header)",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": true,
+            "codeMapping": "Presence of ModalHeader.description"
+          },
+          {
+            "name": "close",
+            "label": "Close (nested Header)",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "shown",
+            "options": [
+              "shown",
+              "hidden"
+            ],
+            "codeMapping": "Presence of ModalHeader.onClose"
+          },
+          {
+            "name": "eyebrow",
+            "label": "Eyebrow (nested Header)",
+            "type": "slot",
+            "required": false,
+            "defaultValue": null,
+            "codeMapping": "ModalHeader.eyebrow"
+          },
+          {
+            "name": "showEyebrow",
+            "label": "Show eyebrow (nested Header)",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "codeMapping": "Presence of ModalHeader.eyebrow"
+          },
+          {
+            "name": "headerContent",
+            "label": "Header content (nested Header)",
+            "type": "slot",
+            "required": false,
+            "defaultValue": null,
+            "codeMapping": "ModalHeader.children"
+          },
+          {
+            "name": "showHeaderContent",
+            "label": "Show header content (nested Header)",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": false,
+            "codeMapping": "Presence of ModalHeader.children"
           },
           {
             "name": "body",
@@ -7374,19 +7652,23 @@
         "responsive": {
           "strategy": "Panel is viewport-constrained and body may scroll.",
           "breakpoints": [
-            "No internal breakpoint"
+            "sm vertical centering",
+            "md viewport and region padding"
           ],
           "behavior": [
-            "Maintain 16px viewport inset.",
+            "Maintain 20px horizontal viewport inset, increasing to 30px at md; the mobile top offset is 80px.",
             "On product-defined small screens, a full-height presentation may be composed outside this primitive."
           ]
         },
         "limitations": {
           "figma": [
-            "Figma nesting demonstrates structure but not portal, focus, inert background, or scroll-lock behavior."
+            "Figma nesting demonstrates structure but not portal, focus, inert background, or scroll-lock behavior.",
+            "Set the scroll-preview panel height to viewport minus 60px below md or 80px at md; Figma does not calculate CSS viewport units.",
+            "Body layout is a canvas preview, while the standalone ModalBody Scroll property maps the runtime scroll flag."
           ],
           "code": [
-            "Consumers own whether the ModalOverlay is mounted; this family has no open prop itself."
+            "Consumers own whether the ModalOverlay is mounted; this family has no open prop itself.",
+            "closeOnBackdrop and role remain code-owned behavior rather than inert appearance controls."
           ],
           "notApplicable": []
         },
@@ -7529,11 +7811,11 @@
         "measurements": [
           {
             "property": "Panel width",
-            "value": "max 384px"
+            "value": "max 480px"
           },
           {
             "property": "Footer action gap",
-            "value": "12px"
+            "value": "15px"
           },
           {
             "property": "Header padding",
@@ -7541,7 +7823,7 @@
           },
           {
             "property": "Body/footer padding",
-            "value": "20px horizontal mobile / 24px md; 16px vertical"
+            "value": "25px horizontal mobile / 30px md; 20px vertical"
           },
           {
             "property": "Close target",
@@ -7560,7 +7842,8 @@
         "rules": [
           "Name the specific object and action.",
           "Place Cancel before Confirm in the footer.",
-          "Use destructive styling only for destructive consequences."
+          "Use destructive styling only for destructive consequences.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -7708,51 +7991,65 @@
         "autoLayout": {
           "applicable": true,
           "direction": "vertical",
-          "gap": "0px regions; 12px between footer actions",
-          "padding": "16px viewport inset; panel region padding",
+          "gap": "0px regions; 15px between footer actions",
+          "padding": "20px mobile / 30px md+ viewport inset; panel region padding",
           "alignment": "Stretch with actions aligned to logical end",
-          "wrap": "Actions may wrap at narrow widths",
-          "notes": []
+          "wrap": "Single action row; product composition owns stacking for long localized labels",
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
           "width": "fill",
           "height": "hug",
           "minWidth": "280px",
-          "maxWidth": "384px",
+          "maxWidth": "480px",
           "minHeight": "Content controlled",
-          "maxHeight": "Viewport minus 32px",
+          "maxHeight": "Viewport minus 60px mobile / 80px md+",
           "overflow": "auto",
           "notes": []
         },
         "exposedProperties": [
           {
-            "name": "open",
-            "label": "Open",
-            "type": "boolean",
-            "required": true,
-            "defaultValue": false,
-            "codeMapping": "open"
-          },
-          {
             "name": "destructive",
-            "label": "Destructive",
-            "type": "boolean",
+            "label": "Action",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "destructive"
+            "defaultValue": "standard",
+            "options": [
+              "standard",
+              "destructive"
+            ],
+            "codeMapping": "destructive: standard=false, destructive=true"
           },
           {
             "name": "loading",
-            "label": "Loading",
-            "type": "boolean",
+            "label": "State",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "loading"
+            "defaultValue": "idle",
+            "options": [
+              "idle",
+              "loading"
+            ],
+            "codeMapping": "loading: idle=false, loading=true"
+          },
+          {
+            "name": "viewport",
+            "label": "Viewport",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "wide",
+            "options": [
+              "wide",
+              "compact"
+            ],
+            "codeMapping": "Region padding at md"
           },
           {
             "name": "title",
-            "label": "Title",
+            "label": "Heading (nested Header)",
             "type": "text",
             "required": true,
             "defaultValue": "Confirm action?",
@@ -7767,8 +8064,16 @@
             "codeMapping": "description"
           },
           {
+            "name": "showDescription",
+            "label": "Show description",
+            "type": "boolean",
+            "required": false,
+            "defaultValue": true,
+            "codeMapping": "Presence of description"
+          },
+          {
             "name": "confirmLabel",
-            "label": "Confirm label",
+            "label": "Label (nested Confirm action)",
             "type": "text",
             "required": false,
             "defaultValue": "Confirm",
@@ -7776,7 +8081,7 @@
           },
           {
             "name": "cancelLabel",
-            "label": "Cancel label",
+            "label": "Label (nested Cancel action)",
             "type": "text",
             "required": false,
             "defaultValue": "Cancel",
@@ -7784,10 +8089,10 @@
           },
           {
             "name": "loadingLabel",
-            "label": "Loading label",
+            "label": "Label (nested Loading action)",
             "type": "text",
             "required": false,
-            "defaultValue": "Working...",
+            "defaultValue": "Working…",
             "codeMapping": "loadingLabel"
           }
         ],
@@ -7862,7 +8167,9 @@
         },
         "limitations": {
           "figma": [
-            "Figma loading variants cannot validate blocked backdrop and Escape dismissal."
+            "Figma loading variants cannot validate blocked backdrop and Escape dismissal.",
+            "The canvas represents the open panel; open remains runtime mounting or prototype visibility.",
+            "Edit copy through the exposed native Header and Button instances. The API cannot forward text properties through instance sublayers; separate confirm and loading actions preserve both label overrides when State changes."
           ],
           "code": [
             "The consumer owns asynchronous completion and must clear loading or close the dialog."
@@ -7971,7 +8278,7 @@
         "measurements": [
           {
             "property": "Bubble padding",
-            "value": "12px horizontal / 6px vertical"
+            "value": "15px horizontal / 7.5px vertical"
           },
           {
             "property": "Trigger offset",
@@ -7997,7 +8304,8 @@
         "rules": [
           "Keep content brief, plain text, and non-interactive.",
           "Preferred placement flips when its opposite side has available space and clamps to the viewport.",
-          "Do not hide essential instructions in the tooltip."
+          "Do not hide essential instructions in the tooltip.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -8123,15 +8431,6 @@
             "right"
           ]
         },
-        "delay": {
-          "type": "number",
-          "label": "Delay",
-          "defaultValue": 300,
-          "min": 0,
-          "max": 1000,
-          "step": 50,
-          "unit": "ms"
-        },
         "content": {
           "type": "text",
           "label": "Content",
@@ -8149,10 +8448,12 @@
           "applicable": true,
           "direction": "horizontal",
           "gap": "0px",
-          "padding": "6px 12px",
+          "padding": "7.5px 15px",
           "alignment": "Center",
           "wrap": "Text wraps up to maximum width",
-          "notes": []
+          "notes": [
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
+          ]
         },
         "resizing": {
           "applicable": true,
@@ -8187,14 +8488,6 @@
               "right"
             ],
             "codeMapping": "position"
-          },
-          {
-            "name": "delay",
-            "label": "Delay",
-            "type": "number",
-            "required": false,
-            "defaultValue": 300,
-            "codeMapping": "delay"
           },
           {
             "name": "visible",
@@ -8268,10 +8561,11 @@
         },
         "limitations": {
           "figma": [
-            "Figma hover prototypes do not cover delayed focus, pointer travel, Escape, touch toggling, outside touch, viewport collision, or aria-describedby."
+            "Figma hover prototypes do not cover delayed focus, pointer travel, Escape, touch toggling, outside touch, viewport collision, or aria-describedby.",
+            "Native auto-layout anchors preserve the 8px gap when copy or trigger size changes. The 208px text-width cap is fixed because the API cannot bind maxWidth on a text node; it derives from the bound 240px bubble cap minus 30px padding and 2px borders."
           ],
           "code": [
-            "Keep content supplemental, plain text, and non-interactive."
+            "The 300ms delay default and delay prop remain code-only; keep content supplemental, plain text, and non-interactive."
           ],
           "notApplicable": []
         },
@@ -8433,7 +8727,8 @@
         "rules": [
           "Parent must establish positioning and an explicit height.",
           "Maintain sufficient text contrast over both images.",
-          "Use only for decorative imagery; content images require semantic Image usage."
+          "Use only for decorative imagery; content images require semantic Image usage.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ],
         "responsiveBehavior": [
           "sizes defaults to 100vw and should be narrowed when the image is not full viewport width.",
@@ -8564,7 +8859,8 @@
           "alignment": "Stretch to all frame edges",
           "wrap": "Layers overlap",
           "notes": [
-            "Layer order is media, theme alternative, overlay, top fade, then bottom fade."
+            "Layer order is media, theme alternative, overlay, top fade, then bottom fade.",
+            "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
           ]
         },
         "resizing": {
@@ -8587,7 +8883,7 @@
             "type": "instance-swap",
             "required": true,
             "defaultValue": null,
-            "codeMapping": "darkSrc"
+            "codeMapping": "Media asset represents the darkSrc URL"
           },
           {
             "name": "lightSrc",
@@ -8595,7 +8891,19 @@
             "type": "instance-swap",
             "required": false,
             "defaultValue": null,
-            "codeMapping": "lightSrc"
+            "codeMapping": "Media asset represents the optional lightSrc URL"
+          },
+          {
+            "name": "images",
+            "label": "Images",
+            "type": "variant",
+            "required": false,
+            "defaultValue": "paired",
+            "options": [
+              "paired",
+              "single"
+            ],
+            "codeMapping": "Presence of lightSrc: paired or one source reused in both themes"
           },
           {
             "name": "overlay",
@@ -8630,18 +8938,14 @@
           {
             "name": "blendLight",
             "label": "Light blend",
-            "type": "boolean",
+            "type": "variant",
             "required": false,
-            "defaultValue": false,
-            "codeMapping": "blendLight"
-          },
-          {
-            "name": "objectPosition",
-            "label": "Focal point",
-            "type": "text",
-            "required": false,
-            "defaultValue": "center",
-            "codeMapping": "objectPosition"
+            "defaultValue": "off",
+            "options": [
+              "off",
+              "multiply"
+            ],
+            "codeMapping": "blendLight: off=false, multiply=true"
           }
         ],
         "nestedAssets": [
@@ -8712,7 +9016,9 @@
         },
         "limitations": {
           "figma": [
-            "Figma fills do not validate Next Image loading, responsive source selection, or blend behavior."
+            "Figma fills do not validate Next Image loading or responsive source selection. Native multiply previews the light-mode blend.",
+            "Image swaps represent string URL props conceptually. Change objectPosition by editing the source image fill crop; there is no inert focal-point text property.",
+            "CSS image alpha 0 to 1 maps to Figma opacity percentages 0 to 100. Theme-matched transparent gradient endpoints reproduce CSS premultiplied fades without gray bands."
           ],
           "code": [
             "Always decorative; do not use for content that needs alternative text."
@@ -8842,7 +9148,7 @@
         },
         {
           "name": "Theme toggle",
-          "description": "Optional 44px icon action that reads and changes context.",
+          "description": "Optional 55px icon action that reads and changes context.",
           "required": false,
           "semanticElement": "button"
         },
@@ -8863,7 +9169,7 @@
         "measurements": [
           {
             "property": "ThemeToggle target",
-            "value": "44 × 44px"
+            "value": "55 × 55px"
           },
           {
             "property": "ThemeToggle icon",
@@ -8885,7 +9191,8 @@
         "rules": [
           "Wrap the application once.",
           "Use semantic tokens so components switch without per-component theme or accent branches.",
-          "Initialize the html class and data-accent before paint in the consuming app to avoid an appearance flash."
+          "Initialize the html class and data-accent before paint in the consuming app to avoid an appearance flash.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -9115,7 +9422,7 @@
             "name": "ThemeToggle",
             "kind": "subcomponent",
             "required": false,
-            "description": "Ready-made visible mode switch.",
+            "description": "One Components/Actions/Theme toggle entry: State previews default, hover, pressed, and focus-visible. The 55px layout target contains an 18px glyph; visual scale is 1.1 on hover and 0.85 while pressed. Sun and moon visibility follows inherited Semantic modes, without a duplicate appearance variant.",
             "codeMapping": "ThemeToggle"
           }
         ],
@@ -9146,7 +9453,7 @@
             "Not applicable to provider"
           ],
           "behavior": [
-            "ThemeToggle preserves its 44px square footprint wherever placed."
+            "ThemeToggle preserves its 55px square footprint wherever placed."
           ]
         },
         "limitations": {
@@ -9242,7 +9549,8 @@
         "rules": [
           "Put default classes first and the consumer className last when overrides are allowed.",
           "Do not use arbitrary class conflicts as a substitute for explicit variants.",
-          "Focus and semantic-state utilities are part of the component contract."
+          "Focus and semantic-state utilities are part of the component contract.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -9569,7 +9877,8 @@
           "Use motion to clarify hierarchy or state, not to decorate every element.",
           "Prefer shared values over one-off durations and distances.",
           "In-view reveals run once by default.",
-          "Do not rely on motion alone to communicate meaning."
+          "Do not rely on motion alone to communicate meaning.",
+          "Measurements use the 20px playground and Figma reference root. The package does not set html font-size. Rem-based dimensions scale with the consumer root; literal px dimensions remain fixed."
         ]
       },
       "designTokens": [
@@ -11645,6 +11954,19 @@
               "title": "Asset directory",
               "items": [
                 {
+                  "title": "Figma Community kit",
+                  "description": "Editable component sets, semantic variables, light and dark themes, and six page templates. Duplicate the free CC BY 4.0 resource into your Figma account.",
+                  "href": "https://www.figma.com/community/file/1677871391096215128",
+                  "action": "Open in Figma",
+                  "external": true
+                },
+                {
+                  "title": "Designer guide",
+                  "description": "Preview the kit, make your first mockup, and understand fonts, reference sizing, attribution and library updates.",
+                  "href": "/designers",
+                  "action": "Start designing"
+                },
+                {
                   "title": "Design tokens JSON",
                   "description": "Generated DTCG-shaped token data with reference, semantic, layout, radius, motion, and light/dark mode values.",
                   "href": "/design-system/tokens.json",
@@ -11810,6 +12132,12 @@
                   "Registry completeness and parity tests"
                 ],
                 [
+                  "Figma library",
+                  "Projection of public components, tokens and reviewed specifications",
+                  "Figma Community snapshot and connected team library",
+                  "Variable, state, theme, resizing and instance-link review"
+                ],
+                [
                   "Icons",
                   "Lucide dependency",
                   "lucide-react",
@@ -11840,43 +12168,39 @@
         {
           "id": "library-model",
           "title": "Design library model",
-          "summary": "A future design-tool library should mirror this portal without becoming a competing source of truth.",
+          "summary": "The published Figma library mirrors the public components, semantic tokens and reviewed specifications. Community copies are editable snapshots; connected library consumers review published updates.",
           "blocks": [
             {
               "type": "table",
-              "title": "Recommended library pages",
+              "title": "Published library organization",
               "columns": [
                 "Page",
                 "Contents"
               ],
               "rows": [
                 [
-                  "00 Cover and release",
-                  "Version, status, owner, release notes, migration alerts"
+                  "00 to 04 / Cover and foundations",
+                  "Getting started, color, typography, layout and motion"
                 ],
                 [
-                  "01 Foundations",
-                  "Variables, text styles, layout, radius, motion, icon and media rules"
+                  "10 to 30 / Components",
+                  "Public component sets, state examples, authoring guidance and connected private building blocks"
                 ],
                 [
-                  "02 Components",
-                  "Published component sets matching public exports"
+                  "40 to 45 / Templates",
+                  "Directory, Detail, Form, Settings, Dashboard and Onboarding in desktop/mobile and both themes"
                 ],
                 [
-                  "03 Patterns",
-                  "Approved compositions and complete state flows"
+                  "80 / Patterns",
+                  "Composition and feedback guidance"
                 ],
                 [
-                  "04 Accessibility",
-                  "Annotations, focus order, keyboard and announcement notes"
+                  "90 to 92 / Accessibility, governance and QA",
+                  "Keyboard and announcement guidance, source precedence and verification coverage"
                 ],
                 [
-                  "05 QA",
-                  "Theme, locale, resize, density and exceptional-state comparison frames"
-                ],
-                [
-                  "99 Deprecated",
-                  "Migration-only assets with removal version"
+                  "99 / Deprecated",
+                  "Retained assets and migration guidance"
                 ]
               ]
             },

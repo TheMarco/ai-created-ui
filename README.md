@@ -205,6 +205,8 @@ npm run validate
 
 `npm run validate` typechecks the package and portal, runs React, TypeScript, hooks, and accessibility lint rules, runs the Vitest component and axe accessibility suites, rejects stale generated contracts and documentation drift, builds the portal, and verifies the packed package boundary.
 
+When declaring a new version, say “Release vX.Y.Z” or “Update Figma for vX.Y.Z” in this project. The [Figma release workflow](docs/figma-consumer.md) covers accumulated source changes, light/dark review, and library and Community updates. Ordinary development does not require a Figma sync; the release check requires matching audit and publication evidence. No background process is needed.
+
 Browser tests are a separate required CI gate. They start the playground and exercise the desktop and mobile Chromium smoke and visual suites, so a passing `validate` does not replace a passing browser run.
 
 Faster focused commands are available during development:
@@ -230,7 +232,10 @@ Faster focused commands are available during development:
 | `npm run docs:check` | Verify public counts, routes, workflow guidance, and CI propagation promises |
 | `npm run policy:check -- src` | Reject prohibited tokens, styling, imports, local primitive copies, and accidental zero-file scans |
 | `npm run package:check` | Verify the GitHub package contains only the public source boundary |
-| `npm run release:check -- vX.Y.Z` | Verify tag, version, lockfile, npm-publication guard, and changelog agreement |
+| `npm run figma:plan` | Identify source changes that require Figma synchronization |
+| `npm run figma:check` | Reject a missing or stale Figma audit |
+| `npm run figma:release-check` | Require matching library and Community publication evidence |
+| `npm run release:check -- vX.Y.Z` | Verify tag, version, lockfile, changelog, and Figma distribution agreement |
 
 For browser tests locally, install Chromium once with `npx playwright install chromium`, then run `npm run test:browser` from the repository root. If the portal is already running, reuse it with `PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 npm run test:browser`. CI installs Chromium with system dependencies and runs this gate after `validate`.
 
@@ -247,6 +252,8 @@ Every component has a demo at **[ui.ai-created.com](https://ui.ai-created.com)**
 Any component change should be reflected in the playground in the same pass. That is the canonical reference both for future contributors and for anyone hitting the live site.
 
 The portal opens on a concise overview at `/`, with the canonical foundation reference at `/foundations`: design tokens, color, typography, spacing and layout, motion, and theme behavior. Anchors that previously lived on the overview route redirect to their new home.
+
+Designers can start at [`/designers`](https://ui.ai-created.com/designers) or duplicate the [public Figma Community kit](https://www.figma.com/community/file/1677871391096215128). The designer guide includes real light/dark previews, the six page templates, a first-mockup workflow, font and reference-size guidance, and the difference between Community copies and connected library updates. The Figma file is CC BY 4.0; the React package remains MIT. See [the Figma library handoff](docs/figma-library.md) for source and verification details.
 
 The playground also provides a searchable living specification at `/components`. Every public component, provider, utility, and motion-helper family has its own page with a production specimen, interactive controls, URL-shareable states, synchronized copy-ready JSX, installation guidance, anatomy, visual measurements, token dependencies, state behavior, keyboard and accessibility contracts, implementation recipes, public API, usage guidance, and required tests. Each entry also defines its Figma-equivalent asset name, auto-layout, resizing, exposed properties, slots, content limits, localization, RTL, responsive behavior, authoring limitations, maturity, ownership, review date, source, and change policy.
 

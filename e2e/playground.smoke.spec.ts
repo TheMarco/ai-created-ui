@@ -89,7 +89,7 @@ test('documents the public Button API on its component specification', async ({ 
   const apiTable = page.getByRole('table').filter({ has: page.getByRole('columnheader', { name: 'Prop' }) }).first();
   await center(apiTable);
   await expect(apiTable.getByRole('cell', { name: 'variant', exact: true }).first()).toBeVisible();
-  await expect(page.getByText('44 × 44px')).toBeVisible();
+  await expect(page.getByText('55 × 55px')).toBeVisible();
 });
 
 test('keeps the first overview heading clear of the hero separator', async ({ page }) => {
@@ -449,6 +449,7 @@ test('routes the primary navigation and preserves moved deep links', async ({ pa
   const documentationNav = page.getByRole('navigation', { name: navigationName });
 
   for (const [label, href] of [
+    ['Designers', '/designers'],
     ['Foundations', '/foundations'],
     ['Components', '/components'],
     ['Guidelines', '/guidelines'],
@@ -461,6 +462,7 @@ test('routes the primary navigation and preserves moved deep links', async ({ pa
   await expect(page.getByRole('banner').getByRole('link', { name: '@ai-created/ui' })).toHaveAttribute('href', '/');
 
   for (const [route, label] of [
+    ['/designers', 'Designers'],
     ['/foundations', 'Foundations'],
     ['/components', 'Components'],
     ['/guidelines', 'Guidelines'],
@@ -470,6 +472,10 @@ test('routes the primary navigation and preserves moved deep links', async ({ pa
     await expect(
       page.getByRole('navigation', { name: navigationName }).getByRole('link', { name: label, exact: true }),
     ).toHaveAttribute('aria-current', 'page');
+
+    if (route === '/designers') {
+      await expect(page.getByRole('heading', { level: 1, name: 'The whole system. In Figma.', exact: true })).toBeVisible();
+    }
   }
 
   // Active state must survive on child routes.
@@ -494,7 +500,7 @@ test('routes the primary navigation and preserves moved deep links', async ({ pa
 test('resolves every internal link the portal renders', async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop-chromium', 'One crawl of the route graph is enough.');
 
-  const routes = ['/', '/foundations', '/components', '/guidelines', '/agents'];
+  const routes = ['/', '/designers', '/foundations', '/components', '/guidelines', '/agents'];
   const checked = new Map<string, number>();
 
   for (const route of routes) {

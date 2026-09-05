@@ -353,7 +353,7 @@ for (const text of [
   requireText('integration', text);
 }
 
-for (const destination of ['/foundations', '/components', '/guidelines', '/agents']) {
+for (const destination of ['/designers', '/foundations', '/components', '/guidelines', '/agents']) {
   requireText('homepage', `href: '${destination}'`, destination);
   requireText('header', `href: '${destination}'`, destination);
 }

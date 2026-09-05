@@ -2,6 +2,25 @@
 
 Notable changes to `@ai-created/ui` are recorded here. Entries are written and reviewed by people when the change is made. Versions are not inferred from commit messages.
 
+## [Unreleased]
+
+### Maintenance
+
+- Update Figma when declaring a design-system release, covering accumulated source changes and verified library/Community publication. Ordinary development does not require synchronization or a background updater. See `docs/figma-consumer.md`.
+
+### Added
+
+- A public Figma Community kit with connected components, semantic variables, light and dark themes, and the six approved page templates. `/designers` provides real kit previews, a first-mockup guide, and font, sizing, update and attribution guidance. Designer entry points in the overview, navigation, footer and asset directory now lead to the kit and guide.
+
+### Changed
+
+- Component geometry documentation explicitly uses the playground's 20px reference root. Rem-derived measurements are checked against that rendering context; consumer applications retain control of their root font size.
+- Form and onboarding templates use compact mobile padding and preserve DOM action order at every width.
+
+### Fixed
+
+- Checkbox, RadioGroup and Toggle show the documented solid focus outline on their visible indicator or track.
+
 ## [1.4.0] - 2026-09-03
 
 ### Added

@@ -4,7 +4,7 @@ export default function GuidelinesLayout({ children }: { children: React.ReactNo
   return (
     <>
       <PlaygroundHeader />
-      <main id="main-content" tabIndex={-1} className="min-h-screen bg-bg pt-28 sm:pt-16">
+      <main id="main-content" tabIndex={-1} className="min-h-screen bg-bg pt-28 xl:pt-16">
         {children}
       </main>
     </>

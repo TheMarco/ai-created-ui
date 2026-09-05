@@ -1,4 +1,5 @@
 import type { GuidelineSpec, GuidelineSlug } from './types';
+import { figmaLibrary } from '../../../lib/figma-library';
 
 export const guidelineSpecs: GuidelineSpec[] = [
   {
@@ -809,6 +810,8 @@ export const guidelineSpecs: GuidelineSpec[] = [
             type: 'resources',
             title: 'Asset directory',
             items: [
+              { title: 'Figma Community kit', description: 'Editable component sets, semantic variables, light and dark themes, and six page templates. Duplicate the free CC BY 4.0 resource into your Figma account.', href: figmaLibrary.communityUrl, action: 'Open in Figma', external: true },
+              { title: 'Designer guide', description: 'Preview the kit, make your first mockup, and understand fonts, reference sizing, attribution and library updates.', href: '/designers', action: 'Start designing' },
               { title: 'Design tokens JSON', description: 'Generated DTCG-shaped token data with reference, semantic, layout, radius, motion, and light/dark mode values.', href: '/design-system/tokens.json', action: 'Download JSON' },
               { title: 'Design-system manifest', description: 'Versioned machine-readable contract for every public export, component, guideline, source, token dependency, and blocking validation command.', href: '/design-system/manifest.json', action: 'Download JSON' },
               { title: 'AI agent quick context', description: 'Concise operating rules and links for tools that discover llms.txt.', href: '/llms.txt', action: 'Open text' },
@@ -876,6 +879,7 @@ export const guidelineSpecs: GuidelineSpec[] = [
               ['Tailwind mappings', 'tailwind-preset.js', 'Preset package export', 'Matches canonical CSS names'],
               ['React components', 'src/components', 'Package root exports', 'API, a11y, unit, interaction and visual review'],
               ['Component specifications', 'playground/specs', 'This portal', 'Registry completeness and parity tests'],
+              ['Figma library', 'Projection of public components, tokens and reviewed specifications', 'Figma Community snapshot and connected team library', 'Variable, state, theme, resizing and instance-link review'],
               ['Icons', 'Lucide dependency', 'lucide-react', 'Use standard glyph before custom asset'],
               ['Product imagery', 'Owning product repository', 'Product deployment', 'Theme, crop, rights and accessibility review'],
               ['Visual baselines', 'e2e/__screenshots__', 'Repository test artifact', 'Intentional reviewed update'],
@@ -887,20 +891,19 @@ export const guidelineSpecs: GuidelineSpec[] = [
       {
         id: 'library-model',
         title: 'Design library model',
-        summary: 'A future design-tool library should mirror this portal without becoming a competing source of truth.',
+        summary: 'The published Figma library mirrors the public components, semantic tokens and reviewed specifications. Community copies are editable snapshots; connected library consumers review published updates.',
         blocks: [
           {
             type: 'table',
-            title: 'Recommended library pages',
+            title: 'Published library organization',
             columns: ['Page', 'Contents'],
             rows: [
-              ['00 Cover and release', 'Version, status, owner, release notes, migration alerts'],
-              ['01 Foundations', 'Variables, text styles, layout, radius, motion, icon and media rules'],
-              ['02 Components', 'Published component sets matching public exports'],
-              ['03 Patterns', 'Approved compositions and complete state flows'],
-              ['04 Accessibility', 'Annotations, focus order, keyboard and announcement notes'],
-              ['05 QA', 'Theme, locale, resize, density and exceptional-state comparison frames'],
-              ['99 Deprecated', 'Migration-only assets with removal version'],
+              ['00 to 04 / Cover and foundations', 'Getting started, color, typography, layout and motion'],
+              ['10 to 30 / Components', 'Public component sets, state examples, authoring guidance and connected private building blocks'],
+              ['40 to 45 / Templates', 'Directory, Detail, Form, Settings, Dashboard and Onboarding in desktop/mobile and both themes'],
+              ['80 / Patterns', 'Composition and feedback guidance'],
+              ['90 to 92 / Accessibility, governance and QA', 'Keyboard and announcement guidance, source precedence and verification coverage'],
+              ['99 / Deprecated', 'Retained assets and migration guidance'],
             ],
           },
           {

@@ -22,7 +22,7 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle(
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={cn(
-        'group flex min-h-[44px] items-center gap-2.5 cursor-pointer',
+        'group flex min-h-[44px] items-center gap-2.5 cursor-pointer focus-visible:[outline-style:none]',
         disabled && 'cursor-not-allowed',
         className
       )}
@@ -31,7 +31,7 @@ const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(function Toggle(
         aria-hidden="true"
         className={cn(
           'relative inline-flex h-6 w-10 shrink-0 items-center rounded-full border transition-colors duration-200',
-          'group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:outline-focus group-focus-visible:outline-offset-[3px]',
+          'group-focus-visible:[outline-style:solid] group-focus-visible:outline-2 group-focus-visible:outline-focus group-focus-visible:outline-offset-[3px]',
           disabled && 'cursor-not-allowed opacity-50',
           checked
             ? 'border-action-primary bg-action-primary'

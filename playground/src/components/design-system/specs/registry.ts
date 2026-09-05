@@ -3,7 +3,7 @@ import {
   type ComponentDocEntry,
 } from '../componentDocs';
 import { componentSpecDetails } from './details';
-import { componentConstructionSpecs } from './construction';
+import { componentConstructionSpecs, referenceScaleNote } from './construction';
 import type { ComponentSpec, ComponentSpecId } from './types';
 
 const knownIds = new Set<string>(Object.keys(componentSpecDetails));
@@ -38,11 +38,16 @@ if (
  */
 export const componentSpecs: ComponentSpec[] = componentDocs.map((entry) => {
   const id = entry.id as ComponentSpecId;
+  const details = componentSpecDetails[id];
+  const construction = componentConstructionSpecs[id];
   return {
     ...entry,
     id,
-    ...componentSpecDetails[id],
-    construction: componentConstructionSpecs[id],
+    ...details,
+    visualSpec: details.visualSpec
+      ? { ...details.visualSpec, rules: [...details.visualSpec.rules, referenceScaleNote] }
+      : details.visualSpec,
+    construction,
   };
 });
 
