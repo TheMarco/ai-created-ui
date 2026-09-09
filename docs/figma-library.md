@@ -4,7 +4,7 @@
 
 [Get the public Community kit](https://www.figma.com/community/file/1677871391096215128) · [Designer guide](https://ui.ai-created.com/designers)
 
-The source library is published in Marco Design. On 2026-09-09, all 48 public component assets reported `CURRENT` through Figma's publication API after the Button sizing correction. The existing Community resource was updated and verified live the same day. Source-file access is restricted to invited people and the Design System folder. Visitors can duplicate the public snapshot into their own Figma account.
+The source library is published in Marco Design. On 2026-09-09, all 48 public component assets reported `CURRENT` through Figma's publication API against the accepted v1.5.0 source. The existing Community resource was updated with the v1.5.0 cover and governance labels and verified live the same day. Source-file access is restricted to invited people and the Design System folder. Visitors can duplicate the public snapshot into their own Figma account.
 
 ## Start designing
 
@@ -30,11 +30,11 @@ Figma matches the reviewed playground's **20px root**. The package does not set 
 
 Canonical precedence remains public React source (`src/index.ts`, `src/components/`), `styles/tokens.css`, shared Tailwind preset, reviewed component and principal specifications, then human documentation. Figma is a projection of those contracts. The six compositions follow `templates/agent/manifest.json` and its source templates.
 
-The working Button contract reserves a 1px border in every variant, transparent where no visible boundary is needed. With identical content, changing Variant or State preserves outer dimensions: inline 27px, sm/md 47px, lg/xl 57px, and icon 55px square at the reference root. Focus outlines keep their 3px offset when instances resize.
+The Button contract reserves a 1px border in every variant, transparent where no visible boundary is needed. With identical content, changing Variant or State preserves outer dimensions: inline 27px, sm/md 47px, lg/xl 57px, and icon 55px square at the reference root. Focus outlines keep their 3px offset when instances resize.
 
 Reference-palette documentation groups the existing values by family and separates core/feedback colors from the nine accent families. Each swatch shows a shade name and hex value; its layer name and variable binding preserve the exact source token. Swatches use a semantic boundary so near-black and white remain visible in either theme. These sparse source families are for system maintainers; semantic colors remain the product-design entry point. Do not invent intermediate shades or rename tokens to make a continuous scale.
 
-The [September 9 feedback review](../figma/reviews/2026-09-09-feedback.md) records these repairs. The [publication audit](../figma/audits/2026-09-09-feedback-publication.json) combines the affected review with the unchanged baseline evidence and verifies both the library and existing Community resource against accepted source commit `19d3ac4`.
+The [September 9 feedback review](../figma/reviews/2026-09-09-feedback.md) records these repairs. The [v1.5.0 publication audit](../figma/audits/2026-09-09-v1.5.0.json) carries forward that affected review and the unchanged baseline evidence, records fresh version-label review in both themes, and verifies the library and existing Community resource against accepted source commit `e2bfa46`.
 
 ## Verification
 
@@ -57,4 +57,4 @@ The library is updated when declaring a design-system version. The [Figma releas
 
 The `/designers` page links to the public resource, documents the first-mockup workflow, and explains fonts, root sizing, updates and attribution. Published Figma facts are recorded in `playground/src/lib/figma-library.ts`; update them after auditing a new snapshot. The dashboard previews in `playground/public/images/figma/` were exported from source nodes `158:9` (dark) and `158:30` (light). Their example data is illustrative. The preview controls switch between static exports, independently of the website's own theme and accent.
 
-The designer page is live at https://ui.ai-created.com/designers. The website integration passed 129 unit tests, 100 browser tests (20 configured skips), and six additional production browser checks on 2026-09-04. Two homepage visual baselines were deliberately updated for the Designer entry; two new designer-page baselines were reviewed. The repository changes associated with this work have not been committed or released.
+The designer page is live at https://ui.ai-created.com/designers. The v1.5.0 source acceptance passed 137 unit tests and 108 production browser tests (20 configured skips). The browser gate builds and starts the production app, and the designer navigation requires exactly one correct canonical link. Version metadata, the designer workflow and publication receipts are included in v1.5.0; no visual baselines changed during release preparation.

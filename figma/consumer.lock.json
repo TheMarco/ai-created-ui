@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "source": {
-    "packageVersion": "1.4.0",
+    "packageVersion": "1.5.0",
     "files": {
       "DESIGN-SYSTEM.md": "033d786c39895f6d72241f12b0efe5119e35d6663914319e4be90f024ace76ea",
-      "package.json": "470d8fba96b9100073729075470cc510ba2c0dff1c07d407cdf4ff41298173a4",
+      "package.json": "f65db775e41fe909b3bddf4fba0a8857a25f7b01bf8d07fbca60adf53630b0bc",
       "playground/src/app/globals.css": "1f1e37fa362c23ebf7ed2ec93acf59cdb85ec983b8d30508f53ace8e8e9d0fa0",
       "playground/src/components/design-system/componentDocs.ts": "85e86d2ac60d6a86ba9c475e93c40717c1eba7b487e3910d36ff22a69e356e69",
       "playground/src/components/design-system/principal-spec/index.ts": "f1526c256dd2f96adc6b8c7be64ec25b1f4132856f6e888f30263f1dc2ca2412",
@@ -77,15 +77,15 @@
       "toggle",
       "tooltip"
     ],
-    "fingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48"
+    "fingerprint": "68f7ef6be2b27a01f94fdcfce3ecfa660a4628d4f7822ebf3794a4a9cf146104"
   },
   "audit": {
     "schemaVersion": 1,
     "fileKey": "JArZlZoEHCZh5SdZ9FFOMA",
-    "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
-    "auditedAt": "2026-09-09T04:51:36Z",
-    "reviewer": "Codex, with source acceptance and publication explicitly authorized by Marco",
-    "sourceBasis": "Accepted main commit 19d3ac4f112ff474360d1e2b5f5b0b37f726c555. Package metadata remains 1.4.0; this Community update includes later reviewed source and does not claim parity with the immutable v1.4.0 tag. No new SemVer release or tag was requested.",
+    "sourceFingerprint": "68f7ef6be2b27a01f94fdcfce3ecfa660a4628d4f7822ebf3794a4a9cf146104",
+    "auditedAt": "2026-09-09T05:30:51Z",
+    "reviewer": "Codex, with v1.5.0 release and publication explicitly authorized by Marco",
+    "sourceBasis": "Accepted main commit e2bfa460335b926ac66e7078609dc72062fb6dc4, merged through PR #7 after the Validate design system check passed. Package and lock metadata are 1.5.0. The immutable v1.5.0 tag will be created only after these verified publication receipts are accepted.",
     "reviewedComponentIds": [
       "badge",
       "button",
@@ -118,13 +118,12 @@
       "visualReview": "passed"
     },
     "evidence": [
-      "figma/audits/2026-09-04-baseline.json: carry forward the completed source, token, component, theme, template and visual evidence for unchanged contracts. npm run figma:plan identified only Button.tsx and the construction/details component contracts as accumulated canonical changes.",
-      "figma/reviews/2026-09-09-feedback.md and .json: measured all 168 Button variants, all 42 focus rings, label/icon override retention, temporary primary/secondary instance switching, and all 84 source-bound reference swatches. Real screenshots reviewed Button states and both palette boards in dark/light. The temporary test instance was removed.",
-      "figma/reviews/2026-09-09-publication-checks.json: checked visible Button instances on Error report, Modal, Confirm dialog, Tooltip and all six template pages against parent bounds. Eight desktop Form action rows needed native auto-layout reflow after Button width changed; every corrected row now ends at 798px in its 798px parent.",
-      "Form ready examples 153:6624, 153:6639, 153:6654 and 153:6669 were visually inspected after reflow: desktop/mobile in dark/light. Unaffected template visual evidence is carried forward from the baseline.",
-      "Library publish dialog listed seven changed public assets: Button, Error report, Modal footer, Modal, Modal overlay, Confirm dialog and Tooltip. Published all seven after main source acceptance and form reflow. Fresh getPublishStatusAsync returned CURRENT for all 48 public assets; the full observed inventory is included.",
-      "npm run agent:check and npm run validate passed, including 137 unit tests. npm run test:browser passed 108 tests with 20 configured skips. Four explained Button/designer-hero baselines were visually reviewed. GitHub Quality passed for 19d3ac4: https://github.com/TheMarco/ai-created-ui/actions/runs/34312025011.",
-      "Published through source-file Share > Update Community file > Publish update to resource 1677871391096215128. Figma confirmed And you're live! with the same resource link, 4 likes and 131 users. The reloaded public page showed Your resource is live, Last updated just now, Open in Figma, retained support contact and CC BY 4.0."
+      "figma/audits/2026-09-09-feedback-publication.json: explicitly carry forward the Button/palette repair and affected-composition review, which in turn carries forward the unchanged complete 2026-09-04 baseline. npm run figma:plan against accepted v1.5.0 main identified only package.json version metadata since the last audit; public components, tokens, styles and templates are unchanged from that reviewed snapshot.",
+      "figma/reviews/2026-09-09-v1.5.0.json: real Figma MCP observations of the cover and governance version-label edits. Cover frame 12:10 (1440x900) and Governance frame 166:138 (1440x1934) were visually inspected in dark and light modes, then restored to their original dark mode. Labels 12:11 and 166:163 remain auto-height at 25px and 50px with no clipping. No component IDs or bindings were changed.",
+      "Fresh post-acceptance Figma MCP inventory: all 48 public assets returned CURRENT, with 390 variables, 100 text styles, eight collections and 37 pages. Only documentation labels changed for this version, so no additional component-library publication was pending.",
+      "GitHub PR #7 required Validate design system check passed for 96dfc1a34b71b4ee0bd345ccbde4ca6cfdb769df: https://github.com/TheMarco/ai-created-ui/actions/runs/34314716699. Local npm run agent:check and npm run validate passed, including 137 unit tests; npm run test:browser against the production build passed 108 tests with 20 configured skips. Twenty repeated production navigation checks passed without duplicate canonicals. No visual baselines changed in release preparation.",
+      "Source-file Share > Update Community file > Publish update updated existing resource 1677871391096215128 after source acceptance. Figma confirmed And you're live! with the same resource link, 4 likes and 131 users. The freshly opened public resource showed Your resource is live, Last updated just now, Open in Figma and the retained CC BY 4.0 license.",
+      "The playground lockfile alignment and production browser-gate change have no Figma visual impact. Existing dashboard preview exports are unchanged because their source nodes were not affected by version-label updates."
     ],
     "observed": {
       "componentAssets": [
@@ -605,7 +604,7 @@
       ]
     },
     "limitations": [
-      "This audit combines the prior complete baseline with fresh review of the changed Button/palette scope, affected composition bounds and publication inventory. It is not a new pixel comparison of every unchanged node.",
+      "This release audit combines earlier complete and affected-scope evidence with fresh version-label visual review and publication inventory. It does not claim a new pixel comparison of every unchanged node.",
       "Notice structural authoring improvement remains blocked pending explicit approval. Existing masters are usable; that migration was not attempted.",
       "Code Connect requires an account entitlement not available during the initial build. No Code Connect publication is claimed.",
       "Six legacy effect styles remain available alongside three preferred theme-aware elevation styles.",
@@ -613,27 +612,27 @@
     ],
     "publication": {
       "library": {
-        "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
-        "verifiedAt": "2026-09-09T04:47:34.530Z",
-        "evidence": "Published all seven changed public assets from the source library after accepted main commit 19d3ac4. Fresh getPublishStatusAsync returned CURRENT for all 48 public assets; no subsequent source-node mutations."
+        "sourceFingerprint": "68f7ef6be2b27a01f94fdcfce3ecfa660a4628d4f7822ebf3794a4a9cf146104",
+        "verifiedAt": "2026-09-09T05:29:34Z",
+        "evidence": "After accepted main commit e2bfa46, fresh getPublishStatusAsync returned CURRENT for all 48 assets. The v1.5.0 source plan changes only package version metadata; published components remain identical to the prior verified snapshot. No component publication was pending."
       },
       "community": {
-        "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
-        "verifiedAt": "2026-09-09T04:51:36Z",
-        "evidence": "Source-file Update Community file published to existing resource https://www.figma.com/community/file/1677871391096215128. Figma confirmed And you're live! and the reloaded resource showed Last updated just now and Open in Figma. Existing 4 likes, 131 users, author, support contact and CC BY 4.0 retained. No subsequent source-node mutations."
+        "sourceFingerprint": "68f7ef6be2b27a01f94fdcfce3ecfa660a4628d4f7822ebf3794a4a9cf146104",
+        "verifiedAt": "2026-09-09T05:30:51Z",
+        "evidence": "Published updated v1.5.0 cover and governance labels to existing resource https://www.figma.com/community/file/1677871391096215128. Figma confirmed And you're live! (4 likes, 131 users), and the freshly loaded public page showed Last updated just now and Open in Figma. Existing author, thumbnail and CC BY 4.0 retained. No subsequent source-node mutations."
       }
     }
   },
   "publication": {
     "library": {
-      "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
-      "verifiedAt": "2026-09-09T04:47:34.530Z",
-      "evidence": "Published all seven changed public assets from the source library after accepted main commit 19d3ac4. Fresh getPublishStatusAsync returned CURRENT for all 48 public assets; no subsequent source-node mutations."
+      "sourceFingerprint": "68f7ef6be2b27a01f94fdcfce3ecfa660a4628d4f7822ebf3794a4a9cf146104",
+      "verifiedAt": "2026-09-09T05:29:34Z",
+      "evidence": "After accepted main commit e2bfa46, fresh getPublishStatusAsync returned CURRENT for all 48 assets. The v1.5.0 source plan changes only package version metadata; published components remain identical to the prior verified snapshot. No component publication was pending."
     },
     "community": {
-      "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
-      "verifiedAt": "2026-09-09T04:51:36Z",
-      "evidence": "Source-file Update Community file published to existing resource https://www.figma.com/community/file/1677871391096215128. Figma confirmed And you're live! and the reloaded resource showed Last updated just now and Open in Figma. Existing 4 likes, 131 users, author, support contact and CC BY 4.0 retained. No subsequent source-node mutations."
+      "sourceFingerprint": "68f7ef6be2b27a01f94fdcfce3ecfa660a4628d4f7822ebf3794a4a9cf146104",
+      "verifiedAt": "2026-09-09T05:30:51Z",
+      "evidence": "Published updated v1.5.0 cover and governance labels to existing resource https://www.figma.com/community/file/1677871391096215128. Figma confirmed And you're live! (4 likes, 131 users), and the freshly loaded public page showed Last updated just now and Open in Figma. Existing author, thumbnail and CC BY 4.0 retained. No subsequent source-node mutations."
     }
   }
 }
