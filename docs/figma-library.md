@@ -30,6 +30,12 @@ Figma matches the reviewed playground's **20px root**. The package does not set 
 
 Canonical precedence remains public React source (`src/index.ts`, `src/components/`), `styles/tokens.css`, shared Tailwind preset, reviewed component and principal specifications, then human documentation. Figma is a projection of those contracts. The six compositions follow `templates/agent/manifest.json` and its source templates.
 
+The working Button contract reserves a 1px border in every variant, transparent where no visible boundary is needed. With identical content, changing Variant or State preserves outer dimensions: inline 27px, sm/md 47px, lg/xl 57px, and icon 55px square at the reference root. Focus outlines keep their 3px offset when instances resize.
+
+Reference-palette documentation groups the existing values by family and separates core/feedback colors from the nine accent families. Each swatch shows a shade name and hex value; its layer name and variable binding preserve the exact source token. Swatches use a semantic boundary so near-black and white remain visible in either theme. These sparse source families are for system maintainers; semantic colors remain the product-design entry point. Do not invent intermediate shades or rename tokens to make a continuous scale.
+
+The [September 9 feedback review](../figma/reviews/2026-09-09-feedback.md) records these working-file repairs. It is a scoped review, not a new published library or Community release.
+
 ## Verification
 
 The final Figma scan covered hidden layers as well as visible component and template content. It found no unbound visible solid fills/strokes, generic numbered layer names, missing main-component links or duplicate variant names. Public assets have descriptions. Alias and web code-syntax checks passed. The color comparison audit passed 846 values across both themes and all nine accents.

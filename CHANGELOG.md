@@ -19,6 +19,7 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ### Fixed
 
+- Button variants now reserve the same 1px border, so switching between filled, outlined, ghost, and filter treatments preserves outer dimensions for identical content and size. At the 20px reference root, inline buttons are 27px high, sm/md are 47px, and lg/xl are 57px; the icon target remains 55px square. Previously borderless text buttons grow by 2px in each dimension; outlined buttons retain their dimensions.
 - Checkbox, RadioGroup and Toggle show the documented solid focus outline on their visible indicator or track.
 
 ## [1.4.0] - 2026-09-03

@@ -135,6 +135,7 @@ The primary action primitive, with explicit hierarchy, size, and semantic-button
 - Interaction: Activates by pointer, Enter, and Space; disabled buttons do not activate.
 - Accessibility: Has an accessible name and no axe violations in every variant.
 - Visual: Snapshot every variant, size, disabled state, focus-visible state, and both themes.
+- Visual: Compare rendered outer dimensions across every variant and size with identical content at 16px and 20px roots; hover, focus-visible, and disabled states preserve geometry.
 
 ## Badge (`badge`)
 

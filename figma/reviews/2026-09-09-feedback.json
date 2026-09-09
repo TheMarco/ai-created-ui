@@ -1,0 +1,1017 @@
+{
+  "reviewType": "scoped-feedback-repair",
+  "fileKey": "JArZlZoEHCZh5SdZ9FFOMA",
+  "sourceBaseCommit": "eb5468db31a80243d1533d80db8575e35d530e98",
+  "sourceStatus": "Uncommitted working-tree changes; no new package version or release.",
+  "scope": [
+    "Button outer geometry and focus offsets",
+    "Reference-palette documentation"
+  ],
+  "button": {
+    "verifiedAt": "2026-09-09T04:24:41.586Z",
+    "componentSet": "29:209",
+    "count": 168,
+    "errors": [],
+    "properties": [
+      "Label#29:0",
+      "Show leading icon#29:25",
+      "Show trailing icon#29:50",
+      "Leading icon#29:75",
+      "Trailing icon#29:100",
+      "Variant",
+      "Size",
+      "State"
+    ],
+    "variantIds": [
+      "29:27",
+      "29:35",
+      "29:43",
+      "29:52",
+      "29:60",
+      "29:68",
+      "29:76",
+      "29:85",
+      "29:93",
+      "29:101",
+      "29:109",
+      "29:118",
+      "29:126",
+      "29:134",
+      "29:142",
+      "29:151",
+      "29:159",
+      "29:167",
+      "29:175",
+      "29:184",
+      "29:192",
+      "29:196",
+      "29:200",
+      "29:205",
+      "30:10",
+      "30:18",
+      "30:26",
+      "30:35",
+      "30:43",
+      "30:51",
+      "30:59",
+      "30:68",
+      "30:76",
+      "30:84",
+      "30:92",
+      "30:101",
+      "30:109",
+      "30:117",
+      "30:125",
+      "30:134",
+      "30:142",
+      "30:150",
+      "30:158",
+      "30:167",
+      "30:175",
+      "30:179",
+      "30:183",
+      "30:188",
+      "30:207",
+      "30:215",
+      "30:223",
+      "30:232",
+      "30:240",
+      "30:248",
+      "30:256",
+      "30:265",
+      "30:273",
+      "30:281",
+      "30:289",
+      "30:298",
+      "30:306",
+      "30:314",
+      "30:322",
+      "30:331",
+      "30:339",
+      "30:347",
+      "30:355",
+      "30:364",
+      "30:372",
+      "30:376",
+      "30:380",
+      "30:385",
+      "30:390",
+      "30:398",
+      "30:406",
+      "30:415",
+      "30:423",
+      "30:431",
+      "30:439",
+      "30:448",
+      "30:456",
+      "30:464",
+      "30:472",
+      "30:481",
+      "30:489",
+      "30:497",
+      "30:505",
+      "30:514",
+      "30:522",
+      "30:530",
+      "30:538",
+      "30:547",
+      "30:555",
+      "30:559",
+      "30:563",
+      "30:568",
+      "31:34",
+      "31:42",
+      "31:50",
+      "31:59",
+      "31:67",
+      "31:75",
+      "31:83",
+      "31:92",
+      "31:100",
+      "31:108",
+      "31:116",
+      "31:125",
+      "31:133",
+      "31:141",
+      "31:149",
+      "31:158",
+      "31:166",
+      "31:174",
+      "31:182",
+      "31:191",
+      "31:199",
+      "31:203",
+      "31:207",
+      "31:212",
+      "31:231",
+      "31:239",
+      "31:247",
+      "31:256",
+      "31:264",
+      "31:272",
+      "31:280",
+      "31:289",
+      "31:297",
+      "31:305",
+      "31:313",
+      "31:322",
+      "31:330",
+      "31:338",
+      "31:346",
+      "31:355",
+      "31:363",
+      "31:371",
+      "31:379",
+      "31:388",
+      "31:396",
+      "31:400",
+      "31:404",
+      "31:409",
+      "31:414",
+      "31:422",
+      "31:430",
+      "31:439",
+      "31:447",
+      "31:455",
+      "31:463",
+      "31:472",
+      "31:480",
+      "31:488",
+      "31:496",
+      "31:505",
+      "31:513",
+      "31:521",
+      "31:529",
+      "31:538",
+      "31:546",
+      "31:554",
+      "31:562",
+      "31:571",
+      "31:579",
+      "31:583",
+      "31:587",
+      "31:592"
+    ],
+    "dimensions": {
+      "md": {
+        "width": 167,
+        "height": 47
+      },
+      "inline": {
+        "width": 117,
+        "height": 27
+      },
+      "sm": {
+        "width": 157,
+        "height": 47
+      },
+      "lg": {
+        "width": 177,
+        "height": 57
+      },
+      "xl": {
+        "width": 197,
+        "height": 57
+      },
+      "icon": {
+        "width": 55,
+        "height": 55
+      }
+    },
+    "instances": [
+      {
+        "id": "84:268",
+        "width": 219,
+        "height": 47,
+        "label": "Save changes"
+      },
+      {
+        "id": "105:437",
+        "width": 228,
+        "height": 47,
+        "label": "Publish update"
+      }
+    ],
+    "focusChildren": [
+      {
+        "id": "29:43",
+        "width": 167,
+        "height": 47,
+        "children": [
+          {
+            "id": "29:51",
+            "x": -3,
+            "y": -3,
+            "width": 173.0471954345703,
+            "height": 53.158416748046875
+          }
+        ]
+      },
+      {
+        "id": "29:76",
+        "width": 117,
+        "height": 27,
+        "children": [
+          {
+            "id": "29:84",
+            "x": -3,
+            "y": -3,
+            "width": 123.06694793701172,
+            "height": 33.26226043701172
+          }
+        ]
+      }
+    ]
+  },
+  "buttonInteraction": {
+    "createdNodeIds": [
+      "189:446"
+    ],
+    "removedNodeIds": [
+      "189:446"
+    ],
+    "verifiedAt": "2026-09-09T04:25:56.578Z",
+    "errors": [],
+    "focusRings": 42,
+    "instanceChecks": [
+      {
+        "size": "inline",
+        "filled": [
+          152,
+          27
+        ],
+        "outline": [
+          152,
+          27
+        ]
+      },
+      {
+        "size": "sm",
+        "filled": [
+          192,
+          47
+        ],
+        "outline": [
+          192,
+          47
+        ]
+      },
+      {
+        "size": "md",
+        "filled": [
+          202,
+          47
+        ],
+        "outline": [
+          202,
+          47
+        ]
+      },
+      {
+        "size": "lg",
+        "filled": [
+          212,
+          57
+        ],
+        "outline": [
+          212,
+          57
+        ]
+      },
+      {
+        "size": "xl",
+        "filled": [
+          232,
+          57
+        ],
+        "outline": [
+          232,
+          57
+        ]
+      },
+      {
+        "size": "icon",
+        "filled": [
+          55,
+          55
+        ],
+        "outline": [
+          55,
+          55
+        ]
+      }
+    ],
+    "preservedLabel": "Publish update"
+  },
+  "palette": {
+    "mutatedNodeIds": [
+      "15:2",
+      "185:2"
+    ],
+    "verifiedAt": "2026-09-09T04:24:21.008Z",
+    "errors": [],
+    "swatchCount": 84,
+    "fontFamilies": [
+      "SF Mono",
+      "Instrument Serif",
+      "Space Grotesk"
+    ],
+    "boards": [
+      {
+        "id": "15:2",
+        "name": "Reference palette / Core & feedback",
+        "width": 1440,
+        "height": 1625
+      },
+      {
+        "id": "185:2",
+        "name": "Reference palette / Accent families",
+        "width": 1440,
+        "height": 1805
+      }
+    ],
+    "records": [
+      {
+        "id": "15:8",
+        "token": "--ref-neutral-50",
+        "hex": "#F5F7FA",
+        "variableId": "VariableID:2:6",
+        "labelId": "15:10"
+      },
+      {
+        "id": "15:11",
+        "token": "--ref-neutral-800",
+        "hex": "#1D1D1F",
+        "variableId": "VariableID:2:7",
+        "labelId": "15:13"
+      },
+      {
+        "id": "15:14",
+        "token": "--ref-neutral-850",
+        "hex": "#14161A",
+        "variableId": "VariableID:2:8",
+        "labelId": "15:16"
+      },
+      {
+        "id": "15:17",
+        "token": "--ref-neutral-900",
+        "hex": "#101113",
+        "variableId": "VariableID:2:9",
+        "labelId": "15:19"
+      },
+      {
+        "id": "15:20",
+        "token": "--ref-neutral-950",
+        "hex": "#0A0A0B",
+        "variableId": "VariableID:2:10",
+        "labelId": "15:22"
+      },
+      {
+        "id": "15:99",
+        "token": "--ref-white",
+        "hex": "#FFFFFF",
+        "variableId": "VariableID:2:35",
+        "labelId": "15:101"
+      },
+      {
+        "id": "15:23",
+        "token": "--ref-warm-neutral-50",
+        "hex": "#F7F3EC",
+        "variableId": "VariableID:2:11",
+        "labelId": "15:25"
+      },
+      {
+        "id": "15:27",
+        "token": "--ref-warm-neutral-100",
+        "hex": "#F2EDE6",
+        "variableId": "VariableID:2:12",
+        "labelId": "15:29"
+      },
+      {
+        "id": "15:30",
+        "token": "--ref-warm-neutral-200",
+        "hex": "#EAE4DB",
+        "variableId": "VariableID:2:13",
+        "labelId": "15:32"
+      },
+      {
+        "id": "15:33",
+        "token": "--ref-red-400",
+        "hex": "#FF6B6B",
+        "variableId": "VariableID:2:14",
+        "labelId": "15:35"
+      },
+      {
+        "id": "15:36",
+        "token": "--ref-red-500",
+        "hex": "#FF4B2B",
+        "variableId": "VariableID:2:15",
+        "labelId": "15:38"
+      },
+      {
+        "id": "15:39",
+        "token": "--ref-red-600",
+        "hex": "#F13A1D",
+        "variableId": "VariableID:2:16",
+        "labelId": "15:41"
+      },
+      {
+        "id": "15:42",
+        "token": "--ref-red-700",
+        "hex": "#DE3A1F",
+        "variableId": "VariableID:2:17",
+        "labelId": "15:44"
+      },
+      {
+        "id": "15:46",
+        "token": "--ref-red-750",
+        "hex": "#D41010",
+        "variableId": "VariableID:2:18",
+        "labelId": "15:48"
+      },
+      {
+        "id": "15:49",
+        "token": "--ref-red-800",
+        "hex": "#C92C18",
+        "variableId": "VariableID:2:19",
+        "labelId": "15:51"
+      },
+      {
+        "id": "15:52",
+        "token": "--ref-red-850",
+        "hex": "#C81E1E",
+        "variableId": "VariableID:2:20",
+        "labelId": "15:54"
+      },
+      {
+        "id": "15:55",
+        "token": "--ref-red-900",
+        "hex": "#B80E0E",
+        "variableId": "VariableID:2:21",
+        "labelId": "15:57"
+      },
+      {
+        "id": "15:58",
+        "token": "--ref-danger-400",
+        "hex": "#FF6B6B",
+        "variableId": "VariableID:2:22",
+        "labelId": "15:60"
+      },
+      {
+        "id": "15:61",
+        "token": "--ref-danger-700",
+        "hex": "#B91C1C",
+        "variableId": "VariableID:2:23",
+        "labelId": "15:63"
+      },
+      {
+        "id": "15:65",
+        "token": "--ref-danger-800",
+        "hex": "#9F1239",
+        "variableId": "VariableID:2:24",
+        "labelId": "15:67"
+      },
+      {
+        "id": "15:68",
+        "token": "--ref-danger-900",
+        "hex": "#881337",
+        "variableId": "VariableID:2:25",
+        "labelId": "15:70"
+      },
+      {
+        "id": "15:71",
+        "token": "--ref-green-500",
+        "hex": "#55D39A",
+        "variableId": "VariableID:2:26",
+        "labelId": "15:73"
+      },
+      {
+        "id": "15:74",
+        "token": "--ref-green-700",
+        "hex": "#0F9F6E",
+        "variableId": "VariableID:2:27",
+        "labelId": "15:76"
+      },
+      {
+        "id": "15:77",
+        "token": "--ref-green-800",
+        "hex": "#065F46",
+        "variableId": "VariableID:2:28",
+        "labelId": "15:79"
+      },
+      {
+        "id": "15:80",
+        "token": "--ref-yellow-500",
+        "hex": "#F2B84B",
+        "variableId": "VariableID:2:29",
+        "labelId": "15:82"
+      },
+      {
+        "id": "15:84",
+        "token": "--ref-yellow-700",
+        "hex": "#A86800",
+        "variableId": "VariableID:2:30",
+        "labelId": "15:86"
+      },
+      {
+        "id": "15:87",
+        "token": "--ref-yellow-800",
+        "hex": "#713F12",
+        "variableId": "VariableID:2:31",
+        "labelId": "15:89"
+      },
+      {
+        "id": "15:90",
+        "token": "--ref-blue-500",
+        "hex": "#6BB9FF",
+        "variableId": "VariableID:2:32",
+        "labelId": "15:92"
+      },
+      {
+        "id": "15:93",
+        "token": "--ref-blue-700",
+        "hex": "#1F6FEB",
+        "variableId": "VariableID:2:33",
+        "labelId": "15:95"
+      },
+      {
+        "id": "15:96",
+        "token": "--ref-blue-800",
+        "hex": "#1E40AF",
+        "variableId": "VariableID:2:34",
+        "labelId": "15:98"
+      },
+      {
+        "id": "15:103",
+        "token": "--ref-accent-red-400",
+        "hex": "#FF4B2B",
+        "variableId": "VariableID:2:36",
+        "labelId": "15:105"
+      },
+      {
+        "id": "15:106",
+        "token": "--ref-accent-red-500",
+        "hex": "#F13A1D",
+        "variableId": "VariableID:2:37",
+        "labelId": "15:108"
+      },
+      {
+        "id": "15:109",
+        "token": "--ref-accent-red-700",
+        "hex": "#D41010",
+        "variableId": "VariableID:2:38",
+        "labelId": "15:111"
+      },
+      {
+        "id": "15:112",
+        "token": "--ref-accent-red-750",
+        "hex": "#C81E1E",
+        "variableId": "VariableID:2:39",
+        "labelId": "15:114"
+      },
+      {
+        "id": "15:115",
+        "token": "--ref-accent-red-800",
+        "hex": "#C81010",
+        "variableId": "VariableID:2:40",
+        "labelId": "15:117"
+      },
+      {
+        "id": "15:118",
+        "token": "--ref-accent-red-900",
+        "hex": "#B80E0E",
+        "variableId": "VariableID:2:41",
+        "labelId": "15:120"
+      },
+      {
+        "id": "15:122",
+        "token": "--ref-accent-green-400",
+        "hex": "#03A32C",
+        "variableId": "VariableID:2:42",
+        "labelId": "15:124"
+      },
+      {
+        "id": "15:125",
+        "token": "--ref-accent-green-500",
+        "hex": "#029527",
+        "variableId": "VariableID:2:43",
+        "labelId": "15:127"
+      },
+      {
+        "id": "15:128",
+        "token": "--ref-accent-green-700",
+        "hex": "#027B1F",
+        "variableId": "VariableID:2:44",
+        "labelId": "15:130"
+      },
+      {
+        "id": "15:131",
+        "token": "--ref-accent-green-750",
+        "hex": "#01761D",
+        "variableId": "VariableID:2:45",
+        "labelId": "15:133"
+      },
+      {
+        "id": "15:134",
+        "token": "--ref-accent-green-800",
+        "hex": "#01741C",
+        "variableId": "VariableID:2:46",
+        "labelId": "15:136"
+      },
+      {
+        "id": "15:137",
+        "token": "--ref-accent-green-900",
+        "hex": "#016819",
+        "variableId": "VariableID:2:47",
+        "labelId": "15:139"
+      },
+      {
+        "id": "15:141",
+        "token": "--ref-accent-blue-400",
+        "hex": "#268CFE",
+        "variableId": "VariableID:2:48",
+        "labelId": "15:143"
+      },
+      {
+        "id": "15:144",
+        "token": "--ref-accent-blue-500",
+        "hex": "#027FF5",
+        "variableId": "VariableID:2:49",
+        "labelId": "15:146"
+      },
+      {
+        "id": "15:147",
+        "token": "--ref-accent-blue-700",
+        "hex": "#0269CC",
+        "variableId": "VariableID:2:50",
+        "labelId": "15:149"
+      },
+      {
+        "id": "15:150",
+        "token": "--ref-accent-blue-750",
+        "hex": "#0264C2",
+        "variableId": "VariableID:2:51",
+        "labelId": "15:152"
+      },
+      {
+        "id": "15:153",
+        "token": "--ref-accent-blue-800",
+        "hex": "#0162BF",
+        "variableId": "VariableID:2:52",
+        "labelId": "15:155"
+      },
+      {
+        "id": "15:156",
+        "token": "--ref-accent-blue-900",
+        "hex": "#0158AD",
+        "variableId": "VariableID:2:53",
+        "labelId": "15:158"
+      },
+      {
+        "id": "15:160",
+        "token": "--ref-accent-orange-400",
+        "hex": "#D97001",
+        "variableId": "VariableID:2:54",
+        "labelId": "15:162"
+      },
+      {
+        "id": "15:163",
+        "token": "--ref-accent-orange-500",
+        "hex": "#C86701",
+        "variableId": "VariableID:2:55",
+        "labelId": "15:165"
+      },
+      {
+        "id": "15:166",
+        "token": "--ref-accent-orange-700",
+        "hex": "#A55401",
+        "variableId": "VariableID:2:56",
+        "labelId": "15:168"
+      },
+      {
+        "id": "15:169",
+        "token": "--ref-accent-orange-750",
+        "hex": "#9E5000",
+        "variableId": "VariableID:2:57",
+        "labelId": "15:171"
+      },
+      {
+        "id": "15:172",
+        "token": "--ref-accent-orange-800",
+        "hex": "#9B4E01",
+        "variableId": "VariableID:2:58",
+        "labelId": "15:174"
+      },
+      {
+        "id": "15:175",
+        "token": "--ref-accent-orange-900",
+        "hex": "#8C4601",
+        "variableId": "VariableID:2:59",
+        "labelId": "15:177"
+      },
+      {
+        "id": "15:179",
+        "token": "--ref-accent-yellow-400",
+        "hex": "#AC8802",
+        "variableId": "VariableID:2:60",
+        "labelId": "15:181"
+      },
+      {
+        "id": "15:182",
+        "token": "--ref-accent-yellow-500",
+        "hex": "#9E7D01",
+        "variableId": "VariableID:2:61",
+        "labelId": "15:184"
+      },
+      {
+        "id": "15:185",
+        "token": "--ref-accent-yellow-700",
+        "hex": "#826701",
+        "variableId": "VariableID:2:62",
+        "labelId": "15:187"
+      },
+      {
+        "id": "15:188",
+        "token": "--ref-accent-yellow-750",
+        "hex": "#7C6202",
+        "variableId": "VariableID:2:63",
+        "labelId": "15:190"
+      },
+      {
+        "id": "15:191",
+        "token": "--ref-accent-yellow-800",
+        "hex": "#7A6001",
+        "variableId": "VariableID:2:64",
+        "labelId": "15:193"
+      },
+      {
+        "id": "15:194",
+        "token": "--ref-accent-yellow-900",
+        "hex": "#6E5600",
+        "variableId": "VariableID:2:65",
+        "labelId": "15:196"
+      },
+      {
+        "id": "15:198",
+        "token": "--ref-accent-purple-400",
+        "hex": "#A96CFF",
+        "variableId": "VariableID:2:66",
+        "labelId": "15:200"
+      },
+      {
+        "id": "15:201",
+        "token": "--ref-accent-purple-500",
+        "hex": "#9D5FF1",
+        "variableId": "VariableID:2:67",
+        "labelId": "15:203"
+      },
+      {
+        "id": "15:204",
+        "token": "--ref-accent-purple-700",
+        "hex": "#8746D6",
+        "variableId": "VariableID:2:68",
+        "labelId": "15:206"
+      },
+      {
+        "id": "15:207",
+        "token": "--ref-accent-purple-750",
+        "hex": "#8240D0",
+        "variableId": "VariableID:2:69",
+        "labelId": "15:209"
+      },
+      {
+        "id": "15:210",
+        "token": "--ref-accent-purple-800",
+        "hex": "#803ECE",
+        "variableId": "VariableID:2:70",
+        "labelId": "15:212"
+      },
+      {
+        "id": "15:213",
+        "token": "--ref-accent-purple-900",
+        "hex": "#7632C2",
+        "variableId": "VariableID:2:71",
+        "labelId": "15:215"
+      },
+      {
+        "id": "15:217",
+        "token": "--ref-accent-teal-400",
+        "hex": "#059E91",
+        "variableId": "VariableID:2:72",
+        "labelId": "15:219"
+      },
+      {
+        "id": "15:220",
+        "token": "--ref-accent-teal-500",
+        "hex": "#059085",
+        "variableId": "VariableID:2:73",
+        "labelId": "15:222"
+      },
+      {
+        "id": "15:223",
+        "token": "--ref-accent-teal-700",
+        "hex": "#02776E",
+        "variableId": "VariableID:2:74",
+        "labelId": "15:225"
+      },
+      {
+        "id": "15:226",
+        "token": "--ref-accent-teal-750",
+        "hex": "#027268",
+        "variableId": "VariableID:2:75",
+        "labelId": "15:228"
+      },
+      {
+        "id": "15:229",
+        "token": "--ref-accent-teal-800",
+        "hex": "#017067",
+        "variableId": "VariableID:2:76",
+        "labelId": "15:231"
+      },
+      {
+        "id": "15:232",
+        "token": "--ref-accent-teal-900",
+        "hex": "#00655C",
+        "variableId": "VariableID:2:77",
+        "labelId": "15:234"
+      },
+      {
+        "id": "15:236",
+        "token": "--ref-accent-pink-400",
+        "hex": "#F14E9C",
+        "variableId": "VariableID:2:78",
+        "labelId": "15:238"
+      },
+      {
+        "id": "15:239",
+        "token": "--ref-accent-pink-500",
+        "hex": "#E23F8F",
+        "variableId": "VariableID:2:79",
+        "labelId": "15:241"
+      },
+      {
+        "id": "15:242",
+        "token": "--ref-accent-pink-700",
+        "hex": "#C71F78",
+        "variableId": "VariableID:2:80",
+        "labelId": "15:244"
+      },
+      {
+        "id": "15:245",
+        "token": "--ref-accent-pink-750",
+        "hex": "#C01473",
+        "variableId": "VariableID:2:81",
+        "labelId": "15:247"
+      },
+      {
+        "id": "15:248",
+        "token": "--ref-accent-pink-800",
+        "hex": "#BE0F71",
+        "variableId": "VariableID:2:82",
+        "labelId": "15:250"
+      },
+      {
+        "id": "15:251",
+        "token": "--ref-accent-pink-900",
+        "hex": "#AE0166",
+        "variableId": "VariableID:2:83",
+        "labelId": "15:253"
+      },
+      {
+        "id": "15:255",
+        "token": "--ref-accent-magenta-400",
+        "hex": "#D25CDA",
+        "variableId": "VariableID:2:84",
+        "labelId": "15:257"
+      },
+      {
+        "id": "15:258",
+        "token": "--ref-accent-magenta-500",
+        "hex": "#C44FCD",
+        "variableId": "VariableID:2:85",
+        "labelId": "15:260"
+      },
+      {
+        "id": "15:261",
+        "token": "--ref-accent-magenta-700",
+        "hex": "#AB35B3",
+        "variableId": "VariableID:2:86",
+        "labelId": "15:263"
+      },
+      {
+        "id": "15:264",
+        "token": "--ref-accent-magenta-750",
+        "hex": "#A52EAE",
+        "variableId": "VariableID:2:87",
+        "labelId": "15:266"
+      },
+      {
+        "id": "15:267",
+        "token": "--ref-accent-magenta-800",
+        "hex": "#A32BAC",
+        "variableId": "VariableID:2:88",
+        "labelId": "15:269"
+      },
+      {
+        "id": "15:270",
+        "token": "--ref-accent-magenta-900",
+        "hex": "#971CA0",
+        "variableId": "VariableID:2:89",
+        "labelId": "15:272"
+      }
+    ]
+  },
+  "screenshotsReviewed": [
+    {
+      "nodeId": "104:87",
+      "theme": "dark",
+      "description": "Button default, hover, focus-visible and disabled connected instances"
+    },
+    {
+      "nodeId": "104:596",
+      "theme": "light",
+      "description": "Button default, hover, focus-visible and disabled connected instances"
+    },
+    {
+      "nodeId": "15:2",
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "description": "Core and feedback reference colors"
+    },
+    {
+      "nodeId": "185:2",
+      "themes": [
+        "dark",
+        "light"
+      ],
+      "description": "Nine accent families"
+    }
+  ],
+  "validation": {
+    "agentCheck": "passed",
+    "validate": {
+      "status": "passed",
+      "unitTests": 137,
+      "testFiles": 27
+    },
+    "browser": {
+      "status": "passed",
+      "passed": 108,
+      "configuredSkips": 20
+    },
+    "baselineChanges": [
+      "buttons-links-dark.png",
+      "buttons-links-light.png",
+      "designers-hero-dark.png",
+      "designers-hero-light.png"
+    ],
+    "baselineRationale": "Reviewed 2px growth of formerly borderless text buttons and the resulting 2px specimen/hero-height increase."
+  },
+  "publication": {
+    "library": "not published",
+    "community": "not updated",
+    "releaseAudit": "Existing consumer lock intentionally unchanged; this is not a full release audit."
+  }
+}

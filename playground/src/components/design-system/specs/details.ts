@@ -38,10 +38,10 @@ export const componentSpecDetails = {
         { property: 'Content gap', value: '10px' },
         { property: 'Horizontal padding', value: '20 / 25 / 30 / 40px', notes: 'sm / md / lg / xl.' },
         { property: 'Vertical padding', value: '10 / 10 / 15 / 15px', notes: 'sm / md / lg / xl.' },
-        { property: 'Text button height', value: 'Content-derived: inline 25/27px, sm/md 45/47px, lg/xl 55/57px including the 1px border where present', notes: 'Measurements use the 20px root; text sizes and line heights are content-driven.' },
+        { property: 'Text button height', value: 'Content-derived: inline 27px, sm/md 47px, lg/xl 57px including the shared 1px border', notes: 'Measurements use the 20px root; identical content and size have identical outer dimensions across every variant.' },
         { property: 'Icon-only target', value: '55 × 55px' },
       ],
-      rules: ['Keep labels on one line.', 'Use the icon size for square icon-only controls; do not force an icon into text-button spacing.', 'Primary and destructive use distinct semantic action tokens; specific copy still communicates the consequence.'],
+      rules: ['Keep labels on one line.', 'Reserve a 1px border in every variant, transparent where no visible boundary is needed; changing variant or interaction state must not change the outer dimensions for identical content and size.', 'Use the icon size for square icon-only controls; do not force an icon into text-button spacing.', 'Primary and destructive use distinct semantic action tokens; specific copy still communicates the consequence.'],
       responsiveBehavior: ['Use fullWidth only when the surrounding layout calls for a full-row action.', 'Stack competing actions at narrow widths in the consuming layout.'],
     },
     designTokens: [
@@ -72,7 +72,7 @@ export const componentSpecDetails = {
       recipes: [{ name: 'Submit action', description: 'Use a native submit type inside a form.', code: '<Button type="submit">Save changes</Button>' }],
     },
     guidance: { dos: ['Lead labels with a specific verb such as Save, Create, or Delete.', 'Use one clear primary action per decision area.'], donts: ['Do not use a button for navigation; use a link.', 'Do not rely on color alone to distinguish destructive meaning.'] },
-    testing: testing(['Defaults to primary, md, and type button.', 'Forwards ref, className, disabled, and native attributes.'], ['Activates by pointer, Enter, and Space; disabled buttons do not activate.'], ['Has an accessible name and no axe violations in every variant.'], ['Snapshot every variant, size, disabled state, focus-visible state, and both themes.']),
+    testing: testing(['Defaults to primary, md, and type button.', 'Forwards ref, className, disabled, and native attributes.'], ['Activates by pointer, Enter, and Space; disabled buttons do not activate.'], ['Has an accessible name and no axe violations in every variant.'], ['Snapshot every variant, size, disabled state, focus-visible state, and both themes.', 'Compare rendered outer dimensions across every variant and size with identical content at 16px and 20px roots; hover, focus-visible, and disabled states preserve geometry.']),
     relatedComponents: ['confirm-dialog', 'tooltip', 'toggle'],
     controls: {
       variant: { type: 'select', label: 'Variant', defaultValue: 'primary', options: ['primary', 'secondary', 'destructive', 'ghost', 'filter', 'filter-active', 'icon'] },

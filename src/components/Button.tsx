@@ -24,11 +24,11 @@ export interface ButtonStyleOptions {
 const variantClasses: Record<ButtonVariant, string> = {
   primary: 'bg-action-primary text-on-action hover:bg-action-primary-hover',
   destructive: 'bg-action-destructive text-on-action hover:bg-action-destructive-hover',
-  secondary: 'border border-control-border bg-transparent text-text2 hover:text-text hover:border-control-border-strong',
+  secondary: 'border-control-border bg-transparent text-text2 hover:text-text hover:border-control-border-strong',
   ghost: 'text-text2 hover:text-text',
-  filter: 'border border-control-border bg-surface text-text2 hover:text-text hover:border-control-border-strong',
-  'filter-active': 'border border-accent bg-surface2 text-text',
-  icon: 'border border-transparent text-text2 hover:text-text hover:border-control-border-strong',
+  filter: 'border-control-border bg-surface text-text2 hover:text-text hover:border-control-border-strong',
+  'filter-active': 'border-accent bg-surface2 text-text',
+  icon: 'text-text2 hover:text-text hover:border-control-border-strong',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -47,7 +47,8 @@ export function buttonStyles({
   className,
 }: ButtonStyleOptions = {}) {
   return cn(
-    'inline-flex items-center justify-center gap-2 rounded-md font-medium whitespace-nowrap transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50',
+    // Reserve the same border in every variant so changing hierarchy cannot resize the action.
+    'inline-flex items-center justify-center gap-2 rounded-md border border-transparent font-medium whitespace-nowrap transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50',
     variantClasses[variant],
     sizeClasses[size],
     fullWidth && 'w-full',
