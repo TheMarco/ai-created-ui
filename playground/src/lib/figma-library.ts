@@ -1,7 +1,7 @@
-/** Published Figma snapshot, audited on 2026-09-04. Update after a library audit. */
+/** Published Figma snapshot, audited on 2026-09-09 for v1.5.0. Update after a library audit. */
 export const figmaLibrary = {
   communityUrl: 'https://www.figma.com/community/file/1677871391096215128',
-  auditedAt: '2026-09-04',
+  auditedAt: '2026-09-09',
   componentAssets: 48,
   variables: 390,
   textStyles: 100,

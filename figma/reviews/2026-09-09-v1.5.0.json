@@ -1,0 +1,84 @@
+{
+  "sourceCommit": "e2bfa460335b926ac66e7078609dc72062fb6dc4",
+  "sourceFingerprint": "68f7ef6be2b27a01f94fdcfce3ecfa660a4628d4f7822ebf3794a4a9cf146104",
+  "labels": [
+    {
+      "id": "12:11",
+      "text": "AI-CREATED / DESIGN SYSTEM / 1.5.0",
+      "width": 1280,
+      "height": 25
+    },
+    {
+      "id": "166:163",
+      "text": "Design companion to @ai-created/ui 1.5.0. Use the matching immutable GitHub release and published Community snapshot. Existing Community duplicates remain independent.",
+      "width": 970,
+      "height": 50
+    }
+  ],
+  "steps": [
+    {
+      "step": "v150FigmaLabel0",
+      "observations": [
+        {
+          "mutatedNodeIds": [
+            "12:11"
+          ],
+          "before": "AI-CREATED / DESIGN SYSTEM / 1.4.0",
+          "after": "AI-CREATED / DESIGN SYSTEM / 1.5.0",
+          "geometry": {
+            "width": 1280,
+            "height": 25,
+            "textAutoResize": "HEIGHT"
+          },
+          "frame": "12:10"
+        }
+      ]
+    },
+    {
+      "step": "v150FigmaLabel1",
+      "observations": [
+        {
+          "mutatedNodeIds": [
+            "166:163"
+          ],
+          "before": "Native library built from the 1.4.0 package contracts with parity fixes in the working tree. Final QA and publication status must be checked before declaring a released version.",
+          "after": "Design companion to @ai-created/ui 1.5.0. Use the matching immutable GitHub release and published Community snapshot. Existing Community duplicates remain independent.",
+          "geometry": {
+            "width": 970,
+            "height": 50,
+            "textAutoResize": "HEIGHT"
+          },
+          "frame": "166:138"
+        }
+      ]
+    },
+    {
+      "step": "v150LightReview0",
+      "observations": [
+        {
+          "mutatedNodeIds": [
+            "12:10"
+          ],
+          "reviewedMode": "light",
+          "restoredMode": "2:10",
+          "width": 1440,
+          "height": 900
+        }
+      ]
+    },
+    {
+      "step": "v150LightReview1",
+      "observations": [
+        {
+          "mutatedNodeIds": [
+            "166:138"
+          ],
+          "reviewedMode": "light",
+          "restoredMode": "2:10",
+          "width": 1440,
+          "height": 1934
+        }
+      ]
+    }
+  ]
+}
