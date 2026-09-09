@@ -10,14 +10,14 @@
       "playground/src/components/design-system/principal-spec/index.ts": "f1526c256dd2f96adc6b8c7be64ec25b1f4132856f6e888f30263f1dc2ca2412",
       "playground/src/components/design-system/principal-spec/registry.ts": "6505220f3175406b2353bcf15df7db514688478ffbfc1c3b476fbc41e153e634",
       "playground/src/components/design-system/principal-spec/types.ts": "69c212f4fbb37b868154cd3eefab3296d58490906406da9e0cad80fa63d7c4d1",
-      "playground/src/components/design-system/specs/construction.ts": "0addc54969ce7747119e9852eea1b931c8148d650e5be3be0bd5797e4938a4bb",
-      "playground/src/components/design-system/specs/details.ts": "7a64b2406f538271332931e0c28d79efe5159b46cb0060778681c9f22a038e60",
+      "playground/src/components/design-system/specs/construction.ts": "baad3273cf4bfec1804e544174569b3f0377dee591ee7af56bc7e1410d338494",
+      "playground/src/components/design-system/specs/details.ts": "49e41d6cfb4ebd6522c5534df018df54ddd4400908bb6a10a760ee0cc88f9233",
       "playground/src/components/design-system/specs/index.ts": "30de858f668b38d335f8a0f2179da25aeac377b61dd4ff2cf2f38e938d667a87",
       "playground/src/components/design-system/specs/registry.ts": "f9beb7850568c59ecb4e4874ebefe87b4bbd42b91379a27aa03850e34e04a1fd",
       "playground/src/components/design-system/specs/types.ts": "ec0808e6a3c498d0a0dbfd65ef8104043519916f413347904a2064e5f7633052",
       "playground/tailwind.config.js": "8792b5e1ea8cd219e2d90017b4c10ec8b5ff2dcf4bd1abcabc203e0fd71a858a",
       "src/components/Badge.tsx": "b079ed646cbcb89e99467cc6eaab7eb755911cffb9681dd4601105c288dbdb95",
-      "src/components/Button.tsx": "b08ec035946dafa1a764a41461dc781d1b9ad4d268ad60dc1f58153c5e0126d5",
+      "src/components/Button.tsx": "e1310cd83214d65257a83f0ecca60dab91a868950b46a62d6a994fbb16746873",
       "src/components/Checkbox.tsx": "3c2ac05c98d4a856cc3e7c09c84c501049d03b18bea82526485bcb7403ab5529",
       "src/components/ConfirmDialog.tsx": "df47efef3441dfa4cccf2bc0de3ef5d9c494664121a7d924c8f9bfb481af9be0",
       "src/components/Dialog.tsx": "3652b779bea01f9195216f188dde834a9bbf7cfb536c1f997780add38597de82",
@@ -77,15 +77,15 @@
       "toggle",
       "tooltip"
     ],
-    "fingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101"
+    "fingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48"
   },
   "audit": {
     "schemaVersion": 1,
     "fileKey": "JArZlZoEHCZh5SdZ9FFOMA",
-    "sourceFingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101",
-    "auditedAt": "2026-09-05T01:29:26.951Z",
-    "reviewer": "Codex, with Marco reviewing and publishing the Community resource",
-    "sourceBasis": "Initial adoption of the already audited library. Content fingerprint covers current reviewed working-tree source beyond v1.4.0; this does not claim the immutable v1.4.0 tag contains those changes.",
+    "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
+    "auditedAt": "2026-09-09T04:51:36Z",
+    "reviewer": "Codex, with source acceptance and publication explicitly authorized by Marco",
+    "sourceBasis": "Accepted main commit 19d3ac4f112ff474360d1e2b5f5b0b37f726c555. Package metadata remains 1.4.0; this Community update includes later reviewed source and does not claim parity with the immutable v1.4.0 tag. No new SemVer release or tag was requested.",
     "reviewedComponentIds": [
       "badge",
       "button",
@@ -118,12 +118,13 @@
       "visualReview": "passed"
     },
     "evidence": [
-      "docs/figma-library.md#verification: completed source-to-Figma parity, typography, geometry, bindings, authoring, and template audits from the original build.",
-      "https://www.figma.com/design/JArZlZoEHCZh5SdZ9FFOMA/AI-Created-UI?node-id=174-2: QA and coverage page contains the original completed visual and structural review.",
-      "Fresh read-only Figma MCP inspection confirmed all 48 known public asset IDs exist and report CURRENT, 390 variables, 100 text styles, Semantic dark/light modes, all 9 accents, and 37 named pages. Full observed inventory is included in this receipt.",
-      "playground/public/images/figma/dashboard-dark.png and dashboard-light.png: actual Figma exports visually inspected in both themes during website integration.",
-      "New website navigation, tablet-header adjustments and distribution documentation do not change the Figma component or template contract. Source UI focus and template changes were already included in the prior Figma audit. No new Figma source mutations were made for this baseline registration.",
-      "Community resource https://www.figma.com/community/file/1677871391096215128 was published by Marco and inspected live with Open in Figma and CC BY 4.0. Existing Community copies remain independent."
+      "figma/audits/2026-09-04-baseline.json: carry forward the completed source, token, component, theme, template and visual evidence for unchanged contracts. npm run figma:plan identified only Button.tsx and the construction/details component contracts as accumulated canonical changes.",
+      "figma/reviews/2026-09-09-feedback.md and .json: measured all 168 Button variants, all 42 focus rings, label/icon override retention, temporary primary/secondary instance switching, and all 84 source-bound reference swatches. Real screenshots reviewed Button states and both palette boards in dark/light. The temporary test instance was removed.",
+      "figma/reviews/2026-09-09-publication-checks.json: checked visible Button instances on Error report, Modal, Confirm dialog, Tooltip and all six template pages against parent bounds. Eight desktop Form action rows needed native auto-layout reflow after Button width changed; every corrected row now ends at 798px in its 798px parent.",
+      "Form ready examples 153:6624, 153:6639, 153:6654 and 153:6669 were visually inspected after reflow: desktop/mobile in dark/light. Unaffected template visual evidence is carried forward from the baseline.",
+      "Library publish dialog listed seven changed public assets: Button, Error report, Modal footer, Modal, Modal overlay, Confirm dialog and Tooltip. Published all seven after main source acceptance and form reflow. Fresh getPublishStatusAsync returned CURRENT for all 48 public assets; the full observed inventory is included.",
+      "npm run agent:check and npm run validate passed, including 137 unit tests. npm run test:browser passed 108 tests with 20 configured skips. Four explained Button/designer-hero baselines were visually reviewed. GitHub Quality passed for 19d3ac4: https://github.com/TheMarco/ai-created-ui/actions/runs/34312025011.",
+      "Published through source-file Share > Update Community file > Publish update to resource 1677871391096215128. Figma confirmed And you're live! with the same resource link, 4 likes and 131 users. The reloaded public page showed Your resource is live, Last updated just now, Open in Figma, retained support contact and CC BY 4.0."
     ],
     "observed": {
       "componentAssets": [
@@ -604,34 +605,35 @@
       ]
     },
     "limitations": [
-      "This receipt carries forward the completed full audit and adds a fresh inventory/publication inspection. It is not a new pixel comparison of every node.",
-      "Notice structural authoring improvement remains blocked pending explicit approval. Existing masters are usable; do not retry that migration from background maintenance.",
+      "This audit combines the prior complete baseline with fresh review of the changed Button/palette scope, affected composition bounds and publication inventory. It is not a new pixel comparison of every unchanged node.",
+      "Notice structural authoring improvement remains blocked pending explicit approval. Existing masters are usable; that migration was not attempted.",
       "Code Connect requires an account entitlement not available during the initial build. No Code Connect publication is claimed.",
-      "Six legacy effect styles remain available alongside three preferred theme-aware elevation styles."
+      "Six legacy effect styles remain available alongside three preferred theme-aware elevation styles.",
+      "Existing Community duplicates remain independent and do not receive this update automatically."
     ],
     "publication": {
       "library": {
-        "sourceFingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101",
-        "verifiedAt": "2026-09-05T01:29:26.951Z",
-        "evidence": "Fresh getPublishStatusAsync returned CURRENT for all 48 public assets."
+        "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
+        "verifiedAt": "2026-09-09T04:47:34.530Z",
+        "evidence": "Published all seven changed public assets from the source library after accepted main commit 19d3ac4. Fresh getPublishStatusAsync returned CURRENT for all 48 public assets; no subsequent source-node mutations."
       },
       "community": {
-        "sourceFingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101",
-        "verifiedAt": "2026-09-05T01:29:26.951Z",
-        "evidence": "User published resource 1677871391096215128; live resource and Open in Figma action inspected. No subsequent Figma mutations."
+        "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
+        "verifiedAt": "2026-09-09T04:51:36Z",
+        "evidence": "Source-file Update Community file published to existing resource https://www.figma.com/community/file/1677871391096215128. Figma confirmed And you're live! and the reloaded resource showed Last updated just now and Open in Figma. Existing 4 likes, 131 users, author, support contact and CC BY 4.0 retained. No subsequent source-node mutations."
       }
     }
   },
   "publication": {
     "library": {
-      "sourceFingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101",
-      "verifiedAt": "2026-09-05T01:29:26.951Z",
-      "evidence": "Fresh getPublishStatusAsync returned CURRENT for all 48 public assets."
+      "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
+      "verifiedAt": "2026-09-09T04:47:34.530Z",
+      "evidence": "Published all seven changed public assets from the source library after accepted main commit 19d3ac4. Fresh getPublishStatusAsync returned CURRENT for all 48 public assets; no subsequent source-node mutations."
     },
     "community": {
-      "sourceFingerprint": "a48c650fe3b824fcffec5f3def20f8f2cc6b59c47bd733c194e9baab30c48101",
-      "verifiedAt": "2026-09-05T01:29:26.951Z",
-      "evidence": "User published resource 1677871391096215128; live resource and Open in Figma action inspected. No subsequent Figma mutations."
+      "sourceFingerprint": "670cc0d833808e319970bc609eefca27ccc158b838c443d7f0bca9e4eaa66d48",
+      "verifiedAt": "2026-09-09T04:51:36Z",
+      "evidence": "Source-file Update Community file published to existing resource https://www.figma.com/community/file/1677871391096215128. Figma confirmed And you're live! and the reloaded resource showed Last updated just now and Open in Figma. Existing 4 likes, 131 users, author, support contact and CC BY 4.0 retained. No subsequent source-node mutations."
     }
   }
 }

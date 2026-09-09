@@ -1,0 +1,464 @@
+{
+  "checkedAt": "2026-09-09T04:47:34.530Z",
+  "dependentComponents": [
+    {
+      "page": "24 · Error report",
+      "buttonInstances": 16,
+      "overflow": [],
+      "frames": [
+        {
+          "id": "92:3",
+          "name": "Error report · Guide",
+          "width": 1440,
+          "height": 883
+        },
+        {
+          "id": "107:184",
+          "name": "Error report · dark / States",
+          "width": 1000,
+          "height": 2001
+        },
+        {
+          "id": "107:420",
+          "name": "Error report · light / States",
+          "width": 1000,
+          "height": 2001
+        },
+        {
+          "id": "108:418",
+          "name": "Error report · Content and resizing checks",
+          "width": 720,
+          "height": 920
+        }
+      ]
+    },
+    {
+      "page": "26 · Modal",
+      "buttonInstances": 50,
+      "overflow": [],
+      "frames": [
+        {
+          "id": "121:3",
+          "name": "Modal · Guide",
+          "width": 1440,
+          "height": 475
+        },
+        {
+          "id": "124:328",
+          "name": "Modal · dark examples",
+          "width": 1440,
+          "height": 2243
+        },
+        {
+          "id": "124:597",
+          "name": "Modal · light examples",
+          "width": 1440,
+          "height": 2243
+        }
+      ]
+    },
+    {
+      "page": "27 · Confirm dialog",
+      "buttonInstances": 42,
+      "overflow": [],
+      "frames": [
+        {
+          "id": "126:69",
+          "name": "Confirm dialog · Guide",
+          "width": 1440,
+          "height": 475
+        },
+        {
+          "id": "127:117",
+          "name": "Confirm dialog · dark examples",
+          "width": 1440,
+          "height": 1195
+        },
+        {
+          "id": "127:405",
+          "name": "Confirm dialog · light examples",
+          "width": 1440,
+          "height": 1195
+        }
+      ]
+    },
+    {
+      "page": "28 · Tooltip",
+      "buttonInstances": 15,
+      "overflow": [],
+      "frames": [
+        {
+          "id": "129:28",
+          "name": "Tooltip · Guide",
+          "width": 1440,
+          "height": 443
+        },
+        {
+          "id": "130:20",
+          "name": "Tooltip · dark examples",
+          "width": 1440,
+          "height": 1503
+        },
+        {
+          "id": "130:99",
+          "name": "Tooltip · light examples",
+          "width": 1440,
+          "height": 1503
+        }
+      ]
+    }
+  ],
+  "templatesBeforeReflow": [
+    {
+      "page": "42 · Template — Form",
+      "buttonInstances": 49,
+      "overflow": [
+        {
+          "id": "I153:6633;33:29;153:6749",
+          "parent": "I153:6633;33:29;153:6731",
+          "x": 633,
+          "y": 31,
+          "width": 167,
+          "height": 47,
+          "parentWidth": 798,
+          "parentHeight": 78
+        },
+        {
+          "id": "I153:6648;33:29;153:6815",
+          "parent": "I153:6648;33:29;153:6797",
+          "x": 633,
+          "y": 31,
+          "width": 167,
+          "height": 47,
+          "parentWidth": 798,
+          "parentHeight": 78
+        },
+        {
+          "id": "I155:5553;33:29;155:5562",
+          "parent": "I155:5553;33:29;155:5560",
+          "x": 633,
+          "y": 31,
+          "width": 167,
+          "height": 47,
+          "parentWidth": 798,
+          "parentHeight": 78
+        },
+        {
+          "id": "I155:5638;33:29;155:5647",
+          "parent": "I155:5638;33:29;155:5645",
+          "x": 633,
+          "y": 31,
+          "width": 167,
+          "height": 47,
+          "parentWidth": 798,
+          "parentHeight": 78
+        },
+        {
+          "id": "I155:5887;33:29;155:5896",
+          "parent": "I155:5887;33:29;155:5894",
+          "x": 633,
+          "y": 31,
+          "width": 167,
+          "height": 47,
+          "parentWidth": 798,
+          "parentHeight": 78
+        },
+        {
+          "id": "I155:5992;33:29;155:6001",
+          "parent": "I155:5992;33:29;155:5999",
+          "x": 633,
+          "y": 31,
+          "width": 167,
+          "height": 47,
+          "parentWidth": 798,
+          "parentHeight": 78
+        },
+        {
+          "id": "I155:6307;33:29;155:6316",
+          "parent": "I155:6307;33:29;155:6314",
+          "x": 633,
+          "y": 31,
+          "width": 167,
+          "height": 47,
+          "parentWidth": 798,
+          "parentHeight": 78
+        },
+        {
+          "id": "I155:6427;33:29;155:6436",
+          "parent": "I155:6427;33:29;155:6434",
+          "x": 633,
+          "y": 31,
+          "width": 167,
+          "height": 47,
+          "parentWidth": 798,
+          "parentHeight": 78
+        }
+      ],
+      "frames": [
+        {
+          "id": "153:6618",
+          "name": "Form / Designer guide",
+          "width": 1440,
+          "height": 475
+        },
+        {
+          "id": "153:6624",
+          "name": "Form / ready / desktop / dark",
+          "width": 1440,
+          "height": 1190
+        },
+        {
+          "id": "153:6639",
+          "name": "Form / ready / desktop / light",
+          "width": 1440,
+          "height": 1190
+        },
+        {
+          "id": "153:6654",
+          "name": "Form / ready / mobile / dark",
+          "width": 390,
+          "height": 1212
+        },
+        {
+          "id": "153:6669",
+          "name": "Form / ready / mobile / light",
+          "width": 390,
+          "height": 1212
+        },
+        {
+          "id": "155:5184",
+          "name": "Form / saving / desktop / dark",
+          "width": 1440,
+          "height": 1190
+        }
+      ]
+    },
+    {
+      "page": "43 · Template — Settings",
+      "buttonInstances": 23,
+      "overflow": [],
+      "frames": [
+        {
+          "id": "156:4",
+          "name": "Settings / Designer guide",
+          "width": 1440,
+          "height": 443
+        },
+        {
+          "id": "156:10",
+          "name": "Settings / ready / desktop / dark",
+          "width": 1440,
+          "height": 1128
+        },
+        {
+          "id": "156:23",
+          "name": "Settings / ready / desktop / light",
+          "width": 1440,
+          "height": 1128
+        },
+        {
+          "id": "156:36",
+          "name": "Settings / ready / mobile / dark",
+          "width": 390,
+          "height": 1546
+        },
+        {
+          "id": "156:49",
+          "name": "Settings / ready / mobile / light",
+          "width": 390,
+          "height": 1546
+        },
+        {
+          "id": "157:164",
+          "name": "Settings / saving / desktop / dark",
+          "width": 1440,
+          "height": 1128
+        }
+      ]
+    },
+    {
+      "page": "40 · Template — Directory",
+      "buttonInstances": 58,
+      "overflow": []
+    },
+    {
+      "page": "41 · Template — Detail",
+      "buttonInstances": 44,
+      "overflow": []
+    },
+    {
+      "page": "44 · Template — Dashboard",
+      "buttonInstances": 35,
+      "overflow": []
+    },
+    {
+      "page": "45 · Template — Onboarding",
+      "buttonInstances": 66,
+      "overflow": []
+    }
+  ],
+  "formReflow": {
+    "mutatedNodeIds": [
+      "I153:6633;33:29;153:6731",
+      "I153:6648;33:29;153:6797",
+      "I155:5553;33:29;155:5560",
+      "I155:5638;33:29;155:5645",
+      "I155:5887;33:29;155:5894",
+      "I155:5992;33:29;155:5999",
+      "I155:6307;33:29;155:6314",
+      "I155:6427;33:29;155:6434"
+    ],
+    "rows": [
+      {
+        "id": "I153:6633;33:29;153:6731",
+        "width": 798,
+        "children": [
+          {
+            "id": "I153:6633;33:29;153:6740",
+            "x": 507,
+            "width": 109,
+            "right": 616
+          },
+          {
+            "id": "I153:6633;33:29;153:6749",
+            "x": 631,
+            "width": 167,
+            "right": 798
+          }
+        ]
+      },
+      {
+        "id": "I153:6648;33:29;153:6797",
+        "width": 798,
+        "children": [
+          {
+            "id": "I153:6648;33:29;153:6806",
+            "x": 507,
+            "width": 109,
+            "right": 616
+          },
+          {
+            "id": "I153:6648;33:29;153:6815",
+            "x": 631,
+            "width": 167,
+            "right": 798
+          }
+        ]
+      },
+      {
+        "id": "I155:5553;33:29;155:5560",
+        "width": 798,
+        "children": [
+          {
+            "id": "I155:5553;33:29;155:5561",
+            "x": 507,
+            "width": 109,
+            "right": 616
+          },
+          {
+            "id": "I155:5553;33:29;155:5562",
+            "x": 631,
+            "width": 167,
+            "right": 798
+          }
+        ]
+      },
+      {
+        "id": "I155:5638;33:29;155:5645",
+        "width": 798,
+        "children": [
+          {
+            "id": "I155:5638;33:29;155:5646",
+            "x": 507,
+            "width": 109,
+            "right": 616
+          },
+          {
+            "id": "I155:5638;33:29;155:5647",
+            "x": 631,
+            "width": 167,
+            "right": 798
+          }
+        ]
+      },
+      {
+        "id": "I155:5887;33:29;155:5894",
+        "width": 798,
+        "children": [
+          {
+            "id": "I155:5887;33:29;155:5895",
+            "x": 507,
+            "width": 109,
+            "right": 616
+          },
+          {
+            "id": "I155:5887;33:29;155:5896",
+            "x": 631,
+            "width": 167,
+            "right": 798
+          }
+        ]
+      },
+      {
+        "id": "I155:5992;33:29;155:5999",
+        "width": 798,
+        "children": [
+          {
+            "id": "I155:5992;33:29;155:6000",
+            "x": 507,
+            "width": 109,
+            "right": 616
+          },
+          {
+            "id": "I155:5992;33:29;155:6001",
+            "x": 631,
+            "width": 167,
+            "right": 798
+          }
+        ]
+      },
+      {
+        "id": "I155:6307;33:29;155:6314",
+        "width": 798,
+        "children": [
+          {
+            "id": "I155:6307;33:29;155:6315",
+            "x": 507,
+            "width": 109,
+            "right": 616
+          },
+          {
+            "id": "I155:6307;33:29;155:6316",
+            "x": 631,
+            "width": 167,
+            "right": 798
+          }
+        ]
+      },
+      {
+        "id": "I155:6427;33:29;155:6434",
+        "width": 798,
+        "children": [
+          {
+            "id": "I155:6427;33:29;155:6435",
+            "x": 507,
+            "width": 109,
+            "right": 616
+          },
+          {
+            "id": "I155:6427;33:29;155:6436",
+            "x": 631,
+            "width": 167,
+            "right": 798
+          }
+        ]
+      }
+    ]
+  },
+  "visualReview": [
+    "153:6624",
+    "153:6639",
+    "153:6654",
+    "153:6669"
+  ]
+}

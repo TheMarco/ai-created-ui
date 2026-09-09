@@ -4,7 +4,7 @@
 
 [Get the public Community kit](https://www.figma.com/community/file/1677871391096215128) · [Designer guide](https://ui.ai-created.com/designers)
 
-The source library is published in Marco Design. On 2026-09-04, all 48 public component assets reported `CURRENT` through Figma's publication API. Source-file access is restricted to invited people and the Design System folder. A public Community snapshot is now available at the link above; visitors can duplicate it into their own Figma account.
+The source library is published in Marco Design. On 2026-09-09, all 48 public component assets reported `CURRENT` through Figma's publication API after the Button sizing correction. The existing Community resource was updated and verified live the same day. Source-file access is restricted to invited people and the Design System folder. Visitors can duplicate the public snapshot into their own Figma account.
 
 ## Start designing
 
@@ -34,7 +34,7 @@ The working Button contract reserves a 1px border in every variant, transparent 
 
 Reference-palette documentation groups the existing values by family and separates core/feedback colors from the nine accent families. Each swatch shows a shade name and hex value; its layer name and variable binding preserve the exact source token. Swatches use a semantic boundary so near-black and white remain visible in either theme. These sparse source families are for system maintainers; semantic colors remain the product-design entry point. Do not invent intermediate shades or rename tokens to make a continuous scale.
 
-The [September 9 feedback review](../figma/reviews/2026-09-09-feedback.md) records these working-file repairs. It is a scoped review, not a new published library or Community release.
+The [September 9 feedback review](../figma/reviews/2026-09-09-feedback.md) records these repairs. The [publication audit](../figma/audits/2026-09-09-feedback-publication.json) combines the affected review with the unchanged baseline evidence and verifies both the library and existing Community resource against accepted source commit `19d3ac4`.
 
 ## Verification
 
