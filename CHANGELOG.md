@@ -4,6 +4,14 @@ Notable changes to `@ai-created/ui` are recorded here. Entries are written and r
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-09-09
+
+### Consumer adoption
+
+- Upgrade the manifest and lockfile together to the immutable `v1.5.0` tag. This release preserves the public React API and semantic tokens; no API migration is required.
+- Review tight button groups and fixed-height containers: formerly borderless text buttons grow by 2px in width and height. Outlined buttons and fixed icon targets keep their dimensions. Check keyboard focus, both themes, and narrow layouts before deployment.
+- The updated Figma library and existing Community kit include the button correction, clearer reference palettes, and aligned Form template actions. Existing Community duplicates remain independent.
+
 ### Maintenance
 
 - Update Figma when declaring a design-system release, covering accumulated source changes and verified library/Community publication. Ordinary development does not require synchronization or a background updater. See `docs/figma-consumer.md`.

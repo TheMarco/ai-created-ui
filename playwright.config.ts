@@ -42,9 +42,9 @@ export default defineConfig({
   webServer: externalBaseURL
     ? undefined
     : {
-        command: 'npm --prefix playground run dev -- --hostname 127.0.0.1 --port 3100',
+        command: 'npm run build:playground && npm --prefix playground run start -- --hostname 127.0.0.1 --port 3100',
         url: baseURL,
-        timeout: 120_000,
-        reuseExistingServer: !process.env.CI,
+        timeout: 180_000,
+        reuseExistingServer: false,
       },
 });

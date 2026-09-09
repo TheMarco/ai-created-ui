@@ -10,7 +10,10 @@ test('takes designers from the overview to the public kit and first-mockup guide
   const kitLinks = page.getByRole('link', { name: 'Open in Figma', exact: true });
   await expect(kitLinks).toHaveCount(2);
   for (const link of await kitLinks.all()) await expect(link).toHaveAttribute('href', communityUrl);
-  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://ui.ai-created.com/designers');
+  // Require one correct canonical after client navigation reconciles the head.
+  await expect.poll(() => page.locator('link[rel="canonical"]').evaluateAll(
+    (links) => links.map((link) => link.getAttribute('href')),
+  )).toEqual(['https://ui.ai-created.com/designers']);
   await page.getByRole('link', { name: 'Make your first mockup' }).click();
   await expect(page).toHaveURL(/#first-mockup$/);
   await expect(page.getByRole('heading', { name: 'Your first mockup.', exact: true })).toBeVisible();
